@@ -12,11 +12,13 @@ namespace trading_core {
      */
     class Command {
     public:
-        Command(CommandType type, common::Timestamp timestamp);
+        Command(const CommandType type, const common::Timestamp timestamp)
+            : mType(type), mTimestamp(timestamp) {
+        }
 
-        CommandType getType() const;
+        CommandType getType() const { return mType; }
 
-        common::Timestamp getTimestamp() const;
+        common::Timestamp getTimestamp() const { return mTimestamp; }
 
     private:
         CommandType mType;
