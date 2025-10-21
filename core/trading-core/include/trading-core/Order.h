@@ -63,4 +63,7 @@ namespace trading_core {
 
         common::OrderStatus mOrderStatus;
     };
+
+
+    using OrderPtr = std::shared_ptr<Order>;
 }
