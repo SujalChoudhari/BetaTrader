@@ -16,9 +16,9 @@ namespace trading_core {
             : mType(type), mTimestamp(timestamp) {
         }
 
-        CommandType getType() const { return mType; }
+        [[nodiscard]] CommandType getType() const { return mType; }
 
-        common::Timestamp getTimestamp() const { return mTimestamp; }
+        [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
 
     private:
         CommandType mType;

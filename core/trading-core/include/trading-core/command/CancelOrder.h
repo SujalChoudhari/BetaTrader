@@ -14,7 +14,7 @@ namespace trading_core {
                                                             mOrderId(mOrderId) {
         };
 
-        const common::OrderID &getOrder() const { return mOrderId; }
+        [[nodiscard]] const common::OrderID &getOrder() const { return mOrderId; }
 
     private:
         common::OrderID mOrderId;

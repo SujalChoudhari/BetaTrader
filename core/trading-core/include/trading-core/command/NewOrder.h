@@ -13,7 +13,7 @@ namespace trading_core {
             mOrder(std::move(order)) {
         };
 
-        const Order &getOrder() const { return mOrder; }
+        [[nodiscard]] const Order &getOrder() const { return mOrder; }
 
     private:
         Order mOrder;

@@ -16,9 +16,9 @@ namespace trading_core {
                                                                    mNewQuantity(newQuantity) {
         };
 
-        const common::OrderID &getOrder() const { return mOrderId; }
-        const common::Price &getNewPrice() const { return mNewPrice; }
-        const common::Quantity &getNewQuantity() const { return mNewQuantity; }
+        [[nodiscard]] const common::OrderID &getOrder() const { return mOrderId; }
+        [[nodiscard]] const common::Price &getNewPrice() const { return mNewPrice; }
+        [[nodiscard]] const common::Quantity &getNewQuantity() const { return mNewQuantity; }
 
     private:
         common::OrderID mOrderId;

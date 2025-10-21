@@ -22,7 +22,7 @@ namespace trading_core {
     public:
         bool addOrder(const OrderPtr &order);
 
-        std::optional<OrderPtr> getOrderById(const common::OrderID &id) const;
+        [[nodiscard]] std::optional<OrderPtr> getOrderById(const common::OrderID &id) const;
 
         bool removeOrderById(const common::OrderID &id);
 

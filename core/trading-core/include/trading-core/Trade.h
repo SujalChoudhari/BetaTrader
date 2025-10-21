@@ -28,12 +28,12 @@ namespace trading_core {
         }
 
     public:
-        const common::TradeID &getTradeId() const { return mTradeId; }
-        const common::OrderID &getBuyOrderId() const { return mBuyOrderId; }
-        const common::OrderID &getSellOrderId() const { return mSellOrderId; }
-        common::Quantity getQty() const { return mQuantity; }
-        common::Price getPrice() const { return mPrice; }
-        common::Timestamp getTimestamp() const { return mTimestamp; }
+        [[nodiscard]] const common::TradeID &getTradeId() const { return mTradeId; }
+        [[nodiscard]] const common::OrderID &getBuyOrderId() const { return mBuyOrderId; }
+        [[nodiscard]] const common::OrderID &getSellOrderId() const { return mSellOrderId; }
+        [[nodiscard]] common::Quantity getQty() const { return mQuantity; }
+        [[nodiscard]] common::Price getPrice() const { return mPrice; }
+        [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
 
     private:
         common::TradeID mTradeId;

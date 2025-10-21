@@ -21,7 +21,7 @@ namespace trading_core {
               const common::Quantity qty,
               const common::Price price,
               const common::Timestamp ts)
-            : mId(std::move(id)),
+            : mId(id),
               mSymbol(std::move(symbol)),
               mClientId(std::move(client)),
               mOrderSide(side),
@@ -34,16 +34,16 @@ namespace trading_core {
         }
 
     public:
-        const common::OrderID &getId() const { return mId; }
-        const common::Symbol &getSymbol() const { return mSymbol; }
-        common::OrderSide getSide() const { return mOrderSide; }
-        common::Price getPrice() const { return mPrice; }
-        common::Quantity getRemainingQty() const { return mPendingQuantity; }
-        common::Timestamp getTimestamp() const { return mTimestamp; }
-        common::OrderStatus getStatus() const { return mOrderStatus; }
-        common::OrderType getOrderType() const { return mOrderType; }
-        common::Quantity getOriginalQuantity() const { return mOriginalQuantity; }
-        common::Quantity getPendingQuantity() const { return mPendingQuantity; }
+        [[nodiscard]] const common::OrderID &getId() const { return mId; }
+        [[nodiscard]] const common::Symbol &getSymbol() const { return mSymbol; }
+        [[nodiscard]] common::OrderSide getSide() const { return mOrderSide; }
+        [[nodiscard]] common::Price getPrice() const { return mPrice; }
+        [[nodiscard]] common::Quantity getRemainingQty() const { return mPendingQuantity; }
+        [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
+        [[nodiscard]] common::OrderStatus getStatus() const { return mOrderStatus; }
+        [[nodiscard]] common::OrderType getOrderType() const { return mOrderType; }
+        [[nodiscard]] common::Quantity getOriginalQuantity() const { return mOriginalQuantity; }
+        [[nodiscard]] common::Quantity getPendingQuantity() const { return mPendingQuantity; }
 
         void setRemainingQty(const common::Quantity qty) { mPendingQuantity = qty; }
         void setStatus(const common::OrderStatus status) { mOrderStatus = status; }
