@@ -69,20 +69,20 @@ BetaTrader/
 
 ## Component Status
 
-| Component                  | Status      |
-|:---------------------------|:------------|
-| **Common Libraries**       | In Progress |
-| **Infrastructure**         | Not Started |
-| **Liquidity Provider Sim** | Not Started |
-| **Price Feed Sim**         | Not Started |
-| **FIX Gateway**            | Not Started |
-| **Market Data Gateway**    | Not Started |
-| **Trading Core**           | In Progress |
-| **Position Service**       | Not Started |
-| **Market Maker Service**   | Not Started |
-| **Analytics Service**      | Not Started |
-| **Client API Gateway**     | Not Started |
-| **Admin Console**          | Not Started |
+| Component              | Status      |
+|------------------------|-------------|
+| Common Libraries       | In Progress |
+| Infrastructure         | Not Started |
+| Liquidity Provider Sim | Not Started |
+| Price Feed Sim         | Not Started |
+| FIX Gateway            | Not Started |
+| Market Data Gateway    | Not Started |
+| Trading Core           | In Progress |
+| Position Service       | Not Started |
+| Market Maker Service   | Not Started |
+| Analytics Service      | Not Started |
+| Client API Gateway     | Not Started |
+| Admin Console          | Not Started |
 
 ## Core Design Principles (The "Why")
 
