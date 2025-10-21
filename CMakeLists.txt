@@ -8,3 +8,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory(common)
 add_subdirectory(core/trading-core)
 
+enable_testing()
+
+set(gtest_build_tests OFF CACHE BOOL "")
+add_subdirectory(vendor/lib/googletest)
+
+add_subdirectory(core/trading-core/tests)

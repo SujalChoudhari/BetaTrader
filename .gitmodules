@@ -1,0 +1,4 @@
+[submodule "vendor/lib/googletest"]
+	path = vendor/lib/googletest
+	url = https://github.com/google/googletest.git
+	branch = main
