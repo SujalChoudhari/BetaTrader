@@ -14,7 +14,6 @@ When a match happens between a buyer and a seller, it produces a **trade** — a
 Unlike the rest of the system (gateways, APIs, analytics), which deal with communication or presentation, the Trading Core handles the *critical path* of execution.
 It operates fully **in-memory** for nanosecond-to-microsecond-level speed.
 
-You can think of it as a **real-time micro-exchange**: a private marketplace where all client orders are matched.
 
 ---
 
