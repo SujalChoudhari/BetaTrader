@@ -1,6 +1,10 @@
-cmake_minimum_required(VERSION 4.0)
-project(BetaTrader)
+cmake_minimum_required(VERSION 3.15)
+project(BetaTrader LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(BetaTrader main.cpp)
+add_subdirectory(common)
+add_subdirectory(core/trading-core)
+
