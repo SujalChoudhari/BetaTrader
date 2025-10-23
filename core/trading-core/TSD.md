@@ -38,6 +38,19 @@ classDiagram
     +cancelOrder(order_id)
     +getOrder(order_id)
   }
+
+  class Order {
+    +id
+    +symbol
+    +client
+    +side
+    +type
+    +qty
+    +price
+    +ts
+  }
+  
+  
   class OrderBook {
     +insert(OrderEntry)
     +match(Order)
@@ -75,6 +88,7 @@ classDiagram
     +price
     +ts
   }
+  
   class ExecutionPublisher {
     +publishExecution(ExecutionReport)
     +publishTrade(Trade)
