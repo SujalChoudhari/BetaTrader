@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "trading-core/command/Command.h"
+#include "Command.h"
 #include "trading-core/Order.h"
 
 namespace trading_core {

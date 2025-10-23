@@ -8,7 +8,6 @@ namespace trading_core {
         if (order->getSide() == common::OrderSide::Buy) {
             mBidMap[order->getPrice()].push_back(order);
         } else {
-            // Sell
             mAskMap[order->getPrice()].push_back(order);
         }
     }
