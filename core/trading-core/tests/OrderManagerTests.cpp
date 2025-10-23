@@ -23,9 +23,9 @@ protected:
         return std::make_shared<trading_core::Order>(
             id,
             "TEST_TICKER",
-            "CLIENT_" + std::to_string(id), // Synthetic client order ID
+            "CLIENT_" + std::to_string(id),
             side,
-            common::OrderType::Limit, // Default to Limit for most tests
+            common::OrderType::Limit,
             quantity,
             price,
             std::chrono::steady_clock::now()

@@ -1,5 +1,7 @@
 add_executable(trading_core_tests
-        OrdermanagerTests.cpp
+        OrderManagerTests.cpp
+        OrderBookTests.cpp
+
 )
 
 target_link_libraries(trading_core_tests

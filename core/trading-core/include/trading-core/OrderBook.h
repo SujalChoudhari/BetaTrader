@@ -21,6 +21,7 @@ namespace trading_core {
         // Map of the price tier and the queue of the orders of the Sellers
         using AskMap = std::map<common::Price, PriceLevel>;
 
+    public:
         /**
          *
          * @param order Order to insert in the Book
@@ -34,7 +35,6 @@ namespace trading_core {
          */
         bool cancelOrder(const common::OrderID &orderId);
 
-    private:
         [[nodiscard]] BidMap getBidMap();
 
         [[nodiscard]] AskMap getAskMap();
