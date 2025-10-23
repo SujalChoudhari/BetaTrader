@@ -25,9 +25,8 @@ namespace trading_core {
                 else
                     ++bidIt;
                 return true;
-            } else {
-                ++bidIt;
             }
+            ++bidIt;
         }
 
         for (auto askIt = mAskMap.begin(); askIt != mAskMap.end();) {
@@ -41,9 +40,8 @@ namespace trading_core {
                 else
                     ++askIt;
                 return true;
-            } else {
-                ++askIt;
             }
+            ++askIt;
         }
 
         return false;
