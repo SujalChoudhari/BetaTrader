@@ -47,11 +47,11 @@ namespace trading_core {
     }
 
 
-    OrderBook::BidMap OrderBook::getBidMap() {
-        return mBidMap;
+    std::shared_ptr<OrderBook::BidMap> OrderBook::getBidMap() {
+        return std::make_shared<BidMap>(mBidMap);
     }
 
-    OrderBook::AskMap OrderBook::getAskMap() {
-        return mAskMap;
+    std::shared_ptr<OrderBook::AskMap> OrderBook::getAskMap() {
+        return std::make_shared<AskMap>(mAskMap);
     }
 }

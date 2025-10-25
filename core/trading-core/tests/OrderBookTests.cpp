@@ -37,21 +37,20 @@ protected:
 };
 
 
-
 TEST_F(OrderBookTest, InsertSingleBuyOrder) {
     auto order = createOrder(1, common::OrderSide::Buy, 100.0, 50.0);
     pmOrderBook->insertOrder(order);
     auto bids = pmOrderBook->getBidMap();
-    ASSERT_EQ(bids.size(), 1);
-    ASSERT_EQ(bids.begin()->second.front(), order);
+    ASSERT_EQ(bids->size(), 1);
+    ASSERT_EQ(bids->begin()->second.front(), order);
 }
 
 TEST_F(OrderBookTest, InsertSingleSellOrder) {
     auto order = createOrder(2, common::OrderSide::Sell, 100.0, 51.0);
     pmOrderBook->insertOrder(order);
     auto asks = pmOrderBook->getAskMap();
-    ASSERT_EQ(asks.size(), 1);
-    ASSERT_EQ(asks.begin()->second.front(), order);
+    ASSERT_EQ(asks->size(), 1);
+    ASSERT_EQ(asks->begin()->second.front(), order);
 }
 
 
@@ -61,7 +60,7 @@ TEST_F(OrderBookTest, MultipleBuyOrdersDescending) {
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
     auto bids = pmOrderBook->getBidMap();
-    ASSERT_EQ(bids.begin()->first, 55.0);
+    ASSERT_EQ(bids->begin()->first, 55.0);
 }
 
 
@@ -71,7 +70,7 @@ TEST_F(OrderBookTest, MultipleSellOrdersAscending) {
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
     auto asks = pmOrderBook->getAskMap();
-    ASSERT_EQ(asks.begin()->first, 45.0);
+    ASSERT_EQ(asks->begin()->first, 45.0);
 }
 
 
@@ -81,7 +80,7 @@ TEST_F(OrderBookTest, FIFOWithinSamePriceLevel) {
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
     auto bids = pmOrderBook->getBidMap();
-    auto& level = bids.begin()->second;
+    auto &level = bids->begin()->second;
     ASSERT_EQ(level.front(), o1);
     ASSERT_EQ(level.back(), o2);
 }
@@ -91,7 +90,7 @@ TEST_F(OrderBookTest, CancelExistingOrder) {
     pmOrderBook->insertOrder(o1);
     bool result = pmOrderBook->cancelOrder(1);
     ASSERT_TRUE(result);
-    ASSERT_TRUE(pmOrderBook->getBidMap().empty());
+    ASSERT_TRUE(pmOrderBook->getBidMap()->empty());
 }
 
 
@@ -105,8 +104,8 @@ TEST_F(OrderBookTest, MixedBuyAndSellOrders) {
     auto sell = createOrder(2, common::OrderSide::Sell, 100.0, 55.0);
     pmOrderBook->insertOrder(buy);
     pmOrderBook->insertOrder(sell);
-    ASSERT_EQ(pmOrderBook->getBidMap().size(), 1);
-    ASSERT_EQ(pmOrderBook->getAskMap().size(), 1);
+    ASSERT_EQ(pmOrderBook->getBidMap()->size(), 1);
+    ASSERT_EQ(pmOrderBook->getAskMap()->size(), 1);
 }
 
 
@@ -117,8 +116,8 @@ TEST_F(OrderBookTest, CancelOneAmongMany) {
     pmOrderBook->insertOrder(o2);
     pmOrderBook->cancelOrder(1);
     auto bids = pmOrderBook->getBidMap();
-    ASSERT_EQ(bids.begin()->second.size(), 1);
-    ASSERT_EQ(bids.begin()->second.front(), o2);
+    ASSERT_EQ(bids->begin()->second.size(), 1);
+    ASSERT_EQ(bids->begin()->second.front(), o2);
 }
 
 
@@ -129,5 +128,5 @@ TEST_F(OrderBookTest, AllOrdersCancelledRemovesLevels) {
     pmOrderBook->insertOrder(o2);
     pmOrderBook->cancelOrder(1);
     pmOrderBook->cancelOrder(2);
-    ASSERT_TRUE(pmOrderBook->getBidMap().empty());
+    ASSERT_TRUE(pmOrderBook->getBidMap()->empty());
 }

@@ -16,7 +16,7 @@ namespace trading_core {
         using PriceLevel = std::deque<OrderPtr>;
 
         // Map of the price tier and the queue of the orders of the Buyers
-        using BidMap = std::map<common::Price, PriceLevel, std::greater<common::Price> >;
+        using BidMap = std::map<common::Price, PriceLevel, std::greater<> >;
 
         // Map of the price tier and the queue of the orders of the Sellers
         using AskMap = std::map<common::Price, PriceLevel>;
@@ -35,9 +35,9 @@ namespace trading_core {
          */
         bool cancelOrder(const common::OrderID &orderId);
 
-        [[nodiscard]] BidMap getBidMap();
+        [[nodiscard]] std::shared_ptr<BidMap> getBidMap();
 
-        [[nodiscard]] AskMap getAskMap();
+        [[nodiscard]] std::shared_ptr<AskMap> getAskMap();
 
     private:
         BidMap mBidMap;

@@ -1,8 +1,10 @@
-add_executable(trading_core_tests
-        OrderManagerTests.cpp
-        OrderBookTests.cpp
+file(GLOB TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
+
+add_executable(trading_core_tests
+        ${TEST_SOURCES}
 )
+
 
 target_link_libraries(trading_core_tests
         PRIVATE

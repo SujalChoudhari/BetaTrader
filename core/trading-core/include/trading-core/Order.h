@@ -38,12 +38,11 @@ namespace trading_core {
         [[nodiscard]] const common::Symbol &getSymbol() const { return mSymbol; }
         [[nodiscard]] common::OrderSide getSide() const { return mOrderSide; }
         [[nodiscard]] common::Price getPrice() const { return mPrice; }
-        [[nodiscard]] common::Quantity getRemainingQty() const { return mPendingQuantity; }
         [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
         [[nodiscard]] common::OrderStatus getStatus() const { return mOrderStatus; }
         [[nodiscard]] common::OrderType getOrderType() const { return mOrderType; }
         [[nodiscard]] common::Quantity getOriginalQuantity() const { return mOriginalQuantity; }
-        [[nodiscard]] common::Quantity getPendingQuantity() const { return mPendingQuantity; }
+        [[nodiscard]] common::Quantity getRemainingQuantity() const { return mPendingQuantity; }
 
         void setRemainingQty(const common::Quantity qty) { mPendingQuantity = qty; }
         void setStatus(const common::OrderStatus status) { mOrderStatus = status; }
