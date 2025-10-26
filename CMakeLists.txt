@@ -17,3 +17,5 @@ add_subdirectory(vendor/lib/googletest)
 add_subdirectory(vendor/lib/SQLiteCpp)
 
 add_subdirectory(core/trading-core/tests)
+add_subdirectory(core/data/tests)
+

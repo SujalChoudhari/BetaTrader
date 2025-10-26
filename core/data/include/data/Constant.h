@@ -6,5 +6,5 @@
 #include <string>
 
 namespace data {
-    constexpr std::string databasePath = "db.sqlite";
+    const std::string databasePath = "db.sqlite";
 }
