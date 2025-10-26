@@ -11,7 +11,9 @@ namespace data::query {
 
     const std::string getTradeIdQuery = "SELECT current_id FROM trade_id WHERE id = 1";
 
-    const std::string setTradeIdQuery = "INSERT OR REPLACE INTO trade_id (id, current_id) VALUES (1, ?)";
+    const std::string setTradeIdQuery =
+            "INSERT INTO trade_id (id, current_id) VALUES (1, ?) "
+            "ON CONFLICT(id) DO UPDATE SET current_id = MAX(excluded.current_id, current_id)";
 
     const std::string truncateTradeIdQuery = "DELETE FROM trade_id";
 }
