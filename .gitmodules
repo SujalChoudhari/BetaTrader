@@ -2,3 +2,6 @@
 	path = vendor/lib/googletest
 	url = https://github.com/google/googletest.git
 	branch = main
+[submodule "vendor/lib/SQLiteCpp"]
+	path = vendor/lib/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp.git

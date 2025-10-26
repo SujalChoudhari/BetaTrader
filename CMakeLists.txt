@@ -11,6 +11,8 @@ add_subdirectory(core/trading-core)
 enable_testing()
 
 set(gtest_build_tests OFF CACHE BOOL "")
+
 add_subdirectory(vendor/lib/googletest)
+add_subdirectory(vendor/lib/SQLiteCpp)
 
 add_subdirectory(core/trading-core/tests)
