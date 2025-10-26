@@ -81,7 +81,7 @@ namespace trading_core {
             }
         }
 
-        if (incomingOrder.getRemainingQuantity() > 0) {
+        if (incomingOrder.getRemainingQuantity() == 0) {
             incomingOrder.setStatus(common::OrderStatus::Filled);
         }
     }
