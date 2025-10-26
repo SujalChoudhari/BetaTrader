@@ -1,4 +1,4 @@
-# **Functional Specification Document (FSD) — BetaTrader Trading Core**
+# **core/trading-core**
 
 ---
 

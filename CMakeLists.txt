@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory(common)
 add_subdirectory(core/trading-core)
+add_subdirectory(core/data)
 
 enable_testing()
 
