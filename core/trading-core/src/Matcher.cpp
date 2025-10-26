@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "trading-core/OrderIDGenerator.h"
+#include "trading-core/TradeIDGenerator.h"
 
 
 namespace trading_core {
@@ -58,7 +59,7 @@ namespace trading_core {
                                              ? restingOrder->getId()
                                              : incomingOrder.getId();
 
-                trades.emplace_back(OrderIDGenerator::nextId(), buyId, sellId, tradeQuantity, tradePrice,
+                trades.emplace_back(TradeIDGenerator::nextId(), buyId, sellId, tradeQuantity, tradePrice,
                                     std::chrono::steady_clock::now());
 
                 incomingOrder.setRemainingQty(incomingOrder.getRemainingQuantity() - tradeQuantity);
