@@ -12,7 +12,7 @@ target_include_directories(data_lib PUBLIC
 
 target_link_libraries(data_lib
         PUBLIC common
-        PRIVATE SQLiteCpp sqlite3
+        PUBLIC SQLiteCpp sqlite3
 )
 
 target_compile_options(data_lib PRIVATE -Wall -Wextra -Wpedantic)

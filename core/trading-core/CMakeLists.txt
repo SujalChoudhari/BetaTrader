@@ -21,9 +21,9 @@ target_link_libraries(trading_core_lib
 
 target_compile_options(trading_core_lib PRIVATE -Wall -Wextra -Wpedantic)
 
-add_executable(trading-core src/Main.cpp)
+add_executable(trading_core src/Main.cpp)
 
-target_link_libraries(trading-core
+target_link_libraries(trading_core
         PRIVATE
         trading_core_lib
         data_lib

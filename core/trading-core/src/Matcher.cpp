@@ -7,7 +7,6 @@
 #include "trading-core/OrderBook.h"
 #include <vector>
 
-#include "trading-core/OrderIDGenerator.h"
 #include "trading-core/TradeIDGenerator.h"
 
 

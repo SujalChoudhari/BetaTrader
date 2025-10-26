@@ -7,9 +7,11 @@ add_executable(trading_core_tests
 
 
 target_link_libraries(trading_core_tests
-        PRIVATE
-        trading_core_lib
+        PUBLIC
         common
+        data_lib
+        trading_core_lib
+        PRIVATE
         gtest_main
 )
 
