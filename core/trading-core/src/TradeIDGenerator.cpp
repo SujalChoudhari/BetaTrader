@@ -5,12 +5,13 @@
 
 #include "trading-core/TradeIDGenerator.h"
 #include "common/Types.h"
+#include "data/Constant.h"
 
 
 namespace trading_core {
     common::TradeID TradeIDGenerator::currentId = 0;
     std::mutex TradeIDGenerator::mutex;
-    data::TradeIDRepository TradeIDGenerator::repository = data::TradeIDRepository();
+    data::TradeIDRepository TradeIDGenerator::repository = data::TradeIDRepository(data::databasePath);
 
 
     common::TradeID TradeIDGenerator::getId() {

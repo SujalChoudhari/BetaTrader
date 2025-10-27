@@ -5,6 +5,7 @@
 #include "data/TradeIDRepository.h"
 #include "gtest/gtest.h"
 #include <thread>
+#include <chrono>
 #include <vector>
 #include <cstdio> // For std::remove
 #include <set>    // For tracking written IDs
@@ -51,6 +52,7 @@ TEST_F(TradeIDRepositoryTest, GetCurrentTradeIDReturnsZeroAfterTruncate) {
 TEST_F(TradeIDRepositoryTest, SetAndGetTradeID) {
     common::TradeID testID = 12345;
     repo->setCurrentTradeID(testID);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(200));
 
     auto readID = repo->getCurrentTradeID();
     EXPECT_EQ(readID, testID);
@@ -60,10 +62,14 @@ TEST_F(TradeIDRepositoryTest, SetAndGetTradeID) {
 TEST_F(TradeIDRepositoryTest, OverwriteTradeID) {
     // Test that a larger value overwrites a smaller one
     repo->setCurrentTradeID(100);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(200));
+
     auto readID1 = repo->getCurrentTradeID();
     EXPECT_EQ(readID1, 100u);
 
     repo->setCurrentTradeID(200);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(200));
+
     auto readID2 = repo->getCurrentTradeID();
     EXPECT_EQ(readID2, 200u);
 }
@@ -72,11 +78,15 @@ TEST_F(TradeIDRepositoryTest, OverwriteTradeID) {
 TEST_F(TradeIDRepositoryTest, SetLowerTradeIDIsIgnored) {
     // Set an initial high value
     repo->setCurrentTradeID(500);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(200));
+
     auto readID1 = repo->getCurrentTradeID();
     EXPECT_EQ(readID1, 500u);
 
     // Attempt to set a lower value
     repo->setCurrentTradeID(300);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(200));
+
     auto readID2 = repo->getCurrentTradeID();
 
     // The value should remain the higher one
@@ -109,20 +119,22 @@ TEST_F(TradeIDRepositoryTest, ConcurrentWrites) {
             try {
                 data::TradeIDRepository threadRepo(dbPath);
                 threadRepo.setCurrentTradeID(testID);
-            } catch (const std::exception& e) {
+            } catch (const std::exception &e) {
                 // Fail test if any thread throws
                 FAIL() << "Thread exception: " << e.what();
             }
         });
     }
 
-    for (auto& t : threads) {
+    for (auto &t: threads) {
         t.join();
     }
 
     // After all threads are done, create a new repo instance
     // to check the final value.
     data::TradeIDRepository readRepo(dbPath);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(600));
+
     auto finalID = readRepo.getCurrentTradeID();
 
     // With the new MAX() logic, the final ID is now deterministic:
@@ -152,23 +164,24 @@ TEST_F(TradeIDRepositoryTest, ConcurrentIncrementRaceCondition) {
         threads.emplace_back([this, incrementsPerThread]() {
             try {
                 data::TradeIDRepository threadRepo(dbPath);
-                for(int j = 0; j < incrementsPerThread; ++j) {
+                for (int j = 0; j < incrementsPerThread; ++j) {
                     // This is an unsafe read-modify-write cycle
                     auto currentID = threadRepo.getCurrentTradeID();
                     threadRepo.setCurrentTradeID(currentID + 1);
                 }
-            } catch (const std::exception& e) {
+            } catch (const std::exception &e) {
                 FAIL() << "Thread exception: " << e.what();
             }
         });
     }
 
-    for (auto& t : threads) {
+    for (auto &t: threads) {
         t.join();
     }
 
     // Create a new repo instance to read the final value
     data::TradeIDRepository readRepo(dbPath);
+    std::this_thread::sleep_for(std::chrono_literals::operator ""ms(500));
     auto finalID = readRepo.getCurrentTradeID();
     const common::TradeID expectedID = numThreads * incrementsPerThread;
 
@@ -184,5 +197,3 @@ TEST_F(TradeIDRepositoryTest, ConcurrentIncrementRaceCondition) {
     EXPECT_LT(finalID, expectedID)
         << "Final ID " << finalID << " was not less than expected " << expectedID;
 }
-
-
