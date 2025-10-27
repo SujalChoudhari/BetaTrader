@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "common/Types.h"
-#include "common/Time.h"
+#include "Types.h"
+#include "Time.h"
 
-namespace trading_core {
+namespace common {
     /**
      * Representation of fill actions of orders
      */

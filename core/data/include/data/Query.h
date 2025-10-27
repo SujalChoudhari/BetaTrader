@@ -16,4 +16,26 @@ namespace data::query {
             "ON CONFLICT(id) DO UPDATE SET current_id = MAX(excluded.current_id, current_id)";
 
     const std::string truncateTradeIdQuery = "DELETE FROM trade_id";
+
+
+    const std::string createTradeTableQuery =
+            "CREATE TABLE trade ( "
+            "trade_id INTEGER PRIMARY KEY, "
+            "buy_order_id INTEGER NOT NULL, "
+            "sell_order_id INTEGER NOT NULL, "
+            "quantity INTEGER NOT NULL, "
+            "price REAL NOT NULL, "
+            "timestamp_ns INTEGER NOT NULL "
+            "); ";
+    const std::string insertIntoTradeTableQuery =
+            "INSERT INTO trade( "
+            "trade_id, "
+            "buy_order_id, "
+            "sell_order_id, "
+            "quantity, "
+            "price, "
+            "timestamp_ns "
+            ") VALUES ( "
+            "?, ?, ?, ?, ?, ?"
+            ");";
 }
