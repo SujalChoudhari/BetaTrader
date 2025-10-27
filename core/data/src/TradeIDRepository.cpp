@@ -12,25 +12,21 @@ namespace data {
         initDatabase();
     }
 
-    TradeIDRepository::~TradeIDRepository() {
-    }
-
     void TradeIDRepository::initDatabase() const {
-        SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+        const SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
         SQLite::Statement createStmt(db, query::createTradeIdTableQuery);
         createStmt.exec();
     }
 
     common::TradeID TradeIDRepository::getCurrentTradeID() const {
-        SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-        SQLite::Statement stmt(db, query::getTradeIdQuery);
-        if (stmt.executeStep())
+        const SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+        if (SQLite::Statement stmt(db, query::getTradeIdQuery); stmt.executeStep())
             return static_cast<common::TradeID>(stmt.getColumn(0).getInt64());
         return 0;
     }
 
     void TradeIDRepository::setCurrentTradeID(common::TradeID tradeID) {
-        enqueue([tradeID](SQLite::Database &db) {
+        enqueue([tradeID](const SQLite::Database &db) {
             try {
                 SQLite::Statement selectStmt(db, query::getTradeIdQuery);
                 common::TradeID current = 0;
@@ -49,7 +45,7 @@ namespace data {
     }
 
     void TradeIDRepository::truncateTradeID() const {
-        SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+        const SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
         SQLite::Statement stmt(db, query::truncateTradeIdQuery);
         stmt.exec();
     }

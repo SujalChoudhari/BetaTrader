@@ -18,11 +18,9 @@ namespace data {
 
         virtual ~AsyncDatabaseRepository();
 
-        // Queue a database task
         void enqueue(std::function<void(SQLite::Database &)> task);
 
     protected:
-        // For derived classes to access the database path
         std::string mDbPath;
 
     private:

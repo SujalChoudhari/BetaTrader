@@ -8,13 +8,12 @@
 namespace data {
     AsyncDatabaseRepository::AsyncDatabaseRepository(const std::string &dbPath)
         : mDbPath(dbPath) {
-        // Start dedicated worker thread
         mWorker = std::thread(&AsyncDatabaseRepository::workerLoop, this);
     }
 
     AsyncDatabaseRepository::~AsyncDatabaseRepository() {
         {
-            std::lock_guard<std::mutex> lock(mMutex);
+            std::lock_guard lock(mMutex);
             mStop = true;
         }
         mCv.notify_one();

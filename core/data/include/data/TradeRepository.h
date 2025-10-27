@@ -3,19 +3,18 @@
 //
 
 #pragma once
+#include "AsyncDatabaseRepository.h"
 #include "common/Trade.h"
 #include "SQLiteCpp/Database.h"
 
 namespace data {
-    class TradeRepository {
+    class TradeRepository :public AsyncDatabaseRepository{
     public:
-        TradeRepository();
+        explicit TradeRepository(const std::string& dbPath);
 
         void initDatabase() const;
 
-        void addTrade(const common::Trade &trade) const;
+        void addTrade(const common::Trade &trade);
 
-    private:
-        SQLite::Database mDatabase;
     };
 } // data

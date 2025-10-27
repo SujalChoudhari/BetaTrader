@@ -11,20 +11,20 @@
 #include "data/Query.h"
 
 namespace data {
-    TradeRepository::TradeRepository() : mDatabase(
-        SQLite::Database(data::databasePath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE)) {
+    TradeRepository::TradeRepository(const std::string &dbPath) : AsyncDatabaseRepository(dbPath) {
         initDatabase();
     }
 
     void TradeRepository::initDatabase() const {
-        SQLite::Statement query(mDatabase, data::query::createTradeTableQuery);
+        const SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+        SQLite::Statement query(db, data::query::createTradeTableQuery);
         query.exec();
     }
 
-    void TradeRepository::addTrade(const common::Trade &trade) const {
-        std::thread([this,trade]() {
+    void TradeRepository::addTrade(const common::Trade &trade) {
+        enqueue([trade](const SQLite::Database &db) {
             try {
-                SQLite::Statement query(mDatabase, data::query::insertIntoTradeTableQuery);
+                SQLite::Statement query(db, data::query::insertIntoTradeTableQuery);
                 query.bind(1, static_cast<sqlite3_int64>(trade.getTradeId()));
                 query.bind(2, static_cast<sqlite3_int64>(trade.getBuyOrderId()));
                 query.bind(3, static_cast<sqlite3_int64>(trade.getSellOrderId()));
