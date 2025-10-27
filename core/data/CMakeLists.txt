@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 4.0)
 
 file(GLOB_RECURSE ALL_DATA_SOURCES "src/*.cpp")
 list(FILTER ALL_DATA_SOURCES EXCLUDE REGEX "[/\\]Main\\.cpp$")
