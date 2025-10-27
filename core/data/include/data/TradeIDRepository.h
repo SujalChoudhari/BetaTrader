@@ -9,10 +9,14 @@
 namespace data {
     class TradeIDRepository : public AsyncDatabaseRepository {
     public:
-        explicit TradeIDRepository(const std::string& dbPath);
-        common::TradeID getCurrentTradeID() const;
+        explicit TradeIDRepository(const std::string &dbPath);
+
+        common::TradeID getCurrentTradeID();
+
         void setCurrentTradeID(common::TradeID tradeID);
-        void truncateTradeID() const;
-        void initDatabase() const;
+
+        void truncateTradeID();
+
+        void initDatabase();
     };
 }

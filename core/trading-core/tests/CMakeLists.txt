@@ -16,4 +16,4 @@ target_link_libraries(trading_core_tests
 )
 
 include(GoogleTest)
-gtest_add_tests(TARGET trading_core_tests)
+gtest_discover_tests( trading_core_tests)

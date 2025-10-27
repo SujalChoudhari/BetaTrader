@@ -15,4 +15,4 @@ target_link_libraries(data_tests
 )
 
 include(GoogleTest)
-gtest_add_tests(TARGET data_tests)
+gtest_discover_tests(data_tests)

@@ -3,7 +3,6 @@
 //
 
 #include "data/TradeRepository.h"
-
 #include <iostream>
 #include <thread>
 #include "sqlite3.h"
@@ -15,14 +14,19 @@ namespace data {
         initDatabase();
     }
 
-    void TradeRepository::initDatabase() const {
-        const SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
-        SQLite::Statement query(db, data::query::createTradeTableQuery);
-        query.exec();
+    void TradeRepository::initDatabase() {
+        enqueue([](SQLite::Database &db) {
+            try {
+                SQLite::Statement query(db, data::query::createTradeTableQuery);
+                query.exec();
+            } catch (const std::exception &e) {
+                std::cerr << "Error in initDatabase: " << e.what() << "\n";
+            }
+        });
     }
 
     void TradeRepository::addTrade(const common::Trade &trade) {
-        enqueue([trade](const SQLite::Database &db) {
+        enqueue([trade](SQLite::Database &db) {
             try {
                 SQLite::Statement query(db, data::query::insertIntoTradeTableQuery);
                 query.bind(1, static_cast<sqlite3_int64>(trade.getTradeId()));
@@ -42,3 +46,4 @@ namespace data {
         });
     }
 } // data
+

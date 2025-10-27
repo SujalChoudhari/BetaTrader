@@ -8,13 +8,12 @@
 #include "SQLiteCpp/Database.h"
 
 namespace data {
-    class TradeRepository :public AsyncDatabaseRepository{
+    class TradeRepository : public AsyncDatabaseRepository {
     public:
-        explicit TradeRepository(const std::string& dbPath);
+        explicit TradeRepository(const std::string &dbPath);
 
-        void initDatabase() const;
+        void initDatabase();
 
         void addTrade(const common::Trade &trade);
-
     };
 } // data
