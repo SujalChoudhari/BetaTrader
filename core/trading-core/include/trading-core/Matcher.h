@@ -5,17 +5,16 @@
 #pragma once
 #include <vector>
 
-#include "Order.h"
 #include "OrderBook.h"
-#include "Trade.h"
+#include "common/Trade.h"
 
 namespace trading_core {
     class Matcher {
     public:
-        std::vector<Trade> match(Order &incomingOrder, OrderBook &orderBook) const;
+        std::vector<common::Trade> match(common::Order &incomingOrder, OrderBook &orderBook) const;
 
     private:
         template<typename TMap>
-        void matchTable(Order &incomingOrder, std::shared_ptr<TMap> restingMap, std::vector<Trade> &trades) const;
+        void matchTable(common::Order &incomingOrder, std::shared_ptr<TMap> restingMap, std::vector<common::Trade> &trades) const;
     };
 }

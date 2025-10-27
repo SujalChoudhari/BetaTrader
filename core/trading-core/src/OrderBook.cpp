@@ -4,7 +4,7 @@
 #include "trading-core/OrderBook.h"
 
 namespace trading_core {
-    void OrderBook::insertOrder(const OrderPtr &order) {
+    void OrderBook::insertOrder(const common::OrderPtr &order) {
         if (order->getSide() == common::OrderSide::Buy) {
             mBidMap[order->getPrice()].push_back(order);
         } else {
@@ -16,7 +16,7 @@ namespace trading_core {
         for (auto bidIt = mBidMap.begin(); bidIt != mBidMap.end();) {
             auto &orders = bidIt->second;
             auto orderIt = std::ranges::find_if(orders,
-                                                [&](const OrderPtr &o) { return o->getId() == orderId; });
+                                                [&](const common::OrderPtr &o) { return o->getId() == orderId; });
             if (orderIt != orders.end()) {
                 orders.erase(orderIt);
                 if (orders.empty())
@@ -31,7 +31,7 @@ namespace trading_core {
         for (auto askIt = mAskMap.begin(); askIt != mAskMap.end();) {
             auto &orders = askIt->second;
             auto orderIt = std::ranges::find_if(orders,
-                                                [&](const OrderPtr &o) { return o->getId() == orderId; });
+                                                [&](const common::OrderPtr &o) { return o->getId() == orderId; });
             if (orderIt != orders.end()) {
                 orders.erase(orderIt);
                 if (orders.empty())

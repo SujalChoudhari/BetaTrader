@@ -15,12 +15,12 @@ protected:
         pmOrderManager.reset();
     }
 
-    static trading_core::OrderPtr createOrder(
+    static common::OrderPtr createOrder(
         common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         double quantity = 100.0,
         double price = 50.0) {
-        return std::make_shared<trading_core::Order>(
+        return std::make_shared<common::Order>(
             id,
             "TEST_TICKER",
             "CLIENT_" + std::to_string(id),

@@ -3,17 +3,17 @@
 //
 
 #pragma once
-#include "common/Time.h"
-#include "common/Types.h"
+#include "Time.h"
+#include "Types.h"
 
-namespace trading_core {
+namespace common {
     /**
      * Order class
      * Data model to store and use the Orders
      */
     class Order {
     public:
-        Order(common::OrderID id,
+        Order(const common::OrderID id,
               common::Symbol symbol,
               common::ClientID client,
               const common::OrderSide side,

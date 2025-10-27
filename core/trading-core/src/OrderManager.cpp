@@ -5,7 +5,7 @@
 #include "trading-core/OrderManager.h"
 
 namespace trading_core {
-    bool OrderManager::addOrder(const OrderPtr &order) {
+    bool OrderManager::addOrder(const common::OrderPtr &order) {
         if (!order) {
             return false;
         }
@@ -14,7 +14,7 @@ namespace trading_core {
         return status;
     }
 
-    std::optional<OrderPtr> OrderManager::getOrderById(const common::OrderID &id) const {
+    std::optional<common::OrderPtr> OrderManager::getOrderById(const common::OrderID &id) const {
         const auto it = mOrderMap.find(id);
 
         if (it == mOrderMap.end()) {
@@ -31,7 +31,7 @@ namespace trading_core {
     }
 
     bool OrderManager::containsOrderById(const common::OrderID &id) const {
-        return mOrderMap.count(id) > 0;
+        return mOrderMap.contains(id);
     }
 
     size_t OrderManager::size() const {

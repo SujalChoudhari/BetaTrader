@@ -11,8 +11,8 @@
 
 
 namespace trading_core {
-    std::vector<Trade> Matcher::match(Order &incomingOrder, OrderBook &orderBook) const {
-        std::vector<Trade> trades;
+    std::vector<common::Trade> Matcher::match(common::Order &incomingOrder, OrderBook &orderBook) const {
+        std::vector<common::Trade> trades;
         if (incomingOrder.getSide() == common::OrderSide::Buy) {
             matchTable(incomingOrder, orderBook.getAskMap(), trades);
         } else if (incomingOrder.getSide() == common::OrderSide::Sell) {
@@ -23,8 +23,8 @@ namespace trading_core {
     }
 
     template<typename TMap>
-    void Matcher::matchTable(Order &incomingOrder, std::shared_ptr<TMap> restingMap,
-                             std::vector<Trade> &trades) const {
+    void Matcher::matchTable(common::Order &incomingOrder, std::shared_ptr<TMap> restingMap,
+                             std::vector<common::Trade> &trades) const {
         auto it = restingMap->begin();
 
         while (it != restingMap->end() && incomingOrder.getRemainingQuantity() > 0) {
@@ -38,12 +38,12 @@ namespace trading_core {
                 if (incomingOrder.getPrice() > it->first) break;
             }
 
-            std::deque<OrderPtr> &restingLevel = it->second;
+            std::deque<common::OrderPtr> &restingLevel = it->second;
 
 
             // apply and update the book
             while (!restingLevel.empty() && incomingOrder.getRemainingQuantity() > 0) {
-                Order *restingOrder = restingLevel.front().get();
+                common::Order *restingOrder = restingLevel.front().get();
 
                 common::Quantity tradeQuantity = std::min(incomingOrder.getRemainingQuantity(),
                                                           restingOrder->getRemainingQuantity());

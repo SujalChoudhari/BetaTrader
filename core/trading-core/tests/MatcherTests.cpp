@@ -5,8 +5,6 @@
 #include "gtest/gtest.h"
 #include "trading-core/Matcher.h"
 #include "trading-core/OrderBook.h"
-#include "trading-core/Order.h"
-#include "trading-core/Trade.h"
 
 using namespace trading_core;
 
@@ -22,14 +20,14 @@ protected:
         pmOrderBook.reset();
     }
 
-    static OrderPtr createOrder(
+    static common::OrderPtr createOrder(
         common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         common::OrderType type = common::OrderType::Limit,
         double quantity = 100.0,
         double price = 50.0
     ) {
-        return std::make_shared<Order>(
+        return std::make_shared<common::Order>(
             id,
             "TEST_TICKER",
             "CLIENT_" + std::to_string(id),
