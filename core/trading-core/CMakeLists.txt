@@ -24,6 +24,9 @@ target_compile_options(trading_core_lib PRIVATE -Wall -Wextra -Wpedantic)
 add_executable(trading_core src/Main.cpp)
 
 target_link_libraries(trading_core
+        PUBLIC
+        spdlog
+        common
         PRIVATE
         trading_core_lib
         data_lib

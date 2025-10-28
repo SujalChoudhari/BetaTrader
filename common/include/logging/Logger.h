@@ -10,6 +10,7 @@
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
+// This namespace just holds the Init/Shutdown class.
 namespace logging {
     class Logger {
     public:
@@ -44,8 +45,9 @@ namespace logging {
 
             asyncLogger->set_level(globalLevel);
 
-            // Example pattern: [2024-10-28 10:56:00.123] [thread 1234] [info] [main.cpp:25] My log message
+            // This is the default pattern for TRACE/INFO/DEBUG logs
             asyncLogger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [t %t] [%^%l%$] [%s:%#] %v");
+
 
             spdlog::register_logger(asyncLogger);
             spdlog::set_default_logger(asyncLogger);
@@ -61,12 +63,14 @@ namespace logging {
             spdlog::shutdown();
         }
     };
+} // namespace logging
 
-
+// --- BASE LOGGING MACROS ---
+// These are the defaults. Runbook.h will override some of them.
 #define LOG_TRACE(...)    SPDLOG_TRACE(__VA_ARGS__)
 #define LOG_DEBUG(...)    SPDLOG_DEBUG(__VA_ARGS__)
 #define LOG_INFO(...)     SPDLOG_INFO(__VA_ARGS__)
 #define LOG_WARN(...)     SPDLOG_WARN(__VA_ARGS__)
 #define LOG_ERROR(...)    SPDLOG_ERROR(__VA_ARGS__)
 #define LOG_CRITICAL(...) SPDLOG_CRITICAL(__VA_ARGS__)
-}
+

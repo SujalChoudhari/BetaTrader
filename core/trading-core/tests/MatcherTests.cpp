@@ -3,6 +3,7 @@
 //
 
 #include "gtest/gtest.h"
+#include "logging/Logger.h"
 #include "trading-core/Matcher.h"
 #include "trading-core/OrderBook.h"
 
@@ -11,6 +12,7 @@ using namespace trading_core;
 class MatcherTest : public testing::Test {
 protected:
     void SetUp() override {
+        logging::Logger::Init("matcher_test", "logs/matcher_test.log");
         pmOrderBook = std::make_unique<OrderBook>();
         matcher = std::make_unique<Matcher>();
     }
@@ -18,6 +20,7 @@ protected:
     void TearDown() override {
         matcher.reset();
         pmOrderBook.reset();
+        logging::Logger::Shutdown();
     }
 
     static common::OrderPtr createOrder(
