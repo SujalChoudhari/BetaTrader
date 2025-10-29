@@ -6,15 +6,24 @@
 #include <vector>
 
 #include "OrderBook.h"
+#include "TradeIDGenerator.h"
 #include "common/Trade.h"
+#include "data/DatabaseWorker.h"
+#include "data/TradeRepository.h"
 
 namespace trading_core {
     class Matcher {
     public:
-        std::vector<common::Trade> match(common::Order &incomingOrder, OrderBook &orderBook) const;
+        Matcher(const data::DatabaseWorkerPtr &dbWorker);
+
+        std::vector<common::Trade> match(common::Order &incomingOrder, OrderBook &orderBook);
 
     private:
         template<typename TMap>
-        void matchTable(common::Order &incomingOrder, std::shared_ptr<TMap> restingMap, std::vector<common::Trade> &trades) const;
+        void matchTable(common::Order &incomingOrder, std::shared_ptr<TMap> restingMap,
+                        std::vector<common::Trade> &trades);
+
+    private:
+        TradeIDGenerator mTradeIdGenerator;
     };
 }

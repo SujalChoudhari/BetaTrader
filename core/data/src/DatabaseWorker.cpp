@@ -1,21 +1,18 @@
 //
 // Created by sujal on 27-10-2025.
 //
-
-#include "data/AsyncDatabaseRepository.h"
-#include <iostream>
-#include <utility>
-
+#include "data/DatabaseWorker.h"
 #include "logging/Runbook.h"
 #include "data/DataRunBookDefinations.h"
 
 namespace data {
-    AsyncDatabaseRepository::AsyncDatabaseRepository(std::string dbPath)
+
+    DatabaseWorker::DatabaseWorker(std::string dbPath)
         : mDbPath(std::move(dbPath)) {
-        mWorker = std::thread(&AsyncDatabaseRepository::workerLoop, this);
+        mWorker = std::thread(&DatabaseWorker::workerLoop, this);
     }
 
-    AsyncDatabaseRepository::~AsyncDatabaseRepository() {
+    DatabaseWorker::~DatabaseWorker() {
         {
             std::lock_guard lock(mMutex);
             mStop = true;
@@ -25,7 +22,7 @@ namespace data {
             mWorker.join();
     }
 
-    void AsyncDatabaseRepository::enqueue(std::function<void(SQLite::Database &)> task) {
+    void DatabaseWorker::enqueue(std::function<void(SQLite::Database&)> task) {
         {
             std::lock_guard<std::mutex> lock(mMutex);
             mTasks.push(std::move(task));
@@ -33,13 +30,14 @@ namespace data {
         mCv.notify_one();
     }
 
-    void AsyncDatabaseRepository::workerLoop() {
+    void DatabaseWorker::workerLoop() {
         SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
         db.exec("PRAGMA journal_mode = WAL;");
-        db.setBusyTimeout(1000);
+        db.exec("PRAGMA synchronous = NORMAL;");
+        db.setBusyTimeout(5000);
 
         while (true) {
-            std::function<void(SQLite::Database &)> task;
+            std::function<void(SQLite::Database&)> task;
             {
                 std::unique_lock<std::mutex> lock(mMutex);
                 mCv.wait(lock, [&] { return mStop || !mTasks.empty(); });
@@ -50,9 +48,10 @@ namespace data {
 
             try {
                 task(db);
-            } catch (const std::exception &e) {
-                LOG_CRITICAL(errors::EDATA1, "Error in task (query). Details: {} ", std::string_view(e.what()));
+            } catch (const std::exception& e) {
+                LOG_CRITICAL(errors::EDATA1, "Error in async DB task: {}", std::string_view(e.what()));
             }
         }
     }
+
 }

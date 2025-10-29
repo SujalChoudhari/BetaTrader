@@ -9,8 +9,8 @@
 
 
 namespace trading_core {
-    RiskManager::RiskManager()
-        : mTradeRepository(data::databasePath) {
+    RiskManager::RiskManager(const data::DatabaseWorkerPtr &dbWorker) : mTradeRepository(
+        data::TradeRepository(dbWorker)) {
     }
 
     bool RiskManager::preCheck(const common::Order &order) {

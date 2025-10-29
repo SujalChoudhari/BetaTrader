@@ -10,7 +10,7 @@
 namespace trading_core {
     class RiskManager {
     public:
-        RiskManager();
+        RiskManager(const data::DatabaseWorkerPtr &dbWorker);
 
         static bool preCheck(const common::Order &order);
 

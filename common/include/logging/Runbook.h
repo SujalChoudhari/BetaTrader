@@ -3,7 +3,8 @@
 #include "spdlog/fmt/fmt.h"
 #include <string>
 #include <string_view>
-#include "spdlog/spdlog.h"
+#include "spdlog/spdlog.h" // needed for get_default()
+#include <stdexcept>
 
 namespace runbook {
     class ErrorDefinition {
@@ -71,24 +72,24 @@ namespace runbook {
     } \
 } while (0)
 
-/**
- * @brief Logs an error message with a runbook code.
- */
+
+/** * @brief Logs an error message with a runbook code. */
 #define LOG_ERROR(code, ...) do { \
     if (spdlog::default_logger()->should_log(spdlog::level::err)) { \
         spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__}; \
         std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__); \
         spdlog::default_logger()->log(loc, spdlog::level::err, spdlog::string_view_t(msg)); \
+        throw std::runtime_error(msg); \
     } \
 } while (0)
 
-/**
- * @brief Logs a critical message with a runbook code.
- */
+
+/** * @brief Logs a critical message with a runbook code. */
 #define LOG_CRITICAL(code, ...) do { \
     if (spdlog::default_logger()->should_log(spdlog::level::critical)) { \
         spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__}; \
         std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__); \
         spdlog::default_logger()->log(loc, spdlog::level::critical, spdlog::string_view_t(msg)); \
+        throw std::runtime_error(msg); \
     } \
 } while (0)

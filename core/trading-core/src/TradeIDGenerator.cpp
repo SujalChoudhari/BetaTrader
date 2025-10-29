@@ -1,36 +1,30 @@
-//
-// Created by sujal on 25-10-2025.
-//
-
-
 #include "trading-core/TradeIDGenerator.h"
 #include "common/Types.h"
-#include "data/Constant.h"
-
 
 namespace trading_core {
-    common::TradeID TradeIDGenerator::currentId = 0;
-    std::mutex TradeIDGenerator::mutex;
-    data::TradeIDRepository TradeIDGenerator::repository = data::TradeIDRepository(data::databasePath);
-
-
-    common::TradeID TradeIDGenerator::GetId() {
-        if (currentId == 0)
-            LoadState();
-        return currentId;
+    TradeIDGenerator::TradeIDGenerator(const data::DatabaseWorkerPtr &dbWorker) : repository(
+        data::TradeIDRepository(dbWorker)) {
+        loadState();
     }
 
-    common::TradeID TradeIDGenerator::NextId() {
-        std::lock_guard lock(mutex);
-        SaveState();
-        return ++currentId;
+    common::TradeID TradeIDGenerator::getId() {
+        if (mCurrentId == 0)
+            loadState();
+        return mCurrentId;
     }
 
-    void TradeIDGenerator::SaveState() {
-        repository.setCurrentTradeID(currentId);
+    common::TradeID TradeIDGenerator::nextId() {
+        std::lock_guard lock(mMutex);
+        ++mCurrentId;
+        saveState();
+        return mCurrentId;
     }
 
-    void TradeIDGenerator::LoadState() {
-        currentId = repository.getCurrentTradeID();
+    void TradeIDGenerator::saveState() {
+        repository.setCurrentTradeID(mCurrentId);
+    }
+
+    void TradeIDGenerator::loadState() {
+        mCurrentId = repository.getCurrentTradeID();
     }
 }

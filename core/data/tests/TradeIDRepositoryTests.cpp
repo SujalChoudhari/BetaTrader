@@ -2,14 +2,15 @@
 // Created by sujal on 27-10-2025.
 //
 
-
 #include "gtest/gtest.h"
 #include "data/TradeIDRepository.h"
+#include "data/DatabaseWorker.h"
 #include "common/Trade.h"
 #include "SQLiteCpp/SQLiteCpp.h"
 #include <string>
 #include <cstdio>
 #include <memory>
+#include <thread>
 
 class TradeIDRepositoryTest : public testing::Test {
 protected:
@@ -26,18 +27,24 @@ protected:
 };
 
 TEST_F(TradeIDRepositoryTest, InitializesToZero) {
-    data::TradeIDRepository repo(pmTestDbPath);
+    data::DatabaseWorker dbWorker(pmTestDbPath);
+    data::TradeIDRepository repo(dbWorker);
     EXPECT_EQ(repo.getCurrentTradeID(), 0);
 }
 
 TEST_F(TradeIDRepositoryTest, SetCurrentTradeID_UpdatesValue) {
     common::TradeID newID = 100;
+
     {
-        data::TradeIDRepository repo(pmTestDbPath);
+        data::DatabaseWorker dbWorker(pmTestDbPath);
+        data::TradeIDRepository repo(dbWorker);
         repo.setCurrentTradeID(newID);
+        // Give the worker thread a brief moment to complete write
+        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
     }
 
-    data::TradeIDRepository readRepo(pmTestDbPath);
+    data::DatabaseWorker dbWorker(pmTestDbPath);
+    data::TradeIDRepository readRepo(dbWorker);
     EXPECT_EQ(readRepo.getCurrentTradeID(), newID);
 }
 
@@ -46,31 +53,41 @@ TEST_F(TradeIDRepositoryTest, SetCurrentTradeID_DoesNotUpdateToLowerValue) {
     common::TradeID lowerID = 50;
 
     {
-        data::TradeIDRepository repo(pmTestDbPath);
+        data::DatabaseWorker dbWorker(pmTestDbPath);
+        data::TradeIDRepository repo(dbWorker);
         repo.setCurrentTradeID(initialID);
+        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
     }
 
     {
-        data::TradeIDRepository repo(pmTestDbPath);
+        data::DatabaseWorker dbWorker(pmTestDbPath);
+        data::TradeIDRepository repo(dbWorker);
         repo.setCurrentTradeID(lowerID);
+        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
     }
 
-    data::TradeIDRepository readRepo(pmTestDbPath);
+    data::DatabaseWorker dbWorker(pmTestDbPath);
+    data::TradeIDRepository readRepo(dbWorker);
     EXPECT_EQ(readRepo.getCurrentTradeID(), initialID);
 }
 
 TEST_F(TradeIDRepositoryTest, TruncateTradeID_ResetsToZero) {
     {
-        data::TradeIDRepository repo(pmTestDbPath);
+        data::DatabaseWorker dbWorker(pmTestDbPath);
+        data::TradeIDRepository repo(dbWorker);
         repo.setCurrentTradeID(12345);
+        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
     }
 
     {
-        data::TradeIDRepository repo(pmTestDbPath);
+        data::DatabaseWorker dbWorker(pmTestDbPath);
+        data::TradeIDRepository repo(dbWorker);
         EXPECT_EQ(repo.getCurrentTradeID(), 12345);
         repo.truncateTradeID();
+        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
     }
 
-    data::TradeIDRepository readRepo(pmTestDbPath);
+    data::DatabaseWorker dbWorker(pmTestDbPath);
+    data::TradeIDRepository readRepo(dbWorker);
     EXPECT_EQ(readRepo.getCurrentTradeID(), 0);
 }

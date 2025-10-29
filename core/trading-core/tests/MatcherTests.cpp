@@ -2,6 +2,7 @@
 // Created by sujal on 25-10-2025.
 //
 
+#include "data/Constant.h"
 #include "gtest/gtest.h"
 #include "logging/Logger.h"
 #include "trading-core/Matcher.h"
@@ -14,7 +15,8 @@ protected:
     void SetUp() override {
         logging::Logger::Init("matcher_test", "logs/matcher_test.log");
         pmOrderBook = std::make_unique<OrderBook>();
-        matcher = std::make_unique<Matcher>();
+        data::DatabaseWorkerPtr dbWorker = std::make_shared<data::DatabaseWorker>(data::databasePath);
+        matcher = std::make_unique<Matcher>(dbWorker);
     }
 
     void TearDown() override {

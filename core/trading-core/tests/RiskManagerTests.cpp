@@ -14,7 +14,9 @@ class RiskManagerTest : public testing::Test {
 protected:
     void SetUp() override {
         logging::Logger::Init("risk_manager_test", "logs/risk_manager_test.log");
-        riskManager = std::make_unique<RiskManager>();
+        data::DatabaseWorkerPtr dbWorker = std::make_shared<data::DatabaseWorker>(data::databasePath);
+        tradeIDGenerator = std::make_unique<TradeIDGenerator>(dbWorker);
+        riskManager = std::make_unique<RiskManager>(dbWorker);
     }
 
     void TearDown() override {
@@ -46,25 +48,26 @@ protected:
         return order;
     }
 
-    static common::Trade createTrade(
+    [[nodiscard]] common::Trade createTrade(
         common::OrderID buyOrderId,
         common::OrderID sellOrderId,
-        double quantity = 100.0,
+        common::Quantity quantity = 100.0,
         double price = 50.0
-    ) {
-        return common::Trade(
-            TradeIDGenerator::NextId(),
+    ) const {
+        return {
+            tradeIDGenerator->nextId(),
             common::OrderSymbol::EURUSD,
             buyOrderId,
             sellOrderId,
             quantity,
             price,
             std::chrono::steady_clock::now()
-        );
+        };
     }
 
 protected:
     std::unique_ptr<RiskManager> riskManager;
+    std::unique_ptr<TradeIDGenerator> tradeIDGenerator;
 };
 
 TEST_F(RiskManagerTest, PreCheckValidLimitOrder) {
@@ -94,7 +97,8 @@ TEST_F(RiskManagerTest, PreCheckFailsWhenRemainingNotEqualOriginal) {
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForNonNewStatus) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50, common::OrderStatus::Filled);
+    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50,
+                                   common::OrderStatus::Filled);
     EXPECT_FALSE(riskManager->preCheck(order));
 }
 

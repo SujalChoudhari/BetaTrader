@@ -41,7 +41,8 @@ TEST_F(TradeRepositoryTest, AddTrade_InsertsTradeCorrectly) {
     );
 
     {
-        data::TradeRepository repo(kTestDbPath);
+        data::DatabaseWorker dbWorker(kTestDbPath);
+        data::TradeRepository repo(dbWorker);
         repo.addTrade(trade);
     }
 

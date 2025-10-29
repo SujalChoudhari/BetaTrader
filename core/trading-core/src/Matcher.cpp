@@ -14,7 +14,10 @@
 
 
 namespace trading_core {
-    std::vector<common::Trade> Matcher::match(common::Order &incomingOrder, OrderBook &orderBook) const {
+    Matcher::Matcher(const data::DatabaseWorkerPtr &dbWorker) : mTradeIdGenerator(TradeIDGenerator(dbWorker)) {
+    }
+
+    std::vector<common::Trade> Matcher::match(common::Order &incomingOrder, OrderBook &orderBook) {
         std::vector<common::Trade> trades;
 
         if (incomingOrder.getSide() == common::OrderSide::Buy) {
@@ -28,7 +31,7 @@ namespace trading_core {
 
     template<typename TMap>
     void Matcher::matchTable(common::Order &incomingOrder, std::shared_ptr<TMap> restingMap,
-                             std::vector<common::Trade> &trades) const {
+                             std::vector<common::Trade> &trades) {
         auto it = restingMap->begin();
 
         while (it != restingMap->end() && incomingOrder.getRemainingQuantity() > 0) {
@@ -62,7 +65,7 @@ namespace trading_core {
                                              ? restingOrder->getId()
                                              : incomingOrder.getId();
 
-                trades.emplace_back(TradeIDGenerator::NextId(), incomingOrder.getSymbol(), buyId, sellId, tradeQuantity,
+                trades.emplace_back(mTradeIdGenerator.nextId(), incomingOrder.getSymbol(), buyId, sellId, tradeQuantity,
                                     tradePrice,
                                     std::chrono::steady_clock::now());
 
