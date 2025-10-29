@@ -13,14 +13,14 @@ namespace common {
      */
     class Order {
     public:
-        Order(const common::OrderID id,
-              common::Symbol symbol,
-              common::ClientID client,
-              const common::OrderSide side,
-              const common::OrderType type,
-              const common::Quantity qty,
-              const common::Price price,
-              const common::Timestamp ts)
+        Order(const OrderID id,
+              Symbol symbol,
+              ClientID client,
+              const OrderSide side,
+              const OrderType type,
+              const Quantity qty,
+              const Price price,
+              const Timestamp ts)
             : mId(id),
               mSymbol(std::move(symbol)),
               mClientId(std::move(client)),
@@ -34,33 +34,34 @@ namespace common {
         }
 
     public:
-        [[nodiscard]] const common::OrderID &getId() const { return mId; }
-        [[nodiscard]] const common::Symbol &getSymbol() const { return mSymbol; }
-        [[nodiscard]] common::OrderSide getSide() const { return mOrderSide; }
-        [[nodiscard]] common::Price getPrice() const { return mPrice; }
-        [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
-        [[nodiscard]] common::OrderStatus getStatus() const { return mOrderStatus; }
-        [[nodiscard]] common::OrderType getOrderType() const { return mOrderType; }
-        [[nodiscard]] common::Quantity getOriginalQuantity() const { return mOriginalQuantity; }
-        [[nodiscard]] common::Quantity getRemainingQuantity() const { return mPendingQuantity; }
+        [[nodiscard]] const OrderID &getId() const { return mId; }
+        [[nodiscard]] const Symbol &getSymbol() const { return mSymbol; }
+        [[nodiscard]] const ClientID &getClientId() const { return mClientId; }
+        [[nodiscard]] OrderSide getSide() const { return mOrderSide; }
+        [[nodiscard]] Price getPrice() const { return mPrice; }
+        [[nodiscard]] Timestamp getTimestamp() const { return mTimestamp; }
+        [[nodiscard]] OrderStatus getStatus() const { return mOrderStatus; }
+        [[nodiscard]] OrderType getOrderType() const { return mOrderType; }
+        [[nodiscard]] Quantity getOriginalQuantity() const { return mOriginalQuantity; }
+        [[nodiscard]] Quantity getRemainingQuantity() const { return mPendingQuantity; }
 
-        void setRemainingQty(const common::Quantity qty) { mPendingQuantity = qty; }
-        void setStatus(const common::OrderStatus status) { mOrderStatus = status; }
+        void setRemainingQty(const Quantity qty) { mPendingQuantity = qty; }
+        void setStatus(const OrderStatus status) { mOrderStatus = status; }
 
     private:
-        common::OrderID mId;
-        common::Symbol mSymbol;
-        common::ClientID mClientId;
-        common::OrderSide mOrderSide;
-        common::OrderType mOrderType;
+        OrderID mId;
+        Symbol mSymbol;
+        ClientID mClientId;
+        OrderSide mOrderSide;
+        OrderType mOrderType;
 
-        common::Quantity mOriginalQuantity;
-        common::Quantity mPendingQuantity;
+        Quantity mOriginalQuantity;
+        Quantity mPendingQuantity;
 
-        common::Price mPrice;
-        common::Timestamp mTimestamp;
+        Price mPrice;
+        Timestamp mTimestamp;
 
-        common::OrderStatus mOrderStatus;
+        OrderStatus mOrderStatus;
     };
 
 

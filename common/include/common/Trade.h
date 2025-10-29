@@ -13,13 +13,15 @@ namespace common {
      */
     class Trade {
     public:
-        Trade(common::TradeID tradeId,
-              common::OrderID buyOrderId,
-              common::OrderID sellOrderId,
-              const common::Quantity qty,
-              const common::Price price,
-              const common::Timestamp ts)
+        Trade(TradeID tradeId,
+              OrderSymbol symbol,
+              OrderID buyOrderId,
+              OrderID sellOrderId,
+              const Quantity qty,
+              const Price price,
+              const Timestamp ts)
             : mTradeId(std::move(tradeId)),
+              mOrderSymbol(std::move(symbol)),
               mBuyOrderId(std::move(buyOrderId)),
               mSellOrderId(std::move(sellOrderId)),
               mQuantity(qty),
@@ -28,19 +30,21 @@ namespace common {
         }
 
     public:
-        [[nodiscard]] const common::TradeID &getTradeId() const { return mTradeId; }
-        [[nodiscard]] const common::OrderID &getBuyOrderId() const { return mBuyOrderId; }
-        [[nodiscard]] const common::OrderID &getSellOrderId() const { return mSellOrderId; }
-        [[nodiscard]] common::Quantity getQty() const { return mQuantity; }
-        [[nodiscard]] common::Price getPrice() const { return mPrice; }
-        [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
+        [[nodiscard]] const TradeID &getTradeId() const { return mTradeId; }
+        [[nodiscard]] const OrderSymbol &getOrderSymbol() const { return mOrderSymbol; }
+        [[nodiscard]] const OrderID &getBuyOrderId() const { return mBuyOrderId; }
+        [[nodiscard]] const OrderID &getSellOrderId() const { return mSellOrderId; }
+        [[nodiscard]] Quantity getQty() const { return mQuantity; }
+        [[nodiscard]] Price getPrice() const { return mPrice; }
+        [[nodiscard]] Timestamp getTimestamp() const { return mTimestamp; }
 
     private:
-        common::TradeID mTradeId;
-        common::OrderID mBuyOrderId;
-        common::OrderID mSellOrderId;
-        common::Quantity mQuantity;
-        common::Price mPrice;
-        common::Timestamp mTimestamp;
+        TradeID mTradeId;
+        OrderSymbol mOrderSymbol;
+        OrderID mBuyOrderId;
+        OrderID mSellOrderId;
+        Quantity mQuantity;
+        Price mPrice;
+        Timestamp mTimestamp;
     };
 }
