@@ -3,11 +3,10 @@
 //
 
 #pragma once
-#include "Command.h"
-#include "CommandType.h"
+#include "trading_core/CommandType.h"
+#include "common/Time.h"
 #include "common/Types.h"
-#include "trading-core/Order.h"
-
+#include "trading_core/Command.h"
 namespace trading_core {
     class ModifyOrder : public Command {
     public:

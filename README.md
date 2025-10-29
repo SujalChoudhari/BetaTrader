@@ -51,7 +51,7 @@ BetaTrader/
 │   └── market-data-gateway/         Market data aggregation
 │
 ├── core/                       Critical path trading engine
-│   └── trading-core/                Monolithic core (matching, OMS, risk)
+│   └── trading_core/                Monolithic core (matching, OMS, risk)
 │
 ├── business/                   Business logic services
 │   ├── position-service/            Position tracking and PnL
@@ -88,7 +88,7 @@ BetaTrader/
 
 This is the most important part. Understand *why* it's built this way.
 
-1. **Monolithic Core**: The `trading-core` is a single process. This is intentional. The critical path (Order -\> Risk
+1. **Monolithic Core**: The `trading_core` is a single process. This is intentional. The critical path (Order -\> Risk
    Check -\> Match -\> Execution) must happen in-memory. Network calls are a million times slower. We eliminate them.
 2. **Gateway Isolation**: The "outside world" (FIX, market data, clients) is slow, messy, and unreliable. The
    `gateway-side` services are buffers. They handle the messy protocols and translate everything into a clean, internal
@@ -97,7 +97,7 @@ This is the most important part. Understand *why* it's built this way.
    `position-service`, for example, subscribes to "Trade" messages from the core. This is called loose coupling. It lets
    you add, remove, or restart services without the rest of the system caring.
 4. **Data Locality**: Data lives in three places.
-    * **Hot (In-Memory)**: The live order book. Lives and dies inside the `trading-core`.
+    * **Hot (In-Memory)**: The live order book. Lives and dies inside the `trading_core`.
     * **Warm (Redis)**: Cross-service state that needs to be fast but durable (e.g., current positions).
     * **Cold (TimescaleDB)**: Data that must live forever (e.g., all historical trades, ticks).
 
@@ -162,7 +162,7 @@ You must start components in the correct order. Open a new terminal tab for each
 
 3. **Start Core-Side**:
 
-    * `./build/core-side/trading-core/trading-core`
+    * `./build/core-side/trading_core/trading_core`
     * *The core starts, subscribes to no one, and waits for connections.*
 
 4. **Start Gateway-Side**:

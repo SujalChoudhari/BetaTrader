@@ -17,5 +17,8 @@ add_subdirectory(vendor/lib/googletest)
 add_subdirectory(vendor/lib/SQLiteCpp)
 add_subdirectory(vendor/lib/spdlog)
 
+add_subdirectory(vendor/lib/SPSCQueue)
+include_directories(vendor/lib/SPSCQueue/include)
+
 add_subdirectory(core/trading_core/tests)
 add_subdirectory(core/data/tests)

@@ -1,4 +1,4 @@
-# **core/trading-core**
+# **core/trading_core**
 
 ---
 

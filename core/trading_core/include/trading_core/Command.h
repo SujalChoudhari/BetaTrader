@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "command/CommandType.h"
+#include "trading_core/CommandType.h"
 #include "common/Time.h"
 
 namespace trading_core {

@@ -3,8 +3,9 @@
 //
 
 #pragma once
-#include "trading-core/command/Command.h"
-#include "trading-core/Order.h"
+#include "trading_core/CommandType.h"
+#include "trading_core/Command.h"
+#include "common/Order.h"
 
 namespace trading_core {
     class CancelOrder : public Command {

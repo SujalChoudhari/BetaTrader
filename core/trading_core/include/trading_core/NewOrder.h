@@ -4,18 +4,19 @@
 
 #pragma once
 #include "Command.h"
-#include "trading-core/Order.h"
+#include "common/Order.h"
 
 namespace trading_core {
     class NewOrder : public Command {
     public:
-        explicit NewOrder(const CommandType type, const common::Timestamp timestamp, Order order) : Command(type, timestamp),
-            mOrder(std::move(order)) {
+        explicit NewOrder(const CommandType type, const common::Timestamp timestamp,
+                          common::Order order) : Command(type, timestamp),
+                                                 mOrder(std::move(order)) {
         };
 
-        [[nodiscard]] const Order &getOrder() const { return mOrder; }
+        [[nodiscard]] const common::Order &getOrder() const { return mOrder; }
 
     private:
-        Order mOrder;
+        common::Order mOrder;
     };
 }
