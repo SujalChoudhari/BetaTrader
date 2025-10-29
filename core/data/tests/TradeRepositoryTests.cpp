@@ -29,7 +29,7 @@ protected:
 };
 
 TEST_F(TradeRepositoryTest, AddTrade_InsertsTradeCorrectly) {
-    const auto timestamp = std::chrono::steady_clock::now();
+    const auto timestamp = std::chrono::system_clock::now();
     const common::Trade trade(
         123,
         common::Instrument::USDINR,

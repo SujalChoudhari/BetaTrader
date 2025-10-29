@@ -6,5 +6,5 @@
 #include <chrono>
 
 namespace common {
-    using Timestamp = std::chrono::steady_clock::time_point;
+    using Timestamp = std::chrono::system_clock::time_point;
 }

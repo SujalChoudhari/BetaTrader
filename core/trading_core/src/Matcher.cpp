@@ -67,7 +67,7 @@ namespace trading_core {
 
                 trades.emplace_back(mTradeIdGenerator.nextId(), incomingOrder.getSymbol(), buyId, sellId, tradeQuantity,
                                     tradePrice,
-                                    std::chrono::steady_clock::now());
+                                    std::chrono::system_clock::now());
 
                 incomingOrder.setRemainingQuantity(incomingOrder.getRemainingQuantity() - tradeQuantity);
                 restingOrder->setRemainingQuantity(restingOrder->getRemainingQuantity() - tradeQuantity);

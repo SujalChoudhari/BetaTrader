@@ -41,7 +41,7 @@ protected:
             type,
             quantity,
             price,
-            std::chrono::steady_clock::now()
+            std::chrono::system_clock::now()
         );
         order.setStatus(status);
         order.setRemainingQuantity(remainingQuantity);
@@ -61,7 +61,7 @@ protected:
             sellOrderId,
             quantity,
             price,
-            std::chrono::steady_clock::now()
+            std::chrono::system_clock::now()
         };
     }
 
