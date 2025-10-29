@@ -14,7 +14,7 @@
 namespace data {
     class AsyncDatabaseRepository {
     public:
-        explicit AsyncDatabaseRepository(const std::string &dbPath);
+        explicit AsyncDatabaseRepository(std::string dbPath);
 
         virtual ~AsyncDatabaseRepository();
 

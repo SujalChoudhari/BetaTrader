@@ -18,8 +18,8 @@ namespace common {
     /**
      * Represents the execution logic of the order
      * 1. Limit - Sets a limit, (this, or better price)
-     * 2. Market - aggresive in nature, takes the best,
-     *          garuntees the order but not the price.
+     * 2. Market - aggressive in nature, takes the best,
+     *          guarantees the order but not the price.
      */
     enum class OrderType: uint8_t {
         Limit,
@@ -29,7 +29,7 @@ namespace common {
     /**
      * Represents the lifecycle of the orders
      * 1. New - Not matched yet
-     * 2. PartiallyFilled - Matched but was not able to complete the full requiremnt
+     * 2. PartiallyFilled - Matched but was not able to complete the full requirement
      * 3. Filled - Matched and satisfied
      * 4. Cancelled - Aborted before Filled
      * 5. Rejected - Order was logged but never made to the engine, i.e. blocked

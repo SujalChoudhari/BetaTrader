@@ -4,10 +4,15 @@
 
 #include "data/AsyncDatabaseRepository.h"
 #include <iostream>
+#include <utility>
+
+#include "logging/Runbook.h"
+#include "data/DataRunBookDefinations.h"
+#include "spdlog/spdlog-inl.h"
 
 namespace data {
-    AsyncDatabaseRepository::AsyncDatabaseRepository(const std::string &dbPath)
-        : mDbPath(dbPath) {
+    AsyncDatabaseRepository::AsyncDatabaseRepository(std::string dbPath)
+        : mDbPath(std::move(dbPath)) {
         mWorker = std::thread(&AsyncDatabaseRepository::workerLoop, this);
     }
 
@@ -47,7 +52,7 @@ namespace data {
             try {
                 task(db);
             } catch (const std::exception &e) {
-                std::cerr << "DB worker error: " << e.what() << "\n";
+                LOG_CRITICAL(errors::EDATA1, "Error in task (query). Details: {} ", std::string_view(e.what()));
             }
         }
     }

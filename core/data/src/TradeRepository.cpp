@@ -7,7 +7,9 @@
 #include <thread>
 #include "sqlite3.h"
 #include "data/Constant.h"
+#include "data/DataRunBookDefinations.h"
 #include "data/Query.h"
+#include "logging/Runbook.h"
 
 namespace data {
     TradeRepository::TradeRepository(const std::string &dbPath) : AsyncDatabaseRepository(dbPath) {
@@ -20,7 +22,7 @@ namespace data {
                 SQLite::Statement query(db, data::query::createTradeTableQuery);
                 query.exec();
             } catch (const std::exception &e) {
-                std::cerr << "Error in initDatabase: " << e.what() << "\n";
+                LOG_ERROR(errors::EDATA6, "Error in TradeRepository::initDatabase: {}", std::string_view(e.what()));
             }
         });
     }
@@ -41,7 +43,7 @@ namespace data {
 
                 query.exec();
             } catch (const std::exception &e) {
-                std::cerr << "Error adding new trade" << e.what() << "\n";
+                LOG_ERROR(errors::EDATA7, "Error in TradeRepository::addTrade: {}", std::string_view(e.what()));
             }
         });
     }

@@ -7,6 +7,9 @@
 #include <iostream>
 #include <future>
 
+#include "data/DataRunBookDefinations.h"
+#include "logging/Runbook.h"
+
 namespace data {
     TradeIDRepository::TradeIDRepository(const std::string &dbPath)
         : AsyncDatabaseRepository(dbPath) {
@@ -14,21 +17,21 @@ namespace data {
     }
 
     void TradeIDRepository::initDatabase() {
-        enqueue([](SQLite::Database &db) {
+        enqueue([](const SQLite::Database &db) {
             try {
                 SQLite::Statement createStmt(db, query::createTradeIdTableQuery);
                 createStmt.exec();
             } catch (const std::exception &e) {
-                std::cerr << "Error in TradeIDRepository::initDatabase: " << e.what() << "\n";
+                LOG_ERROR(errors::EDATA2, "Error in TradeIDRepository::initDatabase: {}", std::string_view(e.what()));
             }
         });
     }
 
     common::TradeID TradeIDRepository::getCurrentTradeID() {
-        auto p = std::make_shared<std::promise<common::TradeID>>();
+        auto p = std::make_shared<std::promise<common::TradeID> >();
         std::future<common::TradeID> f = p->get_future();
 
-        enqueue([p](SQLite::Database &db) {
+        enqueue([p](const SQLite::Database &db) {
             try {
                 if (SQLite::Statement stmt(db, query::getTradeIdQuery); stmt.executeStep()) {
                     p->set_value(static_cast<common::TradeID>(stmt.getColumn(0).getInt64()));
@@ -36,7 +39,7 @@ namespace data {
                     p->set_value(0);
                 }
             } catch (const std::exception &e) {
-                std::cerr << "Error in getCurrentTradeID: " << e.what() << "\n";
+                LOG_ERROR(errors::EDATA3, "Error in getCurrentTradeID: {}", std::string_view(e.what()));
                 p->set_exception(std::current_exception());
             }
         });
@@ -45,7 +48,7 @@ namespace data {
     }
 
     void TradeIDRepository::setCurrentTradeID(common::TradeID tradeID) {
-        enqueue([tradeID](SQLite::Database &db) {
+        enqueue([tradeID](const SQLite::Database &db) {
             try {
                 SQLite::Statement selectStmt(db, query::getTradeIdQuery);
                 common::TradeID current = 0;
@@ -58,20 +61,19 @@ namespace data {
                     updateStmt.exec();
                 }
             } catch (const std::exception &e) {
-                std::cerr << "TradeID update failed: " << e.what() << "\n";
+                LOG_ERROR(errors::EDATA4, "TradeID update failed: {}", std::string_view(e.what()));
             }
         });
     }
 
     void TradeIDRepository::truncateTradeID() {
-        enqueue([](SQLite::Database &db) {
+        enqueue([](const SQLite::Database &db) {
             try {
                 SQLite::Statement stmt(db, query::truncateTradeIdQuery);
                 stmt.exec();
             } catch (const std::exception &e) {
-                std::cerr << "Error in truncateTradeID: " << e.what() << "\n";
+                LOG_ERROR(errors::EDATA5, "Error in truncateTradeID: {} ", std::string_view( e.what()));
             }
         });
     }
 }
-
