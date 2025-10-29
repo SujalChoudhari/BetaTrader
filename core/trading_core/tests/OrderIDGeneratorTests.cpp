@@ -4,7 +4,7 @@
 
 
 #include "gtest/gtest.h"
-#include "trading-core/OrderIDGenerator.h"
+#include "trading_core/OrderIDGenerator.h"
 using namespace trading_core;
 
 TEST(OrderIDGeneratorTest, InitialIdIsZero) {

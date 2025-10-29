@@ -4,6 +4,8 @@
 
 #pragma once
 #include "Command.h"
+#include "CommandType.h"
+#include "common/Types.h"
 #include "trading-core/Order.h"
 
 namespace trading_core {

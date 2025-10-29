@@ -5,8 +5,8 @@
 #include "data/Constant.h"
 #include "gtest/gtest.h"
 #include "logging/Logger.h"
-#include "trading-core/Matcher.h"
-#include "trading-core/OrderBook.h"
+#include "trading_core/Matcher.h"
+#include "trading_core/OrderBook.h"
 
 using namespace trading_core;
 

@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "trading-core/TradeIDGenerator.h"
+#include "trading_core/TradeIDGenerator.h"
 #include "logging/Logger.h"
 #include "data/Constant.h"
 #include "data/DatabaseWorker.h"

@@ -4,9 +4,9 @@
 
 #include "gtest/gtest.h"
 #include "logging/Logger.h"
-#include "trading-core/RiskManager.h"
+#include "trading_core/RiskManager.h"
 #include "data/Constant.h"
-#include "trading-core/TradeIDGenerator.h"
+#include "trading_core/TradeIDGenerator.h"
 
 using namespace trading_core;
 

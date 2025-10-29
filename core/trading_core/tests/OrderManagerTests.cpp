@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "trading-core/OrderManager.h"
+#include "trading_core/OrderManager.h"
 
 class OrderManagerTest : public testing::Test {
 protected:

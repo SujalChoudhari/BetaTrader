@@ -1,4 +1,4 @@
-#include "trading-core/TradeIDGenerator.h"
+#include "trading_core/TradeIDGenerator.h"
 #include "common/Types.h"
 
 namespace trading_core {

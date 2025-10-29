@@ -15,6 +15,7 @@ target_link_libraries(trading_core_lib
         common
         data_lib
         PRIVATE
+        SPSCQueue
         SQLiteCpp
         sqlite3
 )
@@ -29,6 +30,7 @@ target_link_libraries(trading_core
         common
         PRIVATE
         trading_core_lib
+        SPSCQueue
         data_lib
         SQLiteCpp
         sqlite3

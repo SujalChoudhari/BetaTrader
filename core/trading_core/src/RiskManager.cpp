@@ -2,7 +2,7 @@
 // Created by sujal on 29-10-2025.
 //
 
-#include "trading-core/RiskManager.h"
+#include "trading_core/RiskManager.h"
 
 #include "data/Constant.h"
 #include "data/TradeRepository.h"
