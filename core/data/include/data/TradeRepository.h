@@ -12,8 +12,9 @@ namespace data {
     public:
         explicit TradeRepository(const std::string &dbPath);
 
-        void initDatabase();
-
         void addTrade(const common::Trade &trade);
+
+    private:
+        void initDatabase();
     };
 } // data

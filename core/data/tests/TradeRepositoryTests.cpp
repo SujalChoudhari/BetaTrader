@@ -32,6 +32,7 @@ TEST_F(TradeRepositoryTest, AddTrade_InsertsTradeCorrectly) {
     const auto timestamp = std::chrono::steady_clock::now();
     const common::Trade trade(
         123,
+        common::OrderSymbol::USDINR,
         10,
         11,
         100,

@@ -32,14 +32,15 @@ namespace data {
             try {
                 SQLite::Statement query(db, data::query::insertIntoTradeTableQuery);
                 query.bind(1, static_cast<sqlite3_int64>(trade.getTradeId()));
-                query.bind(2, static_cast<sqlite3_int64>(trade.getBuyOrderId()));
-                query.bind(3, static_cast<sqlite3_int64>(trade.getSellOrderId()));
-                query.bind(4, static_cast<sqlite3_int64>(trade.getQty()));
-                query.bind(5, trade.getPrice());
+                query.bind(2, common::to_string(trade.getOrderSymbol()));
+                query.bind(3, static_cast<sqlite3_int64>(trade.getBuyOrderId()));
+                query.bind(4, static_cast<sqlite3_int64>(trade.getSellOrderId()));
+                query.bind(5, static_cast<sqlite3_int64>(trade.getQty()));
+                query.bind(6, trade.getPrice());
                 const auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
                     trade.getTimestamp().time_since_epoch()
                 ).count();
-                query.bind(6, ns);
+                query.bind(7, ns);
 
                 query.exec();
             } catch (const std::exception &e) {

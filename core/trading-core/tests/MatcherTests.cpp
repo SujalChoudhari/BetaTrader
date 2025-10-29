@@ -32,7 +32,7 @@ protected:
     ) {
         return std::make_shared<common::Order>(
             id,
-            "TEST_TICKER",
+            common::OrderSymbol::EURUSD,
             "CLIENT_" + std::to_string(id),
             side,
             type,

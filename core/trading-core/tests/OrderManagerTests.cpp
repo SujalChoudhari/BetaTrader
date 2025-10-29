@@ -22,7 +22,7 @@ protected:
         double price = 50.0) {
         return std::make_shared<common::Order>(
             id,
-            "TEST_TICKER",
+            common::OrderSymbol::EURUSD,
             "CLIENT_" + std::to_string(id),
             side,
             common::OrderType::Limit,

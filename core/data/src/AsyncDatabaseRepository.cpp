@@ -8,7 +8,6 @@
 
 #include "logging/Runbook.h"
 #include "data/DataRunBookDefinations.h"
-#include "spdlog/spdlog-inl.h"
 
 namespace data {
     AsyncDatabaseRepository::AsyncDatabaseRepository(std::string dbPath)

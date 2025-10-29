@@ -21,6 +21,7 @@ namespace data::query {
     const std::string createTradeTableQuery =
             "CREATE TABLE trade ( "
             "trade_id INTEGER PRIMARY KEY, "
+            "symbol TEXT NOT NULL, "
             "buy_order_id INTEGER NOT NULL, "
             "sell_order_id INTEGER NOT NULL, "
             "quantity INTEGER NOT NULL, "
@@ -30,12 +31,13 @@ namespace data::query {
     const std::string insertIntoTradeTableQuery =
             "INSERT INTO trade( "
             "trade_id, "
+            "symbol, "
             "buy_order_id, "
             "sell_order_id, "
             "quantity, "
             "price, "
             "timestamp_ns "
             ") VALUES ( "
-            "?, ?, ?, ?, ?, ?"
+            "?, ?, ?, ?, ?, ?, ? "
             ");";
 }

@@ -3,8 +3,7 @@
 #include "spdlog/fmt/fmt.h"
 #include <string>
 #include <string_view>
-#include "spdlog/spdlog-inl.h"
-
+#include "spdlog/spdlog.h"
 
 namespace runbook {
     class ErrorDefinition {
