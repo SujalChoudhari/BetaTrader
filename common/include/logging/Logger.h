@@ -3,17 +3,28 @@
 //
 
 #pragma once
-#include <string>
 
+#include <string>
 #include "spdlog/async.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-// This namespace just holds the Init/Shutdown class.
 namespace logging {
     class Logger {
     public:
+        /**
+         * @brief Initializes the spdlog and sets up the sources and sinks
+         * NOTE: Use Shutdown to clean up and dump all queue.
+         *
+         * @param loggerName Unique name for the logger
+         * @param logFilePath Place to save the log file
+         * @param globalLevel Level of log, default is trace
+         * @param queueSize queue size of the logging queue
+         * @param numThreads number of threads used by logger
+         * @param maxFileSize maximum file size of the log file
+         * @param maxFiles total number of files used by logger
+         */
         static void Init(
             const std::string &loggerName = "async_logger",
             const std::string &logFilePath = "logs/app.log",
@@ -44,8 +55,6 @@ namespace logging {
             );
 
             asyncLogger->set_level(globalLevel);
-
-            // This is the default pattern for TRACE/INFO/DEBUG logs
             asyncLogger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [t %t] [%^%l%$] [%s:%#] %v");
 
 
@@ -59,18 +68,19 @@ namespace logging {
             });
         }
 
+        /**
+         * Clean up the logging threads and dump up the remaining logs in queue
+         */
         static void Shutdown() {
             spdlog::shutdown();
         }
     };
-} // namespace logging
+}
 
-// --- BASE LOGGING MACROS ---
-// These are the defaults. Runbook.h will override some of them.
+
 #define LOG_TRACE(...)    SPDLOG_TRACE(__VA_ARGS__)
 #define LOG_DEBUG(...)    SPDLOG_DEBUG(__VA_ARGS__)
 #define LOG_INFO(...)     SPDLOG_INFO(__VA_ARGS__)
 #define LOG_WARN(...)     SPDLOG_WARN(__VA_ARGS__)
 #define LOG_ERROR(...)    SPDLOG_ERROR(__VA_ARGS__)
 #define LOG_CRITICAL(...) SPDLOG_CRITICAL(__VA_ARGS__)
-

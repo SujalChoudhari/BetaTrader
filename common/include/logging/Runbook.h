@@ -1,11 +1,9 @@
 #pragma once
 
-#include "logging/Logger.h" // Include the base logger
-#include "spdlog/fmt/fmt.h" // For string formatting
-#include "spdlog/spdlog.h"  // For spdlog::default_logger, spdlog::source_loc, etc.
+#include "spdlog/fmt/fmt.h"
 #include <string>
 #include <string_view>
-#include <memory> // For std::forward
+
 
 namespace runbook {
     /**
@@ -14,24 +12,24 @@ namespace runbook {
      * class *is* the runbook entry.
      */
     class ErrorDefinition {
-    private:
-        std::string_view code_;
-        std::string_view whatWentWrong_;
-        std::string_view howToFix_;
-
     public:
         /**
          * @brief Defines a new runbook error.
          * 'consteval' (C++20) ensures this *must* be constructed at compile time.
          * If you are on C++17, use 'constexpr'.
          */
-        consteval ErrorDefinition(std::string_view code, std::string_view what, std::string_view how)
-            : code_(code), whatWentWrong_(what), howToFix_(how) {}
+        consteval ErrorDefinition(const std::string_view code, const std::string_view what, const std::string_view how)
+            : mCode(code), mWhatWentWrongString(what), mHowToFixString(how) {
+        }
 
-        // Getters for the formatting function
-        std::string_view getCode() const { return code_; }
-        std::string_view getWhat() const { return whatWentWrong_; }
-        std::string_view getHow() const { return howToFix_; }
+        std::string_view getCode() const { return mCode; }
+        std::string_view getWhat() const { return mWhatWentWrongString; }
+        std::string_view getHow() const { return mHowToFixString; }
+
+    private:
+        std::string_view mCode;
+        std::string_view mWhatWentWrongString;
+        std::string_view mHowToFixString;
     };
 
 
@@ -42,16 +40,14 @@ namespace runbook {
      * completely removing the need for a runtime map lookup.
      */
     template<typename... Args>
-    static std::string FormatRunbookLog(const runbook::ErrorDefinition& errorDef, const std::string &fmt_str, Args &&... args) {
-        // 1. Format the user's custom message
+    static std::string FormatRunbookLog(const ErrorDefinition &errorDef, const std::string &fmt_str,
+                                        Args &&... args) {
         std::string user_msg = fmt::vformat(fmt_str, fmt::make_format_args(std::forward<Args>(args)...));
 
-        // 2. Get details directly from the error object
         std::string_view code = errorDef.getCode();
         std::string_view what = errorDef.getWhat();
         std::string_view how = errorDef.getHow();
 
-        // 3. Format the final, structured log message
         return fmt::format(
             "[{}] {}\n"
             "    [?] What Went Wrong: {}\n"
@@ -62,22 +58,20 @@ namespace runbook {
             how
         );
     }
-} // namespace runbook
+}
 
 // --- REDEFINE LOGGING MACROS ---
-// NO CHANGES are needed here! The 'code' parameter in the macro
-// will now just be the ErrorDefinition object, which is
-// passed perfectly to the new FormatRunbookLog.
-
-// We leave these as-is from Logger.h
-// #define LOG_TRACE(...)    SPDLOG_TRACE(__VA_ARGS__)
-// #define LOG_DEBUG(...)    SPDLOG_DEBUG(__VA_ARGS__)
-// #define LOG_INFO(...)     SPDLOG_INFO(__VA_ARGS__)
-
-// We override these to use our runbook system
+#ifdef LOG_WARN
 #undef LOG_WARN
+#endif
+
+#ifdef LOG_ERROR
 #undef LOG_ERROR
+#endif
+
+#ifdef LOG_CRITICAL
 #undef LOG_CRITICAL
+#endif
 
 /**
  * @brief Logs a warning message with a runbook code.
@@ -111,4 +105,3 @@ namespace runbook {
         spdlog::default_logger()->log(loc, spdlog::level::critical, spdlog::string_view_t(msg)); \
     } \
 } while (0)
-

@@ -17,15 +17,11 @@ namespace trading_core {
     std::vector<common::Trade> Matcher::match(common::Order &incomingOrder, OrderBook &orderBook) const {
         std::vector<common::Trade> trades;
 
-        LOG_TRACE("Attempting to match {} of side {}", incomingOrder.getId(), incomingOrder.getSide());
-        LOG_ERROR(errors::E1001, "Attempting to match {} of side", incomingOrder.getId());
         if (incomingOrder.getSide() == common::OrderSide::Buy) {
             matchTable(incomingOrder, orderBook.getAskMap(), trades);
         } else if (incomingOrder.getSide() == common::OrderSide::Sell) {
             matchTable(incomingOrder, orderBook.getBidMap(), trades);
         }
-
-        LOG_TRACE("Match complete with {} trades", trades.size());
 
         return trades;
     }
