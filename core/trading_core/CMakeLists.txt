@@ -8,6 +8,7 @@ add_library(trading_core_lib ${ALL_CORE_SOURCES})
 
 target_include_directories(trading_core_lib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/vendor/lib/SPSCQueue/include
 )
 
 target_link_libraries(trading_core_lib

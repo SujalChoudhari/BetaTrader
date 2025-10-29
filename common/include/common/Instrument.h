@@ -10,7 +10,7 @@
 
 namespace common {
 
-    enum class OrderSymbol : uint8_t {
+    enum class Instrument : uint8_t {
         EURUSD,
         USDJPY,
         GBPUSD,
@@ -23,7 +23,7 @@ namespace common {
         COUNT // helper for bounds
     };
 
-    constexpr std::array<std::string_view, static_cast<size_t>(OrderSymbol::COUNT)> symbol_names = {
+    constexpr std::array<std::string_view, static_cast<size_t>(Instrument::COUNT)> symbol_names = {
         "EURUSD",
         "USDJPY",
         "GBPUSD",
@@ -35,15 +35,15 @@ namespace common {
         "USDMXN"
     };
 
-    inline std::string to_string(OrderSymbol symbol) {
+    inline std::string to_string(Instrument symbol) {
         return std::string(symbol_names[static_cast<size_t>(symbol)]);
     }
 
 
-    inline OrderSymbol from_string(std::string_view name) {
+    inline Instrument from_string(std::string_view name) {
         for (size_t i = 0; i < symbol_names.size(); ++i)
             if (symbol_names[i] == name)
-                return static_cast<OrderSymbol>(i);
+                return static_cast<Instrument>(i);
         throw std::invalid_argument("Unknown symbol name");
     }
 

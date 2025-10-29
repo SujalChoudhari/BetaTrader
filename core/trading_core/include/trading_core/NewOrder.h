@@ -9,8 +9,8 @@
 namespace trading_core {
     class NewOrder : public Command {
     public:
-        explicit NewOrder(const CommandType type, const common::Timestamp timestamp,
-                          common::Order order) : Command(type, timestamp),
+        explicit NewOrder(const CommandType type, const common::ClientID &clientId, const common::Timestamp timestamp,
+                          common::Order order) : Command(type, clientId, timestamp),
                                                  mOrder(std::move(order)) {
         };
 

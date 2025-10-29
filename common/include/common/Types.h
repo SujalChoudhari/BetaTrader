@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-#include "OrderSymbol.h"
+#include "Instrument.h"
 
 namespace common {
     /**
@@ -49,6 +49,6 @@ namespace common {
     using Quantity = uint64_t;
     using OrderID = uint64_t;
     using TradeID = uint64_t;
-    using Symbol = OrderSymbol;
+    using Symbol = Instrument;
     using ClientID = std::string;
 }

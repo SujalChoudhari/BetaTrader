@@ -3,8 +3,11 @@
 //
 
 #pragma once
+#include <utility>
+
 #include "trading_core/CommandType.h"
 #include "common/Time.h"
+#include "common/Types.h"
 
 namespace trading_core {
     /**
@@ -12,16 +15,17 @@ namespace trading_core {
      */
     class Command {
     public:
-        Command(const CommandType type, const common::Timestamp timestamp)
-            : mType(type), mTimestamp(timestamp) {
+        Command(const CommandType type, common::ClientID clientId, const common::Timestamp timestamp)
+            : mType(type), mClientId(std::move(clientId)), mTimestamp(timestamp) {
         }
 
         [[nodiscard]] CommandType getType() const { return mType; }
-
+        [[nodiscard]] common::ClientID getClientId() const { return mClientId; }
         [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }
 
     private:
         CommandType mType;
+        common::ClientID mClientId;
         common::Timestamp mTimestamp;
     };
 }

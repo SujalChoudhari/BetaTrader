@@ -20,9 +20,9 @@ namespace trading_core {
         OrderManager() = default;
 
     public:
-        bool addOrder(const common::OrderPtr &order);
+        bool addOrder(common::Order* order);
 
-        [[nodiscard]] std::optional<common::OrderPtr> getOrderById(const common::OrderID &id) const;
+        [[nodiscard]] std::optional<common::Order*> getOrderById(const common::OrderID &id) const;
 
         bool removeOrderById(const common::OrderID &id);
 
@@ -31,6 +31,6 @@ namespace trading_core {
         size_t size() const;
 
     private:
-        std::unordered_map<common::OrderID, common::OrderPtr> mOrderMap;
+        std::unordered_map<common::OrderID, common::Order*> mOrderMap;
     };
 }

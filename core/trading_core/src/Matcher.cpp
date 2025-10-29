@@ -45,12 +45,12 @@ namespace trading_core {
                 if (incomingOrder.getPrice() > it->first) break;
             }
 
-            std::deque<common::OrderPtr> &restingLevel = it->second;
+            std::deque<common::Order *> &restingLevel = it->second;
 
 
             // apply and update the book
             while (!restingLevel.empty() && incomingOrder.getRemainingQuantity() > 0) {
-                common::Order *restingOrder = restingLevel.front().get();
+                common::Order *restingOrder = restingLevel.front();
 
                 common::Quantity tradeQuantity = std::min(incomingOrder.getRemainingQuantity(),
                                                           restingOrder->getRemainingQuantity());

@@ -35,7 +35,7 @@ protected:
     ) {
         common::Order order(
             id,
-            common::OrderSymbol::EURUSD,
+            common::Instrument::EURUSD,
             "CLIENT_" + std::to_string(id),
             side,
             type,
@@ -56,7 +56,7 @@ protected:
     ) const {
         return {
             tradeIDGenerator->nextId(),
-            common::OrderSymbol::EURUSD,
+            common::Instrument::EURUSD,
             buyOrderId,
             sellOrderId,
             quantity,

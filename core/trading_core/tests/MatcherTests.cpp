@@ -25,7 +25,7 @@ protected:
         logging::Logger::Shutdown();
     }
 
-    static common::OrderPtr createOrder(
+    static std::shared_ptr<common::Order> createOrder(
         common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         common::OrderType type = common::OrderType::Limit,
@@ -34,7 +34,7 @@ protected:
     ) {
         return std::make_shared<common::Order>(
             id,
-            common::OrderSymbol::EURUSD,
+            common::Instrument::EURUSD,
             "CLIENT_" + std::to_string(id),
             side,
             type,
@@ -59,7 +59,7 @@ TEST_F(MatcherTest, TradeWhenCrossingOrders) {
     const auto buyOrder = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 50);
     const auto sellOrder = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 100, 49);
 
-    pmOrderBook->insertOrder(buyOrder);
+    pmOrderBook->insertOrder(buyOrder.get());
 
     const auto trades = matcher->match(*sellOrder, *pmOrderBook);
 
@@ -67,14 +67,14 @@ TEST_F(MatcherTest, TradeWhenCrossingOrders) {
     EXPECT_EQ(trades[0].getBuyOrderId(), buyOrder->getId());
     EXPECT_EQ(trades[0].getSellOrderId(), sellOrder->getId());
     EXPECT_EQ(trades[0].getPrice(), 50);
-    EXPECT_EQ(trades[0].getQty(), 100);
+    EXPECT_EQ(trades[0].getQuantity(), 100);
 }
 
 TEST_F(MatcherTest, NoTradeWhenNonCrossingOrders) {
     const auto buyOrder = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 48);
     const auto sellOrder = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 100, 50);
 
-    pmOrderBook->insertOrder(buyOrder);
+    pmOrderBook->insertOrder(buyOrder.get());
     const auto trades = matcher->match(*sellOrder, *pmOrderBook);
 
     EXPECT_TRUE(trades.empty());
@@ -85,8 +85,8 @@ TEST_F(MatcherTest, TradeWhenMarketBidOrders) {
     const auto sellOrder2 = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 70, 60);
     const auto buy = createOrder(3, common::OrderSide::Buy, common::OrderType::Market, 100, 50);
 
-    pmOrderBook->insertOrder(sellOrder1);
-    pmOrderBook->insertOrder(sellOrder2);
+    pmOrderBook->insertOrder(sellOrder1.get());
+    pmOrderBook->insertOrder(sellOrder2.get());
 
     const auto trades = matcher->match(*buy, *pmOrderBook);
 
@@ -94,8 +94,8 @@ TEST_F(MatcherTest, TradeWhenMarketBidOrders) {
     EXPECT_EQ(trades[0].getSellOrderId(), sellOrder1->getId());
     EXPECT_EQ(trades[1].getSellOrderId(), sellOrder2->getId());
     EXPECT_EQ(trades[0].getBuyOrderId(), buy->getId());
-    EXPECT_EQ(trades[0].getQty(), 30);
-    EXPECT_EQ(trades[1].getQty(), 70);
+    EXPECT_EQ(trades[0].getQuantity(), 30);
+    EXPECT_EQ(trades[1].getQuantity(), 70);
 
     EXPECT_EQ(buy->getRemainingQuantity(), 0);
     EXPECT_EQ(buy->getStatus(), common::OrderStatus::Filled);
@@ -106,8 +106,8 @@ TEST_F(MatcherTest, NoTradeWhenMarketBidOrders) {
     const auto sellOrder2 = createOrder(2, common::OrderSide::Buy, common::OrderType::Limit, 70, 60);
     const auto buy = createOrder(3, common::OrderSide::Buy, common::OrderType::Market, 100, 50);
 
-    pmOrderBook->insertOrder(sellOrder1);
-    pmOrderBook->insertOrder(sellOrder2);
+    pmOrderBook->insertOrder(sellOrder1.get());
+    pmOrderBook->insertOrder(sellOrder2.get());
 
     const auto trades = matcher->match(*buy, *pmOrderBook);
 
@@ -122,8 +122,8 @@ TEST_F(MatcherTest, PartialTradeWhenMarketBidOrders) {
     const auto sellOrder2 = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 50, 60);
     const auto buy = createOrder(3, common::OrderSide::Buy, common::OrderType::Market, 100, 50);
 
-    pmOrderBook->insertOrder(sellOrder1);
-    pmOrderBook->insertOrder(sellOrder2);
+    pmOrderBook->insertOrder(sellOrder1.get());
+    pmOrderBook->insertOrder(sellOrder2.get());
 
     const auto trades = matcher->match(*buy, *pmOrderBook);
 
@@ -131,8 +131,8 @@ TEST_F(MatcherTest, PartialTradeWhenMarketBidOrders) {
     EXPECT_EQ(trades[0].getSellOrderId(), sellOrder1->getId());
     EXPECT_EQ(trades[1].getSellOrderId(), sellOrder2->getId());
     EXPECT_EQ(trades[0].getBuyOrderId(), buy->getId());
-    EXPECT_EQ(trades[0].getQty(), 30);
-    EXPECT_EQ(trades[1].getQty(), 50);
+    EXPECT_EQ(trades[0].getQuantity(), 30);
+    EXPECT_EQ(trades[1].getQuantity(), 50);
 
     EXPECT_EQ(buy->getRemainingQuantity(), 20);
     EXPECT_EQ(buy->getStatus(), common::OrderStatus::PartiallyFilled);
@@ -144,8 +144,8 @@ TEST_F(MatcherTest, TradeWhenMarketAskOrders) {
     const auto buyOrder2 = createOrder(2, common::OrderSide::Buy, common::OrderType::Limit, 50, 50);
     const auto sellOrder = createOrder(3, common::OrderSide::Sell, common::OrderType::Market, 70, 50);
 
-    pmOrderBook->insertOrder(buyOrder1);
-    pmOrderBook->insertOrder(buyOrder2);
+    pmOrderBook->insertOrder(buyOrder1.get());
+    pmOrderBook->insertOrder(buyOrder2.get());
 
     const auto trades = matcher->match(*sellOrder, *pmOrderBook);
 
@@ -153,8 +153,8 @@ TEST_F(MatcherTest, TradeWhenMarketAskOrders) {
     EXPECT_EQ(trades[0].getBuyOrderId(), buyOrder2->getId()); // 2 goes first
     EXPECT_EQ(trades[1].getBuyOrderId(), buyOrder1->getId());
     EXPECT_EQ(trades[0].getSellOrderId(), sellOrder->getId());
-    EXPECT_EQ(trades[0].getQty(), 50);
-    EXPECT_EQ(trades[1].getQty(), 20);
+    EXPECT_EQ(trades[0].getQuantity(), 50);
+    EXPECT_EQ(trades[1].getQuantity(), 20);
 }
 
 
@@ -163,8 +163,8 @@ TEST_F(MatcherTest, PartialTradeWhenMarketAskOrders) {
     const auto buyOrder2 = createOrder(2, common::OrderSide::Buy, common::OrderType::Limit, 50, 50);
     const auto sellOrder = createOrder(3, common::OrderSide::Sell, common::OrderType::Market, 100, 50);
 
-    pmOrderBook->insertOrder(buyOrder1);
-    pmOrderBook->insertOrder(buyOrder2);
+    pmOrderBook->insertOrder(buyOrder1.get());
+    pmOrderBook->insertOrder(buyOrder2.get());
 
     const auto trades = matcher->match(*sellOrder, *pmOrderBook);
 
@@ -172,8 +172,8 @@ TEST_F(MatcherTest, PartialTradeWhenMarketAskOrders) {
     EXPECT_EQ(trades[0].getBuyOrderId(), buyOrder2->getId()); // 2 goes first
     EXPECT_EQ(trades[1].getBuyOrderId(), buyOrder1->getId());
     EXPECT_EQ(trades[0].getSellOrderId(), sellOrder->getId());
-    EXPECT_EQ(trades[0].getQty(), 50);
-    EXPECT_EQ(trades[1].getQty(), 30);
+    EXPECT_EQ(trades[0].getQuantity(), 50);
+    EXPECT_EQ(trades[1].getQuantity(), 30);
 
     EXPECT_EQ(sellOrder->getRemainingQuantity(), 20);
 }

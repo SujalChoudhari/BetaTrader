@@ -14,7 +14,7 @@ namespace common {
     class Trade {
     public:
         Trade(TradeID tradeId,
-              OrderSymbol symbol,
+              Instrument symbol,
               OrderID buyOrderId,
               OrderID sellOrderId,
               const Quantity qty,
@@ -31,16 +31,16 @@ namespace common {
 
     public:
         [[nodiscard]] const TradeID &getTradeId() const { return mTradeId; }
-        [[nodiscard]] const OrderSymbol &getOrderSymbol() const { return mOrderSymbol; }
+        [[nodiscard]] const Instrument &getOrderSymbol() const { return mOrderSymbol; }
         [[nodiscard]] const OrderID &getBuyOrderId() const { return mBuyOrderId; }
         [[nodiscard]] const OrderID &getSellOrderId() const { return mSellOrderId; }
-        [[nodiscard]] Quantity getQty() const { return mQuantity; }
+        [[nodiscard]] Quantity getQuantity() const { return mQuantity; }
         [[nodiscard]] Price getPrice() const { return mPrice; }
         [[nodiscard]] Timestamp getTimestamp() const { return mTimestamp; }
 
     private:
         TradeID mTradeId;
-        OrderSymbol mOrderSymbol;
+        Instrument mOrderSymbol;
         OrderID mBuyOrderId;
         OrderID mSellOrderId;
         Quantity mQuantity;

@@ -38,7 +38,7 @@ namespace data {
                 query.bind(2, std::string(common::to_string(trade.getOrderSymbol())));
                 query.bind(3, static_cast<sqlite3_int64>(trade.getBuyOrderId()));
                 query.bind(4, static_cast<sqlite3_int64>(trade.getSellOrderId()));
-                query.bind(5, static_cast<sqlite3_int64>(trade.getQty()));
+                query.bind(5, static_cast<sqlite3_int64>(trade.getQuantity()));
                 query.bind(6, trade.getPrice());
                 const auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
                     trade.getTimestamp().time_since_epoch()).count();

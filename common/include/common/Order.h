@@ -47,6 +47,12 @@ namespace common {
 
         void setRemainingQuantity(const Quantity qty) { mRemainingQuantity = qty; }
         void setStatus(const OrderStatus status) { mOrderStatus = status; }
+        void setPrice(const Price price) { mPrice = price; }
+        void setOriginalQuantity(const Quantity qty) {
+            mOriginalQuantity = qty;
+            mRemainingQuantity = qty;
+        }
+        void setTimestamp(const Timestamp ts) { mTimestamp = ts; }
 
     private:
         OrderID mId;
@@ -65,5 +71,4 @@ namespace common {
     };
 
 
-    using OrderPtr = std::shared_ptr<Order>;
 }

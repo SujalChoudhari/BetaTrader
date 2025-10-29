@@ -32,7 +32,7 @@ TEST_F(TradeRepositoryTest, AddTrade_InsertsTradeCorrectly) {
     const auto timestamp = std::chrono::steady_clock::now();
     const common::Trade trade(
         123,
-        common::OrderSymbol::USDINR,
+        common::Instrument::USDINR,
         10,
         11,
         100,
@@ -59,7 +59,7 @@ TEST_F(TradeRepositoryTest, AddTrade_InsertsTradeCorrectly) {
     EXPECT_EQ(query.getColumn(0).getInt64(), trade.getTradeId());
     EXPECT_EQ(query.getColumn(1).getInt64(), trade.getBuyOrderId());
     EXPECT_EQ(query.getColumn(2).getInt64(), trade.getSellOrderId());
-    EXPECT_EQ(query.getColumn(3).getInt64(), trade.getQty());
+    EXPECT_EQ(query.getColumn(3).getInt64(), trade.getQuantity());
     EXPECT_EQ(query.getColumn(4).getDouble(), trade.getPrice());
     EXPECT_EQ(query.getColumn(5).getInt64(), ns);
 

@@ -13,6 +13,7 @@ target_link_libraries(trading_core_tests
         trading_core_lib
         PRIVATE
         gtest_main
+        gmock_main
 )
 
 include(GoogleTest)
