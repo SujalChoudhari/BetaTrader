@@ -8,3 +8,6 @@
 [submodule "vendor/lib/spdlog"]
 	path = vendor/lib/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "vendor/lib/SPSCQueue"]
+	path = vendor/lib/SPSCQueue
+	url = https://github.com/rigtorp/SPSCQueue
