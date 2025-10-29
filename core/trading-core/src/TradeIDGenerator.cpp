@@ -14,23 +14,23 @@ namespace trading_core {
     data::TradeIDRepository TradeIDGenerator::repository = data::TradeIDRepository(data::databasePath);
 
 
-    common::TradeID TradeIDGenerator::getId() {
+    common::TradeID TradeIDGenerator::GetId() {
         if (currentId == 0)
-            loadState();
-        return TradeIDGenerator::currentId;
+            LoadState();
+        return currentId;
     }
 
-    common::TradeID TradeIDGenerator::nextId() {
-        std::lock_guard<std::mutex> lock(mutex);
-        saveState();
+    common::TradeID TradeIDGenerator::NextId() {
+        std::lock_guard lock(mutex);
+        SaveState();
         return ++currentId;
     }
 
-    void TradeIDGenerator::saveState() {
+    void TradeIDGenerator::SaveState() {
         repository.setCurrentTradeID(currentId);
     }
 
-    void TradeIDGenerator::loadState() {
+    void TradeIDGenerator::LoadState() {
         currentId = repository.getCurrentTradeID();
     }
 }

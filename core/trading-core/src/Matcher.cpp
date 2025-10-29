@@ -62,11 +62,12 @@ namespace trading_core {
                                              ? restingOrder->getId()
                                              : incomingOrder.getId();
 
-                trades.emplace_back(TradeIDGenerator::nextId(), buyId, sellId, tradeQuantity, tradePrice,
+                trades.emplace_back(TradeIDGenerator::NextId(), incomingOrder.getSymbol(), buyId, sellId, tradeQuantity,
+                                    tradePrice,
                                     std::chrono::steady_clock::now());
 
-                incomingOrder.setRemainingQty(incomingOrder.getRemainingQuantity() - tradeQuantity);
-                restingOrder->setRemainingQty(restingOrder->getRemainingQuantity() - tradeQuantity);
+                incomingOrder.setRemainingQuantity(incomingOrder.getRemainingQuantity() - tradeQuantity);
+                restingOrder->setRemainingQuantity(restingOrder->getRemainingQuantity() - tradeQuantity);
 
                 incomingOrder.setStatus(common::OrderStatus::PartiallyFilled);
 

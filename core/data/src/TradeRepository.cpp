@@ -17,7 +17,7 @@ namespace data {
     }
 
     void TradeRepository::initDatabase() {
-        enqueue([](SQLite::Database &db) {
+        enqueue([](const SQLite::Database &db) {
             try {
                 SQLite::Statement query(db, data::query::createTradeTableQuery);
                 query.exec();

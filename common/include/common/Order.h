@@ -14,20 +14,20 @@ namespace common {
     class Order {
     public:
         Order(const OrderID id,
-              Symbol symbol,
+              const Symbol symbol,
               ClientID client,
               const OrderSide side,
               const OrderType type,
-              const Quantity qty,
+              const Quantity quantity,
               const Price price,
               const Timestamp ts)
             : mId(id),
-              mSymbol(std::move(symbol)),
+              mSymbol(symbol),
               mClientId(std::move(client)),
               mOrderSide(side),
               mOrderType(type),
-              mOriginalQuantity(qty),
-              mPendingQuantity(qty),
+              mOriginalQuantity(quantity),
+              mRemainingQuantity(quantity),
               mPrice(price),
               mTimestamp(ts),
               mOrderStatus(common::OrderStatus::New) {
@@ -43,9 +43,9 @@ namespace common {
         [[nodiscard]] OrderStatus getStatus() const { return mOrderStatus; }
         [[nodiscard]] OrderType getOrderType() const { return mOrderType; }
         [[nodiscard]] Quantity getOriginalQuantity() const { return mOriginalQuantity; }
-        [[nodiscard]] Quantity getRemainingQuantity() const { return mPendingQuantity; }
+        [[nodiscard]] Quantity getRemainingQuantity() const { return mRemainingQuantity; }
 
-        void setRemainingQty(const Quantity qty) { mPendingQuantity = qty; }
+        void setRemainingQuantity(const Quantity qty) { mRemainingQuantity = qty; }
         void setStatus(const OrderStatus status) { mOrderStatus = status; }
 
     private:
@@ -56,7 +56,7 @@ namespace common {
         OrderType mOrderType;
 
         Quantity mOriginalQuantity;
-        Quantity mPendingQuantity;
+        Quantity mRemainingQuantity;
 
         Price mPrice;
         Timestamp mTimestamp;

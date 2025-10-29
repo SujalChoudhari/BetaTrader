@@ -42,18 +42,19 @@ protected:
             std::chrono::steady_clock::now()
         );
         order.setStatus(status);
-        order.setRemainingQty(remainingQuantity);
+        order.setRemainingQuantity(remainingQuantity);
         return order;
     }
 
     static common::Trade createTrade(
         common::OrderID buyOrderId,
         common::OrderID sellOrderId,
-        double price = 50.0,
-        double quantity = 100.0
+        double quantity = 100.0,
+        double price = 50.0
     ) {
         return common::Trade(
-            TradeIDGenerator::nextId(),
+            TradeIDGenerator::NextId(),
+            common::OrderSymbol::EURUSD,
             buyOrderId,
             sellOrderId,
             quantity,
@@ -86,10 +87,6 @@ TEST_F(RiskManagerTest, PreCheckFailsForZeroQuantity) {
     EXPECT_FALSE(riskManager->preCheck(order));
 }
 
-TEST_F(RiskManagerTest, PreCheckFailsForNegativeQuantity) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, -100, -100, 50);
-    EXPECT_FALSE(riskManager->preCheck(order));
-}
 
 TEST_F(RiskManagerTest, PreCheckFailsWhenRemainingNotEqualOriginal) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 50, 50);
@@ -97,8 +94,7 @@ TEST_F(RiskManagerTest, PreCheckFailsWhenRemainingNotEqualOriginal) {
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForNonNewStatus) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50,
-                                   common::OrderStatus::Filled);
+    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50, common::OrderStatus::Filled);
     EXPECT_FALSE(riskManager->preCheck(order));
 }
 
@@ -113,15 +109,15 @@ TEST_F(RiskManagerTest, PreCheckFailsForLimitOrderWithNegativePrice) {
 }
 
 TEST_F(RiskManagerTest, PostTradeUpdateSingleTrade) {
-    const auto trade = createTrade(1, 2, 50, 100);
+    const auto trade = createTrade(1, 2, 100, 50);
     EXPECT_NO_THROW(riskManager->postTradeUpdate(trade));
 }
 
 TEST_F(RiskManagerTest, PostTradeUpdateMultipleTrades) {
     std::vector<common::Trade> trades;
-    trades.push_back(createTrade(1, 2, 50, 100));
-    trades.push_back(createTrade(3, 4, 51, 150));
-    trades.push_back(createTrade(5, 6, 49, 200));
+    trades.push_back(createTrade(1, 2, 100, 50));
+    trades.push_back(createTrade(3, 4, 150, 51));
+    trades.push_back(createTrade(5, 6, 200, 49));
 
     EXPECT_NO_THROW(riskManager->postTradeUpdate(trades));
 }

@@ -19,7 +19,7 @@ namespace data::query {
 
 
     const std::string createTradeTableQuery =
-            "CREATE TABLE trade ( "
+            "CREATE TABLE IF NOT EXISTS trade ( "
             "trade_id INTEGER PRIMARY KEY, "
             "symbol TEXT NOT NULL, "
             "buy_order_id INTEGER NOT NULL, "

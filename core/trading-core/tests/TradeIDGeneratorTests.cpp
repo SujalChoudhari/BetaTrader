@@ -8,20 +8,20 @@
 using namespace trading_core;
 
 TEST(TradeIDGeneratorTest, InitialIdIsZero) {
-    TradeIDGenerator::loadState();
-    EXPECT_NE(TradeIDGenerator::getId(), 0);
+    TradeIDGenerator::LoadState();
+    EXPECT_NE(TradeIDGenerator::GetId(), 0);
 }
 
 TEST(TradeIDGeneratorTest, NextIdIncrementsByOne) {
-    const auto id1 = TradeIDGenerator::nextId();
-    const auto id2 = TradeIDGenerator::nextId();
+    const auto id1 = TradeIDGenerator::NextId();
+    const auto id2 = TradeIDGenerator::NextId();
     EXPECT_EQ(id2, id1 + 1);
 }
 
 TEST(TradeIDGeneratorTest, GetIdReturnsCurrentValue) {
-    const auto current = TradeIDGenerator::getId();
-    const auto next = TradeIDGenerator::nextId();
-    EXPECT_EQ(TradeIDGenerator::getId(), next);
+    const auto current = TradeIDGenerator::GetId();
+    const auto next = TradeIDGenerator::NextId();
+    EXPECT_EQ(TradeIDGenerator::GetId(), next);
     EXPECT_EQ(next, current + 1);
 }
 
@@ -33,13 +33,13 @@ TEST(TradeIDGeneratorTest, ThreadSafety) {
     for (int i = 0; i < num_threads; ++i) {
         threads.emplace_back([]() {
             for (int j = 0; j < num_increments; ++j)
-                TradeIDGenerator::nextId();
+                TradeIDGenerator::NextId();
         });
     }
 
     for (auto &t: threads)
         t.join();
 
-    const uint64_t expected = TradeIDGenerator::getId();
+    const uint64_t expected = TradeIDGenerator::GetId();
     EXPECT_GE(expected, num_threads * num_increments);
 }

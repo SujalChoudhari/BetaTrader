@@ -10,18 +10,18 @@
 
 namespace trading_core {
     class TradeIDGenerator {
+    public:
+        static common::TradeID GetId();
+
+        static common::TradeID NextId();
+
+        static void SaveState();
+
+        static void LoadState();
+
+    private:
         static common::TradeID currentId;
         static std::mutex mutex;
         static data::TradeIDRepository repository;
-
-    public:
-        static common::TradeID getId();
-
-        static common::TradeID nextId();
-
-        static void saveState();
-
-        static void loadState();
     };
-
 }
