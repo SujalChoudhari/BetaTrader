@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "trading_core/OrderManager.h"
+#include "trading_core/OrderIDGenerator.h"
 
 class OrderManagerTest : public testing::Test {
 protected:
@@ -16,14 +17,13 @@ protected:
     }
 
     static std::shared_ptr<common::Order> createOrder(
-        common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         double quantity = 100.0,
         double price = 50.0) {
         return std::make_shared<common::Order>(
-            id,
+            trading_core::OrderIDGenerator::nextId(),
             common::Instrument::EURUSD,
-            "CLIENT_" + std::to_string(id),
+            "CLIENT_" + std::to_string(trading_core::OrderIDGenerator::getId()),
             side,
             common::OrderType::Limit,
             quantity,
@@ -42,15 +42,15 @@ TEST_F(OrderManagerTest, InitialStateIsEmpty) {
 }
 
 TEST_F(OrderManagerTest, AddOrderSuccessfully) {
-    const auto order = createOrder(101);
+    const auto order = createOrder();
     ASSERT_TRUE(pmOrderManager->addOrder(order));
     EXPECT_EQ(pmOrderManager->size(), 1);
-    EXPECT_TRUE(pmOrderManager->containsOrderById(101));
+    EXPECT_TRUE(pmOrderManager->containsOrderById(order->getId()));
 }
 
 TEST_F(OrderManagerTest, AddDuplicateOrderFails) {
-    const auto order1 = createOrder(101);
-    const auto order2 = createOrder(101); // New object, same ID
+    const auto order1 = createOrder();
+    auto order2 = std::make_shared<common::Order>(*order1); // Create a copy with the same ID
 
     ASSERT_TRUE(pmOrderManager->addOrder(order1));
     EXPECT_EQ(pmOrderManager->size(), 1);
@@ -66,14 +66,14 @@ TEST_F(OrderManagerTest, AddNullOrderFails) {
 }
 
 TEST_F(OrderManagerTest, GetExistingOrder) {
-    const auto order = createOrder(101);
+    const auto order = createOrder();
     pmOrderManager->addOrder(order);
 
-    const auto retrievedOrderOpt = pmOrderManager->getOrderById(101);
+    const auto retrievedOrderOpt = pmOrderManager->getOrderById(order->getId());
     ASSERT_TRUE(retrievedOrderOpt.has_value());
 
     const auto &retrievedOrder = retrievedOrderOpt.value();
-    EXPECT_EQ(retrievedOrder->getId(), 101);
+    EXPECT_EQ(retrievedOrder->getId(), order->getId());
     EXPECT_EQ(retrievedOrder, order); // Should be the same shared_ptr
 }
 
@@ -83,17 +83,17 @@ TEST_F(OrderManagerTest, GetNonExistentOrder) {
 }
 
 TEST_F(OrderManagerTest, RemoveExistingOrder) {
-    const auto order = createOrder(101);
+    const auto order = createOrder();
     pmOrderManager->addOrder(order);
     ASSERT_EQ(pmOrderManager->size(), 1);
 
-    EXPECT_TRUE(pmOrderManager->removeOrderById(101));
+    EXPECT_TRUE(pmOrderManager->removeOrderById(order->getId()));
     EXPECT_EQ(pmOrderManager->size(), 0);
-    EXPECT_FALSE(pmOrderManager->containsOrderById(101));
+    EXPECT_FALSE(pmOrderManager->containsOrderById(order->getId()));
 }
 
 TEST_F(OrderManagerTest, RemoveNonExistentOrder) {
-    const auto order = createOrder(101);
+    const auto order = createOrder();
     pmOrderManager->addOrder(order);
     ASSERT_EQ(pmOrderManager->size(), 1);
 
@@ -102,25 +102,27 @@ TEST_F(OrderManagerTest, RemoveNonExistentOrder) {
 }
 
 TEST_F(OrderManagerTest, ContainsOrder) {
-    const auto order = createOrder(101);
+    const auto order = createOrder();
     pmOrderManager->addOrder(order);
 
-    EXPECT_TRUE(pmOrderManager->containsOrderById(101));
+    EXPECT_TRUE(pmOrderManager->containsOrderById(order->getId()));
     EXPECT_FALSE(pmOrderManager->containsOrderById(999));
 }
 
 TEST_F(OrderManagerTest, SizeChangesCorrectly) {
     EXPECT_EQ(pmOrderManager->size(), 0);
 
-    pmOrderManager->addOrder(createOrder(101));
+    auto o1 = createOrder();
+    pmOrderManager->addOrder(o1);
     EXPECT_EQ(pmOrderManager->size(), 1);
 
-    pmOrderManager->addOrder(createOrder(102, common::OrderSide::Sell));
+    auto o2 = createOrder(common::OrderSide::Sell);
+    pmOrderManager->addOrder(o2);
     EXPECT_EQ(pmOrderManager->size(), 2);
 
-    pmOrderManager->removeOrderById(101);
+    pmOrderManager->removeOrderById(o1->getId());
     EXPECT_EQ(pmOrderManager->size(), 1);
 
-    pmOrderManager->removeOrderById(102);
+    pmOrderManager->removeOrderById(o2->getId());
     EXPECT_EQ(pmOrderManager->size(), 0);
 }

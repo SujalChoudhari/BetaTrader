@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 #include "trading_core/OrderBook.h"
+#include "trading_core/OrderIDGenerator.h"
 
 class OrderBookTest : public testing::Test {
 protected:
@@ -16,14 +17,13 @@ protected:
     }
 
     static std::shared_ptr<common::Order> createOrder(
-        common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         double quantity = 100.0,
         double price = 50.0) {
         return std::make_shared<common::Order>(
-            id,
+            trading_core::OrderIDGenerator::nextId(),
             common::Instrument::EURUSD,
-            "CLIENT_" + std::to_string(id),
+            "CLIENT_" + std::to_string(trading_core::OrderIDGenerator::getId()),
             side,
             common::OrderType::Limit,
             quantity,
@@ -38,7 +38,7 @@ protected:
 
 
 TEST_F(OrderBookTest, InsertSingleBuyOrder) {
-    auto order = createOrder(1, common::OrderSide::Buy, 100.0, 50.0);
+    auto order = createOrder(common::OrderSide::Buy, 100.0, 50.0);
     pmOrderBook->insertOrder(order);
     auto bids = pmOrderBook->getBidMap();
     ASSERT_EQ(bids->size(), 1);
@@ -46,7 +46,7 @@ TEST_F(OrderBookTest, InsertSingleBuyOrder) {
 }
 
 TEST_F(OrderBookTest, InsertSingleSellOrder) {
-    auto order = createOrder(2, common::OrderSide::Sell, 100.0, 51.0);
+    auto order = createOrder(common::OrderSide::Sell, 100.0, 51.0);
     pmOrderBook->insertOrder(order);
     auto asks = pmOrderBook->getAskMap();
     ASSERT_EQ(asks->size(), 1);
@@ -55,8 +55,8 @@ TEST_F(OrderBookTest, InsertSingleSellOrder) {
 
 
 TEST_F(OrderBookTest, MultipleBuyOrdersDescending) {
-    auto o1 = createOrder(1, common::OrderSide::Buy, 100.0, 50.0);
-    auto o2 = createOrder(2, common::OrderSide::Buy, 100.0, 55.0);
+    auto o1 = createOrder(common::OrderSide::Buy, 100.0, 50.0);
+    auto o2 = createOrder(common::OrderSide::Buy, 100.0, 55.0);
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
     auto bids = pmOrderBook->getBidMap();
@@ -65,8 +65,8 @@ TEST_F(OrderBookTest, MultipleBuyOrdersDescending) {
 
 
 TEST_F(OrderBookTest, MultipleSellOrdersAscending) {
-    auto o1 = createOrder(1, common::OrderSide::Sell, 100.0, 50.0);
-    auto o2 = createOrder(2, common::OrderSide::Sell, 100.0, 45.0);
+    auto o1 = createOrder(common::OrderSide::Sell, 100.0, 50.0);
+    auto o2 = createOrder(common::OrderSide::Sell, 100.0, 45.0);
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
     auto asks = pmOrderBook->getAskMap();
@@ -75,8 +75,8 @@ TEST_F(OrderBookTest, MultipleSellOrdersAscending) {
 
 
 TEST_F(OrderBookTest, FIFOWithinSamePriceLevel) {
-    auto o1 = createOrder(1);
-    auto o2 = createOrder(2);
+    auto o1 = createOrder();
+    auto o2 = createOrder();
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
     auto bids = pmOrderBook->getBidMap();
@@ -86,9 +86,9 @@ TEST_F(OrderBookTest, FIFOWithinSamePriceLevel) {
 }
 
 TEST_F(OrderBookTest, CancelExistingOrder) {
-    auto o1 = createOrder(1);
+    auto o1 = createOrder();
     pmOrderBook->insertOrder(o1);
-    bool result = pmOrderBook->cancelOrder(1);
+    bool result = pmOrderBook->cancelOrder(o1->getId());
     ASSERT_TRUE(result);
     ASSERT_TRUE(pmOrderBook->getBidMap()->empty());
 }
@@ -100,8 +100,8 @@ TEST_F(OrderBookTest, CancelNonexistentOrder) {
 }
 
 TEST_F(OrderBookTest, MixedBuyAndSellOrders) {
-    auto buy = createOrder(1, common::OrderSide::Buy, 100.0, 50.0);
-    auto sell = createOrder(2, common::OrderSide::Sell, 100.0, 55.0);
+    auto buy = createOrder(common::OrderSide::Buy, 100.0, 50.0);
+    auto sell = createOrder(common::OrderSide::Sell, 100.0, 55.0);
     pmOrderBook->insertOrder(buy);
     pmOrderBook->insertOrder(sell);
     ASSERT_EQ(pmOrderBook->getBidMap()->size(), 1);
@@ -110,11 +110,11 @@ TEST_F(OrderBookTest, MixedBuyAndSellOrders) {
 
 
 TEST_F(OrderBookTest, CancelOneAmongMany) {
-    auto o1 = createOrder(1);
-    auto o2 = createOrder(2);
+    auto o1 = createOrder();
+    auto o2 = createOrder();
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
-    pmOrderBook->cancelOrder(1);
+    pmOrderBook->cancelOrder(o1->getId());
     auto bids = pmOrderBook->getBidMap();
     ASSERT_EQ(bids->begin()->second.size(), 1);
     ASSERT_EQ(bids->begin()->second.front(), o2);
@@ -122,11 +122,11 @@ TEST_F(OrderBookTest, CancelOneAmongMany) {
 
 
 TEST_F(OrderBookTest, AllOrdersCancelledRemovesLevels) {
-    auto o1 = createOrder(1, common::OrderSide::Buy, 100.0, 50.0);
-    auto o2 = createOrder(2, common::OrderSide::Buy, 100.0, 55.0);
+    auto o1 = createOrder(common::OrderSide::Buy, 100.0, 50.0);
+    auto o2 = createOrder(common::OrderSide::Buy, 100.0, 55.0);
     pmOrderBook->insertOrder(o1);
     pmOrderBook->insertOrder(o2);
-    pmOrderBook->cancelOrder(1);
-    pmOrderBook->cancelOrder(2);
+    pmOrderBook->cancelOrder(o1->getId());
+    pmOrderBook->cancelOrder(o2->getId());
     ASSERT_TRUE(pmOrderBook->getBidMap()->empty());
 }

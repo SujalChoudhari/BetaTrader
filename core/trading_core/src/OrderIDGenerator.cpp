@@ -1,7 +1,3 @@
-//
-// Created by sujal on 25-10-2025.
-//
-
 #include "trading_core/OrderIDGenerator.h"
 
 
@@ -24,5 +20,8 @@ namespace trading_core {
     }
 
     void OrderIDGenerator::loadState() {
+        // This is a temporary implementation to reset the ID for tests.
+        // A proper implementation would load the ID from a persistent store.
+        currentId = 0;
     }
 }

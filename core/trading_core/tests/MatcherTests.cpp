@@ -7,6 +7,7 @@
 #include "logging/Logger.h"
 #include "trading_core/Matcher.h"
 #include "trading_core/OrderBook.h"
+#include "trading_core/OrderIDGenerator.h"
 
 using namespace trading_core;
 
@@ -14,8 +15,9 @@ class MatcherTest : public testing::Test {
 protected:
     void SetUp() override {
         logging::Logger::Init("matcher_test", "logs/matcher_test.log");
+        OrderIDGenerator::loadState(); // Reset for test isolation
         pmOrderBook = std::make_unique<OrderBook>();
-        auto dbWorker = std::make_shared<data::DatabaseWorker>(data::databasePath);
+        auto dbWorker = std::make_shared<data::DatabaseWorker>(":memory:"); // Use in-memory DB
         matcher = std::make_unique<Matcher>(dbWorker);
     }
 
@@ -26,16 +28,15 @@ protected:
     }
 
     static std::shared_ptr<common::Order> createOrder(
-        common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         common::OrderType type = common::OrderType::Limit,
         double quantity = 100.0,
         double price = 50.0
     ) {
         return std::make_shared<common::Order>(
-            id,
+            OrderIDGenerator::nextId(),
             common::Instrument::EURUSD,
-            "CLIENT_" + std::to_string(id),
+            "CLIENT_" + std::to_string(OrderIDGenerator::getId()),
             side,
             type,
             quantity,
@@ -50,14 +51,14 @@ protected:
 };
 
 TEST_F(MatcherTest, NoTradeWhenEmptyBook) {
-    auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 50);
+    auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 50);
     const auto trades = matcher->match(order, *pmOrderBook);
     EXPECT_TRUE(trades.empty());
 }
 
 TEST_F(MatcherTest, TradeWhenCrossingOrders) {
-    const auto buyOrder = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 50);
-    const auto sellOrder = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 100, 49);
+    const auto buyOrder = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 50);
+    const auto sellOrder = createOrder(common::OrderSide::Sell, common::OrderType::Limit, 100, 49);
 
     pmOrderBook->insertOrder(buyOrder);
     const auto trades = matcher->match(sellOrder, *pmOrderBook);
@@ -72,8 +73,8 @@ TEST_F(MatcherTest, TradeWhenCrossingOrders) {
 }
 
 TEST_F(MatcherTest, NoTradeWhenNonCrossingOrders) {
-    const auto buyOrder = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 48);
-    const auto sellOrder = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 100, 50);
+    const auto buyOrder = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 48);
+    const auto sellOrder = createOrder(common::OrderSide::Sell, common::OrderType::Limit, 100, 50);
 
     pmOrderBook->insertOrder(buyOrder);
     const auto trades = matcher->match(sellOrder, *pmOrderBook);
@@ -82,9 +83,9 @@ TEST_F(MatcherTest, NoTradeWhenNonCrossingOrders) {
 }
 
 TEST_F(MatcherTest, TradeWhenMarketBidOrders) {
-    const auto sellOrder1 = createOrder(1, common::OrderSide::Sell, common::OrderType::Limit, 30, 50);
-    const auto sellOrder2 = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 70, 60);
-    const auto buy = createOrder(3, common::OrderSide::Buy, common::OrderType::Market, 100, 50);
+    const auto sellOrder1 = createOrder(common::OrderSide::Sell, common::OrderType::Limit, 30, 50);
+    const auto sellOrder2 = createOrder(common::OrderSide::Sell, common::OrderType::Limit, 70, 60);
+    const auto buy = createOrder(common::OrderSide::Buy, common::OrderType::Market, 100, 50);
 
     pmOrderBook->insertOrder(sellOrder1);
     pmOrderBook->insertOrder(sellOrder2);
@@ -103,12 +104,12 @@ TEST_F(MatcherTest, TradeWhenMarketBidOrders) {
 }
 
 TEST_F(MatcherTest, NoTradeWhenMarketBidOrders) {
-    const auto sellOrder1 = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 30, 50);
-    const auto sellOrder2 = createOrder(2, common::OrderSide::Buy, common::OrderType::Limit, 70, 60);
-    const auto buy = createOrder(3, common::OrderSide::Buy, common::OrderType::Market, 100, 50);
+    const auto buyOrder1 = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 30, 50);
+    const auto buyOrder2 = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 70, 60);
+    const auto buy = createOrder(common::OrderSide::Buy, common::OrderType::Market, 100, 50);
 
-    pmOrderBook->insertOrder(sellOrder1);
-    pmOrderBook->insertOrder(sellOrder2);
+    pmOrderBook->insertOrder(buyOrder1);
+    pmOrderBook->insertOrder(buyOrder2);
 
     const auto trades = matcher->match(buy, *pmOrderBook);
 
@@ -119,9 +120,9 @@ TEST_F(MatcherTest, NoTradeWhenMarketBidOrders) {
 
 
 TEST_F(MatcherTest, PartialTradeWhenMarketBidOrders) {
-    const auto sellOrder1 = createOrder(1, common::OrderSide::Sell, common::OrderType::Limit, 30, 50);
-    const auto sellOrder2 = createOrder(2, common::OrderSide::Sell, common::OrderType::Limit, 50, 60);
-    const auto buy = createOrder(3, common::OrderSide::Buy, common::OrderType::Market, 100, 50);
+    const auto sellOrder1 = createOrder(common::OrderSide::Sell, common::OrderType::Limit, 30, 50);
+    const auto sellOrder2 = createOrder(common::OrderSide::Sell, common::OrderType::Limit, 50, 60);
+    const auto buy = createOrder(common::OrderSide::Buy, common::OrderType::Market, 100, 50);
 
     pmOrderBook->insertOrder(sellOrder1);
     pmOrderBook->insertOrder(sellOrder2);
@@ -141,9 +142,9 @@ TEST_F(MatcherTest, PartialTradeWhenMarketBidOrders) {
 
 
 TEST_F(MatcherTest, TradeWhenMarketAskOrders) {
-    const auto buyOrder1 = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 20, 10);
-    const auto buyOrder2 = createOrder(2, common::OrderSide::Buy, common::OrderType::Limit, 50, 50);
-    const auto sellOrder = createOrder(3, common::OrderSide::Sell, common::OrderType::Market, 70, 50);
+    const auto buyOrder1 = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 20, 10);
+    const auto buyOrder2 = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 50, 50);
+    const auto sellOrder = createOrder(common::OrderSide::Sell, common::OrderType::Market, 70, 50);
 
     pmOrderBook->insertOrder(buyOrder1);
     pmOrderBook->insertOrder(buyOrder2);
@@ -160,9 +161,9 @@ TEST_F(MatcherTest, TradeWhenMarketAskOrders) {
 
 
 TEST_F(MatcherTest, PartialTradeWhenMarketAskOrders) {
-    const auto buyOrder1 = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 30, 10);
-    const auto buyOrder2 = createOrder(2, common::OrderSide::Buy, common::OrderType::Limit, 50, 50);
-    const auto sellOrder = createOrder(3, common::OrderSide::Sell, common::OrderType::Market, 100, 50);
+    const auto buyOrder1 = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 30, 10);
+    const auto buyOrder2 = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 50, 50);
+    const auto sellOrder = createOrder(common::OrderSide::Sell, common::OrderType::Market, 100, 50);
 
     pmOrderBook->insertOrder(buyOrder1);
     pmOrderBook->insertOrder(buyOrder2);

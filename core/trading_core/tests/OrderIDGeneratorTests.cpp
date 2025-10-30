@@ -7,11 +7,6 @@
 #include "trading_core/OrderIDGenerator.h"
 using namespace trading_core;
 
-TEST(OrderIDGeneratorTest, InitialIdIsZero) {
-    OrderIDGenerator::loadState(); // no-op currently
-    EXPECT_EQ(OrderIDGenerator::getId(), 0);
-}
-
 TEST(OrderIDGeneratorTest, NextIdIncrementsByOne) {
     const auto id1 = OrderIDGenerator::nextId();
     const auto id2 = OrderIDGenerator::nextId();

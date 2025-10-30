@@ -6,32 +6,36 @@
 #include "trading_core/TradingCore.h"
 #include "trading_core/NewOrder.h"
 #include "trading_core/ModifyOrder.h"
+#include "trading_core/CancelOrder.h"
 #include "common/Instrument.h"
 #include "common/Order.h"
+#include "trading_core/OrderIDGenerator.h"
 
 using namespace trading_core;
+using namespace std::chrono_literals;
 
 class TradingCoreTest : public ::testing::Test {
 protected:
     void SetUp() override {
         tradingCore = std::make_unique<TradingCore>();
+        tradingCore->start();
     }
 
     void TearDown() override {
+        tradingCore->stop();
         tradingCore.reset();
     }
 
     static std::shared_ptr<common::Order> createOrder(
-        common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         common::OrderType type = common::OrderType::Limit,
         double quantity = 100.0,
         double price = 50.0
     ) {
         return std::make_shared<common::Order>(
-            id,
+            OrderIDGenerator::nextId(),
             common::Instrument::EURUSD,
-            "CLIENT_" + std::to_string(id),
+            "CLIENT_" + std::to_string(OrderIDGenerator::getId()),
             side,
             type,
             quantity,
@@ -43,45 +47,44 @@ protected:
     std::unique_ptr<TradingCore> tradingCore;
 };
 
-TEST_F(TradingCoreTest, ConstructorDoesNotThrow) {
-    EXPECT_NO_THROW({
-        TradingCore core;
-        });
+TEST_F(TradingCoreTest, SubmitNewOrder) {
+    const auto order = createOrder();
+    auto newOrder = std::make_unique<NewOrder>(order->getClientId(), std::chrono::system_clock::now(), order);
+
+    EXPECT_NO_THROW(tradingCore->submitCommand(std::move(newOrder)));
 }
 
-TEST_F(TradingCoreTest, StartStopDoNotThrow) {
-    EXPECT_NO_THROW({
-        tradingCore->start();
-        tradingCore->stop();
-        });
+TEST_F(TradingCoreTest, SubmitModifyOrder) {
+    const auto order = createOrder();
+    auto newOrder = std::make_unique<NewOrder>(order->getClientId(), std::chrono::system_clock::now(), order);
+    tradingCore->submitCommand(std::move(newOrder));
+
+    std::this_thread::sleep_for(100ms);
+
+    auto modifyOrder = std::make_unique<ModifyOrder>(std::chrono::system_clock::now(), order->getClientId(),
+                                                     order->getId(), 80.0, 52.0);
+    EXPECT_NO_THROW(tradingCore->submitCommand(std::move(modifyOrder)));
 }
 
-TEST_F(TradingCoreTest, NewOrderNoThrow) {
-    EXPECT_NO_THROW({
-        const auto order = createOrder(101);
-        auto newOrder = std::make_unique<NewOrder>("101", std::chrono::system_clock::now(), order);
+TEST_F(TradingCoreTest, SubmitCancelOrder) {
+    const auto order = createOrder();
+    auto newOrder = std::make_unique<NewOrder>(order->getClientId(), std::chrono::system_clock::now(), order);
+    tradingCore->submitCommand(std::move(newOrder));
 
-        tradingCore->start();
+    std::this_thread::sleep_for(100ms);
 
-        tradingCore->submitCommand(std::move(newOrder));
-        tradingCore->stop();
-        });
+    auto cancelOrder = std::make_unique<CancelOrder>(order->getClientId(), std::chrono::system_clock::now(),
+                                                     order->getId());
+    EXPECT_NO_THROW(tradingCore->submitCommand(std::move(cancelOrder)));
 }
 
+TEST_F(TradingCoreTest, SubmitInvalidCommand) {
+    class InvalidCommand : public Command {
+    public:
+        InvalidCommand() : Command(static_cast<CommandType>(99), "invalid_client", std::chrono::system_clock::now()) {
+        }
+    };
 
-TEST_F(TradingCoreTest, ModifyOrderNoThrow) {
-    tradingCore->start();
-    EXPECT_NO_THROW({
-        const auto order = createOrder(101,common::OrderSide::Buy,common::OrderType::Limit,100,40);
-        auto newOrder = std::make_unique<NewOrder>("101",std::chrono::system_clock::now(), order);
-
-        tradingCore->submitCommand(std::move(newOrder));
-
-        });
-    std::this_thread::sleep_for(std::chrono_literals::operator ""s(1));
-    EXPECT_NO_THROW({
-        auto modifyOrder = std::make_unique<ModifyOrder>(std::chrono::system_clock::now(),"101",101,30,40);
-        tradingCore->submitCommand(std::move(modifyOrder));
-        });
-    tradingCore->stop();
+    auto invalidCommand = std::make_unique<InvalidCommand>();
+    EXPECT_THROW(tradingCore->submitCommand(std::move(invalidCommand)), std::runtime_error);
 }

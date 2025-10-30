@@ -11,37 +11,57 @@
 #include "common/Types.h"
 
 namespace trading_core {
+    /**
+     * @class OrderBook
+     * @brief Represents the order book for a single financial instrument.
+     *
+     * The order book maintains two separate books for buy (bid) and sell (ask) orders,
+     * organized by price levels. It provides methods for inserting and canceling orders.
+     */
     class OrderBook {
-        // A Level with all the orders arranged in queue based on their price
-        // Same tier prices are arranged in same level
+        /**
+         * @brief A deque of orders at a specific price level.
+         */
         using PriceLevel = std::deque<std::shared_ptr<common::Order>>;
 
-        // Map of the price tier and the queue of the orders of the Buyers
+        /**
+         * @brief A map of prices to price levels for buy orders, sorted in descending order.
+         */
         using BidMap = std::map<common::Price, PriceLevel, std::greater<> >;
 
-        // Map of the price tier and the queue of the orders of the Sellers
+        /**
+         * @brief A map of prices to price levels for sell orders, sorted in ascending order.
+         */
         using AskMap = std::map<common::Price, PriceLevel>;
 
     public:
         /**
-         *
-         * @param order Order to insert in the Book
+         * @brief Inserts an order into the order book.
+         * @param order A shared pointer to the order to be inserted.
          */
         void insertOrder(std::shared_ptr<common::Order> order);
 
         /**
-         *
-         * @param orderId OrderId to cancel
-         * @return true if successfully deleted, else false
+         * @brief Cancels an order from the order book.
+         * @param orderId The ID of the order to be cancelled.
+         * @return True if the order was successfully cancelled, false otherwise.
          */
         bool cancelOrder(const common::OrderID &orderId);
 
+        /**
+         * @brief Gets a shared pointer to the bid map.
+         * @return A shared pointer to the bid map.
+         */
         [[nodiscard]] std::shared_ptr<BidMap> getBidMap();
 
+        /**
+         * @brief Gets a shared pointer to the ask map.
+         * @return A shared pointer to the ask map.
+         */
         [[nodiscard]] std::shared_ptr<AskMap> getAskMap();
 
     private:
-        BidMap mBidMap;
-        AskMap mAskMap;
+        BidMap mBidMap; ///< The map of buy orders.
+        AskMap mAskMap;   ///< The map of sell orders.
     };
 }

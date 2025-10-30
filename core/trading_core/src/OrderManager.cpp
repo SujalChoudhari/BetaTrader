@@ -1,7 +1,3 @@
-//
-// Created by sujal on 21-10-2025.
-//
-
 #include "trading_core/OrderManager.h"
 
 #include "logging/Logger.h"

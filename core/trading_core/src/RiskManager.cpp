@@ -1,7 +1,3 @@
-//
-// Created by sujal on 29-10-2025.
-//
-
 #include "trading_core/RiskManager.h"
 
 #include "data/Constant.h"
@@ -23,8 +19,6 @@ namespace trading_core {
         ) {
             return true;
         }
-
-        // TODO: handle fat finger errors
 
         return false;
     }

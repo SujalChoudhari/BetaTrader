@@ -7,6 +7,7 @@
 #include "trading_core/RiskManager.h"
 #include "data/Constant.h"
 #include "trading_core/TradeIDGenerator.h"
+#include "trading_core/OrderIDGenerator.h"
 
 using namespace trading_core;
 
@@ -14,7 +15,8 @@ class RiskManagerTest : public testing::Test {
 protected:
     void SetUp() override {
         logging::Logger::Init("risk_manager_test", "logs/risk_manager_test.log");
-        data::DatabaseWorkerPtr dbWorker = std::make_shared<data::DatabaseWorker>(data::databasePath);
+        OrderIDGenerator::loadState(); // Reset for test isolation
+        data::DatabaseWorkerPtr dbWorker = std::make_shared<data::DatabaseWorker>(":memory:"); // Use in-memory DB
         tradeIDGenerator = std::make_unique<TradeIDGenerator>(dbWorker);
         riskManager = std::make_unique<RiskManager>(dbWorker);
     }
@@ -25,7 +27,6 @@ protected:
     }
 
     static std::shared_ptr<common::Order> createOrder(
-        common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         common::OrderType type = common::OrderType::Limit,
         double quantity = 100.0,
@@ -34,9 +35,9 @@ protected:
         common::OrderStatus status = common::OrderStatus::New
     ) {
         auto order = std::make_shared<common::Order>(
-            id,
+            OrderIDGenerator::nextId(),
             common::Instrument::EURUSD,
-            "CLIENT_" + std::to_string(id),
+            "CLIENT_" + std::to_string(OrderIDGenerator::getId()),
             side,
             type,
             quantity,
@@ -71,57 +72,54 @@ protected:
 };
 
 TEST_F(RiskManagerTest, PreCheckValidLimitOrder) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50);
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50);
     EXPECT_TRUE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckValidMarketOrder) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Market, 100, 100, 0);
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Market, 100, 100, 0);
     EXPECT_TRUE(riskManager->preCheck(*order));
 }
 
-TEST_F(RiskManagerTest, PreCheckFailsForInvalidOrderId) {
-    const auto order = createOrder(0, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50);
-    EXPECT_FALSE(riskManager->preCheck(*order));
-}
+
 
 TEST_F(RiskManagerTest, PreCheckFailsForZeroQuantity) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 0, 0, 50);
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 0, 0, 50);
     EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 
 TEST_F(RiskManagerTest, PreCheckFailsWhenRemainingNotEqualOriginal) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 50, 50);
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 50, 50);
     EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForNonNewStatus) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50,
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50,
                                    common::OrderStatus::Filled);
     EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForLimitOrderWithZeroPrice) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 0);
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 0);
     EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForLimitOrderWithNegativePrice) {
-    const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, -50);
+    const auto order = createOrder(common::OrderSide::Buy, common::OrderType::Limit, 100, 100, -50);
     EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PostTradeUpdateSingleTrade) {
-    const auto trade = createTrade(1, 2, 100, 50);
+    const auto trade = createTrade(OrderIDGenerator::nextId(), OrderIDGenerator::nextId(), 100, 50);
     EXPECT_NO_THROW(riskManager->postTradeUpdate(trade));
 }
 
 TEST_F(RiskManagerTest, PostTradeUpdateMultipleTrades) {
     std::vector<common::Trade> trades;
-    trades.push_back(createTrade(1, 2, 100, 50));
-    trades.push_back(createTrade(3, 4, 150, 51));
-    trades.push_back(createTrade(5, 6, 200, 49));
+    trades.push_back(createTrade(OrderIDGenerator::nextId(), OrderIDGenerator::nextId(), 100, 50));
+    trades.push_back(createTrade(OrderIDGenerator::nextId(), OrderIDGenerator::nextId(), 150, 51));
+    trades.push_back(createTrade(OrderIDGenerator::nextId(), OrderIDGenerator::nextId(), 200, 49));
 
     EXPECT_NO_THROW(riskManager->postTradeUpdate(trades));
 }

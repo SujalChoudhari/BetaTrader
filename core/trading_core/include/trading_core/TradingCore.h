@@ -35,4 +35,4 @@ namespace trading_core {
         std::shared_ptr<ExecutionPublisher> mExecutionPublisher;
         std::unique_ptr<Partition> mPartitions[static_cast<int>(common::Instrument::COUNT)];
     };
-}
+}   

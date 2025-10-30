@@ -1,6 +1,3 @@
-//
-// Created by sujal on 22-10-2025.
-//
 #include "trading_core/OrderBook.h"
 
 namespace trading_core {

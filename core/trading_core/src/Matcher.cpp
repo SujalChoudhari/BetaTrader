@@ -1,8 +1,3 @@
-//
-// Created by sujal on 25-10-2025.
-//
-
-
 #include  "trading_core/Matcher.h"
 #include "trading_core/OrderBook.h"
 #include <vector>
@@ -36,19 +31,14 @@ namespace trading_core {
 
         while (it != restingMap->end() && incomingOrder->getRemainingQuantity() > 0) {
             if (incomingOrder->getOrderType() == common::OrderType::Market) {
-                // Market order but at any price
             } else if (incomingOrder->getSide() == common::OrderSide::Buy) {
-                // Can buy below the limit
                 if (incomingOrder->getPrice() < it->first) break;
             } else {
-                // Can sell above the limit
                 if (incomingOrder->getPrice() > it->first) break;
             }
 
             auto &restingLevel = it->second;
 
-
-            // apply and update the book
             while (!restingLevel.empty() && incomingOrder->getRemainingQuantity() > 0) {
                 auto restingOrder = restingLevel.front();
 
@@ -57,7 +47,6 @@ namespace trading_core {
 
                 common::Price tradePrice = restingOrder->getPrice();
 
-                // create order
                 common::OrderID buyId = (incomingOrder->getSide() == common::OrderSide::Buy)
                                             ? incomingOrder->getId()
                                             : restingOrder->getId();
@@ -83,10 +72,10 @@ namespace trading_core {
                 }
             }
 
-            // empty price level
             if (restingLevel.empty()) {
                 it = restingMap->erase(it);
             } else {
+                ++it;
             }
         }
 

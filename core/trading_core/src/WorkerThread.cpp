@@ -1,7 +1,3 @@
-//
-// Created by sujal on 29-10-2025.
-//
-
 #include "trading_core/WorkerThread.h"
 #include <iostream>
 
