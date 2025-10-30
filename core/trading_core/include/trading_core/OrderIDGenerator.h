@@ -4,12 +4,13 @@
 
 #pragma once
 #include <mutex>
+#include <atomic>
 
 #include "common/Types.h"
 
 namespace trading_core {
     class OrderIDGenerator {
-        static common::OrderID currentId;
+        static std::atomic<common::OrderID> currentId;
         static std::mutex mutex;
 
     public:

@@ -8,23 +8,22 @@ namespace trading_core {
     }
 
     common::TradeID TradeIDGenerator::getId() {
-        if (mCurrentId == 0)
-            loadState();
-        return mCurrentId;
+        return mCurrentId.load(std::memory_order_relaxed);
     }
 
     common::TradeID TradeIDGenerator::nextId() {
-        std::lock_guard lock(mMutex);
-        ++mCurrentId;
+        common::TradeID newId = ++mCurrentId;
         saveState();
-        return mCurrentId;
+        return newId;
     }
 
     void TradeIDGenerator::saveState() {
-        repository.setCurrentTradeID(mCurrentId);
+        std::lock_guard lock(mMutex);
+        repository.setCurrentTradeID(mCurrentId.load(std::memory_order_relaxed));
     }
 
     void TradeIDGenerator::loadState() {
+        std::lock_guard lock(mMutex);
         mCurrentId = repository.getCurrentTradeID();
     }
 }

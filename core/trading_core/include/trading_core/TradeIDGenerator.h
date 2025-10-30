@@ -4,6 +4,7 @@
 
 #pragma once
 #include <mutex>
+#include <atomic>
 
 #include "common/Types.h"
 #include "data/TradeIDRepository.h"
@@ -22,7 +23,7 @@ namespace trading_core {
         void loadState();
 
     private:
-        common::TradeID mCurrentId;
+        std::atomic<common::TradeID> mCurrentId;
         std::mutex mMutex;
         data::TradeIDRepository repository;
     };

@@ -7,16 +7,15 @@
 
 namespace trading_core {
 
-    common::OrderID OrderIDGenerator::currentId = 0;
+    std::atomic<common::OrderID> OrderIDGenerator::currentId = 0;
     std::mutex OrderIDGenerator::mutex;
 
 
     common::OrderID OrderIDGenerator::getId() {
-        return OrderIDGenerator::currentId;
+        return OrderIDGenerator::currentId.load(std::memory_order_relaxed);
     }
 
     common::OrderID OrderIDGenerator::nextId() {
-        std::lock_guard<std::mutex> lock(mutex);
         return ++currentId;
     }
 
