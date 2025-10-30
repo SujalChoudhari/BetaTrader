@@ -10,14 +10,15 @@ namespace trading_core {
         std::shared_ptr<TradeIDGenerator> tradeIDGenerator,
         std::shared_ptr<ExecutionPublisher> executionPublisher
     )
-        : mCommandQueue(4096)
+        : mCommandQueue(262144) // Increased queue size for high-throughput scenarios
           , mSymbol(symbol)
           , mDatabaseWorker(std::move(databaseWorker))
           , mTradeIDGenerator(std::move(tradeIDGenerator))
           , mExecutionPublisher(std::move(executionPublisher)) {
         mOrderManager = std::make_unique<OrderManager>();
         mOrderBook = std::make_unique<OrderBook>();
-        mMatcher = std::make_unique<Matcher>(mDatabaseWorker);
+        // Pass the shared TradeIDGenerator to the Matcher
+        mMatcher = std::make_unique<Matcher>(mTradeIDGenerator);
         mRiskManager = std::make_unique<RiskManager>(mDatabaseWorker);
     }
 

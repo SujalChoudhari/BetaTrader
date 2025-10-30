@@ -1,6 +1,7 @@
 #include  "trading_core/Matcher.h"
 #include "trading_core/OrderBook.h"
 #include <vector>
+#include <utility>
 
 #include "logging/Logger.h"
 #include "logging/Runbook.h"
@@ -9,7 +10,8 @@
 
 
 namespace trading_core {
-    Matcher::Matcher(const data::DatabaseWorkerPtr &dbWorker) : mTradeIdGenerator(TradeIDGenerator(dbWorker)) {
+    Matcher::Matcher(std::shared_ptr<TradeIDGenerator> tradeIdGenerator) : mTradeIdGenerator(
+        std::move(tradeIdGenerator)) {
     }
 
     std::vector<common::Trade> Matcher::match(std::shared_ptr<common::Order> incomingOrder, OrderBook &orderBook) {
@@ -54,10 +56,12 @@ namespace trading_core {
                                              ? restingOrder->getId()
                                              : incomingOrder->getId();
 
-                trades.emplace_back(mTradeIdGenerator.nextId(), incomingOrder->getSymbol(), buyId, sellId,
+                common::TradeID newId = mTradeIdGenerator->nextId();
+                trades.emplace_back(newId, incomingOrder->getSymbol(), buyId, sellId,
                                     tradeQuantity,
                                     tradePrice,
                                     std::chrono::system_clock::now());
+                LOG_INFO("New trade created with id {}", newId);
 
                 incomingOrder->setRemainingQuantity(incomingOrder->getRemainingQuantity() - tradeQuantity);
                 restingOrder->setRemainingQuantity(restingOrder->getRemainingQuantity() - tradeQuantity);

@@ -79,7 +79,6 @@ namespace runbook {
         spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__}; \
         std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__); \
         spdlog::default_logger()->log(loc, spdlog::level::err, spdlog::string_view_t(msg)); \
-        throw std::runtime_error(msg); \
     } \
 } while (0)
 
@@ -90,6 +89,5 @@ namespace runbook {
         spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__}; \
         std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__); \
         spdlog::default_logger()->log(loc, spdlog::level::critical, spdlog::string_view_t(msg)); \
-        throw std::runtime_error(msg); \
     } \
 } while (0)

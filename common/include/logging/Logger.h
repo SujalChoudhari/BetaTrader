@@ -5,6 +5,9 @@
 #pragma once
 
 #include <string>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
 #include "spdlog/async.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/rotating_file_sink.h"
@@ -12,13 +15,42 @@
 
 namespace logging {
     class Logger {
+    private:
+        /**
+         * @brief Generates a timestamped filename
+         * @param baseLogPath Base path (e.g., "logs/app.log")
+         * @return Timestamped path (e.g., "logs/app_2025-10-30_14-30-45.log")
+         */
+        static std::string GenerateTimestampedFilename(const std::string &baseLogPath) {
+            auto now = std::chrono::system_clock::now();
+            auto time = std::chrono::system_clock::to_time_t(now);
+
+            std::stringstream ss;
+            ss << std::put_time(std::localtime(&time), "%Y-%m-%d_%H-%M-%S");
+
+            // Split the path into directory, name, and extension
+            size_t lastSlash = baseLogPath.find_last_of("/\\");
+            size_t lastDot = baseLogPath.find_last_of('.');
+
+            std::string directory = (lastSlash != std::string::npos)
+                ? baseLogPath.substr(0, lastSlash + 1) : "";
+            std::string filename = (lastSlash != std::string::npos)
+                ? baseLogPath.substr(lastSlash + 1) : baseLogPath;
+            std::string extension = (lastDot != std::string::npos && lastDot > lastSlash)
+                ? baseLogPath.substr(lastDot) : "";
+            std::string basename = (lastDot != std::string::npos && lastDot > lastSlash)
+                ? filename.substr(0, lastDot - (lastSlash + 1)) : filename;
+
+            return directory + basename + "_" + ss.str() + extension;
+        }
+
     public:
         /**
          * @brief Initializes the spdlog and sets up the sources and sinks
          * NOTE: Use Shutdown to clean up and dump all queue.
          *
          * @param loggerName Unique name for the logger
-         * @param logFilePath Place to save the log file
+         * @param logFilePath Place to save the log file (timestamp will be added automatically)
          * @param globalLevel Level of log, default is trace
          * @param queueSize queue size of the logging queue
          * @param numThreads number of threads used by logger
@@ -41,8 +73,11 @@ namespace logging {
             consoleSink->set_level(globalLevel);
             sinks.push_back(consoleSink);
 
+            // Generate timestamped filename
+            std::string timestampedPath = GenerateTimestampedFilename(logFilePath);
+
             const auto fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-                logFilePath, maxFileSize, maxFiles);
+                timestampedPath, maxFileSize, maxFiles);
             fileSink->set_level(globalLevel);
             sinks.push_back(fileSink);
 

@@ -24,9 +24,9 @@ namespace trading_core {
     public:
         /**
          * @brief Constructs a new Matcher object.
-         * @param dbWorker A shared pointer to the database worker for trade persistence.
+         * @param tradeIdGenerator A shared pointer to the trade ID generator.
          */
-        Matcher(const data::DatabaseWorkerPtr &dbWorker);
+        Matcher(std::shared_ptr<TradeIDGenerator> tradeIdGenerator);
 
         /**
          * @brief Matches an incoming order against the order book.
@@ -49,6 +49,6 @@ namespace trading_core {
                         std::vector<common::Trade> &trades);
 
     private:
-        TradeIDGenerator mTradeIdGenerator; ///< A generator for unique trade IDs.
+        std::shared_ptr<TradeIDGenerator> mTradeIdGenerator; ///< A generator for unique trade IDs.
     };
 }

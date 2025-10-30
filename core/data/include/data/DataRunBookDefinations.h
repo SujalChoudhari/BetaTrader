@@ -40,7 +40,7 @@ namespace errors {
     };
 
     inline constexpr runbook::ErrorDefinition EDATA7{
-        "EDATA6",
+        "EDATA7",
         "Failed to add a trade in the 'Trade' database table.",
         "Check the underlying database connection and the SQL syntax for the trade table creation query."
     };

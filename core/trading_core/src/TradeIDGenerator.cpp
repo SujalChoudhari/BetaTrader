@@ -1,10 +1,17 @@
 #include "trading_core/TradeIDGenerator.h"
 #include "common/Types.h"
+#include "logging/Logger.h"
 
 namespace trading_core {
     TradeIDGenerator::TradeIDGenerator(const data::DatabaseWorkerPtr &dbWorker) : repository(
         data::TradeIDRepository(dbWorker)) {
+        LOG_INFO("TradeIDGenerator instance created at {}", (void*)this);
         loadState();
+    }
+
+    TradeIDGenerator::~TradeIDGenerator() {
+        LOG_INFO("Saving final TradeID state from generator at {}...", (void*)this);
+        saveState();
     }
 
     common::TradeID TradeIDGenerator::getId() {
@@ -12,9 +19,8 @@ namespace trading_core {
     }
 
     common::TradeID TradeIDGenerator::nextId() {
-        common::TradeID newId = ++mCurrentId;
-        saveState();
-        return newId;
+        // Only increment in memory for performance; state is saved on destruction.
+        return ++mCurrentId;
     }
 
     void TradeIDGenerator::saveState() {

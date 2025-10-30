@@ -26,6 +26,11 @@ namespace trading_core {
         explicit TradeIDGenerator(const data::DatabaseWorkerPtr &dbWorker);
 
         /**
+         * @brief Destructor that saves the final ID state.
+         */
+        ~TradeIDGenerator();
+
+        /**
          * @brief Gets the current trade ID.
          * @return The current trade ID.
          */
