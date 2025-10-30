@@ -12,15 +12,11 @@
 #include "trading_core/ExecutionPublisher.h"
 #include "trading_core/TradeIDGenerator.h"
 #include "data/DatabaseWorker.h"
+#include "trading_core/NewOrder.h"
 
 using namespace trading_core;
 using namespace common;
-
-class DummyCommand : public Command {
-public:
-    DummyCommand() : Command(CommandType::NewOrder, "clientA", std::chrono::system_clock::now()) {
-    }
-};
+using namespace std::chrono_literals;
 
 class DummyOrder : public common::Order {
 public:
@@ -30,22 +26,8 @@ public:
     }
 };
 
-class DummyNewOrder : public trading_core::Command {
-public:
-    DummyNewOrder()
-        : Command(trading_core::CommandType::NewOrder, "C1", std::chrono::system_clock::now()),
-          order() {
-    }
-
-    [[nodiscard]] const common::Order *getOrder() const { return &order; }
-
-private:
-    DummyOrder order;
-};
-
-
 TEST(WorkerThreadTest, StartAndStopThread) {
-    rigtorp::SPSCQueue<Command *> queue(1024);
+    rigtorp::SPSCQueue<std::unique_ptr<Command>> queue(1024);
     auto dbWorker = std::make_shared<data::DatabaseWorker>(":memory:");
     auto tradeGen = std::make_shared<TradeIDGenerator>(dbWorker);
     auto execPub = std::make_shared<ExecutionPublisher>();
@@ -59,11 +41,12 @@ TEST(WorkerThreadTest, StartAndStopThread) {
                         riskManager, execPub, tradeGen, dbWorker);
 
     EXPECT_NO_THROW(worker.start());
+    std::this_thread::sleep_for(10ms);
     EXPECT_NO_THROW(worker.stop());
 }
 
 TEST(WorkerThreadTest, EnqueueAndProcessBasicCommand) {
-    rigtorp::SPSCQueue<Command *> queue(1024);
+    rigtorp::SPSCQueue<std::unique_ptr<Command>> queue(1024);
     auto dbWorker = std::make_shared<data::DatabaseWorker>(":memory:");
     auto tradeGen = std::make_shared<TradeIDGenerator>(dbWorker);
     auto execPub = std::make_shared<ExecutionPublisher>();
@@ -78,8 +61,14 @@ TEST(WorkerThreadTest, EnqueueAndProcessBasicCommand) {
 
     worker.start();
 
-    queue.push(new DummyNewOrder());
+    auto order = std::make_shared<DummyOrder>();
+    auto newOrderCmd = std::make_unique<NewOrder>("C1", std::chrono::system_clock::now(), order);
+
+    queue.push(std::move(newOrderCmd));
+
+    std::this_thread::sleep_for(50ms);
 
     worker.stop();
-    SUCCEED();
+
+    ASSERT_TRUE(orderManager.containsOrderById(1));
 }

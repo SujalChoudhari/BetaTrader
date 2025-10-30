@@ -10,7 +10,7 @@
 
 namespace trading_core {
     WorkerThread::WorkerThread(
-        rigtorp::SPSCQueue<Command *> &commandQueue,
+        rigtorp::SPSCQueue<std::unique_ptr<Command>> &commandQueue,
         OrderManager &orderManager,
         OrderBook &orderBook,
         Matcher &matcher,
@@ -56,13 +56,14 @@ namespace trading_core {
         LOG_INFO("Worker Thread started");
         while (mRunning.load(std::memory_order_acquire)) {
             size_t dequeued = 0;
-
-            for (auto &i: mCommandBatch) {
-                Command **cmd = mCommandQueue.front();
-                if (!cmd) break;
-                i = *cmd;
-                mCommandQueue.pop();
-                ++dequeued;
+            for (size_t i = 0; i < BATCH_SIZE; ++i) {
+                if (mCommandQueue.front()) {
+                    mCommandBatch[i] = std::move(*mCommandQueue.front());
+                    mCommandQueue.pop();
+                    dequeued++;
+                } else {
+                    break;
+                }
             }
 
             if (dequeued > 0) {
@@ -75,26 +76,25 @@ namespace trading_core {
         LOG_INFO("Worker Thread exited");
     }
 
-    void WorkerThread::processBatch(Command **commands, size_t count) const {
+    void WorkerThread::processBatch(std::unique_ptr<Command> *commands, size_t count) {
         for (size_t i = 0; i < count; ++i) {
-            Command *cmd = commands[i];
+            auto& cmd = commands[i];
             switch (cmd->getType()) {
-                case CommandType::NewOrder: processNewOrder(static_cast<NewOrder *>(cmd));
+                case CommandType::NewOrder: processNewOrder(*static_cast<NewOrder *>(cmd.get()));
                     break;
-                case CommandType::CancelOrder: processCancelOrder(static_cast<CancelOrder *>(cmd));
+                case CommandType::CancelOrder: processCancelOrder(*static_cast<CancelOrder *>(cmd.get()));
                     break;
-                case CommandType::ModifyOrder: processModifyOrder(static_cast<ModifyOrder *>(cmd));
+                case CommandType::ModifyOrder: processModifyOrder(*static_cast<ModifyOrder *>(cmd.get()));
                     break;
                 default: LOG_ERROR(errors::ETRADE1, "Found type: {}", trading_core::to_string(cmd->getType()));
                     break;
             }
-            delete cmd;
         }
     }
 
 
-    void WorkerThread::processNewOrder(const NewOrder *cmd) const {
-        const auto order = cmd->getOrder();
+    void WorkerThread::processNewOrder(const NewOrder &cmd) {
+        auto order = cmd.getOrder();
 
         if (!RiskManager::preCheck(*order)) {
             ExecutionPublisher::publishRejection(
@@ -105,10 +105,10 @@ namespace trading_core {
             return;
         }
 
-        mOrderManager.addOrder(const_cast<common::Order *>(order));
-        mOrderBook.insertOrder(const_cast<common::Order *>(order));
+        mOrderManager.addOrder(order);
+        mOrderBook.insertOrder(order);
 
-        auto trades = mMatcher.match(const_cast<common::Order *>(order), mOrderBook);
+        auto trades = mMatcher.match(order, mOrderBook);
         for (auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
             ExecutionPublisher::publishTrade(trade);
@@ -117,35 +117,37 @@ namespace trading_core {
         ExecutionPublisher::publishExecution(*order, "NEW");
     }
 
-    void WorkerThread::processCancelOrder(const CancelOrder *cmd) const {
-        const common::Order *order = mOrderManager.getOrderById(cmd->getOrderId()).value_or(nullptr);
-        if (!order) {
-            ExecutionPublisher::publishRejection(cmd->getOrderId(), cmd->getClientId(),
+    void WorkerThread::processCancelOrder(const CancelOrder &cmd) {
+        auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
+        if (!orderOpt) {
+            ExecutionPublisher::publishRejection(cmd.getOrderId(), cmd.getClientId(),
                                                  "Order not found");
             return;
         }
+        auto order = *orderOpt;
 
-        if (mOrderBook.cancelOrder(cmd->getOrderId())) {
-            mOrderManager.removeOrderById(cmd->getOrderId());
+        if (mOrderBook.cancelOrder(cmd.getOrderId())) {
+            mOrderManager.removeOrderById(cmd.getOrderId());
             ExecutionPublisher::publishExecution(*order, "CANCELED");
         } else {
-            ExecutionPublisher::publishRejection(cmd->getOrderId(), cmd->getClientId(),
+            ExecutionPublisher::publishRejection(cmd.getOrderId(), cmd.getClientId(),
                                                  "Order cannot be canceled");
         }
     }
 
-    void WorkerThread::processModifyOrder(const ModifyOrder *cmd) const {
-        common::Order *order = mOrderManager.getOrderById(cmd->getOrderId()).value_or(nullptr);
-        if (!order) {
-            ExecutionPublisher::publishRejection(cmd->getOrderId(), cmd->getClientId(),
+    void WorkerThread::processModifyOrder(const ModifyOrder &cmd) {
+        auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
+        if (!orderOpt) {
+            ExecutionPublisher::publishRejection(cmd.getOrderId(), cmd.getClientId(),
                                                  "Order not found");
             return;
         }
+        auto order = *orderOpt;
 
-        mOrderBook.cancelOrder(cmd->getOrderId());
+        mOrderBook.cancelOrder(cmd.getOrderId());
 
-        order->setPrice(cmd->getNewPrice());
-        order->setOriginalQuantity(cmd->getNewQuantity());
+        order->setPrice(cmd.getNewPrice());
+        order->setOriginalQuantity(cmd.getNewQuantity());
 
         mOrderBook.insertOrder(order);
 

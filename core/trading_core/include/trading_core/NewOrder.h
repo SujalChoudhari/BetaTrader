@@ -5,18 +5,19 @@
 #pragma once
 #include "Command.h"
 #include "common/Order.h"
+#include <memory>
 
 namespace trading_core {
     class NewOrder : public Command {
     public:
         explicit NewOrder(const common::ClientID &clientId, const common::Timestamp timestamp,
-                          common::Order order) : Command(CommandType::NewOrder, clientId, timestamp),
+                          std::shared_ptr<common::Order> order) : Command(CommandType::NewOrder, clientId, timestamp),
                                                  mOrder(std::move(order)) {
         };
 
-        [[nodiscard]] const common::Order * getOrder() const { return &mOrder; }
+        [[nodiscard]] std::shared_ptr<common::Order> getOrder() const { return mOrder; }
 
     private:
-        common::Order mOrder;
+        std::shared_ptr<common::Order> mOrder;
     };
 }

@@ -4,6 +4,7 @@
 
 #pragma once
 #include <vector>
+#include <memory>
 
 #include "OrderBook.h"
 #include "TradeIDGenerator.h"
@@ -16,11 +17,11 @@ namespace trading_core {
     public:
         Matcher(const data::DatabaseWorkerPtr &dbWorker);
 
-        std::vector<common::Trade> match(common::Order *incomingOrder, OrderBook &orderBook);
+        std::vector<common::Trade> match(std::shared_ptr<common::Order> incomingOrder, OrderBook &orderBook);
 
     private:
         template<typename TMap>
-        void matchTable(common::Order *incomingOrder, std::shared_ptr<TMap> restingMap,
+        void matchTable(std::shared_ptr<common::Order> incomingOrder, std::shared_ptr<TMap> restingMap,
                         std::vector<common::Trade> &trades);
 
     private:

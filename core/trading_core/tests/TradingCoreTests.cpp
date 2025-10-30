@@ -4,7 +4,8 @@
 
 #include <gtest/gtest.h>
 #include "trading_core/TradingCore.h"
-#include "trading_core/Command.h"
+#include "trading_core/NewOrder.h"
+#include "trading_core/ModifyOrder.h"
 #include "common/Instrument.h"
 #include "common/Order.h"
 
@@ -58,11 +59,11 @@ TEST_F(TradingCoreTest, StartStopDoNotThrow) {
 TEST_F(TradingCoreTest, NewOrderNoThrow) {
     EXPECT_NO_THROW({
         const auto order = createOrder(101);
-        auto newOrder = NewOrder("101",std::chrono::system_clock::now(), *order.get());
+        auto newOrder = std::make_unique<NewOrder>("101", std::chrono::system_clock::now(), order);
 
         tradingCore->start();
 
-        tradingCore->submitCommand(&newOrder);
+        tradingCore->submitCommand(std::move(newOrder));
         tradingCore->stop();
         });
 }
@@ -72,15 +73,15 @@ TEST_F(TradingCoreTest, ModifyOrderNoThrow) {
     tradingCore->start();
     EXPECT_NO_THROW({
         const auto order = createOrder(101,common::OrderSide::Buy,common::OrderType::Limit,100,40);
-        auto newOrder = NewOrder("101",std::chrono::system_clock::now(), *order.get());
+        auto newOrder = std::make_unique<NewOrder>("101",std::chrono::system_clock::now(), order);
 
-        tradingCore->submitCommand(&newOrder);
+        tradingCore->submitCommand(std::move(newOrder));
 
         });
     std::this_thread::sleep_for(std::chrono_literals::operator ""s(1));
     EXPECT_NO_THROW({
-        auto modifyOrder = ModifyOrder(std::chrono::system_clock::now(),"101",101,30,40);
-        tradingCore->submitCommand(&modifyOrder);
+        auto modifyOrder = std::make_unique<ModifyOrder>(std::chrono::system_clock::now(),"101",101,30,40);
+        tradingCore->submitCommand(std::move(modifyOrder));
         });
     tradingCore->stop();
 }

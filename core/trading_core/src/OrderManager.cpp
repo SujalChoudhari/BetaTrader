@@ -7,7 +7,7 @@
 #include "logging/Logger.h"
 
 namespace trading_core {
-    bool OrderManager::addOrder(common::Order *order) {
+    bool OrderManager::addOrder(std::shared_ptr<common::Order> order) {
         if (!order) {
             return false;
         }
@@ -17,7 +17,7 @@ namespace trading_core {
         return status;
     }
 
-    std::optional<common::Order *> OrderManager::getOrderById(const common::OrderID &id) const {
+    std::optional<std::shared_ptr<common::Order>> OrderManager::getOrderById(const common::OrderID &id) const {
         const auto it = mOrderMap.find(id);
 
         if (it == mOrderMap.end()) {

@@ -3,6 +3,7 @@
 //
 #pragma once
 #include <unordered_map>
+#include <memory>
 
 #include "common/Order.h"
 #include "common/Types.h"
@@ -20,9 +21,9 @@ namespace trading_core {
         OrderManager() = default;
 
     public:
-        bool addOrder(common::Order* order);
+        bool addOrder(std::shared_ptr<common::Order> order);
 
-        [[nodiscard]] std::optional<common::Order*> getOrderById(const common::OrderID &id) const;
+        [[nodiscard]] std::optional<std::shared_ptr<common::Order>> getOrderById(const common::OrderID &id) const;
 
         bool removeOrderById(const common::OrderID &id);
 
@@ -31,6 +32,6 @@ namespace trading_core {
         size_t size() const;
 
     private:
-        std::unordered_map<common::OrderID, common::Order*> mOrderMap;
+        std::unordered_map<common::OrderID, std::shared_ptr<common::Order>> mOrderMap;
     };
 }

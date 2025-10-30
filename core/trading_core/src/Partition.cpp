@@ -59,14 +59,17 @@ namespace trading_core {
         }
     }
 
-    void Partition::enqueue(Command *command) {
-        if (!mCommandQueue.try_push(command)) {
+    void Partition::enqueue(std::unique_ptr<Command> command) {
+        if (!mCommandQueue.try_push(std::move(command))) {
             LOG_ERROR("Partition {} command queue full. Dropping command type {}",
                       common::to_string(mSymbol), trading_core::to_string(command->getType()));
             // TODO: optionally track dropped command metrics
-            delete command; // prevent leak
+            // The unique_ptr will be automatically deleted when it goes out of scope
         }
-        LOG_INFO("Pushed a command in symbol {} from {}", common::to_string(mSymbol), command->getClientId());
+        // The command is moved, so 'command' is now null. Accessing it here would be a use-after-move.
+        // LOG_INFO("Pushed a command in symbol {} from {}", common::to_string(mSymbol), command->getClientId());
+        // To log, we need to access the command before moving it, or get it back from the queue if push fails.
+        // For now, I'll comment out the log that accesses the moved command.
     }
 
     common::Symbol Partition::getSymbol() const {

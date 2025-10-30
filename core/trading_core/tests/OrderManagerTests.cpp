@@ -43,7 +43,7 @@ TEST_F(OrderManagerTest, InitialStateIsEmpty) {
 
 TEST_F(OrderManagerTest, AddOrderSuccessfully) {
     const auto order = createOrder(101);
-    ASSERT_TRUE(pmOrderManager->addOrder(order.get()));
+    ASSERT_TRUE(pmOrderManager->addOrder(order));
     EXPECT_EQ(pmOrderManager->size(), 1);
     EXPECT_TRUE(pmOrderManager->containsOrderById(101));
 }
@@ -52,11 +52,11 @@ TEST_F(OrderManagerTest, AddDuplicateOrderFails) {
     const auto order1 = createOrder(101);
     const auto order2 = createOrder(101); // New object, same ID
 
-    ASSERT_TRUE(pmOrderManager->addOrder(order1.get()));
+    ASSERT_TRUE(pmOrderManager->addOrder(order1));
     EXPECT_EQ(pmOrderManager->size(), 1);
 
     // Try to add the duplicate
-    EXPECT_FALSE(pmOrderManager->addOrder(order2.get()));
+    EXPECT_FALSE(pmOrderManager->addOrder(order2));
     EXPECT_EQ(pmOrderManager->size(), 1); // Size should not change
 }
 
@@ -67,14 +67,14 @@ TEST_F(OrderManagerTest, AddNullOrderFails) {
 
 TEST_F(OrderManagerTest, GetExistingOrder) {
     const auto order = createOrder(101);
-    pmOrderManager->addOrder(order.get());
+    pmOrderManager->addOrder(order);
 
     const auto retrievedOrderOpt = pmOrderManager->getOrderById(101);
     ASSERT_TRUE(retrievedOrderOpt.has_value());
 
     const auto &retrievedOrder = retrievedOrderOpt.value();
     EXPECT_EQ(retrievedOrder->getId(), 101);
-    EXPECT_EQ(retrievedOrder, order.get()); // Should be the same shared_ptr
+    EXPECT_EQ(retrievedOrder, order); // Should be the same shared_ptr
 }
 
 TEST_F(OrderManagerTest, GetNonExistentOrder) {
@@ -84,7 +84,7 @@ TEST_F(OrderManagerTest, GetNonExistentOrder) {
 
 TEST_F(OrderManagerTest, RemoveExistingOrder) {
     const auto order = createOrder(101);
-    pmOrderManager->addOrder(order.get());
+    pmOrderManager->addOrder(order);
     ASSERT_EQ(pmOrderManager->size(), 1);
 
     EXPECT_TRUE(pmOrderManager->removeOrderById(101));
@@ -94,7 +94,7 @@ TEST_F(OrderManagerTest, RemoveExistingOrder) {
 
 TEST_F(OrderManagerTest, RemoveNonExistentOrder) {
     const auto order = createOrder(101);
-    pmOrderManager->addOrder(order.get());
+    pmOrderManager->addOrder(order);
     ASSERT_EQ(pmOrderManager->size(), 1);
 
     EXPECT_FALSE(pmOrderManager->removeOrderById(999));
@@ -103,7 +103,7 @@ TEST_F(OrderManagerTest, RemoveNonExistentOrder) {
 
 TEST_F(OrderManagerTest, ContainsOrder) {
     const auto order = createOrder(101);
-    pmOrderManager->addOrder(order.get());
+    pmOrderManager->addOrder(order);
 
     EXPECT_TRUE(pmOrderManager->containsOrderById(101));
     EXPECT_FALSE(pmOrderManager->containsOrderById(999));
@@ -112,10 +112,10 @@ TEST_F(OrderManagerTest, ContainsOrder) {
 TEST_F(OrderManagerTest, SizeChangesCorrectly) {
     EXPECT_EQ(pmOrderManager->size(), 0);
 
-    pmOrderManager->addOrder(createOrder(101).get());
+    pmOrderManager->addOrder(createOrder(101));
     EXPECT_EQ(pmOrderManager->size(), 1);
 
-    pmOrderManager->addOrder(createOrder(102, common::OrderSide::Sell).get());
+    pmOrderManager->addOrder(createOrder(102, common::OrderSide::Sell));
     EXPECT_EQ(pmOrderManager->size(), 2);
 
     pmOrderManager->removeOrderById(101);

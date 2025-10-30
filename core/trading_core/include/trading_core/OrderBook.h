@@ -5,6 +5,7 @@
 #pragma once
 #include <deque>
 #include <map>
+#include <memory>
 
 #include "common/Order.h"
 #include "common/Types.h"
@@ -13,7 +14,7 @@ namespace trading_core {
     class OrderBook {
         // A Level with all the orders arranged in queue based on their price
         // Same tier prices are arranged in same level
-        using PriceLevel = std::deque<common::Order *>;
+        using PriceLevel = std::deque<std::shared_ptr<common::Order>>;
 
         // Map of the price tier and the queue of the orders of the Buyers
         using BidMap = std::map<common::Price, PriceLevel, std::greater<> >;
@@ -26,7 +27,7 @@ namespace trading_core {
          *
          * @param order Order to insert in the Book
          */
-        void insertOrder(common::Order *order);
+        void insertOrder(std::shared_ptr<common::Order> order);
 
         /**
          *

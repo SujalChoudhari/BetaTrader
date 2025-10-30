@@ -8,6 +8,7 @@
 #include "Partition.h"
 #include "TradeIDGenerator.h"
 #include "data/DatabaseWorker.h"
+#include <memory> // Required for std::unique_ptr
 
 namespace trading_core {
     class TradingCore {
@@ -20,7 +21,7 @@ namespace trading_core {
 
         void stop() const;
 
-        void submitCommand(Command *command) const;
+        void submitCommand(std::unique_ptr<Command> command) const;
 
     private:
         void initPartitions();

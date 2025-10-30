@@ -7,6 +7,7 @@
 #include <chrono>
 #include "common/Order.h"
 #include "trading_core/Command.h"
+#include "trading_core/NewOrder.h"
 
 class DummyOrder : public common::Order {
 public:
@@ -22,20 +23,6 @@ public:
     }
 };
 
-class DummyNewOrder : public trading_core::Command {
-public:
-    DummyNewOrder()
-        : Command(trading_core::CommandType::NewOrder,
-                  "C1",
-                  std::chrono::system_clock::now()),
-          order() {
-    }
-
-    [[nodiscard]] const common::Order *getOrder() const { return &order; }
-
-private:
-    DummyOrder order;
-};
 
 using namespace trading_core;
 
@@ -82,11 +69,11 @@ TEST_F(PartitionTestFixture, EnqueueAndDrop) {
 
     // Fill the queue
     for (int i = 0; i < 4096; ++i) {
-        partition.enqueue(new DummyNewOrder());
+        partition.enqueue(std::make_unique<NewOrder>("C1", std::chrono::system_clock::now(), std::make_shared<DummyOrder>()));
     }
 
     // This should drop the command (queue full)
-    EXPECT_NO_THROW(partition.enqueue(new DummyNewOrder()));
+    EXPECT_NO_THROW(partition.enqueue(std::make_unique<NewOrder>("C1", std::chrono::system_clock::now(), std::make_shared<DummyOrder>())));
 
     partition.stop();
 }

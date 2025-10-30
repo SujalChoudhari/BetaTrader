@@ -13,13 +13,14 @@
 #include "OrderManager.h"
 #include "RiskManager.h"
 #include "rigtorp/SPSCQueue.h"
+#include <memory>
 
 
 namespace trading_core {
     class WorkerThread {
     public:
         WorkerThread(
-            rigtorp::SPSCQueue<Command *> &commandQueue,
+            rigtorp::SPSCQueue<std::unique_ptr<Command>> &commandQueue,
             OrderManager &orderManager,
             OrderBook &orderBook,
             Matcher &matcher,
@@ -42,21 +43,21 @@ namespace trading_core {
 
     private:
         // Process a batch of commands
-        void processBatch(Command **commands, size_t count) const;
+        void processBatch(std::unique_ptr<Command> *commands, size_t count);
 
         // Process individual command types
-        void processNewOrder(const NewOrder *cmd) const;
+        void processNewOrder(const NewOrder &cmd);
 
-        void processCancelOrder(const CancelOrder *cmd) const;
+        void processCancelOrder(const CancelOrder &cmd);
 
-        void processModifyOrder(const ModifyOrder *cmd) const;
+        void processModifyOrder(const ModifyOrder &cmd);
 
         // Thread control
         std::thread mThread;
         std::atomic<bool> mRunning;
 
         // Reference to partition's command queue
-        rigtorp::SPSCQueue<Command *> &mCommandQueue;
+        rigtorp::SPSCQueue<std::unique_ptr<Command>> &mCommandQueue;
 
         // References to partition-owned components
         OrderManager &mOrderManager;
@@ -71,6 +72,6 @@ namespace trading_core {
 
         // Batch processing buffer
         static constexpr size_t BATCH_SIZE = 64;
-        Command *mCommandBatch[BATCH_SIZE];
+        std::unique_ptr<Command> mCommandBatch[BATCH_SIZE];
     };
 }

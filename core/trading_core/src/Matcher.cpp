@@ -17,7 +17,7 @@ namespace trading_core {
     Matcher::Matcher(const data::DatabaseWorkerPtr &dbWorker) : mTradeIdGenerator(TradeIDGenerator(dbWorker)) {
     }
 
-    std::vector<common::Trade> Matcher::match(common::Order *incomingOrder, OrderBook &orderBook) {
+    std::vector<common::Trade> Matcher::match(std::shared_ptr<common::Order> incomingOrder, OrderBook &orderBook) {
         std::vector<common::Trade> trades;
 
         if (incomingOrder->getSide() == common::OrderSide::Buy) {
@@ -30,7 +30,7 @@ namespace trading_core {
     }
 
     template<typename TMap>
-    void Matcher::matchTable(common::Order *incomingOrder, std::shared_ptr<TMap> restingMap,
+    void Matcher::matchTable(std::shared_ptr<common::Order> incomingOrder, std::shared_ptr<TMap> restingMap,
                              std::vector<common::Trade> &trades) {
         auto it = restingMap->begin();
 
@@ -45,12 +45,12 @@ namespace trading_core {
                 if (incomingOrder->getPrice() > it->first) break;
             }
 
-            std::deque<common::Order *> &restingLevel = it->second;
+            auto &restingLevel = it->second;
 
 
             // apply and update the book
             while (!restingLevel.empty() && incomingOrder->getRemainingQuantity() > 0) {
-                common::Order *restingOrder = restingLevel.front();
+                auto restingOrder = restingLevel.front();
 
                 common::Quantity tradeQuantity = std::min(incomingOrder->getRemainingQuantity(),
                                                           restingOrder->getRemainingQuantity());

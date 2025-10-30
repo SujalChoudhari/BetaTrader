@@ -11,6 +11,7 @@
 #include "RiskManager.h"
 #include "WorkerThread.h"
 #include "rigtorp/SPSCQueue.h"
+#include <memory>
 
 namespace trading_core {
     class Partition {
@@ -26,7 +27,7 @@ namespace trading_core {
 
         void stop();
 
-        void enqueue(Command *command);
+        void enqueue(std::unique_ptr<Command> command);
 
     public:
         [[nodiscard]] common::Symbol getSymbol() const;
@@ -48,7 +49,7 @@ namespace trading_core {
         [[nodiscard]] const WorkerThread *getWorker() const;
 
     private:
-        rigtorp::SPSCQueue<Command *> mCommandQueue;
+        rigtorp::SPSCQueue<std::unique_ptr<Command>> mCommandQueue;
 
         common::Symbol mSymbol;
         data::DatabaseWorkerPtr mDatabaseWorker;

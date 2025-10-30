@@ -7,6 +7,9 @@
 #include "data/Constant.h"
 #include "data/DataRunBookDefinations.h"
 #include "trading_core/TradingCoreRunbookDefinations.h"
+#include "trading_core/NewOrder.h"
+#include "trading_core/ModifyOrder.h"
+#include "trading_core/CancelOrder.h"
 
 namespace trading_core {
     TradingCore::TradingCore() {
@@ -32,23 +35,20 @@ namespace trading_core {
         }
     }
 
-    void TradingCore::submitCommand(Command *command) const {
-        // Use unique_ptr for RAII
-        std::unique_ptr<Command> cmd(command);
-
-        if (cmd->getType() == CommandType::NewOrder) {
-            const auto newOrder = dynamic_cast<NewOrder *>(cmd.get());
+    void TradingCore::submitCommand(std::unique_ptr<Command> command) const {
+        if (command->getType() == CommandType::NewOrder) {
+            const auto newOrder = dynamic_cast<NewOrder *>(command.get());
             if (!newOrder) {
                 LOG_ERROR(errors::ETRADE3, "Invalid NewOrder cast");
-                return; // cmd auto-deleted
+                return;
             }
             auto instrument = newOrder->getOrder()->getSymbol();
-            mPartitions[static_cast<int>(instrument)]->enqueue(cmd.release());
+            mPartitions[static_cast<int>(instrument)]->enqueue(std::move(command));
             return;
         }
 
-        if (cmd->getType() == CommandType::ModifyOrder) {
-            const auto order = dynamic_cast<ModifyOrder *>(cmd.get());
+        if (command->getType() == CommandType::ModifyOrder) {
+            const auto order = dynamic_cast<ModifyOrder *>(command.get());
             if (!order) {
                 LOG_ERROR(errors::ETRADE3, "Invalid ModifyOrder cast");
                 return;
@@ -58,13 +58,13 @@ namespace trading_core {
                 LOG_ERROR(errors::ETRADE2, "Modify Order ID not found");
                 return;
             }
-            mPartitions[static_cast<int>(*instrumentOpt)]->enqueue(cmd.release());
+            mPartitions[static_cast<int>(*instrumentOpt)]->enqueue(std::move(command));
             return;
         }
 
 
-        if (cmd->getType() == CommandType::CancelOrder) {
-            const auto order = dynamic_cast<CancelOrder *>(cmd.get());
+        if (command->getType() == CommandType::CancelOrder) {
+            const auto order = dynamic_cast<CancelOrder *>(command.get());
             if (!order) {
                 LOG_ERROR(errors::ETRADE3, "Invalid CancelOrder cast");
                 return;
@@ -74,7 +74,7 @@ namespace trading_core {
                 LOG_ERROR(errors::ETRADE2, "Cancel Order ID not found");
                 return;
             }
-            mPartitions[static_cast<int>(*instrumentOpt)]->enqueue(cmd.release());
+            mPartitions[static_cast<int>(*instrumentOpt)]->enqueue(std::move(command));
             return;
         }
 

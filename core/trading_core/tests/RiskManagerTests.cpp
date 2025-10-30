@@ -24,7 +24,7 @@ protected:
         logging::Logger::Shutdown();
     }
 
-    static common::Order createOrder(
+    static std::shared_ptr<common::Order> createOrder(
         common::OrderID id,
         common::OrderSide side = common::OrderSide::Buy,
         common::OrderType type = common::OrderType::Limit,
@@ -33,7 +33,7 @@ protected:
         double price = 50.0,
         common::OrderStatus status = common::OrderStatus::New
     ) {
-        common::Order order(
+        auto order = std::make_shared<common::Order>(
             id,
             common::Instrument::EURUSD,
             "CLIENT_" + std::to_string(id),
@@ -43,8 +43,8 @@ protected:
             price,
             std::chrono::system_clock::now()
         );
-        order.setStatus(status);
-        order.setRemainingQuantity(remainingQuantity);
+        order->setStatus(status);
+        order->setRemainingQuantity(remainingQuantity);
         return order;
     }
 
@@ -72,44 +72,44 @@ protected:
 
 TEST_F(RiskManagerTest, PreCheckValidLimitOrder) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50);
-    EXPECT_TRUE(riskManager->preCheck(order));
+    EXPECT_TRUE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckValidMarketOrder) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Market, 100, 100, 0);
-    EXPECT_TRUE(riskManager->preCheck(order));
+    EXPECT_TRUE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForInvalidOrderId) {
     const auto order = createOrder(0, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50);
-    EXPECT_FALSE(riskManager->preCheck(order));
+    EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForZeroQuantity) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 0, 0, 50);
-    EXPECT_FALSE(riskManager->preCheck(order));
+    EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 
 TEST_F(RiskManagerTest, PreCheckFailsWhenRemainingNotEqualOriginal) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 50, 50);
-    EXPECT_FALSE(riskManager->preCheck(order));
+    EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForNonNewStatus) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 50,
                                    common::OrderStatus::Filled);
-    EXPECT_FALSE(riskManager->preCheck(order));
+    EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForLimitOrderWithZeroPrice) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, 0);
-    EXPECT_FALSE(riskManager->preCheck(order));
+    EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PreCheckFailsForLimitOrderWithNegativePrice) {
     const auto order = createOrder(1, common::OrderSide::Buy, common::OrderType::Limit, 100, 100, -50);
-    EXPECT_FALSE(riskManager->preCheck(order));
+    EXPECT_FALSE(riskManager->preCheck(*order));
 }
 
 TEST_F(RiskManagerTest, PostTradeUpdateSingleTrade) {
