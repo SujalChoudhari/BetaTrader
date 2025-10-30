@@ -19,6 +19,8 @@ namespace trading_core {
             : mType(type), mClientId(std::move(clientId)), mTimestamp(timestamp) {
         }
 
+        virtual ~Command() = default;
+
         [[nodiscard]] CommandType getType() const { return mType; }
         [[nodiscard]] common::ClientID getClientId() const { return mClientId; }
         [[nodiscard]] common::Timestamp getTimestamp() const { return mTimestamp; }

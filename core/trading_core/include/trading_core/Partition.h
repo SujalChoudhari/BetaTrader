@@ -20,6 +20,8 @@ namespace trading_core {
                   std::shared_ptr<TradeIDGenerator> tradeIDGenerator,
                   std::shared_ptr<ExecutionPublisher> executionPublisher);
 
+        ~Partition();
+
         void start();
 
         void stop();

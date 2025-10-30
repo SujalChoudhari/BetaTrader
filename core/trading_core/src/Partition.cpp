@@ -25,6 +25,10 @@ namespace trading_core {
         mRiskManager = std::make_unique<RiskManager>(mDatabaseWorker);
     }
 
+    Partition::~Partition() {
+        stop();
+    }
+
     void Partition::start() {
         if (mWorker) {
             LOG_INFO("Partition for symbol {} already running", common::to_string(mSymbol));

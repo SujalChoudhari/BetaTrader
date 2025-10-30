@@ -20,10 +20,10 @@ namespace common {
               const Quantity qty,
               const Price price,
               const Timestamp ts)
-            : mTradeId(std::move(tradeId)),
-              mOrderSymbol(std::move(symbol)),
-              mBuyOrderId(std::move(buyOrderId)),
-              mSellOrderId(std::move(sellOrderId)),
+            : mTradeId(tradeId),
+              mOrderSymbol(symbol),
+              mBuyOrderId(buyOrderId),
+              mSellOrderId(sellOrderId),
               mQuantity(qty),
               mPrice(price),
               mTimestamp(ts) {

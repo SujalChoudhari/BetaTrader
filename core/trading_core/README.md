@@ -283,7 +283,3 @@ The **Trading Core** is a high-speed, deterministic engine that:
 
 Its success metric is *correctness under load*:
 every microsecond counts, but correctness never fails.
-
----
-
-Would you like me to now produce the **Technical Specification Document (TSD)** — including class hierarchy, thread model, internal queues, and design patterns used (Reactor, Command, Publisher-Subscriber)?

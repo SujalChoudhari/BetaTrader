@@ -1,3 +1,7 @@
+//
+// Created by sujal on 30-10-2025.
+//
+
 #pragma once
 
 #include "logging/Runbook.h"
@@ -15,11 +19,10 @@
  * linker and runtime "Unknown Error" issues.
  */
 namespace errors {
-    inline constexpr runbook::ErrorDefinition E1001{
-        "E-1001",
-        "Failed to connect to the primary database.",
-        "1. Check that the DB_HOST and DB_PORT environment variables are set correctly.\n"
-        "    2. Verify the database server is running and accessible (check firewalls).\n"
-        "    3. Check database credentials in the configuration."
+    inline constexpr runbook::ErrorDefinition ETRADE1{
+        "ETRADE1",
+        "Unknown command type detected",
+        "An Unknown or un processable command type was passed with the command,"
+        " view the command and/or change the type"
     };
 } // namespace errors

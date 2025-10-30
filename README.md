@@ -12,27 +12,18 @@ It demonstrates production-level distributed systems architecture, concurrency, 
 The platform is organized into five distinct layers, each designed to run as an independent set of processes.
 
 ## System Architecture
+```mermaid
+flowchart TD
+A["Venue Simulators<br/>Simulated liquidity providers and market data feeds"]
+B["Gateway Layer<br/>Protocol translation and external connectivity"]
+C["Core Engine<br/>Order matching, risk management, execution"]
+D["Business Services<br/>Position management, analytics, strategies"]
+E["Client Layer<br/>API gateway and administrative interfaces"]
 
-```
-┌──────────────────────┐
-│   Venue Simulators   │  Simulated liquidity providers and market data feeds
-└──────────┬───────────┘
-           │ (Market Data)
-┌──────────▼───────────┐
-│   Gateway Layer      │  Protocol translation and external connectivity
-└──────────┬───────────┘
-           │ (FIX Orders / Data)
-┌──────────▼───────────┐
-│   Core Engine        │  Order matching, risk management, execution
-└──────────┬───────────┘
-           │ (Trade / Position Events)
-┌──────────▼───────────┐
-│  Business Services   │  Position management, analytics, strategies
-└──────────┬───────────┘
-           │ (API Requests)
-┌──────────▼───────────┐
-│   Client Layer       │  API gateway and administrative interfaces
-└──────────────────────┘
+    A -->|Market Data| B
+    B -->|FIX Orders / Data| C
+    C -->|Trade / Position Events| D
+    D -->|API Requests| E
 ```
 
 ## Repository Structure

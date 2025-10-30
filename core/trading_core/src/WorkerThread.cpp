@@ -1,5 +1,12 @@
+//
+// Created by sujal on 29-10-2025.
+//
+
 #include "trading_core/WorkerThread.h"
 #include <iostream>
+
+#include "logging/Logger.h"
+#include "trading_core/TradingCoreRunbookDefinations.h"
 
 namespace trading_core {
     WorkerThread::WorkerThread(
@@ -31,11 +38,13 @@ namespace trading_core {
     }
 
     void WorkerThread::start() {
+        LOG_INFO("Worker Thread attempting to start");
         mRunning.store(true, std::memory_order_release);
         mThread = std::thread(&WorkerThread::runLoop, this);
     }
 
     void WorkerThread::stop() {
+        LOG_INFO("Worker thread attempting to exit");
         mRunning.store(false, std::memory_order_release);
         if (mThread.joinable()) {
             mThread.join();
@@ -43,15 +52,15 @@ namespace trading_core {
     }
 
     void WorkerThread::runLoop() {
-        std::cout << "[WorkerThread] Started event loop\n";
-
+        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(5));
+        LOG_INFO("Worker Thread started");
         while (mRunning.load(std::memory_order_acquire)) {
             size_t dequeued = 0;
 
-            for (size_t i = 0; i < BATCH_SIZE; ++i) {
+            for (auto &i: mCommandBatch) {
                 Command **cmd = mCommandQueue.front();
                 if (!cmd) break;
-                mCommandBatch[i] = *cmd;
+                i = *cmd;
                 mCommandQueue.pop();
                 ++dequeued;
             }
@@ -63,36 +72,32 @@ namespace trading_core {
             }
         }
 
-        std::cout << "[WorkerThread] Stopped event loop\n";
+        LOG_INFO("Worker Thread exited");
     }
 
     void WorkerThread::processBatch(Command **commands, size_t count) const {
         for (size_t i = 0; i < count; ++i) {
             Command *cmd = commands[i];
             switch (cmd->getType()) {
-                case CommandType::NewOrder:
-                    processNewOrder(static_cast<NewOrder *>(cmd));
+                case CommandType::NewOrder: processNewOrder(static_cast<NewOrder *>(cmd));
                     break;
-                case CommandType::CancelOrder:
-                    processCancelOrder(static_cast<CancelOrder *>(cmd));
+                case CommandType::CancelOrder: processCancelOrder(static_cast<CancelOrder *>(cmd));
                     break;
-                case CommandType::ModifyOrder:
-                    processModifyOrder(static_cast<ModifyOrder *>(cmd));
+                case CommandType::ModifyOrder: processModifyOrder(static_cast<ModifyOrder *>(cmd));
                     break;
-                default:
-                    std::cerr << "[WorkerThread] Unknown command type: "
-                            << static_cast<int>(cmd->getType()) << "\n";
+                default: LOG_ERROR(errors::ETRADE1, "Found type: {}", trading_core::to_string(cmd->getType()));
                     break;
             }
             delete cmd;
         }
     }
 
-    void WorkerThread::processNewOrder(const NewOrder *cmd) const {
-        common::Order *order = const_cast<common::Order *>(&cmd->getOrder());
 
-        if (!mRiskManager.preCheck(*order)) {
-            mExecutionPublisher->publishRejection(
+    void WorkerThread::processNewOrder(const NewOrder *cmd) const {
+        auto *order = const_cast<common::Order *>(&cmd->getOrder());
+
+        if (!RiskManager::preCheck(*order)) {
+            ExecutionPublisher::publishRejection(
                 order->getId(),
                 order->getClientId(),
                 "Risk check failed"
@@ -103,34 +108,37 @@ namespace trading_core {
         mOrderManager.addOrder(order);
         mOrderBook.insertOrder(order);
 
-        for (std::vector<common::Trade> trades = mMatcher.match(*order, mOrderBook);
-             common::Trade &trade: trades) {
+        auto trades = mMatcher.match(*order, mOrderBook);
+        for (auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
-            mExecutionPublisher->publishTrade(trade);
+            ExecutionPublisher::publishTrade(trade);
         }
 
-        mExecutionPublisher->publishExecution(*order, "NEW");
+        ExecutionPublisher::publishExecution(*order, "NEW");
     }
 
     void WorkerThread::processCancelOrder(const CancelOrder *cmd) const {
         const common::Order *order = mOrderManager.getOrderById(cmd->getOrderId()).value_or(nullptr);
         if (!order) {
-            mExecutionPublisher->publishRejection(cmd->getOrderId(), cmd->getClientId(), "Order not found");
+            ExecutionPublisher::publishRejection(cmd->getOrderId(), cmd->getClientId(),
+                                                 "Order not found");
             return;
         }
 
-        if (bool removed = mOrderBook.cancelOrder(cmd->getOrderId())) {
+        if (mOrderBook.cancelOrder(cmd->getOrderId())) {
             mOrderManager.removeOrderById(cmd->getOrderId());
-            mExecutionPublisher->publishExecution(*order, "CANCELED");
+            ExecutionPublisher::publishExecution(*order, "CANCELED");
         } else {
-            mExecutionPublisher->publishRejection(cmd->getOrderId(), cmd->getClientId(), "Order cannot be canceled");
+            ExecutionPublisher::publishRejection(cmd->getOrderId(), cmd->getClientId(),
+                                                 "Order cannot be canceled");
         }
     }
 
     void WorkerThread::processModifyOrder(const ModifyOrder *cmd) const {
         common::Order *order = mOrderManager.getOrderById(cmd->getOrderId()).value_or(nullptr);
         if (!order) {
-            mExecutionPublisher->publishRejection(cmd->getOrderId(), cmd->getClientId(), "Order not found");
+            ExecutionPublisher::publishRejection(cmd->getOrderId(), cmd->getClientId(),
+                                                 "Order not found");
             return;
         }
 
@@ -141,12 +149,12 @@ namespace trading_core {
 
         mOrderBook.insertOrder(order);
 
-        for (std::vector<common::Trade> trades = mMatcher.match(*order, mOrderBook);
-             common::Trade &trade: trades) {
+        auto trades = mMatcher.match(*order, mOrderBook);
+        for (auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
-            mExecutionPublisher->publishTrade(trade);
+            ExecutionPublisher::publishTrade(trade);
         }
 
-        mExecutionPublisher->publishExecution(*order, "REPLACED");
+        ExecutionPublisher::publishExecution(*order, "REPLACED");
     }
 }
