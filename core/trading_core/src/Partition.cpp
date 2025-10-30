@@ -2,6 +2,7 @@
 #include "trading_core/CommandType.h"
 #include "logging/Logger.h"
 #include "trading_core/WorkerThread.h"
+#include "trading_core/TradingCoreRunbookDefinations.h"
 
 namespace trading_core {
     Partition::Partition(
@@ -20,15 +21,17 @@ namespace trading_core {
         // Pass the shared TradeIDGenerator to the Matcher
         mMatcher = std::make_unique<Matcher>(mTradeIDGenerator);
         mRiskManager = std::make_unique<RiskManager>(mDatabaseWorker);
+        LOG_INFO("Partition for symbol {} initialized.", common::to_string(mSymbol));
     }
 
     Partition::~Partition() {
         stop();
+        LOG_INFO("Partition for symbol {} destroyed.", common::to_string(mSymbol));
     }
 
     void Partition::start() {
         if (mWorker) {
-            LOG_INFO("Partition for symbol {} already running", common::to_string(mSymbol));
+            LOG_WARN("Partition for symbol {} already running. Skipping start.", common::to_string(mSymbol));
             return;
         }
 
@@ -46,6 +49,7 @@ namespace trading_core {
         );
 
         mWorker->start();
+        LOG_INFO("Worker thread started for partition {}.", common::to_string(mSymbol));
     }
 
     void Partition::stop() {
@@ -53,13 +57,23 @@ namespace trading_core {
             LOG_INFO("Stopping partition for symbol {}", common::to_string(mSymbol));
             mWorker->stop();
             mWorker.reset();
+            LOG_INFO("Worker thread stopped and reset for partition {}.", common::to_string(mSymbol));
+        } else {
+            LOG_WARN("Partition for symbol {} is not running. Skipping stop.", common::to_string(mSymbol));
         }
     }
 
     void Partition::enqueue(std::unique_ptr<Command> command) {
+        if (!command) {
+            LOG_ERROR(errors::ETRADE4, "Attempted to enqueue a null command in partition {}.", common::to_string(mSymbol));
+            return;
+        }
+
         if (!mCommandQueue.try_push(std::move(command))) {
-            LOG_ERROR("Partition {} command queue full. Dropping command type {}",
+            LOG_ERROR(errors::ETRADE1, "Partition {} command queue full. Dropping command type {}.",
                       common::to_string(mSymbol), trading_core::to_string(command->getType()));
+        } else {
+            LOG_DEBUG("Enqueued command type {} in partition {}.", trading_core::to_string(command->getType()), common::to_string(mSymbol));
         }
     }
 

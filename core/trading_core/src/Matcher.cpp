@@ -17,11 +17,20 @@ namespace trading_core {
     std::vector<common::Trade> Matcher::match(std::shared_ptr<common::Order> incomingOrder, OrderBook &orderBook) {
         std::vector<common::Trade> trades;
 
+        if (!incomingOrder) {
+            LOG_ERROR(errors::ETRADE4, "Incoming order is null");
+            return trades;
+        }
+
+        LOG_INFO("Matching order {} with quantity {}", incomingOrder->getId(), incomingOrder->getRemainingQuantity());
+
         if (incomingOrder->getSide() == common::OrderSide::Buy) {
             matchTable(incomingOrder, orderBook.getAskMap(), trades);
         } else if (incomingOrder->getSide() == common::OrderSide::Sell) {
             matchTable(incomingOrder, orderBook.getBidMap(), trades);
         }
+
+        LOG_INFO("Order {} matched, {} trades created", incomingOrder->getId(), trades.size());
 
         return trades;
     }

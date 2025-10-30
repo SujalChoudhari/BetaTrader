@@ -33,13 +33,17 @@ namespace logging {
             size_t lastDot = baseLogPath.find_last_of('.');
 
             std::string directory = (lastSlash != std::string::npos)
-                ? baseLogPath.substr(0, lastSlash + 1) : "";
+                                        ? baseLogPath.substr(0, lastSlash + 1)
+                                        : "";
             std::string filename = (lastSlash != std::string::npos)
-                ? baseLogPath.substr(lastSlash + 1) : baseLogPath;
+                                       ? baseLogPath.substr(lastSlash + 1)
+                                       : baseLogPath;
             std::string extension = (lastDot != std::string::npos && lastDot > lastSlash)
-                ? baseLogPath.substr(lastDot) : "";
+                                        ? baseLogPath.substr(lastDot)
+                                        : "";
             std::string basename = (lastDot != std::string::npos && lastDot > lastSlash)
-                ? filename.substr(0, lastDot - (lastSlash + 1)) : filename;
+                                       ? filename.substr(0, lastDot - (lastSlash + 1))
+                                       : filename;
 
             return directory + basename + "_" + ss.str() + extension;
         }
@@ -51,37 +55,50 @@ namespace logging {
          *
          * @param loggerName Unique name for the logger
          * @param logFilePath Place to save the log file (timestamp will be added automatically)
+         * @param enableConsole to use the console based logging or not
+         * @param enableFile to use the file based logging or not
          * @param globalLevel Level of log, default is trace
          * @param queueSize queue size of the logging queue
          * @param numThreads number of threads used by logger
          * @param maxFileSize maximum file size of the log file
          * @param maxFiles total number of files used by logger
+
          */
         static void Init(
             const std::string &loggerName = "async_logger",
             const std::string &logFilePath = "logs/app.log",
+            const bool enableConsole = true,
+            const bool enableFile = true,
             const spdlog::level::level_enum globalLevel = spdlog::level::trace,
             const size_t queueSize = 8192,
             const size_t numThreads = 1,
-            size_t maxFileSize = 1024 * 1024 * 10, // 10 MB
+            size_t maxFileSize = 1024 * 1024 * 10,
             size_t maxFiles = 5) {
+            spdlog::drop_all();
+            spdlog::shutdown();
             spdlog::init_thread_pool(queueSize, numThreads);
-
             std::vector<spdlog::sink_ptr> sinks;
 
-            const auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            consoleSink->set_level(globalLevel);
-            sinks.push_back(consoleSink);
+            if (enableConsole) {
 
-            // Generate timestamped filename
-            std::string timestampedPath = GenerateTimestampedFilename(logFilePath);
+                auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+                consoleSink->set_level(globalLevel);
+                sinks.push_back(consoleSink);
+            }
 
-            const auto fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-                timestampedPath, maxFileSize, maxFiles);
-            fileSink->set_level(globalLevel);
-            sinks.push_back(fileSink);
+            if (enableFile) {
+                std::string timestampedPath = GenerateTimestampedFilename(logFilePath);
+                auto fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
+                    timestampedPath, maxFileSize, maxFiles);
+                fileSink->set_level(globalLevel);
+                sinks.push_back(fileSink);
+            }
 
-            const auto asyncLogger = std::make_shared<spdlog::async_logger>(
+            if (sinks.empty()) {
+                throw std::runtime_error("Logger requires at least one sink (file or console).");
+            }
+
+            auto asyncLogger = std::make_shared<spdlog::async_logger>(
                 loggerName,
                 sinks.begin(),
                 sinks.end(),
@@ -92,16 +109,14 @@ namespace logging {
             asyncLogger->set_level(globalLevel);
             asyncLogger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [t %t] [%^%l%$] [%s:%#] %v");
 
-
             spdlog::register_logger(asyncLogger);
             spdlog::set_default_logger(asyncLogger);
-
             spdlog::set_level(globalLevel);
-
             spdlog::set_error_handler([](const std::string &msg) {
                 fprintf(stderr, "SPDLOG INTERNAL ERROR: %s\n", msg.c_str());
             });
         }
+
 
         /**
          * Clean up the logging threads and dump up the remaining logs in queue

@@ -49,9 +49,6 @@ namespace runbook {
 }
 
 // --- REDEFINE LOGGING MACROS ---
-#ifdef LOG_WARN
-#undef LOG_WARN
-#endif
 
 #ifdef LOG_ERROR
 #undef LOG_ERROR
@@ -60,17 +57,6 @@ namespace runbook {
 #ifdef LOG_CRITICAL
 #undef LOG_CRITICAL
 #endif
-
-/**
- * @brief Logs a warning message with a runbook code.
- */
-#define LOG_WARN(code, ...) do { \
-    if (spdlog::default_logger()->should_log(spdlog::level::warn)) { \
-        spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__}; \
-        std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__); \
-        spdlog::default_logger()->log(loc, spdlog::level::warn, spdlog::string_view_t(msg)); \
-    } \
-} while (0)
 
 
 /** * @brief Logs an error message with a runbook code. */

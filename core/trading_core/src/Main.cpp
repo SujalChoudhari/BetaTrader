@@ -9,97 +9,142 @@
 #include <vector>
 #include <thread>
 #include <random>
+#include <numeric>
+#include <iomanip>
 
 using namespace trading_core;
 using namespace common;
 using namespace std::chrono;
 
-// Helper to create a new order with some variation
+// -------------------- Order Factory --------------------
 std::shared_ptr<Order> create_order() {
-    // Use a random device and generator for better randomness
     static std::random_device rd;
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<> instrument_dist(0, static_cast<int>(Instrument::COUNT) - 1);
-    static std::uniform_real_distribution<> price_dist(0.0, 0.01); // Small price variation
+    static std::uniform_real_distribution<> price_dist(0.0, 0.01);
 
     Instrument random_instrument = static_cast<Instrument>(instrument_dist(gen));
 
     return std::make_shared<Order>(
         OrderIDGenerator::nextId(),
         random_instrument,
-        "STRESS_CLIENT_" + std::to_string(OrderIDGenerator::getId()), // Unique client ID per order for logging
-        (OrderIDGenerator::getId() % 2 == 0) ? OrderSide::Buy : OrderSide::Sell, // Alternate sides
+        "STRESS_CLIENT_" + std::to_string(OrderIDGenerator::getId()),
+        (OrderIDGenerator::getId() % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
         OrderType::Limit,
         100.0,
-        1.2000 + price_dist(gen), // Add some price variation
+        1.2000 + price_dist(gen),
         system_clock::now()
     );
 }
 
-int main() {
-    // Initialize logger
-    logging::Logger::Init("stress_test", "logs/stress_test.log");
+// -------------------- Print Functions --------------------
+void print_header(const std::string &title) {
+    std::cout << "\n" << title << "\n";
+    std::cout << std::string(title.length(), '=') << "\n";
+}
 
-    // Create and start the trading core
+void print_section(const std::string &title) {
+    std::cout << "\n" << title << "\n";
+    std::cout << std::string(title.length(), '-') << "\n";
+}
+
+void print_metric(const std::string &label, const std::string &value, const std::string &unit = "") {
+    std::cout << std::left << std::setw(30) << label << ": "
+            << std::right << std::setw(12) << value;
+    if (!unit.empty()) std::cout << " " << unit;
+    std::cout << "\n";
+}
+
+void print_separator() {
+    std::cout << std::string(50, '-') << "\n";
+}
+
+void print_footer() {
+    std::cout << "\n";
+}
+
+
+// -------------------- Main --------------------
+int main() {
+    logging::Logger::Init("stress_test", "logs/stress_test.log", false, true);
+
     std::cout << "Initializing Trading Core..." << std::endl;
     auto tradingCore = std::make_unique<TradingCore>();
     tradingCore->start();
-    std::cout << "Trading Core started." << std::endl;
+    std::cout << "Trading Core started.\n" << std::endl;
 
-    // --- Stress Test Parameters ---
-    const int num_orders_to_submit = 100;
+    const int num_orders_to_submit = 1;
+    std::cout << "Submitting " << num_orders_to_submit << " orders sequentially..." << std::endl;
 
+    auto wall_start = steady_clock::now();
+    auto cpu_start = clock();
 
-    std::vector<std::thread> submission_threads;
-
-    // Start the timer
+    // ---------- DATA collection ----------
     auto start_time = high_resolution_clock::now();
-
     for (int j = 0; j < num_orders_to_submit; ++j) {
         auto order = create_order();
-        std::this_thread::sleep_for(50ms);
         auto newOrderCmd = std::make_unique<NewOrder>(
             order->getClientId(),
             order->getTimestamp(),
             order
         );
         tradingCore->submitCommand(std::move(newOrderCmd));
-        std::this_thread::yield(); // Pace the submission to be more realistic
     }
-
-    // Wait for all submission threads to complete
-    for (auto &t: submission_threads) {
-        if (t.joinable()) {
-            t.join();
-        }
-    }
-
-    // Stop the timer
     auto end_time = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(end_time - start_time);
+    auto duration_ms = duration_cast<milliseconds>(end_time - start_time);
 
-    std::cout << "All orders have been submitted." << std::endl;
+    // ---------- Grace period ----------
+    std::cout << "Allowing 5 seconds for background processing..." << std::endl;
+    std::this_thread::sleep_for(5s);
 
-    // This sleep is important to allow the worker threads in the partitions
-    // to process the enqueued commands before we shut down.
-    // In a real scenario, you'd want a more sophisticated way to know when processing is done.
-    std::cout << "Waiting for 10 seconds to allow orders to be processed..." << std::endl;
-    std::this_thread::sleep_for(1s);
-
-    // Stop the trading core
     std::cout << "Stopping Trading Core..." << std::endl;
     tradingCore->stop();
-    std::cout << "Trading Core stopped." << std::endl;
+    auto wall_end = steady_clock::now();
+    auto cpu_end = clock();
 
-    // --- Report Results ---
-    double duration_sec = duration.count() / 1000.0;
-    double orders_per_sec = num_orders_to_submit / duration_sec;
+    // ---------- Derived metrics ----------
+    double submit_time_sec = duration_ms.count() / 1000.0;
+    double orders_per_sec = num_orders_to_submit / submit_time_sec;
+    double avg_order_latency_us = (submit_time_sec * 1e6) / num_orders_to_submit;
+    double total_wall_time = duration_cast<milliseconds>(wall_end - wall_start).count() / 1000.0;
+    double cpu_time = double(cpu_end - cpu_start) / CLOCKS_PER_SEC;
+    double cpu_utilization = (cpu_time / total_wall_time) * 100.0;
 
-    std::cout << "\n--- Stress Test Results ---" << std::endl;
-    std::cout << "Total Orders Submitted: " << num_orders_to_submit << std::endl;
-    std::cout << "Total Submission Time: " << duration.count() << " ms" << std::endl;
-    std::cout << "Submission Rate: " << static_cast<int>(orders_per_sec) << " orders/sec" << std::endl;
-    std::cout << "---------------------------\n" << std::endl;
+    // ---------- REPORT ----------
+    std::cout << std::fixed << std::setprecision(3);
+
+    print_header("TRADING CORE STRESS TEST RESULTS");
+
+    print_section("EXECUTION METRICS");
+    print_metric("Total Orders Submitted", std::to_string(num_orders_to_submit), "orders");
+    print_metric("Submission Phase Duration", std::to_string(duration_ms.count()), "ms");
+    print_metric("Total Runtime (Wall Clock)", std::to_string(total_wall_time), "s");
+    print_metric("Worker Cooldown Wait", "5.000", "s");
+    print_footer();
+
+    print_section("PERFORMANCE METRICS");
+    print_metric("Submission Rate", std::to_string(static_cast<int>(orders_per_sec)), "orders/sec");
+    print_metric("Average Submission Latency", std::to_string(avg_order_latency_us), "us/order");
+    print_separator();
+    print_metric("CPU Time Consumed", std::to_string(cpu_time), "s");
+    print_metric("CPU Utilization", std::to_string(cpu_utilization), "%");
+    print_footer();
+
+    print_section("RAW DATA");
+    std::cout << "Orders=" << num_orders_to_submit
+            << " | Duration=" << duration_ms.count() << "ms"
+            << " | CPU=" << cpu_time << "s"
+            << " | Wall=" << total_wall_time << "s\n";
+    print_footer();
+
+    print_section("KEY INSIGHTS");
+    std::cout << "> Throughput: " << std::fixed << std::setprecision(2)
+            << orders_per_sec << " orders/second\n";
+    std::cout << "> Latency: " << std::fixed << std::setprecision(3)
+            << avg_order_latency_us << " microseconds per order\n";
+    std::cout << "> CPU Usage: " << cpu_utilization << "% of available CPU time\n";
+    print_footer();
+
 
     return 0;
 }
