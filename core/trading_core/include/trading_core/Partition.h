@@ -28,6 +28,25 @@ namespace trading_core {
 
         void enqueue(Command *command);
 
+    public:
+        [[nodiscard]] common::Symbol getSymbol() const;
+
+        [[nodiscard]] const data::DatabaseWorkerPtr &getDatabaseWorker() const;
+
+        [[nodiscard]] const std::shared_ptr<TradeIDGenerator> &getTradeIDGenerator() const;
+
+        [[nodiscard]] const std::shared_ptr<ExecutionPublisher> &getExecutionPublisher() const;
+
+        [[nodiscard]] const OrderManager *getOrderManager() const;
+
+        [[nodiscard]] const OrderBook *getOrderBook() const;
+
+        [[nodiscard]] const Matcher *getMatcher() const;
+
+        [[nodiscard]] const RiskManager *getRiskManager() const;
+
+        [[nodiscard]] const WorkerThread *getWorker() const;
+
     private:
         rigtorp::SPSCQueue<Command *> mCommandQueue;
 

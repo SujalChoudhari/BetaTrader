@@ -31,7 +31,7 @@ public:
           order() {
     }
 
-    const DummyOrder &getOrder() const { return order; }
+    [[nodiscard]] const common::Order *getOrder() const { return &order; }
 
 private:
     DummyOrder order;

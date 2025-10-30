@@ -4,6 +4,8 @@
 
 #include "trading_core/OrderManager.h"
 
+#include "logging/Logger.h"
+
 namespace trading_core {
     bool OrderManager::addOrder(common::Order *order) {
         if (!order) {
@@ -11,6 +13,7 @@ namespace trading_core {
         }
 
         const auto [it, status] = mOrderMap.try_emplace(order->getId(), order);
+        LOG_INFO("Added Order {} with status {}", order->getId(), status);
         return status;
     }
 

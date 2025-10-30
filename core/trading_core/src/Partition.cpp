@@ -66,5 +66,42 @@ namespace trading_core {
             // TODO: optionally track dropped command metrics
             delete command; // prevent leak
         }
+        LOG_INFO("Pushed a command in symbol {} from {}", common::to_string(mSymbol), command->getClientId());
+    }
+
+    common::Symbol Partition::getSymbol() const {
+        return mSymbol;
+    }
+
+    const data::DatabaseWorkerPtr &Partition::getDatabaseWorker() const {
+        return mDatabaseWorker;
+    }
+
+    const std::shared_ptr<TradeIDGenerator> &Partition::getTradeIDGenerator() const {
+        return mTradeIDGenerator;
+    }
+
+    const std::shared_ptr<ExecutionPublisher> &Partition::getExecutionPublisher() const {
+        return mExecutionPublisher;
+    }
+
+    const OrderManager *Partition::getOrderManager() const {
+        return mOrderManager.get();
+    }
+
+    const OrderBook *Partition::getOrderBook() const {
+        return mOrderBook.get();
+    }
+
+    const Matcher *Partition::getMatcher() const {
+        return mMatcher.get();
+    }
+
+    const RiskManager *Partition::getRiskManager() const {
+        return mRiskManager.get();
+    }
+
+    const WorkerThread *Partition::getWorker() const {
+        return mWorker.get();
     }
 } // namespace trading_core

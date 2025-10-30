@@ -5,6 +5,7 @@
 #pragma once
 #include <utility>
 
+#include "common/Order.h"
 #include "trading_core/CommandType.h"
 #include "common/Time.h"
 #include "common/Types.h"
@@ -20,6 +21,7 @@ namespace trading_core {
         }
 
         virtual ~Command() = default;
+
 
         [[nodiscard]] CommandType getType() const { return mType; }
         [[nodiscard]] common::ClientID getClientId() const { return mClientId; }

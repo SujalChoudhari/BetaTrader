@@ -94,7 +94,7 @@ namespace trading_core {
 
 
     void WorkerThread::processNewOrder(const NewOrder *cmd) const {
-        auto *order = const_cast<common::Order *>(&cmd->getOrder());
+        const auto order = cmd->getOrder();
 
         if (!RiskManager::preCheck(*order)) {
             ExecutionPublisher::publishRejection(
@@ -105,10 +105,10 @@ namespace trading_core {
             return;
         }
 
-        mOrderManager.addOrder(order);
-        mOrderBook.insertOrder(order);
+        mOrderManager.addOrder(const_cast<common::Order *>(order));
+        mOrderBook.insertOrder(const_cast<common::Order *>(order));
 
-        auto trades = mMatcher.match(*order, mOrderBook);
+        auto trades = mMatcher.match(const_cast<common::Order *>(order), mOrderBook);
         for (auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
             ExecutionPublisher::publishTrade(trade);
@@ -149,7 +149,7 @@ namespace trading_core {
 
         mOrderBook.insertOrder(order);
 
-        auto trades = mMatcher.match(*order, mOrderBook);
+        auto trades = mMatcher.match(order, mOrderBook);
         for (auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
             ExecutionPublisher::publishTrade(trade);

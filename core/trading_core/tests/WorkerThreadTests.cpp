@@ -37,7 +37,7 @@ public:
           order() {
     }
 
-    const DummyOrder &getOrder() const { return order; }
+    [[nodiscard]] const common::Order *getOrder() const { return &order; }
 
 private:
     DummyOrder order;
@@ -61,6 +61,7 @@ TEST(WorkerThreadTest, StartAndStopThread) {
     EXPECT_NO_THROW(worker.start());
     EXPECT_NO_THROW(worker.stop());
 }
+
 TEST(WorkerThreadTest, EnqueueAndProcessBasicCommand) {
     rigtorp::SPSCQueue<Command *> queue(1024);
     auto dbWorker = std::make_shared<data::DatabaseWorker>(":memory:");

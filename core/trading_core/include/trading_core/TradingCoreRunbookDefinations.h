@@ -25,4 +25,16 @@ namespace errors {
         "An Unknown or un processable command type was passed with the command,"
         " view the command and/or change the type"
     };
+
+    inline constexpr runbook::ErrorDefinition ETRADE2{
+        "ETRADE2",
+        "Command did not have Order inside it, expected an order for the given type of command",
+        "Either change the type of command or else, pass in an order for the command"
+    };
+
+    inline constexpr runbook::ErrorDefinition ETRADE3{
+        "ETRADE3",
+        "Unknown command type",
+        "The command type is not supported, check if the implementation of virtual functions."
+    };
 } // namespace errors

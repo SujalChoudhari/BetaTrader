@@ -16,11 +16,11 @@ namespace trading_core {
     public:
         Matcher(const data::DatabaseWorkerPtr &dbWorker);
 
-        std::vector<common::Trade> match(common::Order &incomingOrder, OrderBook &orderBook);
+        std::vector<common::Trade> match(common::Order *incomingOrder, OrderBook &orderBook);
 
     private:
         template<typename TMap>
-        void matchTable(common::Order &incomingOrder, std::shared_ptr<TMap> restingMap,
+        void matchTable(common::Order *incomingOrder, std::shared_ptr<TMap> restingMap,
                         std::vector<common::Trade> &trades);
 
     private:
