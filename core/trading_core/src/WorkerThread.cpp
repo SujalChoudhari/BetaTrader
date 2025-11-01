@@ -4,53 +4,51 @@
 #include "logging/Logger.h"
 #include "trading_core/TradingCoreRunbookDefinations.h"
 
+using namespace std::chrono_literals;
+
 namespace trading_core {
     WorkerThread::WorkerThread(
-        rigtorp::SPSCQueue<std::unique_ptr<Command>> &commandQueue,
+        rigtorp::SPSCQueue<std::unique_ptr<Command> > &commandQueue,
         OrderManager &orderManager,
         OrderBook &orderBook,
         Matcher &matcher,
         RiskManager &riskManager,
-        std::shared_ptr<ExecutionPublisher> executionPublisher,
-        std::shared_ptr<TradeIDGenerator> tradeIDGenerator,
-        data::DatabaseWorkerPtr databaseWorker
+        TradeIDGenerator *tradeIDGenerator,
+        data::DatabaseWorker *databaseWorker
     )
-        : mRunning(false)
-          , mCommandQueue(commandQueue)
+        : mCommandQueue(commandQueue)
           , mOrderManager(orderManager)
           , mOrderBook(orderBook)
           , mMatcher(matcher)
           , mRiskManager(riskManager)
-          , mExecutionPublisher(std::move(executionPublisher))
-          , mTradeIDGenerator(std::move(tradeIDGenerator))
-          , mDatabaseWorker(std::move(databaseWorker))
+          , mTradeIDGenerator(tradeIDGenerator)
+          , mDatabaseWorker(databaseWorker)
           , mCommandBatch{} {
     }
 
     WorkerThread::~WorkerThread() {
-        if (mRunning.load(std::memory_order_acquire)) {
+        if (mThread.joinable()) {
             stop();
         }
     }
 
     void WorkerThread::start() {
         LOG_INFO("Worker Thread attempting to start");
-        mRunning.store(true, std::memory_order_release);
-        mThread = std::thread(&WorkerThread::runLoop, this);
+        mThread = std::jthread([this](std::stop_token st) { this->runLoop(st); });
     }
 
     void WorkerThread::stop() {
         LOG_INFO("Worker thread attempting to exit");
-        mRunning.store(false, std::memory_order_release);
+        mThread.request_stop();
         if (mThread.joinable()) {
             mThread.join();
         }
     }
 
-    void WorkerThread::runLoop() {
-        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(5));
+    void WorkerThread::runLoop(std::stop_token stopToken) {
+        std::this_thread::sleep_for(5ms);
         LOG_INFO("Worker Thread started");
-        while (mRunning.load(std::memory_order_acquire)) {
+        while (!stopToken.stop_requested()) {
             size_t dequeued = 0;
             for (size_t i = 0; i < BATCH_SIZE; ++i) {
                 if (mCommandQueue.front()) {
@@ -74,7 +72,7 @@ namespace trading_core {
 
     void WorkerThread::processBatch(std::unique_ptr<Command> *commands, size_t count) {
         for (size_t i = 0; i < count; ++i) {
-            auto& cmd = commands[i];
+            auto &cmd = commands[i];
             switch (cmd->getType()) {
                 case CommandType::NewOrder: processNewOrder(*static_cast<NewOrder *>(cmd.get()));
                     break;
@@ -89,10 +87,10 @@ namespace trading_core {
     }
 
 
-    void WorkerThread::processNewOrder(const NewOrder &cmd) {
+    void WorkerThread::processNewOrder(NewOrder &cmd) {
         auto order = cmd.getOrder();
 
-        if (!RiskManager::preCheck(*order)) {
+        if (!mRiskManager.preCheck(*order)) {
             ExecutionPublisher::publishRejection(
                 order->getId(),
                 order->getClientId(),
@@ -101,7 +99,6 @@ namespace trading_core {
             return;
         }
 
-        mOrderManager.addOrder(order);
         mOrderBook.insertOrder(order);
 
         auto trades = mMatcher.match(order, mOrderBook);
@@ -111,6 +108,7 @@ namespace trading_core {
         }
 
         ExecutionPublisher::publishExecution(*order, "NEW");
+        mOrderManager.addOrder(cmd.releaseOrder());
     }
 
     void WorkerThread::processCancelOrder(const CancelOrder &cmd) {

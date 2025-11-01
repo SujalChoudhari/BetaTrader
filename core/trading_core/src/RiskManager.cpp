@@ -7,7 +7,7 @@
 
 
 namespace trading_core {
-    RiskManager::RiskManager(const data::DatabaseWorkerPtr &dbWorker) : mTradeRepository(
+    RiskManager::RiskManager(data::DatabaseWorker* dbWorker) : mTradeRepository(
         data::TradeRepository(dbWorker)) {
         LOG_INFO("RiskManager initialized.");
     }
@@ -22,12 +22,12 @@ namespace trading_core {
         ) {
             LOG_INFO("Pre-check passed for order ID {}.", order.getId());
             return true;
+        } else {
+            LOG_ERROR(errors::ETRADE10, "Pre-check failed for order ID {}. Order details: ID={}, OriginalQty={}, RemainingQty={}, Status={}, Type={}, Price={}",
+                      order.getId(), order.getOriginalQuantity(), order.getRemainingQuantity(),
+                      static_cast<int>(order.getStatus()), static_cast<int>(order.getOrderType()), order.getPrice());
+            return false;
         }
-
-        LOG_ERROR(errors::ETRADE10, "Pre-check failed for order ID {}. Order details: ID={}, OriginalQty={}, RemainingQty={}, Status={}, Type={}, Price={}",
-                  order.getId(), order.getOriginalQuantity(), order.getRemainingQuantity(),
-                  static_cast<int>(order.getStatus()), static_cast<int>(order.getOrderType()), order.getPrice());
-        return false;
     }
 
     void RiskManager::postTradeUpdate(const common::Trade &trade) {

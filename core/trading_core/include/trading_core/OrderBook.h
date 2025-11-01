@@ -19,10 +19,11 @@ namespace trading_core {
      * organized by price levels. It provides methods for inserting and canceling orders.
      */
     class OrderBook {
+    public:
         /**
          * @brief A deque of orders at a specific price level.
          */
-        using PriceLevel = std::deque<std::shared_ptr<common::Order>>;
+        using PriceLevel = std::deque<common::Order*>;
 
         /**
          * @brief A map of prices to price levels for buy orders, sorted in descending order.
@@ -37,9 +38,9 @@ namespace trading_core {
     public:
         /**
          * @brief Inserts an order into the order book.
-         * @param order A shared pointer to the order to be inserted.
+         * @param order A raw pointer to the order to be inserted.
          */
-        void insertOrder(std::shared_ptr<common::Order> order);
+        void insertOrder(common::Order* order);
 
         /**
          * @brief Cancels an order from the order book.
@@ -49,16 +50,16 @@ namespace trading_core {
         bool cancelOrder(const common::OrderID &orderId);
 
         /**
-         * @brief Gets a shared pointer to the bid map.
-         * @return A shared pointer to the bid map.
+         * @brief Gets a raw pointer to the bid map.
+         * @return A raw pointer to the bid map.
          */
-        [[nodiscard]] std::shared_ptr<BidMap> getBidMap();
+        [[nodiscard]] BidMap* getBidMap();
 
         /**
-         * @brief Gets a shared pointer to the ask map.
-         * @return A shared pointer to the ask map.
+         * @brief Gets a raw pointer to the ask map.
+         * @return A raw pointer to the ask map.
          */
-        [[nodiscard]] std::shared_ptr<AskMap> getAskMap();
+        [[nodiscard]] AskMap* getAskMap();
 
     private:
         BidMap mBidMap; ///< The map of buy orders.

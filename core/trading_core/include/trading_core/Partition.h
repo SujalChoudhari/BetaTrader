@@ -26,14 +26,12 @@ namespace trading_core {
         /**
          * @brief Constructs a new Partition object.
          * @param symbol The financial instrument symbol this partition handles.
-         * @param databaseWorker A shared pointer to the database worker for persistence.
-         * @param tradeIDGenerator A shared pointer to the trade ID generator.
-         * @param executionPublisher A shared pointer to the execution publisher.
+         * @param databaseWorker A raw pointer to the database worker for persistence.
+         * @param tradeIDGenerator A raw pointer to the trade ID generator.
          */
         Partition(common::Instrument symbol,
-                  data::DatabaseWorkerPtr databaseWorker,
-                  std::shared_ptr<TradeIDGenerator> tradeIDGenerator,
-                  std::shared_ptr<ExecutionPublisher> executionPublisher);
+                  data::DatabaseWorker* databaseWorker,
+                  TradeIDGenerator* tradeIDGenerator);
 
         /**
          * @brief Destroys the Partition object, stopping the worker thread and cleaning up resources.
@@ -56,18 +54,21 @@ namespace trading_core {
          */
         void enqueue(std::unique_ptr<Command> command);
 
+        /**
+         * @brief Gets the current size of the command queue.
+         * @return The number of commands in the queue.
+         */
+        size_t getQueueSize() const;
+
     public:
         /** @brief Gets the financial instrument symbol handled by this partition. */
         [[nodiscard]] common::Symbol getSymbol() const;
 
-        /** @brief Gets a constant reference to the database worker. */
-        [[nodiscard]] const data::DatabaseWorkerPtr &getDatabaseWorker() const;
+        /** @brief Gets a constant pointer to the database worker. */
+        [[nodiscard]] const data::DatabaseWorker* getDatabaseWorker() const;
 
-        /** @brief Gets a constant reference to the trade ID generator. */
-        [[nodiscard]] const std::shared_ptr<TradeIDGenerator> &getTradeIDGenerator() const;
-
-        /** @brief Gets a constant reference to the execution publisher. */
-        [[nodiscard]] const std::shared_ptr<ExecutionPublisher> &getExecutionPublisher() const;
+        /** @brief Gets a constant pointer to the trade ID generator. */
+        [[nodiscard]] const TradeIDGenerator* getTradeIDGenerator() const;
 
         /** @brief Gets a constant pointer to the OrderManager. */
         [[nodiscard]] const OrderManager *getOrderManager() const;
@@ -88,8 +89,8 @@ namespace trading_core {
         rigtorp::SPSCQueue<std::unique_ptr<Command>> mCommandQueue; ///< The single-producer, single-consumer queue for commands.
 
         common::Symbol mSymbol;                                     ///< The financial instrument symbol this partition handles.
-        data::DatabaseWorkerPtr mDatabaseWorker;                    ///< Shared pointer to the database worker.
-        std::shared_ptr<TradeIDGenerator> mTradeIDGenerator;        ///< Shared pointer to the trade ID generator.
+        data::DatabaseWorker* mDatabaseWorker;                    ///< Raw pointer to the database worker.
+        TradeIDGenerator* mTradeIDGenerator;        ///< Raw pointer to the trade ID generator.
 
         std::unique_ptr<OrderManager> mOrderManager;                ///< Unique pointer to the OrderManager.
         std::unique_ptr<OrderBook> mOrderBook;                     ///< Unique pointer to the OrderBook.
@@ -97,6 +98,5 @@ namespace trading_core {
         std::unique_ptr<RiskManager> mRiskManager;                 ///< Unique pointer to the RiskManager.
 
         std::unique_ptr<WorkerThread> mWorker;                      ///< Unique pointer to the WorkerThread.
-        std::shared_ptr<ExecutionPublisher> mExecutionPublisher;    ///< Shared pointer to the ExecutionPublisher.
     };
 }

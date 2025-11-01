@@ -9,18 +9,13 @@
 #include "data/DataRunBookDefinations.h"
 
 namespace data {
-    TradeRepository::TradeRepository(DatabaseWorker &dbWorker)
+    TradeRepository::TradeRepository(DatabaseWorker* dbWorker)
         : mDb(dbWorker) {
         initDatabase();
     }
 
-    TradeRepository::TradeRepository(const DatabaseWorkerPtr &dbWorker)
-        : mDb(*dbWorker) {
-        initDatabase();
-    }
-
     void TradeRepository::initDatabase() {
-        mDb.enqueue([](SQLite::Database &db) {
+        mDb->enqueue([](SQLite::Database &db) {
             try {
                 SQLite::Statement query(db, data::query::createTradeTableQuery);
                 query.exec();
@@ -31,7 +26,7 @@ namespace data {
     }
 
     void TradeRepository::addTrade(const common::Trade &trade) {
-        mDb.enqueue([trade](SQLite::Database &db) {
+        mDb->enqueue([trade](SQLite::Database &db) {
             try {
                 SQLite::Statement query(db, data::query::insertIntoTradeTableQuery);
                 query.bind(1, static_cast<sqlite3_int64>(trade.getTradeId()));

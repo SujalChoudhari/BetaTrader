@@ -24,9 +24,9 @@ namespace trading_core {
     public:
         /**
          * @brief Constructs a new Matcher object.
-         * @param tradeIdGenerator A shared pointer to the trade ID generator.
+         * @param tradeIdGenerator A raw pointer to the trade ID generator.
          */
-        Matcher(std::shared_ptr<TradeIDGenerator> tradeIdGenerator);
+        Matcher(TradeIDGenerator* tradeIdGenerator);
 
         /**
          * @brief Matches an incoming order against the order book.
@@ -34,21 +34,21 @@ namespace trading_core {
          * @param orderBook The order book to match against.
          * @return A vector of trades that were generated.
          */
-        std::vector<common::Trade> match(std::shared_ptr<common::Order> incomingOrder, OrderBook &orderBook);
+        std::vector<common::Trade> match(common::Order* incomingOrder, OrderBook &orderBook);
 
     private:
         /**
          * @brief A template function to match an incoming order against a map of resting orders.
          * @tparam TMap The type of the map of resting orders (BidMap or AskMap).
          * @param incomingOrder The order to be matched.
-         * @param restingMap A shared pointer to the map of resting orders.
+         * @param restingMap A raw pointer to the map of resting orders.
          * @param trades A reference to a vector of trades to which any generated trades will be added.
          */
         template<typename TMap>
-        void matchTable(std::shared_ptr<common::Order> incomingOrder, std::shared_ptr<TMap> restingMap,
+        void matchTable(common::Order* incomingOrder, TMap* restingMap,
                         std::vector<common::Trade> &trades);
 
     private:
-        std::shared_ptr<TradeIDGenerator> mTradeIdGenerator; ///< A generator for unique trade IDs.
+        TradeIDGenerator* mTradeIdGenerator; ///< A generator for unique trade IDs.
     };
 }

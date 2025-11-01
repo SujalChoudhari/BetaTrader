@@ -3,11 +3,11 @@
 //
 
 #pragma once
-#include <mutex>
 #include <atomic>
 
 #include "common/Types.h"
 #include "data/TradeIDRepository.h"
+#include "data/DatabaseWorker.h"
 
 namespace trading_core {
     /**
@@ -21,9 +21,9 @@ namespace trading_core {
     public:
         /**
          * @brief Constructs a new TradeIDGenerator object.
-         * @param dbWorker A shared pointer to the database worker for persistence.
+         * @param dbWorker A raw pointer to the database worker for persistence.
          */
-        explicit TradeIDGenerator(const data::DatabaseWorkerPtr &dbWorker);
+        explicit TradeIDGenerator(data::DatabaseWorker* dbWorker);
 
         /**
          * @brief Destructor that saves the final ID state.
@@ -54,7 +54,6 @@ namespace trading_core {
 
     private:
         std::atomic<common::TradeID> mCurrentId; ///< The current trade ID.
-        std::mutex mMutex;                       ///< A mutex for thread-safe state management.
         data::TradeIDRepository repository;      ///< The repository for persisting the trade ID.
     };
 }

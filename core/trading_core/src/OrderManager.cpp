@@ -4,22 +4,22 @@
 #include "trading_core/TradingCoreRunbookDefinations.h"
 
 namespace trading_core {
-    bool OrderManager::addOrder(std::shared_ptr<common::Order> order) {
+    bool OrderManager::addOrder(std::unique_ptr<common::Order> order) {
         if (!order) {
             LOG_ERROR(errors::ETRADE4, "Attempted to add a null order.");
             return false;
         }
 
-        const auto [it, status] = mOrderMap.try_emplace(order->getId(), order);
+        const auto [it, status] = mOrderMap.try_emplace(order->getId(), std::move(order));
         if (status) {
-            LOG_INFO("Added Order {} to OrderManager.", order->getId());
+            LOG_INFO("Added Order {} to OrderManager.", it->second->getId());
         } else {
             LOG_WARN("Order {} already exists in OrderManager.", order->getId());
         }
         return status;
     }
 
-    std::optional<std::shared_ptr<common::Order>> OrderManager::getOrderById(const common::OrderID &id) const {
+    std::optional<common::Order*> OrderManager::getOrderById(const common::OrderID &id) const {
         const auto it = mOrderMap.find(id);
 
         if (it == mOrderMap.end()) {
@@ -27,7 +27,7 @@ namespace trading_core {
             return std::nullopt;
         }
         LOG_INFO("Retrieved order with ID {} from OrderManager.", id);
-        return it->second;
+        return it->second.get();
     }
 
     bool OrderManager::removeOrderById(const common::OrderID &id) {

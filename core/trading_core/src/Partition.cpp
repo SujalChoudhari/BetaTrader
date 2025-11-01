@@ -7,18 +7,16 @@
 namespace trading_core {
     Partition::Partition(
         common::Instrument symbol,
-        data::DatabaseWorkerPtr databaseWorker,
-        std::shared_ptr<TradeIDGenerator> tradeIDGenerator,
-        std::shared_ptr<ExecutionPublisher> executionPublisher
+        data::DatabaseWorker* databaseWorker,
+        TradeIDGenerator* tradeIDGenerator
     )
         : mCommandQueue(262144) // Increased queue size for high-throughput scenarios
           , mSymbol(symbol)
-          , mDatabaseWorker(std::move(databaseWorker))
-          , mTradeIDGenerator(std::move(tradeIDGenerator))
-          , mExecutionPublisher(std::move(executionPublisher)) {
+          , mDatabaseWorker(databaseWorker)
+          , mTradeIDGenerator(tradeIDGenerator) {
         mOrderManager = std::make_unique<OrderManager>();
         mOrderBook = std::make_unique<OrderBook>();
-        // Pass the shared TradeIDGenerator to the Matcher
+        // Pass the raw TradeIDGenerator to the Matcher
         mMatcher = std::make_unique<Matcher>(mTradeIDGenerator);
         mRiskManager = std::make_unique<RiskManager>(mDatabaseWorker);
         LOG_INFO("Partition for symbol {} initialized.", common::to_string(mSymbol));
@@ -43,7 +41,6 @@ namespace trading_core {
             *mOrderBook,
             *mMatcher,
             *mRiskManager,
-            mExecutionPublisher,
             mTradeIDGenerator,
             mDatabaseWorker
         );
@@ -77,20 +74,20 @@ namespace trading_core {
         }
     }
 
+    size_t Partition::getQueueSize() const {
+        return mCommandQueue.size();
+    }
+
     common::Symbol Partition::getSymbol() const {
         return mSymbol;
     }
 
-    const data::DatabaseWorkerPtr &Partition::getDatabaseWorker() const {
+    const data::DatabaseWorker* Partition::getDatabaseWorker() const {
         return mDatabaseWorker;
     }
 
-    const std::shared_ptr<TradeIDGenerator> &Partition::getTradeIDGenerator() const {
+    const TradeIDGenerator* Partition::getTradeIDGenerator() const {
         return mTradeIDGenerator;
-    }
-
-    const std::shared_ptr<ExecutionPublisher> &Partition::getExecutionPublisher() const {
-        return mExecutionPublisher;
     }
 
     const OrderManager *Partition::getOrderManager() const {

@@ -4,7 +4,6 @@
 
 #pragma once
 #include "Command.h"
-#include "ExecutionPublisher.h"
 #include "Partition.h"
 #include "TradeIDGenerator.h"
 #include "data/DatabaseWorker.h"
@@ -21,6 +20,8 @@ namespace trading_core {
 
         void stop() const;
 
+        void waitUntilIdle() const;
+
         void submitCommand(std::unique_ptr<Command> command) const;
 
     private:
@@ -30,9 +31,8 @@ namespace trading_core {
 
 
     private:
-        std::shared_ptr<data::DatabaseWorker> mDatabaseWorker;
-        std::shared_ptr<TradeIDGenerator> mTradeIDGenerator;
-        std::shared_ptr<ExecutionPublisher> mExecutionPublisher;
+        std::unique_ptr<data::DatabaseWorker> mDatabaseWorker;
+        std::unique_ptr<TradeIDGenerator> mTradeIDGenerator;
         std::unique_ptr<Partition> mPartitions[static_cast<int>(common::Instrument::COUNT)];
     };
 }

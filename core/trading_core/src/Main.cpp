@@ -17,7 +17,7 @@ using namespace common;
 using namespace std::chrono;
 
 // -------------------- Order Factory --------------------
-std::shared_ptr<Order> create_order() {
+std::unique_ptr<Order> create_order() {
     static std::random_device rd;
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<> instrument_dist(0, static_cast<int>(Instrument::COUNT) - 1);
@@ -25,7 +25,7 @@ std::shared_ptr<Order> create_order() {
 
     Instrument random_instrument = static_cast<Instrument>(instrument_dist(gen));
 
-    return std::make_shared<Order>(
+    return std::make_unique<Order>(
         OrderIDGenerator::nextId(),
         random_instrument,
         "STRESS_CLIENT_" + std::to_string(OrderIDGenerator::getId()),
@@ -73,7 +73,7 @@ int main() {
     tradingCore->start();
     std::cout << "Trading Core started.\n" << std::endl;
 
-    const int num_orders_to_submit = 1;
+    const int num_orders_to_submit = 100000;
     std::cout << "Submitting " << num_orders_to_submit << " orders sequentially..." << std::endl;
 
     auto wall_start = steady_clock::now();
@@ -86,7 +86,7 @@ int main() {
         auto newOrderCmd = std::make_unique<NewOrder>(
             order->getClientId(),
             order->getTimestamp(),
-            order
+            std::move(order)
         );
         tradingCore->submitCommand(std::move(newOrderCmd));
     }
@@ -94,8 +94,8 @@ int main() {
     auto duration_ms = duration_cast<milliseconds>(end_time - start_time);
 
     // ---------- Grace period ----------
-    std::cout << "Allowing 5 seconds for background processing..." << std::endl;
-    std::this_thread::sleep_for(5s);
+    std::cout << "Waiting for all tasks to complete..." << std::endl;
+    tradingCore->waitUntilIdle();
 
     std::cout << "Stopping Trading Core..." << std::endl;
     tradingCore->stop();
@@ -119,7 +119,7 @@ int main() {
     print_metric("Total Orders Submitted", std::to_string(num_orders_to_submit), "orders");
     print_metric("Submission Phase Duration", std::to_string(duration_ms.count()), "ms");
     print_metric("Total Runtime (Wall Clock)", std::to_string(total_wall_time), "s");
-    print_metric("Worker Cooldown Wait", "5.000", "s");
+    print_metric("Worker Cooldown Wait", "0.000", "s");
     print_footer();
 
     print_section("PERFORMANCE METRICS");

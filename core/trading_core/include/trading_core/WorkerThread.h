@@ -14,7 +14,8 @@
 #include "RiskManager.h"
 #include "rigtorp/SPSCQueue.h"
 #include <memory>
-
+#include <thread>
+#include <stop_token>
 
 namespace trading_core {
     /**
@@ -34,9 +35,8 @@ namespace trading_core {
          * @param orderBook A reference to the OrderBook for the partition.
          * @param matcher A reference to the Matcher for the partition.
          * @param riskManager A reference to the RiskManager for the partition.
-         * @param executionPublisher A shared pointer to the ExecutionPublisher.
-         * @param tradeIDGenerator A shared pointer to the TradeIDGenerator.
-         * @param databaseWorker A shared pointer to the DatabaseWorker.
+         * @param tradeIDGenerator A raw pointer to the TradeIDGenerator.
+         * @param databaseWorker A raw pointer to the DatabaseWorker.
          */
         WorkerThread(
             rigtorp::SPSCQueue<std::unique_ptr<Command>> &commandQueue,
@@ -44,9 +44,8 @@ namespace trading_core {
             OrderBook &orderBook,
             Matcher &matcher,
             RiskManager &riskManager,
-            std::shared_ptr<ExecutionPublisher> executionPublisher,
-            std::shared_ptr<TradeIDGenerator> tradeIDGenerator,
-            data::DatabaseWorkerPtr databaseWorker
+            TradeIDGenerator* tradeIDGenerator,
+            data::DatabaseWorker* databaseWorker
         );
 
         /**
@@ -67,7 +66,7 @@ namespace trading_core {
         /**
          * @brief The main event loop for the worker thread.
          */
-        void runLoop();
+        void runLoop(std::stop_token stopToken);
 
     private:
         /**
@@ -81,7 +80,7 @@ namespace trading_core {
          * @brief Processes a NewOrder command.
          * @param cmd The NewOrder command to be processed.
          */
-        void processNewOrder(const NewOrder &cmd);
+        void processNewOrder(NewOrder &cmd);
 
         /**
          * @brief Processes a CancelOrder command.
@@ -95,8 +94,7 @@ namespace trading_core {
          */
         void processModifyOrder(const ModifyOrder &cmd);
 
-        std::thread mThread;                ///< The worker thread.
-        std::atomic<bool> mRunning;         ///< A flag to control the thread's lifecycle.
+        std::jthread mThread;                ///< The worker thread.
 
         rigtorp::SPSCQueue<std::unique_ptr<Command>> &mCommandQueue; ///< A reference to the partition's command queue.
 
@@ -105,9 +103,8 @@ namespace trading_core {
         Matcher &mMatcher;                  ///< A reference to the partition's Matcher.
         RiskManager &mRiskManager;          ///< A reference to the partition's RiskManager.
 
-        std::shared_ptr<ExecutionPublisher> mExecutionPublisher; ///< A shared pointer to the ExecutionPublisher.
-        std::shared_ptr<TradeIDGenerator> mTradeIDGenerator;     ///< A shared pointer to the TradeIDGenerator.
-        data::DatabaseWorkerPtr mDatabaseWorker;                 ///< A shared pointer to the DatabaseWorker.
+        TradeIDGenerator* mTradeIDGenerator;     ///< A raw pointer to the TradeIDGenerator.
+        data::DatabaseWorker* mDatabaseWorker;                 ///< A raw pointer to the DatabaseWorker.
 
         static constexpr size_t BATCH_SIZE = 64;                ///< The maximum number of commands to process in a single batch.
         std::unique_ptr<Command> mCommandBatch[BATCH_SIZE];     ///< A buffer for batch processing commands.

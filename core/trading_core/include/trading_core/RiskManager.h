@@ -6,13 +6,14 @@
 #include "common/Order.h"
 #include "common/Trade.h"
 #include "data/TradeRepository.h"
+#include "data/DatabaseWorker.h"
 
 namespace trading_core {
     class RiskManager {
     public:
-        explicit RiskManager(const data::DatabaseWorkerPtr &dbWorker);
+        explicit RiskManager(data::DatabaseWorker* dbWorker);
 
-        static bool preCheck(const common::Order &order);
+        bool preCheck(const common::Order &order);
 
         void postTradeUpdate(const common::Trade &trade);
 

@@ -14,8 +14,7 @@
 namespace trading_core {
     TradingCore::TradingCore() {
         mDatabaseWorker = std::make_unique<data::DatabaseWorker>(data::databasePath);
-        mExecutionPublisher = std::make_shared<ExecutionPublisher>();
-        mTradeIDGenerator = std::make_shared<TradeIDGenerator>(mDatabaseWorker);
+        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker.get());
         initPartitions();
     }
 
@@ -32,6 +31,22 @@ namespace trading_core {
     void TradingCore::stop() const {
         for (const auto &mPartition: mPartitions) {
             mPartition->stop();
+        }
+    }
+
+    void TradingCore::waitUntilIdle() const {
+        while (true) {
+            size_t total_queue_size = 0;
+            for (const auto &partition : mPartitions) {
+                total_queue_size += partition->getQueueSize();
+            }
+            total_queue_size += mDatabaseWorker->getQueueSize();
+
+            if (total_queue_size == 0) {
+                break;
+            }
+
+            std::this_thread::yield();
         }
     }
 
@@ -87,9 +102,8 @@ namespace trading_core {
             auto instrument = static_cast<common::Instrument>(i);
             mPartitions[i] = std::make_unique<Partition>(
                 instrument,
-                mDatabaseWorker,
-                mTradeIDGenerator,
-                mExecutionPublisher
+                mDatabaseWorker.get(),
+                mTradeIDGenerator.get()
             );
         }
     }

@@ -6,18 +6,13 @@
 #include "logging/Runbook.h"
 
 namespace data {
-    TradeIDRepository::TradeIDRepository(DatabaseWorker &dbWorker)
+    TradeIDRepository::TradeIDRepository(DatabaseWorker* dbWorker)
         : mDb(dbWorker) {
         initDatabase();
     }
 
-    TradeIDRepository::TradeIDRepository(std::shared_ptr<data::DatabaseWorker> dbWorker)
-        : mDb(*dbWorker) {
-        initDatabase();
-    }
-
     void TradeIDRepository::initDatabase() {
-        mDb.enqueue([](SQLite::Database &db) {
+        mDb->enqueue([](SQLite::Database &db) {
             try {
                 SQLite::Statement createStmt(db, query::createTradeIdTableQuery);
                 createStmt.exec();
@@ -29,32 +24,25 @@ namespace data {
         });
     }
 
-    common::TradeID TradeIDRepository::getCurrentTradeID() {
-        auto promisePtr = std::make_shared<std::promise<common::TradeID> >();
-        std::future<common::TradeID> future = promisePtr->get_future();
-
-        mDb.enqueue([promisePtr](SQLite::Database &db) {
+    void TradeIDRepository::getCurrentTradeID(std::function<void(common::TradeID)> callback) {
+        mDb->enqueue([callback](SQLite::Database &db) {
             try {
                 SQLite::Statement stmt(db, query::getTradeIdQuery);
                 if (stmt.executeStep()) {
-                    promisePtr->set_value(
-                        static_cast<common::TradeID>(stmt.getColumn(0).getInt64()));
+                    callback(static_cast<common::TradeID>(stmt.getColumn(0).getInt64()));
                 } else {
-                    promisePtr->set_value(0);
+                    callback(0);
                 }
             } catch (const std::exception &e) {
                 LOG_ERROR(errors::EDATA3,
                           "Error in getCurrentTradeID: {}",
                           std::string_view(e.what()));
-                promisePtr->set_exception(std::current_exception());
             }
         });
-
-        return future.get();
     }
 
     void TradeIDRepository::setCurrentTradeID(common::TradeID tradeID) {
-        mDb.enqueue([tradeID](SQLite::Database &db) {
+        mDb->enqueue([tradeID](SQLite::Database &db) {
             try {
                 SQLite::Statement selectStmt(db, query::getTradeIdQuery);
                 common::TradeID current = 0;
@@ -75,7 +63,7 @@ namespace data {
     }
 
     void TradeIDRepository::truncateTradeID() {
-        mDb.enqueue([](SQLite::Database &db) {
+        mDb->enqueue([](SQLite::Database &db) {
             try {
                 SQLite::Statement stmt(db, query::truncateTradeIdQuery);
                 stmt.exec();

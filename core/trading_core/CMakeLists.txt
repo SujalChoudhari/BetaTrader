@@ -20,7 +20,7 @@ target_link_libraries(trading_core_lib
         sqlite3
 )
 
-target_compile_options(trading_core_lib PRIVATE -Wall -Wextra -Wpedantic)
+#target_compile_options(trading_core_lib )
 
 add_executable(trading_core src/Main.cpp)
 

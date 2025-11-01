@@ -5,11 +5,9 @@
 #pragma once
 #include <string>
 #include <thread>
-#include <mutex>
-#include <queue>
-#include <condition_variable>
 #include <functional>
 #include <SQLiteCpp/SQLiteCpp.h>
+#include "rigtorp/SPSCQueue.h"
 
 namespace data {
 
@@ -19,18 +17,14 @@ namespace data {
         ~DatabaseWorker();
 
         void enqueue(std::function<void(SQLite::Database&)> task);
+        size_t getQueueSize() const;
 
     private:
-        void workerLoop();
+        void workerLoop(std::stop_token stopToken);
 
         std::string mDbPath;
-        std::thread mWorker;
-        std::mutex mMutex;
-        std::condition_variable mCv;
-        std::queue<std::function<void(SQLite::Database&)>> mTasks;
-        bool mStop{false};
+        std::jthread mWorker;
+        rigtorp::SPSCQueue<std::function<void(SQLite::Database&)>> mTasks;
     };
-
-    using DatabaseWorkerPtr = std::shared_ptr<DatabaseWorker>;
 
 }

@@ -9,15 +9,13 @@
 namespace data {
     class TradeRepository {
     public:
-        explicit TradeRepository(DatabaseWorker &dbWorker);
-
-        explicit TradeRepository(const DatabaseWorkerPtr &dbWorker);
+        explicit TradeRepository(DatabaseWorker* dbWorker);
 
         void initDatabase();
 
         void addTrade(const common::Trade &trade);
 
     private:
-        DatabaseWorker &mDb;
+        DatabaseWorker* mDb;
     };
 }

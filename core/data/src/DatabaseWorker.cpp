@@ -8,42 +8,38 @@
 namespace data {
 
     DatabaseWorker::DatabaseWorker(std::string dbPath)
-        : mDbPath(std::move(dbPath)) {
-        mWorker = std::thread(&DatabaseWorker::workerLoop, this);
+        : mDbPath(std::move(dbPath)), mTasks(1024) {
+        mWorker = std::jthread([this](std::stop_token st) { this->workerLoop(st); });
     }
 
     DatabaseWorker::~DatabaseWorker() {
-        {
-            std::lock_guard lock(mMutex);
-            mStop = true;
-        }
-        mCv.notify_one();
+        mWorker.request_stop();
         if (mWorker.joinable())
             mWorker.join();
     }
 
     void DatabaseWorker::enqueue(std::function<void(SQLite::Database&)> task) {
-        {
-            std::lock_guard<std::mutex> lock(mMutex);
-            mTasks.push(std::move(task));
-        }
-        mCv.notify_one();
+        mTasks.push(std::move(task));
     }
 
-    void DatabaseWorker::workerLoop() {
+    size_t DatabaseWorker::getQueueSize() const {
+        return mTasks.size();
+    }
+
+    void DatabaseWorker::workerLoop(std::stop_token stopToken) {
         SQLite::Database db(mDbPath, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
         db.exec("PRAGMA journal_mode = WAL;");
         db.exec("PRAGMA synchronous = NORMAL;");
         db.setBusyTimeout(5000);
 
-        while (true) {
+        while (!stopToken.stop_requested()) {
             std::function<void(SQLite::Database&)> task;
-            {
-                std::unique_lock<std::mutex> lock(mMutex);
-                mCv.wait(lock, [&] { return mStop || !mTasks.empty(); });
-                if (mStop && mTasks.empty()) break;
-                task = std::move(mTasks.front());
+            if (mTasks.front()) {
+                task = std::move(*mTasks.front());
                 mTasks.pop();
+            } else {
+                std::this_thread::yield();
+                continue;
             }
 
             try {

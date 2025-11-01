@@ -5,21 +5,21 @@
 #pragma once
 #include "common/Types.h"
 #include "data/DatabaseWorker.h"
+#include <functional>
 
 namespace data {
 
     class TradeIDRepository {
     public:
-        explicit TradeIDRepository(DatabaseWorker& dbWorker);
-        TradeIDRepository(std::shared_ptr<data::DatabaseWorker> dbWorker);
+        explicit TradeIDRepository(DatabaseWorker* dbWorker);
 
         void initDatabase();
-        common::TradeID getCurrentTradeID();
+        void getCurrentTradeID(std::function<void(common::TradeID)> callback);
         void setCurrentTradeID(common::TradeID tradeID);
         void truncateTradeID();
 
     private:
-        DatabaseWorker& mDb;
+        DatabaseWorker* mDb;
     };
 
 }

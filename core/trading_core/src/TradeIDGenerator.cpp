@@ -3,7 +3,7 @@
 #include "logging/Logger.h"
 
 namespace trading_core {
-    TradeIDGenerator::TradeIDGenerator(const data::DatabaseWorkerPtr &dbWorker) : repository(
+    TradeIDGenerator::TradeIDGenerator(data::DatabaseWorker* dbWorker) : repository(
         data::TradeIDRepository(dbWorker)) {
         LOG_INFO("TradeIDGenerator instance created at {}", (void*)this);
         loadState();
@@ -24,12 +24,12 @@ namespace trading_core {
     }
 
     void TradeIDGenerator::saveState() {
-        std::lock_guard lock(mMutex);
         repository.setCurrentTradeID(mCurrentId.load(std::memory_order_relaxed));
     }
 
     void TradeIDGenerator::loadState() {
-        std::lock_guard lock(mMutex);
-        mCurrentId = repository.getCurrentTradeID();
+        repository.getCurrentTradeID([this](common::TradeID id) {
+            mCurrentId.store(id, std::memory_order_relaxed);
+        });
     }
 }

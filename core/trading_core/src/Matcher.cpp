@@ -10,11 +10,10 @@
 
 
 namespace trading_core {
-    Matcher::Matcher(std::shared_ptr<TradeIDGenerator> tradeIdGenerator) : mTradeIdGenerator(
-        std::move(tradeIdGenerator)) {
+    Matcher::Matcher(TradeIDGenerator* tradeIdGenerator) : mTradeIdGenerator(tradeIdGenerator) {
     }
 
-    std::vector<common::Trade> Matcher::match(std::shared_ptr<common::Order> incomingOrder, OrderBook &orderBook) {
+    std::vector<common::Trade> Matcher::match(common::Order* incomingOrder, OrderBook &orderBook) {
         std::vector<common::Trade> trades;
 
         if (!incomingOrder) {
@@ -36,7 +35,7 @@ namespace trading_core {
     }
 
     template<typename TMap>
-    void Matcher::matchTable(std::shared_ptr<common::Order> incomingOrder, std::shared_ptr<TMap> restingMap,
+    void Matcher::matchTable(common::Order* incomingOrder, TMap* restingMap,
                              std::vector<common::Trade> &trades) {
         auto it = restingMap->begin();
 

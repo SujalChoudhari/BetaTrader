@@ -1,7 +1,7 @@
 #include "trading_core/OrderBook.h"
 
 namespace trading_core {
-    void OrderBook::insertOrder(std::shared_ptr<common::Order> order) {
+    void OrderBook::insertOrder(common::Order* order) {
         if (order->getSide() == common::OrderSide::Buy) {
             mBidMap[order->getPrice()].push_back(order);
         } else {
@@ -13,7 +13,7 @@ namespace trading_core {
         for (auto bidIt = mBidMap.begin(); bidIt != mBidMap.end();) {
             auto &orders = bidIt->second;
             auto orderIt = std::ranges::find_if(orders,
-                                                [&](const std::shared_ptr<common::Order> &o) {
+                                                [&](const common::Order* o) {
                                                     return o->getId() == orderId;
                                                 });
             if (orderIt != orders.end()) {
@@ -30,7 +30,7 @@ namespace trading_core {
         for (auto askIt = mAskMap.begin(); askIt != mAskMap.end();) {
             auto &orders = askIt->second;
             auto orderIt = std::ranges::find_if(orders,
-                                                [&](const std::shared_ptr<common::Order> &o) {
+                                                [&](const common::Order* o) {
                                                     return o->getId() == orderId;
                                                 });
             if (orderIt != orders.end()) {
@@ -48,11 +48,11 @@ namespace trading_core {
     }
 
 
-    std::shared_ptr<OrderBook::BidMap> OrderBook::getBidMap() {
-        return std::make_shared<BidMap>(mBidMap);
+    OrderBook::BidMap* OrderBook::getBidMap() {
+        return &mBidMap;
     }
 
-    std::shared_ptr<OrderBook::AskMap> OrderBook::getAskMap() {
-        return std::make_shared<AskMap>(mAskMap);
+    OrderBook::AskMap* OrderBook::getAskMap() {
+        return &mAskMap;
     }
 }

@@ -27,17 +27,17 @@ namespace trading_core {
     public:
         /**
          * @brief Adds an order to the order manager.
-         * @param order A shared pointer to the order to be added.
+         * @param order A unique pointer to the order to be added.
          * @return True if the order was successfully added, false otherwise.
          */
-        bool addOrder(std::shared_ptr<common::Order> order);
+        bool addOrder(std::unique_ptr<common::Order> order);
 
         /**
          * @brief Gets an order by its ID.
          * @param id The ID of the order to retrieve.
-         * @return An optional containing a shared pointer to the order if it was found, otherwise an empty optional.
+         * @return An optional containing a raw pointer to the order if it was found, otherwise an empty optional.
          */
-        [[nodiscard]] std::optional<std::shared_ptr<common::Order>> getOrderById(const common::OrderID &id) const;
+        [[nodiscard]] std::optional<common::Order*> getOrderById(const common::OrderID &id) const;
 
         /**
          * @brief Removes an order by its ID.
@@ -60,6 +60,6 @@ namespace trading_core {
         size_t size() const;
 
     private:
-        std::unordered_map<common::OrderID, std::shared_ptr<common::Order>> mOrderMap; ///< A map of order IDs to orders.
+        std::unordered_map<common::OrderID, std::unique_ptr<common::Order>> mOrderMap; ///< A map of order IDs to orders.
     };
 }

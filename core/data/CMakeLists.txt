@@ -8,6 +8,7 @@ add_library(data_lib ${ALL_DATA_SOURCES})
 
 target_include_directories(data_lib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/vendor/lib/SPSCQueue/include
 )
 
 target_link_libraries(data_lib
@@ -15,7 +16,7 @@ target_link_libraries(data_lib
         PUBLIC SQLiteCpp sqlite3
 )
 
-target_compile_options(data_lib PRIVATE -Wall -Wextra -Wpedantic)
+#target_compile_options(data_lib PRIVATE -Wall -Wextra -Wpedantic)
 
 add_executable(data src/Main.cpp)
 target_link_libraries(data PRIVATE data_lib SQLiteCpp sqlite3)
