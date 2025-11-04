@@ -40,11 +40,12 @@ namespace trading_core {
         auto it = restingMap->begin();
 
         while (it != restingMap->end() && incomingOrder->getRemainingQuantity() > 0) {
-            if (incomingOrder->getOrderType() == common::OrderType::Market) {
-            } else if (incomingOrder->getSide() == common::OrderSide::Buy) {
-                if (incomingOrder->getPrice() < it->first) break;
-            } else {
-                if (incomingOrder->getPrice() > it->first) break;
+            if (incomingOrder->getOrderType() == common::OrderType::Limit) {
+                if (incomingOrder->getSide() == common::OrderSide::Buy) {
+                    if (incomingOrder->getPrice() < it->first) break;
+                } else { // Sell Limit
+                    if (incomingOrder->getPrice() > it->first) break;
+                }
             }
 
             auto &restingLevel = it->second;
@@ -93,6 +94,14 @@ namespace trading_core {
 
         if (incomingOrder->getRemainingQuantity() == 0) {
             incomingOrder->setStatus(common::OrderStatus::Filled);
+        } else if (incomingOrder->getOrderType() == common::OrderType::Market) {
+            // If a market order is not fully filled, the remainder is cancelled.
+            // If it was never filled at all, its original status (e.g., New) should be updated to Cancel.
+            if (incomingOrder->getOriginalQuantity() == incomingOrder->getRemainingQuantity()) {
+                incomingOrder->setStatus(common::OrderStatus::Cancelled);
+            }
+            // If it was partially filled, its status is already PartiallyFilled,
+            // which is a valid final state for an IOC (Immediate-Or-Cancel) market order.
         }
     }
 }

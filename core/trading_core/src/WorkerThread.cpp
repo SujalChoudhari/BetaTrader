@@ -90,7 +90,7 @@ namespace trading_core {
     void WorkerThread::processNewOrder(NewOrder &cmd) {
         auto order = cmd.getOrder();
 
-        if (!mRiskManager.preCheck(*order)) {
+        if (!mRiskManager.preCheck(*order, mOrderBook)) {
             ExecutionPublisher::publishRejection(
                 order->getId(),
                 order->getClientId(),

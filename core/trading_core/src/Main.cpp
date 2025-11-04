@@ -73,7 +73,7 @@ int main() {
     tradingCore->start();
     std::cout << "Trading Core started.\n" << std::endl;
 
-    const int num_orders_to_submit = 100000;
+    const int num_orders_to_submit = 100;
     std::cout << "Submitting " << num_orders_to_submit << " orders sequentially..." << std::endl;
 
     auto wall_start = steady_clock::now();
