@@ -1,24 +1,17 @@
 #include "trading_core/Partition.h"
-#include "trading_core/CommandType.h"
 #include "logging/Logger.h"
-#include "trading_core/WorkerThread.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
 
 namespace trading_core {
-    Partition::Partition(
-        common::Instrument symbol,
-        data::DatabaseWorker* databaseWorker,
-        TradeIDGenerator* tradeIDGenerator
-    )
-        : mCommandQueue(262144) // Increased queue size for high-throughput scenarios
-          , mSymbol(symbol)
-          , mDatabaseWorker(databaseWorker)
-          , mTradeIDGenerator(tradeIDGenerator) {
+    Partition::Partition(common::Instrument symbol, data::DatabaseWorker* databaseWorker, TradeIDGenerator* tradeIDGenerator)
+        : mCommandQueue(262144),
+          mSymbol(symbol),
+          mDatabaseWorker(databaseWorker),
+          mTradeIDGenerator(tradeIDGenerator) {
+        mTradeRepository = std::make_unique<data::TradeRepository>(mDatabaseWorker);
         mOrderManager = std::make_unique<OrderManager>();
         mOrderBook = std::make_unique<OrderBook>();
-        // Pass the raw TradeIDGenerator to the Matcher
         mMatcher = std::make_unique<Matcher>(mTradeIDGenerator);
-        mRiskManager = std::make_unique<RiskManager>(mDatabaseWorker);
+        mRiskManager = std::make_unique<RiskManager>(mTradeRepository.get());
         LOG_INFO("Partition for symbol {} initialized.", common::to_string(mSymbol));
     }
 
@@ -32,19 +25,7 @@ namespace trading_core {
             LOG_WARN("Partition for symbol {} already running. Skipping start.", common::to_string(mSymbol));
             return;
         }
-
-        LOG_INFO("Starting partition for symbol {}", common::to_string(mSymbol));
-
-        mWorker = std::make_unique<WorkerThread>(
-            mCommandQueue,
-            *mOrderManager,
-            *mOrderBook,
-            *mMatcher,
-            *mRiskManager,
-            mTradeIDGenerator,
-            mDatabaseWorker
-        );
-
+        mWorker = std::make_unique<WorkerThread>(mCommandQueue, *mOrderManager, *mOrderBook, *mMatcher, *mRiskManager, mTradeIDGenerator, mDatabaseWorker);
         mWorker->start();
         LOG_INFO("Worker thread started for partition {}.", common::to_string(mSymbol));
     }
@@ -54,23 +35,12 @@ namespace trading_core {
             LOG_INFO("Stopping partition for symbol {}", common::to_string(mSymbol));
             mWorker->stop();
             mWorker.reset();
-            LOG_INFO("Worker thread stopped and reset for partition {}.", common::to_string(mSymbol));
-        } else {
-            LOG_WARN("Partition for symbol {} is not running. Skipping stop.", common::to_string(mSymbol));
         }
     }
 
     void Partition::enqueue(std::unique_ptr<Command> command) {
-        if (!command) {
-            LOG_ERROR(errors::ETRADE4, "Attempted to enqueue a null command in partition {}.", common::to_string(mSymbol));
-            return;
-        }
-
         if (!mCommandQueue.try_push(std::move(command))) {
-            LOG_ERROR(errors::ETRADE1, "Partition {} command queue full. Dropping command type {}.",
-                      common::to_string(mSymbol), trading_core::to_string(command->getType()));
-        } else {
-            LOG_DEBUG("Enqueued command type {} in partition {}.", trading_core::to_string(command->getType()), common::to_string(mSymbol));
+            LOG_ERROR("ETRADE1", "Partition {} command queue full.", common::to_string(mSymbol));
         }
     }
 
@@ -90,23 +60,23 @@ namespace trading_core {
         return mTradeIDGenerator;
     }
 
-    const OrderManager *Partition::getOrderManager() const {
+    const OrderManager* Partition::getOrderManager() const {
         return mOrderManager.get();
     }
 
-    const OrderBook *Partition::getOrderBook() const {
+    const OrderBook* Partition::getOrderBook() const {
         return mOrderBook.get();
     }
 
-    const Matcher *Partition::getMatcher() const {
+    const Matcher* Partition::getMatcher() const {
         return mMatcher.get();
     }
 
-    const RiskManager *Partition::getRiskManager() const {
+    const RiskManager* Partition::getRiskManager() const {
         return mRiskManager.get();
     }
 
-    const WorkerThread *Partition::getWorker() const {
+    const WorkerThread* Partition::getWorker() const {
         return mWorker.get();
     }
-} // namespace trading_core
+}

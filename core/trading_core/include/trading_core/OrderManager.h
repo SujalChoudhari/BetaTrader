@@ -30,21 +30,21 @@ namespace trading_core {
          * @param order A unique pointer to the order to be added.
          * @return True if the order was successfully added, false otherwise.
          */
-        bool addOrder(std::unique_ptr<common::Order> order);
+        virtual bool addOrder(std::unique_ptr<common::Order> order);
 
         /**
          * @brief Gets an order by its ID.
          * @param id The ID of the order to retrieve.
          * @return An optional containing a raw pointer to the order if it was found, otherwise an empty optional.
          */
-        [[nodiscard]] std::optional<common::Order*> getOrderById(const common::OrderID &id) const;
+        [[nodiscard]] virtual std::optional<common::Order*> getOrderById(const common::OrderID &id) const;
 
         /**
          * @brief Removes an order by its ID.
          * @param id The ID of the order to be removed.
          * @return True if the order was successfully removed, false otherwise.
          */
-        bool removeOrderById(const common::OrderID &id);
+        virtual bool removeOrderById(const common::OrderID &id);
 
         /**
          * @brief Checks if an order exists in the order manager.

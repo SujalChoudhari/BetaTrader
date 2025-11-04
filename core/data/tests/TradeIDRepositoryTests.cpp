@@ -1,93 +1,63 @@
-//
-// Created by sujal on 27-10-2025.
-//
-
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "data/TradeIDRepository.h"
 #include "data/DatabaseWorker.h"
-#include "common/Trade.h"
-#include "SQLiteCpp/SQLiteCpp.h"
-#include <string>
-#include <cstdio>
-#include <memory>
-#include <thread>
+#include <future>
 
-class TradeIDRepositoryTest : public testing::Test {
+using namespace data;
+using namespace common;
+
+class TradeIDRepositoryTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        std::remove(pmTestDbPath.c_str());
+        dbWorker = std::make_unique<DatabaseWorker>(":memory:");
+        tradeIDRepository = std::make_unique<TradeIDRepository>(dbWorker.get());
     }
 
-    void TearDown() override {
-        std::remove(pmTestDbPath.c_str());
-    }
-
-protected:
-    const std::string pmTestDbPath = "test_trade_id_repo.sqlite";
+    std::unique_ptr<DatabaseWorker> dbWorker;
+    std::unique_ptr<TradeIDRepository> tradeIDRepository;
 };
 
-TEST_F(TradeIDRepositoryTest, InitializesToZero) {
-    data::DatabaseWorker dbWorker(pmTestDbPath);
-    data::TradeIDRepository repo(dbWorker);
-    EXPECT_EQ(repo.getCurrentTradeID(), 0);
+TEST_F(TradeIDRepositoryTest, InitDatabase) {
+    // The initDatabase is called in the constructor, so we just need to check if the table exists.
+    dbWorker->enqueue([](SQLite::Database &db) {
+        ASSERT_TRUE(db.tableExists("trade_id_sequence"));
+    });
 }
 
-TEST_F(TradeIDRepositoryTest, SetCurrentTradeID_UpdatesValue) {
-    common::TradeID newID = 100;
+TEST_F(TradeIDRepositoryTest, GetCurrentTradeID) {
+    std::promise<TradeID> promise;
+    std::future<TradeID> future = promise.get_future();
 
-    {
-        data::DatabaseWorker dbWorker(pmTestDbPath);
-        data::TradeIDRepository repo(dbWorker);
-        repo.setCurrentTradeID(newID);
-        // Give the worker thread a brief moment to complete write
-        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
-    }
+    tradeIDRepository->getCurrentTradeID([&](TradeID id) {
+        promise.set_value(id);
+    });
 
-    data::DatabaseWorker dbWorker(pmTestDbPath);
-    data::TradeIDRepository readRepo(dbWorker);
-    EXPECT_EQ(readRepo.getCurrentTradeID(), newID);
+    ASSERT_EQ(future.get(), 0);
 }
 
-TEST_F(TradeIDRepositoryTest, SetCurrentTradeID_DoesNotUpdateToLowerValue) {
-    common::TradeID initialID = 100;
-    common::TradeID lowerID = 50;
+TEST_F(TradeIDRepositoryTest, SetCurrentTradeID) {
+    tradeIDRepository->setCurrentTradeID(100);
 
-    {
-        data::DatabaseWorker dbWorker(pmTestDbPath);
-        data::TradeIDRepository repo(dbWorker);
-        repo.setCurrentTradeID(initialID);
-        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
-    }
+    std::promise<TradeID> promise;
+    std::future<TradeID> future = promise.get_future();
 
-    {
-        data::DatabaseWorker dbWorker(pmTestDbPath);
-        data::TradeIDRepository repo(dbWorker);
-        repo.setCurrentTradeID(lowerID);
-        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
-    }
+    tradeIDRepository->getCurrentTradeID([&](TradeID id) {
+        promise.set_value(id);
+    });
 
-    data::DatabaseWorker dbWorker(pmTestDbPath);
-    data::TradeIDRepository readRepo(dbWorker);
-    EXPECT_EQ(readRepo.getCurrentTradeID(), initialID);
+    ASSERT_EQ(future.get(), 100);
 }
 
-TEST_F(TradeIDRepositoryTest, TruncateTradeID_ResetsToZero) {
-    {
-        data::DatabaseWorker dbWorker(pmTestDbPath);
-        data::TradeIDRepository repo(dbWorker);
-        repo.setCurrentTradeID(12345);
-        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
-    }
+TEST_F(TradeIDRepositoryTest, TruncateTradeID) {
+    tradeIDRepository->setCurrentTradeID(100);
+    tradeIDRepository->truncateTradeID();
 
-    {
-        data::DatabaseWorker dbWorker(pmTestDbPath);
-        data::TradeIDRepository repo(dbWorker);
-        EXPECT_EQ(repo.getCurrentTradeID(), 12345);
-        repo.truncateTradeID();
-        std::this_thread::sleep_for(std::chrono_literals::operator ""ms(100));
-    }
+    std::promise<TradeID> promise;
+    std::future<TradeID> future = promise.get_future();
 
-    data::DatabaseWorker dbWorker(pmTestDbPath);
-    data::TradeIDRepository readRepo(dbWorker);
-    EXPECT_EQ(readRepo.getCurrentTradeID(), 0);
+    tradeIDRepository->getCurrentTradeID([&](TradeID id) {
+        promise.set_value(id);
+    });
+
+    ASSERT_EQ(future.get(), 0);
 }

@@ -34,7 +34,7 @@ namespace trading_core {
          * @param orderBook The order book to match against.
          * @return A vector of trades that were generated.
          */
-        std::vector<common::Trade> match(common::Order* incomingOrder, OrderBook &orderBook);
+        virtual std::vector<common::Trade> match(common::Order* incomingOrder, OrderBook &orderBook);
 
     private:
         /**

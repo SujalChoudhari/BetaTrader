@@ -40,7 +40,7 @@ namespace trading_core {
          * @brief Gets the next available trade ID.
          * @return The next available trade ID.
          */
-        common::TradeID nextId();
+        virtual common::TradeID nextId();
 
         /**
          * @brief Saves the current state of the generator to the repository.

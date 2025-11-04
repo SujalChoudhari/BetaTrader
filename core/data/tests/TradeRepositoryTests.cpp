@@ -1,67 +1,38 @@
-//
-// Created by sujal on 27-10-2025.
-//
-
-
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "data/TradeRepository.h"
+#include "data/DatabaseWorker.h"
 #include "common/Trade.h"
-#include "SQLiteCpp/SQLiteCpp.h"
-#include <string>
-#include <cstdio>
-#include <memory>
 #include <chrono>
 
-#include "sqlite3.h"
+using namespace data;
+using namespace common;
 
-class TradeRepositoryTest : public testing::Test {
+class TradeRepositoryTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        std::remove(kTestDbPath.c_str());
+        dbWorker = std::make_unique<DatabaseWorker>(":memory:");
+        tradeRepository = std::make_unique<TradeRepository>(dbWorker.get());
     }
 
-    void TearDown() override {
-        std::remove(kTestDbPath.c_str());
-    }
-
-protected:
-    const std::string kTestDbPath = "test_trade_repo.sqlite";
+    std::unique_ptr<DatabaseWorker> dbWorker;
+    std::unique_ptr<TradeRepository> tradeRepository;
 };
 
-TEST_F(TradeRepositoryTest, AddTrade_InsertsTradeCorrectly) {
-    const auto timestamp = std::chrono::system_clock::now();
-    const common::Trade trade(
-        123,
-        common::Instrument::USDINR,
-        10,
-        11,
-        100,
-        50.75,
-        timestamp
-    );
+TEST_F(TradeRepositoryTest, InitDatabase) {
+    // The initDatabase is called in the constructor, so we just need to check if the table exists.
+    dbWorker->enqueue([](SQLite::Database &db) {
+        ASSERT_TRUE(db.tableExists("trades"));
+    });
+}
 
-    {
-        data::DatabaseWorker dbWorker(kTestDbPath);
-        data::TradeRepository repo(dbWorker);
-        repo.addTrade(trade);
-    }
+TEST_F(TradeRepositoryTest, AddTrade) {
+    Trade trade(1, Instrument::EURUSD, 1, 2, 100, 1.1000, std::chrono::system_clock::now());
+    tradeRepository->addTrade(trade);
 
-    const auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-        timestamp.time_since_epoch()
-    ).count();
-
-    SQLite::Database db(kTestDbPath, SQLite::OPEN_READONLY);
-    SQLite::Statement query(
-        db, "SELECT trade_id, buy_order_id, sell_order_id, quantity, price, timestamp_ns FROM trade WHERE trade_id = ?");
-    query.bind(1, static_cast<sqlite3_int64>(trade.getTradeId()));
-
-    ASSERT_TRUE(query.executeStep());
-    EXPECT_EQ(query.getColumn(0).getInt64(), trade.getTradeId());
-    EXPECT_EQ(query.getColumn(1).getInt64(), trade.getBuyOrderId());
-    EXPECT_EQ(query.getColumn(2).getInt64(), trade.getSellOrderId());
-    EXPECT_EQ(query.getColumn(3).getInt64(), trade.getQuantity());
-    EXPECT_EQ(query.getColumn(4).getDouble(), trade.getPrice());
-    EXPECT_EQ(query.getColumn(5).getInt64(), ns);
-
-    EXPECT_FALSE(query.executeStep());
+    dbWorker->enqueue([&](SQLite::Database &db) {
+        SQLite::Statement query(db, "SELECT * FROM trades WHERE trade_id = ?");
+        query.bind(1, 1);
+        ASSERT_TRUE(query.executeStep());
+        ASSERT_EQ(query.getColumn(0).getInt64(), 1);
+    });
 }

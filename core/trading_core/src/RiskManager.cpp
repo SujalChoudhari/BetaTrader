@@ -1,14 +1,8 @@
 #include "trading_core/RiskManager.h"
-
-#include "data/Constant.h"
-#include "data/TradeRepository.h"
 #include "logging/Logger.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
-
 
 namespace trading_core {
-    RiskManager::RiskManager(data::DatabaseWorker* dbWorker) : mTradeRepository(
-        data::TradeRepository(dbWorker)) {
+    RiskManager::RiskManager(data::TradeRepository* tradeRepository) : mTradeRepository(tradeRepository) {
         LOG_INFO("RiskManager initialized.");
     }
 
@@ -23,22 +17,19 @@ namespace trading_core {
             LOG_INFO("Pre-check passed for order ID {}.", order.getId());
             return true;
         } else {
-            LOG_ERROR(errors::ETRADE10, "Pre-check failed for order ID {}. Order details: ID={}, OriginalQty={}, RemainingQty={}, Status={}, Type={}, Price={}",
-                      order.getId(), order.getOriginalQuantity(), order.getRemainingQuantity(),
-                      static_cast<int>(order.getStatus()), static_cast<int>(order.getOrderType()), order.getPrice());
+            LOG_ERROR("ETRADE10", "Pre-check failed for order ID {}.", order.getId());
             return false;
         }
     }
 
     void RiskManager::postTradeUpdate(const common::Trade &trade) {
-        mTradeRepository.addTrade(trade);
+        mTradeRepository->addTrade(trade);
         LOG_INFO("Trade {} added to repository during post-trade update.", trade.getTradeId());
     }
 
     void RiskManager::postTradeUpdate(const std::vector<common::Trade> &trades) {
         for (const auto &trade: trades) {
-            mTradeRepository.addTrade(trade);
-            LOG_INFO("Trade {} added to repository during batch post-trade update.", trade.getTradeId());
+            mTradeRepository->addTrade(trade);
         }
     }
 }

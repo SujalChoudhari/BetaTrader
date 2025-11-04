@@ -1,7 +1,3 @@
-//
-// Created by sujal on 27-10-2025.
-//
-
 #pragma once
 #include <string>
 #include <thread>
@@ -10,14 +6,17 @@
 #include "rigtorp/SPSCQueue.h"
 
 namespace data {
-
     class DatabaseWorker {
     public:
         explicit DatabaseWorker(std::string dbPath);
-        ~DatabaseWorker();
+        virtual ~DatabaseWorker();
 
-        void enqueue(std::function<void(SQLite::Database&)> task);
+        virtual void enqueue(std::function<void(SQLite::Database&)> task);
         size_t getQueueSize() const;
+
+    protected:
+        enum class TestMode { NO_THREAD };
+        explicit DatabaseWorker(TestMode);
 
     private:
         void workerLoop(std::stop_token stopToken);
@@ -26,5 +25,4 @@ namespace data {
         std::jthread mWorker;
         rigtorp::SPSCQueue<std::function<void(SQLite::Database&)>> mTasks;
     };
-
 }

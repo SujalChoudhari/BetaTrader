@@ -68,14 +68,6 @@ namespace trading_core {
          */
         void runLoop(std::stop_token stopToken);
 
-    private:
-        /**
-         * @brief Processes a batch of commands.
-         * @param commands A pointer to an array of commands to be processed.
-         * @param count The number of commands in the batch.
-         */
-        void processBatch(std::unique_ptr<Command> *commands, size_t count);
-
         /**
          * @brief Processes a NewOrder command.
          * @param cmd The NewOrder command to be processed.
@@ -93,6 +85,14 @@ namespace trading_core {
          * @param cmd The ModifyOrder command to be processed.
          */
         void processModifyOrder(const ModifyOrder &cmd);
+
+    private:
+        /**
+         * @brief Processes a batch of commands.
+         * @param commands A pointer to an array of commands to be processed.
+         * @param count The number of commands in the batch.
+         */
+        void processBatch(std::unique_ptr<Command> *commands, size_t count);
 
         std::jthread mThread;                ///< The worker thread.
 

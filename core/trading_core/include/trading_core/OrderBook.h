@@ -40,14 +40,14 @@ namespace trading_core {
          * @brief Inserts an order into the order book.
          * @param order A raw pointer to the order to be inserted.
          */
-        void insertOrder(common::Order* order);
+        virtual void insertOrder(common::Order* order);
 
         /**
          * @brief Cancels an order from the order book.
          * @param orderId The ID of the order to be cancelled.
          * @return True if the order was successfully cancelled, false otherwise.
          */
-        bool cancelOrder(const common::OrderID &orderId);
+        virtual bool cancelOrder(const common::OrderID &orderId);
 
         /**
          * @brief Gets a raw pointer to the bid map.
