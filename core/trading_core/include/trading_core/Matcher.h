@@ -22,6 +22,8 @@ namespace trading_core {
      */
     class Matcher {
     public:
+        virtual ~Matcher() = default;
+
         /**
          * @brief Constructs a new Matcher object.
          * @param tradeIdGenerator A raw pointer to the trade ID generator.

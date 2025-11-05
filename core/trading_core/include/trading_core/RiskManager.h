@@ -7,6 +7,8 @@
 namespace trading_core {
     class RiskManager {
     public:
+        virtual ~RiskManager() = default;
+
         explicit RiskManager(data::TradeRepository* tradeRepository);
 
         virtual bool preCheck(const common::Order &order, OrderBook& orderBook) ;

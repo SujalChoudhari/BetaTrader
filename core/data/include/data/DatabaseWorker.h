@@ -13,10 +13,11 @@ namespace data {
 
         virtual void enqueue(std::function<void(SQLite::Database&)> task);
         size_t getQueueSize() const;
+        void waitUntilIdle();
 
     protected:
-        enum class TestMode { NO_THREAD };
-        explicit DatabaseWorker(TestMode);
+        // Protected constructor for mocking
+        DatabaseWorker();
 
     private:
         void workerLoop(std::stop_token stopToken);

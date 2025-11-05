@@ -5,7 +5,6 @@
 #include "trading_core/TradingCore.h"
 
 #include "data/Constant.h"
-#include "data/DataRunBookDefinations.h"
 #include "trading_core/TradingCoreRunbookDefinations.h"
 #include "trading_core/NewOrder.h"
 #include "trading_core/ModifyOrder.h"
@@ -13,34 +12,48 @@
 
 namespace trading_core {
     TradingCore::TradingCore() {
-        mDatabaseWorker = std::make_unique<data::DatabaseWorker>(data::databasePath);
-        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker.get());
+        mOwnedDatabaseWorker = std::make_unique<data::DatabaseWorker>(data::databasePath);
+        mDatabaseWorker = mOwnedDatabaseWorker.get();
+        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
         initPartitions();
+    }
+
+    TradingCore::TradingCore(data::DatabaseWorker *dbWorker, const bool autoInitPartitions)
+        : mDatabaseWorker(dbWorker) {
+        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+        if (autoInitPartitions) {
+            initPartitions();
+        }
     }
 
     TradingCore::~TradingCore() {
         stop();
     };
 
-    void TradingCore::start() const {
+    void TradingCore::start() {
         for (const auto &mPartition: mPartitions) {
-            mPartition->start();
+            if (mPartition) {
+                mPartition->waitReady();
+                mPartition->start();
+            }
         }
     }
 
-    void TradingCore::stop() const {
+    void TradingCore::stop() {
         for (const auto &mPartition: mPartitions) {
-            mPartition->stop();
+            if (mPartition) {
+                mPartition->stop();
+            }
         }
     }
 
     void TradingCore::waitUntilIdle() const {
         while (true) {
             size_t total_queue_size = 0;
-            for (const auto &partition : mPartitions) {
-                total_queue_size += partition->getQueueSize();
+            for (const auto &partition: mPartitions) {
+                if (partition) total_queue_size += partition->getQueueSize();
             }
-            total_queue_size += mDatabaseWorker->getQueueSize();
+            if (mDatabaseWorker) total_queue_size += mDatabaseWorker->getQueueSize();
 
             if (total_queue_size == 0) {
                 break;
@@ -102,18 +115,28 @@ namespace trading_core {
             auto instrument = static_cast<common::Instrument>(i);
             mPartitions[i] = std::make_unique<Partition>(
                 instrument,
-                mDatabaseWorker.get(),
+                mDatabaseWorker,
                 mTradeIDGenerator.get()
             );
         }
     }
 
+    Partition *TradingCore::getPartition(common::Instrument instrument) const {
+        return mPartitions[static_cast<int>(instrument)].get();
+    }
+
     std::optional<common::Instrument> TradingCore::findPartitionForOrder(common::OrderID orderId) const {
         for (const auto &partition: mPartitions) {
-            if (partition->getOrderManager()->containsOrderById(orderId)) {
+            if (partition && partition->getOrderManager()->containsOrderById(orderId)) {
                 return partition->getSymbol();
             }
         }
         return std::nullopt;
     }
+
+#ifndef NDEBUG
+    void TradingCore::setPartition(common::Instrument instrument, std::unique_ptr<Partition> partition) {
+        mPartitions[static_cast<int>(instrument)] = std::move(partition);
+    }
+#endif
 }

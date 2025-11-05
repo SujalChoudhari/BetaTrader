@@ -44,4 +44,34 @@ namespace errors {
         "Failed to add a trade in the 'Trade' database table.",
         "Check the underlying database connection and the SQL syntax for the trade table creation query."
     };
+
+    inline constexpr runbook::ErrorDefinition EDATA8{
+        "EDATA8",
+        "Failed to create the 'Order' database table.",
+        "Check the underlying database connection and the SQL syntax for the order table creation query."
+    };
+
+    inline constexpr runbook::ErrorDefinition EDATA9{
+        "EDATA9",
+        "Failed to save an order in the 'Order' database table.",
+        "Check the underlying database connection and the SQL syntax for the order table creation query."
+    };
+
+    inline constexpr runbook::ErrorDefinition EDATA10{
+        "EDATA10",
+        "Failed to load orders from the 'Order' database table.",
+        "Check the underlying database connection and the SQL syntax for the order table creation query."
+    };
+
+    inline constexpr runbook::ErrorDefinition EDATA11{
+        "EDATA11",
+        "Failed to remove an order from the 'Order' database table.",
+        "Check the underlying database connection and the SQL syntax for the order table creation query."
+    };
+
+    inline constexpr runbook::ErrorDefinition EDATA12{
+        "EDATA12",
+        "Failed to update an order in the 'Order' database table.",
+        "Check the underlying database connection and the SQL syntax for the order table creation query."
+    };
 }

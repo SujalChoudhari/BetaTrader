@@ -79,4 +79,10 @@ namespace errors {
         "Risk check failed",
         "The order has been rejected by the risk manager."
     };
+
+    inline constexpr runbook::ErrorDefinition ETRADE11{
+        "ETRADE11",
+        "Command queue full",
+        "The command queue for the partition is full, commands might be dropped."
+    };
 } // namespace errors

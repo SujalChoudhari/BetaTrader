@@ -31,7 +31,7 @@ std::unique_ptr<Order> create_order() {
         "STRESS_CLIENT_" + std::to_string(OrderIDGenerator::getId()),
         (OrderIDGenerator::getId() % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
         OrderType::Limit,
-        100.0,
+        100,
         1.2000 + price_dist(gen),
         system_clock::now()
     );
@@ -145,6 +145,7 @@ int main() {
     std::cout << "> CPU Usage: " << cpu_utilization << "% of available CPU time\n";
     print_footer();
 
+    logging::Logger::Shutdown();
 
     return 0;
 }

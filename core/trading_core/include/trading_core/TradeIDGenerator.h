@@ -23,12 +23,12 @@ namespace trading_core {
          * @brief Constructs a new TradeIDGenerator object.
          * @param dbWorker A raw pointer to the database worker for persistence.
          */
-        explicit TradeIDGenerator(data::DatabaseWorker* dbWorker);
+        explicit TradeIDGenerator(data::DatabaseWorker *dbWorker);
 
         /**
          * @brief Destructor that saves the final ID state.
          */
-        ~TradeIDGenerator();
+        virtual ~TradeIDGenerator();
 
         /**
          * @brief Gets the current trade ID.
@@ -45,15 +45,15 @@ namespace trading_core {
         /**
          * @brief Saves the current state of the generator to the repository.
          */
-        void saveState();
+        virtual void saveState();
 
         /**
          * @brief Loads the state of the generator from the repository.
          */
-        void loadState();
+        virtual void loadState();
 
     private:
         std::atomic<common::TradeID> mCurrentId; ///< The current trade ID.
-        data::TradeIDRepository repository;      ///< The repository for persisting the trade ID.
+        data::TradeIDRepository repository; ///< The repository for persisting the trade ID.
     };
 }

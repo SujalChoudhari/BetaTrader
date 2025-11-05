@@ -14,24 +14,32 @@ namespace trading_core {
     public:
         TradingCore();
 
+        explicit TradingCore(data::DatabaseWorker *dbWorker, bool autoInitPartitions = true);
+
         ~TradingCore();
 
-        void start() const;
+        void start();
 
-        void stop() const;
+        void stop();
 
         void waitUntilIdle() const;
 
         void submitCommand(std::unique_ptr<Command> command) const;
+
+        Partition *getPartition(common::Instrument instrument) const;
+
+#ifndef NDEBUG
+        void setPartition(common::Instrument instrument, std::unique_ptr<Partition> partition);
+#endif
 
     private:
         void initPartitions();
 
         std::optional<common::Instrument> findPartitionForOrder(common::OrderID orderId) const;
 
-
     private:
-        std::unique_ptr<data::DatabaseWorker> mDatabaseWorker;
+        data::DatabaseWorker *mDatabaseWorker = nullptr;
+        std::unique_ptr<data::DatabaseWorker> mOwnedDatabaseWorker;
         std::unique_ptr<TradeIDGenerator> mTradeIDGenerator;
         std::unique_ptr<Partition> mPartitions[static_cast<int>(common::Instrument::COUNT)];
     };

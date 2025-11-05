@@ -20,6 +20,8 @@ namespace trading_core {
      */
     class OrderBook {
     public:
+        virtual ~OrderBook() = default;
+
         /**
          * @brief A deque of orders at a specific price level.
          */

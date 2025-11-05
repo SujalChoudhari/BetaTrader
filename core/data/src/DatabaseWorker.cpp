@@ -9,7 +9,8 @@ namespace data {
         mWorker = std::jthread([this](std::stop_token st) { this->workerLoop(st); });
     }
 
-    DatabaseWorker::DatabaseWorker(TestMode) : mTasks(1024) {}
+    // Protected constructor for mocking - does not start a thread
+    DatabaseWorker::DatabaseWorker() : mTasks(1024) {}
 
     DatabaseWorker::~DatabaseWorker() {
         if (mWorker.joinable()) {
@@ -23,6 +24,12 @@ namespace data {
 
     size_t DatabaseWorker::getQueueSize() const {
         return mTasks.size();
+    }
+
+    void DatabaseWorker::waitUntilIdle() {
+        while (getQueueSize() > 0) {
+            std::this_thread::yield();
+        }
     }
 
     void DatabaseWorker::workerLoop(std::stop_token stopToken) {

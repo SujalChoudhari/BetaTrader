@@ -19,6 +19,8 @@ namespace trading_core {
      */
     class OrderManager {
     public:
+        virtual ~OrderManager() = default;
+
         /**
          * @brief Default constructor.
          */

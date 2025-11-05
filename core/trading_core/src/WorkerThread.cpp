@@ -13,6 +13,7 @@ namespace trading_core {
         OrderBook &orderBook,
         Matcher &matcher,
         RiskManager &riskManager,
+        data::OrderRepository &orderRepository,
         TradeIDGenerator *tradeIDGenerator,
         data::DatabaseWorker *databaseWorker
     )
@@ -21,6 +22,7 @@ namespace trading_core {
           , mOrderBook(orderBook)
           , mMatcher(matcher)
           , mRiskManager(riskManager)
+          , mOrderRepository(orderRepository)
           , mTradeIDGenerator(tradeIDGenerator)
           , mDatabaseWorker(databaseWorker)
           , mCommandBatch{} {
@@ -49,25 +51,29 @@ namespace trading_core {
         std::this_thread::sleep_for(5ms);
         LOG_INFO("Worker Thread started");
         while (!stopToken.stop_requested()) {
-            size_t dequeued = 0;
-            for (size_t i = 0; i < BATCH_SIZE; ++i) {
-                if (mCommandQueue.front()) {
-                    mCommandBatch[i] = std::move(*mCommandQueue.front());
-                    mCommandQueue.pop();
-                    dequeued++;
-                } else {
-                    break;
-                }
-            }
-
-            if (dequeued > 0) {
-                processBatch(mCommandBatch, dequeued);
-            } else {
-                std::this_thread::yield();
-            }
+            processNextCommand();
         }
 
         LOG_INFO("Worker Thread exited");
+    }
+
+    void WorkerThread::processNextCommand() {
+        size_t dequeued = 0;
+        for (size_t i = 0; i < BATCH_SIZE; ++i) {
+            if (mCommandQueue.front()) {
+                mCommandBatch[i] = std::move(*mCommandQueue.front());
+                mCommandQueue.pop();
+                dequeued++;
+            } else {
+                break;
+            }
+        }
+
+        if (dequeued > 0) {
+            processBatch(mCommandBatch, dequeued);
+        } else {
+            std::this_thread::yield();
+        }
     }
 
     void WorkerThread::processBatch(std::unique_ptr<Command> *commands, size_t count) {
@@ -87,8 +93,8 @@ namespace trading_core {
     }
 
 
-    void WorkerThread::processNewOrder(NewOrder &cmd) {
-        auto order = cmd.getOrder();
+    void WorkerThread::processNewOrder(NewOrder &cmd) const {
+        const auto order = cmd.getOrder();
 
         if (!mRiskManager.preCheck(*order, mOrderBook)) {
             ExecutionPublisher::publishRejection(
@@ -99,28 +105,35 @@ namespace trading_core {
             return;
         }
 
+        mOrderRepository.saveOrder(*order);
         mOrderBook.insertOrder(order);
 
-        auto trades = mMatcher.match(order, mOrderBook);
-        for (auto &trade: trades) {
+        for (const auto trades = mMatcher.match(order, mOrderBook); auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
+            mOrderRepository.updateOrder(*mOrderManager.getOrderById(trade.getBuyOrderId()).value());
+            mOrderRepository.updateOrder(*mOrderManager.getOrderById(trade.getSellOrderId()).value());
             ExecutionPublisher::publishTrade(trade);
+        }
+
+        if (order->getRemainingQuantity() == 0 || order->getOrderType() == common::OrderType::Market) {
+            mOrderRepository.removeOrder(order->getId());
         }
 
         ExecutionPublisher::publishExecution(*order, "NEW");
         mOrderManager.addOrder(cmd.releaseOrder());
     }
 
-    void WorkerThread::processCancelOrder(const CancelOrder &cmd) {
-        auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
+    void WorkerThread::processCancelOrder(const CancelOrder &cmd) const {
+        const auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
         if (!orderOpt) {
             ExecutionPublisher::publishRejection(cmd.getOrderId(), cmd.getClientId(),
                                                  "Order not found");
             return;
         }
-        auto order = *orderOpt;
+        const auto order = *orderOpt;
 
         if (mOrderBook.cancelOrder(cmd.getOrderId())) {
+            mOrderRepository.removeOrder(cmd.getOrderId());
             mOrderManager.removeOrderById(cmd.getOrderId());
             ExecutionPublisher::publishExecution(*order, "CANCELED");
         } else {
@@ -129,26 +142,33 @@ namespace trading_core {
         }
     }
 
-    void WorkerThread::processModifyOrder(const ModifyOrder &cmd) {
-        auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
+    void WorkerThread::processModifyOrder(const ModifyOrder &cmd) const {
+        const auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
         if (!orderOpt) {
             ExecutionPublisher::publishRejection(cmd.getOrderId(), cmd.getClientId(),
                                                  "Order not found");
             return;
         }
-        auto order = *orderOpt;
+        const auto order = *orderOpt;
 
         mOrderBook.cancelOrder(cmd.getOrderId());
+        mOrderRepository.removeOrder(cmd.getOrderId());
 
         order->setPrice(cmd.getNewPrice());
         order->setOriginalQuantity(cmd.getNewQuantity());
 
+        mOrderRepository.saveOrder(*order);
         mOrderBook.insertOrder(order);
 
-        auto trades = mMatcher.match(order, mOrderBook);
-        for (auto &trade: trades) {
+        for (const auto trades = mMatcher.match(order, mOrderBook); auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
+            mOrderRepository.updateOrder(*mOrderManager.getOrderById(trade.getBuyOrderId()).value());
+            mOrderRepository.updateOrder(*mOrderManager.getOrderById(trade.getSellOrderId()).value());
             ExecutionPublisher::publishTrade(trade);
+        }
+
+        if (order->getRemainingQuantity() == 0) {
+            mOrderRepository.removeOrder(order->getId());
         }
 
         ExecutionPublisher::publishExecution(*order, "REPLACED");
