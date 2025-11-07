@@ -1,3 +1,11 @@
+/**
+ * @file TestUtils.h
+ * @brief Test utilities used by unit tests (in-memory log sink, helpers).
+ *
+ * Contains small helper types that make it easier to assert logging behavior
+ * and other test-time conditions.
+ */
+
 #pragma once
 #include <spdlog/sinks/base_sink.h>
 #include <vector>

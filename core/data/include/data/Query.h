@@ -1,3 +1,11 @@
+/**
+ * @file Query.h
+ * @brief SQL query string constants for the data layer.
+ *
+ * This header defines the SQL statements used to create and access
+ * persistent tables for trades, orders, and trade id tracking.
+ */
+
 #pragma once
 
 namespace data::query {

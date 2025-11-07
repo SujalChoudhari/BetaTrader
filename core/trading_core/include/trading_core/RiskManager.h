@@ -1,3 +1,12 @@
+/**
+ * @file RiskManager.h
+ * @brief Risk management hooks for pre-checks and post-trade updates.
+ *
+ * The RiskManager provides a place to put pre-order validation and post-trade
+ * bookkeeping. Implementations may consult historical trades via the
+ * `data::TradeRepository`.
+ */
+
 #pragma once
 #include "common/Order.h"
 #include "common/Trade.h"
@@ -5,6 +14,10 @@
 #include "trading_core/OrderBook.h"
 
 namespace trading_core {
+    /**
+     * @class RiskManager
+     * @brief Performs risk validation and updates after trade execution.
+     */
     class RiskManager {
     public:
         virtual ~RiskManager() = default;

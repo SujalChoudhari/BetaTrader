@@ -1,308 +1,93 @@
-# Trading Core — TSD
+# Trading Core — Technical Specification & Design (TSD)
 
+This document describes the implemented design and practical details of the `core/trading_core` module. It is
+meant for developers and traders who want to understand or extend the matching engine, partitioning model, and
+hot-path invariants.
 
 ## 1 — High-level design patterns
 
-* **Reactor / Event Loop** — single-threaded event loop per instrument partition.
-* **Command / Message Bus** — commands (NewOrder, Cancel, Modify) are commands processed by OrderManager.
-* **Publisher-Subscriber** — pub/sub for outbound events (ZeroMQ).
-* **Partitioned Single-Writer** — one writer thread per instrument partition (no locks inside core matching path).
-* **Asynchronous IO** — persistence and external comms async to matching thread.
+- Partitioned single-writer: one worker thread owns a partition (usually one instrument) and is the only thread
+	that mutates the order book and order manager. This eliminates locks on the critical path.
+- Command pattern: external inputs are normalized into `Command` objects (`NewOrder`, `ModifyOrder`, `CancelOrder`) and
+	enqueued to partition queues.
+- Event-driven and asynchronous IO: matching and state mutation are synchronous inside the worker; persistence and
+	outbound publishing are performed asynchronously to avoid blocking.
+- Test-first and deterministic: the worker exposes deterministic helper methods to drive single steps in unit tests.
+
+## 2 — Class responsibilities (concise)
+
+- TradingCore: boots partitions and shared services (optional owned `DatabaseWorker`, `TradeIDGenerator`) and provides a
+	top-level submit API.
+- Partition: composes `OrderBook`, `OrderManager`, `Matcher`, `RiskManager`, `WorkerThread`, and repositories. It owns the
+	command queue and worker lifecycle.
+- WorkerThread: dequeues batches of `Command` objects and runs the deterministic processing pipeline: pre-check → insert/modify/cancel → match → publish → persist.
+- OrderManager: owns `common::Order` instances and provides constant-time lookup for cancels/modifies.
+- OrderBook: maintains price-level maps (bids sorted descending, asks ascending) with deque-based price levels for FIFO within a price.
+- Matcher: performs matching logic and returns `common::Trade` objects for each match.
+- RiskManager: pluggable, lightweight pre-checks and post-trade hooks.
+
+## 3 — Threading & concurrency model
+
+1. Producers (gateway or test code) create `Command` objects and push into a partition's SPSC queue.
+2. The partition's single `WorkerThread` pops commands in batches and performs all state mutation.
+3. Persistence and outbound publish happen via async adapters (e.g., `data::DatabaseWorker`) or lock-free queues consumed by IO workers.
+
+Consequences:
+
+- No locks on the hot matching path.
+- Deterministic processing order when commands are timestamped/ingested in consistent order.
+
+## 4 — Internal queues & batching
+
+- `Command` queue: `rigtorp::SPSCQueue<std::unique_ptr<Command>>` with a configurable batch size (default: 64).
+- Worker reads up to a batch or until empty, processes commands sequentially to amortize cost.
+- Outbound events (trades, exec reports) are aggregated and handed off to IO workers in batches to reduce syscalls.
+
+## 5 — Matching rules & determinism
+
+- Price-time priority: better price first; for identical prices, earlier timestamp first.
+- Execution price is the resting order price (common exchange convention).
+- Partial fills: allowed — remaining quantity is updated and the partially filled order stays in the book.
+- Determinism: timestamps should be assigned once upon ingestion (gateway) to avoid variations between runs. Tests should
+	use deterministic timestamps to make results reproducible.
+
+## 6 — Serialization & publishing
+
+- The repo includes an `ExecutionPublisher` helper used to format Execution Reports and Trades. In production you would
+	serialize using FlatBuffers (or another zero-copy format) and publish via ZeroMQ or another messaging layer.
+- The core only constructs `common::Trade` and `common::Order` objects; serialization is handled downstream by IO workers.
+
+## 7 — Persistence and recovery notes
+
+- `data::DatabaseWorker` accepts lambdas and executes them on a background thread against a `SQLite::Database` instance.
+	This keeps disk I/O off the matching thread.
+- `TradeIDRepository` provides a persistent backing for trade id counters used by the `TradeIDGenerator`.
+- There is not yet a complete snapshot/restore orchestration in `trading_core` — persistence hooks exist for replay.
+
+## 8 — Performance & engineering recommendations
+
+- Avoid heap allocations on the hot path; prefer pre-allocated pools for `Order` entries if needed.
+- Minimize virtual calls in inner loops (the `Matcher` is designed to be concrete and inline-friendly).
+- Tune batch size and queue capacities based on observed throughput and latency.
+
+## 9 — How to experiment / run small scenarios
+
+1. Build the tests as described in the top-level README.
+2. Use unit tests to examine small deterministic scenarios (see `core/trading_core/tests/`). Tests show how to build `NewOrder` commands and observe produced trades.
+3. For a manual experiment: create a small `main()` that constructs a `Partition`, enqueues `NewOrder` commands, calls `start()` and optionally uses test helper methods to step the worker.
+
+## 10 — Example processing sequence (concise)
+
+1. Gateway produces `NewOrder` for EURUSD and enqueues it to Partition A.
+2. WorkerThread dequeues the command and calls `RiskManager::preCheck`.
+3. If accepted, `OrderManager::addOrder` stores the `Order` and `OrderBook::insertOrder` places a pointer at the correct price level.
+4. `Matcher::match` compares incoming order vs resting book; for each match it creates a `common::Trade` object.
+5. Worker updates order states (remaining qty/status), calls `ExecutionPublisher` to enqueue messages for IO, and submits persistence lambdas to `data::DatabaseWorker`.
 
 ---
 
-## 2 — Class diagram (Mermaid)
+This TSD is intentionally practical: it focuses on the currently implemented architecture and the points you need to know to run
+tests, extend matching logic, or experiment with alternative rules. If you'd like, I can now add a small interactive example
+program (CLI) that runs a single partition and accepts JSON orders on stdin for manual experimentation.
 
-```mermaid
-classDiagram
-  direction LR
-
-  class TradingCore {
-    +start()
-    +stop()
-    +submitCommand(Command)
-  }
-  class Partition {
-    +symbolSet: vector<string>
-    +start()
-    +stop()
-    +enqueueCommand(Command)
-  }
-  class WorkerThread {
-    +runLoop()
-    +processBatch()
-  }
-  class OrderManager {
-    +addOrder(Order)
-    +modifyOrder(OrderModify)
-    +cancelOrder(order_id)
-    +getOrder(order_id)
-  }
-
-  class Order {
-    +id
-    +symbol
-    +client
-    +side
-    +type
-    +qty
-    +price
-    +ts
-  }
-  
-  
-  class OrderBook {
-    +insert(OrderEntry)
-    +match(Order)
-    +cancel(order_id)
-    +snapshot()
-  }
-  class Matcher {
-    +matchAgainstBook(Order)
-  }
-  class RiskManager {
-    +preCheck(Order): bool
-    +postTradeUpdate(Trade)
-  }
-  class Command {
-    <<interface>>
-    +type
-    +timestamp
-  }
-  class NewOrder {
-    +order:Order
-  }
-  class CancelOrder {
-    +order_id:string
-  }
-  class ModifyOrder {
-    +order_id:string
-    +newQty
-    +newPrice
-  }
-  class Trade {
-    +trade_id
-    +buy_order_id
-    +sell_order_id
-    +qty
-    +price
-    +ts
-  }
-  
-  class ExecutionPublisher {
-    +publishExecution(ExecutionReport)
-    +publishTrade(Trade)
-  }
-  class MessageBus {
-    +publish(topic, msg)
-    +subscribe(topic, handler)
-  }
-  class PersistenceAdapter {
-    +persistTrade(Trade)
-    +persistOrder(Order)
-    +loadSnapshot()
-  }
-  class SnapshotManager {
-    +snapshotState()
-    +restoreState()
-  }
-  class MarketDataHandler {
-    +onTick(Tick)
-  }
-  class IDGenerator {
-    +nextOrderId()
-    +nextTradeId()
-  }
-  class Metrics {
-    +observeLatency(us)
-    +incrementCounter(name)
-  }
-
-  TradingCore --> Partition
-  Partition --> WorkerThread
-  WorkerThread --> OrderManager
-  WorkerThread --> OrderBook
-  OrderManager --> RiskManager
-  OrderBook --> Matcher
-  WorkerThread --> ExecutionPublisher
-  ExecutionPublisher --> MessageBus
-  ExecutionPublisher --> PersistenceAdapter
-  PersistenceAdapter --> SnapshotManager
-  TradingCore --> MarketDataHandler
-  TradingCore --> MessageBus
-  TradingCore --> IDGenerator
-  TradingCore --> Metrics
-
-  Command <|-- NewOrder
-  Command <|-- CancelOrder
-  Command <|-- ModifyOrder
-```
-
----
-
-## 3 — Class responsibilities
-
-* **TradingCore**
-
-    * Bootstrap partitions, IO, message bus, adapters, metrics.
-    * Entry point for external commands.
-* **Partition**
-
-    * Owns a set of instruments.
-    * Single-writer WorkerThread for owned instruments.
-    * Provides SPSC command queue for producers (gateways).
-* **WorkerThread**
-
-    * Reads command queue in batches.
-    * Runs deterministic event loop: risk → match → update → publish.
-* **OrderManager**
-
-    * Indexes orders by id.
-    * Fast lookup for cancels/modifies.
-* **OrderBook**
-
-    * Price-level maps to deques.
-    * Efficient top-of-book and matching operations.
-* **Matcher**
-
-    * Implements matching algorithm.
-    * Ensures price-time priority and partial fills semantics.
-* **RiskManager**
-
-    * Pre-trade and per-trade checks.
-    * Stateless checks kept fast; heavier checks deferred async if possible.
-* **ExecutionPublisher**
-
-    * Formats and pushes ExecutionReports/TradeEvents to MessageBus and PersistenceAdapter.
-    * Non-blocking handoff (lock-free queue) to IO workers.
-* **MessageBus**
-
-    * ZeroMQ adapter. PUB/SUB and optional persistent seqs.
-* **PersistenceAdapter**
-
-    * Async writer threads to Redis/TimescaleDB.
-    * Ensures write-ahead logs or durable event storage.
-* **SnapshotManager**
-
-    * Periodic snapshots of open orders and positions to Redis.
-    * On startup restores state atomically.
-* **MarketDataHandler**
-
-    * Translates external ticks into internal reference prices; may trigger crossing logic or mid-price checks.
-* **IDGenerator**
-
-    * High-throughput, monotonic ID generator (timestamp+counter).
-* **Metrics**
-
-    * Low-overhead histograms and counters.
-
----
-
-## 4 — Threading & concurrency model
-
-1. **Gateway / API threads**: parse external protocols and push `Command` objects into partitions' SPSC queues.
-
-    * Multiple producers allowed. Use multi-producer ring buffers or a fan-in lock-free queue.
-2. **Partition Worker (single writer)**: only thread that mutates that partition's OrderBook and OrderManager.
-
-    * No fine-grained locks needed inside matching path.
-3. **IO / Persistence worker pool**: consume outbound event queues (trades, exec reports) and perform network/DB writes asynchronously.
-4. **Admin / Metrics thread**: samplers and health checks.
-
-Implementation notes:
-
-* Use **SPSC ring buffer** per gateway→partition path if you can bound producers; otherwise use **MPMC** with batching.
-* Use `std::atomic` for sequence numbers.
-* Use **memory barriers** and `std::atomic_thread_fence` only where necessary.
-* For object lifecycle, use epoch-based reclamation or hazard pointers for lock-free deletion.
-
----
-
-## 5 — Internal queues & batching
-
-* **Command Queue** (gateway → partition): ring buffer of `Command*` or small POD command structs. Batch size tunable (e.g., 64).
-* **Outbound Event Queue** (partition → IO): lock-free queue (MPMC) holding serialized FlatBuffer blobs. IO workers drain asynchronously.
-* **Snapshot Channel**: low-traffic, durable writes.
-
-Batch processing:
-
-* Worker reads N commands or until empty, processes as atomic batch to reduce syscall and context switches.
-* Publish events in batch to MessageBus to amortize ZeroMQ sends.
-
----
-
-## 6 — Matching rules & determinism
-
-* Matching is **price-time**:
-
-    * Better price first.
-    * If same price, earlier timestamp first.
-* Execution price: resting order’s price (common exchange convention).
-* Partial fills allowed; update remaining order and continue matching.
-* Determinism:
-
-    * Timestamps should come from a single monotonic clock or assigned at ingestion to avoid ordering variance.
-    * Worker processes commands serially to preserve determinism.
-
----
-
-## 7 — Serialization & wire protocol
-
-* Use FlatBuffers for low-copy serialization.
-* On publish, produce ready-to-send buffer and hand it to IO workers.
-* Message envelope: `{topic, sequence, timestamp, payload}`.
-* Maintain per-topic sequence numbers persisted at intervals.
-
----
-
-## 8 — Persistence & recovery
-
-* **Warm state**: Redis store of open orders and positions. SnapshotManager writes compact snapshot every X seconds or N trades.
-* **Cold state**: TimescaleDB append-only of trades and order lifecycle for audit/backtest.
-* On restart:
-
-    1. Load Redis snapshot.
-    2. Restore sequence numbers.
-    3. Rebuild index structures.
-    4. Accept incoming commands only after state restored.
-
-Guarantees:
-
-* If PersistenceAdapter uses write-ahead logs, you can achieve at-least-once durability. Use unique trade IDs and idempotency at consumers to avoid duplication.
-
----
-
-## 9 — Performance tuning checklist
-
-* Partition instruments by load to keep single-writer path light.
-* Avoid heap allocation on hot path. Use object pools or arena allocators.
-* Inline hot functions, minimize virtual calls in matching inner loop.
-* Use cache-aware data structures for price levels.
-* Measure GC/allocator stalls; prefer custom allocators for OrderEntry objects.
-* Use lock-free queues; avoid mutexes in hot path.
-
----
-
-## 10 — APIs and admin
-
-* Admin endpoints:
-
-    * `POST /admin/dump_book?symbol=XXX`
-    * `POST /admin/cancel_all?client=YYY`
-    * `GET /admin/health`
-* Control channel accepts `Command` objects for backfill, replay, and recovery control.
-
----
-
-## 11 — Example sequence (concise)
-
-1. Gateway parses FIX → creates `NewOrder` command with ts and pushes to partition queue.
-2. Partition Worker dequeues, calls `RiskManager.preCheck`.
-3. If pass: `OrderManager.addOrder` → `OrderBook.insert` → `Matcher.match` (may produce Trade(s)).
-4. For each Trade:
-
-    * Apply updates to positions.
-    * Create Trade object, push to outbound queue.
-    * Enqueue ExecutionReport.
-5. Worker loops. IO workers flush outbound queues to ZeroMQ/DB.
 

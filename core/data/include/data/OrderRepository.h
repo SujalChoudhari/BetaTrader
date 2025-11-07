@@ -1,3 +1,11 @@
+/**
+ * @file OrderRepository.h
+ * @brief Repository interface for persisting and loading orders.
+ *
+ * Provides an abstraction over the underlying database worker for storing,
+ * retrieving and updating order records.
+ */
+
 #pragma once
 #include "data/DatabaseWorker.h"
 #include "common/Order.h"
@@ -5,6 +13,10 @@
 #include <functional>
 
 namespace data {
+    /**
+     * @class OrderRepository
+     * @brief Persists and retrieves `common::Order` objects.
+     */
     class OrderRepository {
     public:
         explicit OrderRepository(DatabaseWorker* dbWorker);

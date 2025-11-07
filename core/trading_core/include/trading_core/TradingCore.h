@@ -1,6 +1,10 @@
-//
-// Created by sujal on 30-10-2025.
-//
+/**
+ * @file TradingCore.h
+ * @brief Top-level entry point for the trading core service.
+ *
+ * Declares the `TradingCore` which manages partitions, the database worker,
+ * and the lifecycle of the trading engine.
+ */
 
 #pragma once
 #include "Command.h"
@@ -10,6 +14,10 @@
 #include <memory> // Required for std::unique_ptr
 
 namespace trading_core {
+    /**
+     * @class TradingCore
+     * @brief High-level manager for partitions and command dispatch.
+     */
     class TradingCore {
     public:
         TradingCore();

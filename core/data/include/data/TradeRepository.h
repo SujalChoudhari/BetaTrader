@@ -1,8 +1,20 @@
+/**
+ * @file TradeRepository.h
+ * @brief Repository interface for persisting trades.
+ *
+ * Encapsulates operations to initialize trade storage and insert trade records
+ * into the persistent database.
+ */
+
 #pragma once
 #include "data/DatabaseWorker.h"
 #include "common/Trade.h"
 
 namespace data {
+    /**
+     * @class TradeRepository
+     * @brief Persists `common::Trade` objects to storage.
+     */
     class TradeRepository {
     public:
         explicit TradeRepository(DatabaseWorker* dbWorker);
