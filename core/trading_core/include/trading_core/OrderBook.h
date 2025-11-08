@@ -55,13 +55,13 @@ namespace trading_core {
          * @brief Gets a raw pointer to the bid map.
          * @return A raw pointer to the bid map.
          */
-        [[nodiscard]] BidMap* getBidMap();
+        [[nodiscard]] virtual BidMap* getBidMap();
 
         /**
          * @brief Gets a raw pointer to the ask map.
          * @return A raw pointer to the ask map.
          */
-        [[nodiscard]] AskMap* getAskMap();
+        [[nodiscard]] virtual AskMap* getAskMap();
 
     private:
         BidMap mBidMap; ///< The map of buy orders.

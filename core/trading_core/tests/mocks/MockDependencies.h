@@ -8,7 +8,7 @@
 #include "trading_core/Matcher.h"
 #include "trading_core/RiskManager.h"
 #include "trading_core/TradeIDGenerator.h"
-#include <gtest/gtest.h>
+#include <gmock/gmock.h> // Include gmock for MOCK_METHOD
 
 class MockDatabaseWorker : public data::DatabaseWorker {
 public:
@@ -88,6 +88,10 @@ public:
         cancelOrderCallCount++;
         return cancelOrderResult;
     }
+
+    // Mock the virtual methods from OrderBook.h
+    MOCK_METHOD(BidMap*, getBidMap, (), (override));
+    MOCK_METHOD(AskMap*, getAskMap, (), (override));
 };
 
 // Mock for Matcher
