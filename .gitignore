@@ -1,2 +1,5 @@
 /.vs/
 /out/
+/docs/
+*.bak
+*.log

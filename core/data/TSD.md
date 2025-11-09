@@ -1,5 +1,5 @@
 
-# core/data — Technical Specification & Design (current)
+# Data — Technical Specification & Design (current)
 
 This TSD summarizes the actual, implemented design and practical notes for the `core/data` module. It is
 intended for developers who will read, extend, or debug the persistence layer.

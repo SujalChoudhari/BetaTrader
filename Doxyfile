@@ -1,0 +1,104 @@
+#---------------------------------------------------------------------------
+# Project related configuration options
+#---------------------------------------------------------------------------
+
+PROJECT_NAME           = BetaTrader
+PROJECT_BRIEF          = "A HFT Eco-System"
+OUTPUT_DIRECTORY       = ./docs
+CREATE_SUBDIRS         = YES
+INLINE_INHERITED_MEMB  = YES
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = F:/Workspace/BetaTrader/
+TIMESTAMP              = YES
+MARKDOWN_SUPPORT       = YES
+
+#---------------------------------------------------------------------------
+# Build related configuration options
+#---------------------------------------------------------------------------
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PACKAGE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+INTERNAL_DOCS          = YES
+CASE_SENSE_NAMES       = YES
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = YES
+SORT_MEMBERS_CTORS_1ST = YES
+WARN_NO_PARAMDOC       = YES
+
+#---------------------------------------------------------------------------
+# Configuration options related to warning and progress messages
+#---------------------------------------------------------------------------
+
+QUIET                  = YES
+WARN_LOGFILE           = doxygen_warnings.log
+
+#---------------------------------------------------------------------------
+# Configuration options related to the input files
+#---------------------------------------------------------------------------
+
+INPUT                  = F:/Workspace/BetaTrader/common \
+                         F:/Workspace/BetaTrader/core \
+                         F:/Workspace/BetaTrader
+
+FILE_PATTERNS          = *.h \
+                         *.cpp \
+                         **\*.md**
+RECURSIVE              = YES
+EXCLUDE                = F:/Workspace/BetaTrader/core/trading_core/tests \
+                         F:/Workspace/BetaTrader/core/data/tests \
+                         F:/Workspace/BetaTrader/docs \
+                         F:/Workspace/BetaTrader/doxygen-theme \
+                         F:/Workspace/BetaTrader/vendor
+
+
+
+EXCLUDE_PATTERNS       = */tests/* \
+                         */mocks/*
+
+USE_MDFILE_AS_MAINPAGE = README.md
+IMPLICIT_DIR_DOCS      = YES
+
+#---------------------------------------------------------------------------
+# Configuration options related to the HTML output
+#---------------------------------------------------------------------------
+
+GENERATE_HTML          = YES
+GENERATE_TREEVIEW      = YES
+PAGE_OUTLINE_PANEL     = YES
+HTML_CODE_FOLDING      = YES
+HTML_COPY_CLIPBOARD    = YES
+ENUM_VALUES_PER_LINE   = 1
+SEARCHENGINE           = YES
+TREEVIEW_WIDTH         = 250
+
+HTML_EXTRA_STYLESHEET  = doxygen-theme/theme.css
+
+#---------------------------------------------------------------------------
+# Configuration options related to the LaTeX output
+#---------------------------------------------------------------------------
+
+GENERATE_LATEX         = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to diagram generator tools
+#---------------------------------------------------------------------------
+
+HAVE_DOT               = YES
+DOT_NUM_THREADS        = 0
+UML_LOOK               = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+GROUP_GRAPHS           = YES
+TEMPLATE_RELATIONS     = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+GRAPHICAL_HIERARCHY    = YES
+DIRECTORY_GRAPH        = YES
+DOT_MULTI_TARGETS      = YES
+GENERATE_LEGEND        = YES
+DOT_CLEANUP            = YES

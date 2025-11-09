@@ -1,0 +1,30 @@
+name: Deploy Doxygen Docs
+
+on:
+  push:
+    branches:
+      - main  # Trigger only when code is pushed to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to push to the docs-deploy branch
+
+    steps:
+      - name: ⬇️ Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Install Doxygen and Graphviz
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: ⚙️ Generate Doxygen Documentation
+        run: doxygen Doxyfile
+
+      - name: 🚀 Deploy Docs to docs-deploy Branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: docs-deploy  # The dedicated branch to hold the static HTML
+          publish_dir: ./docs/html     # The directory containing Doxygen's output
+          force_orphan: true           # Overwrite the branch content every time
