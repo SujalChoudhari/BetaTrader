@@ -8,7 +8,7 @@ OUTPUT_DIRECTORY       = ./docs
 CREATE_SUBDIRS         = YES
 INLINE_INHERITED_MEMB  = YES
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = F:/Workspace/BetaTrader/
+STRIP_FROM_PATH        =
 TIMESTAMP              = YES
 MARKDOWN_SUPPORT       = YES
 
@@ -39,21 +39,19 @@ WARN_LOGFILE           = doxygen_warnings.log
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = F:/Workspace/BetaTrader/common \
-                         F:/Workspace/BetaTrader/core \
-                         F:/Workspace/BetaTrader
+INPUT                  = common \
+                         core \
+                         .
 
 FILE_PATTERNS          = *.h \
                          *.cpp \
-                         **\*.md**
+                         *.md
 RECURSIVE              = YES
-EXCLUDE                = F:/Workspace/BetaTrader/core/trading_core/tests \
-                         F:/Workspace/BetaTrader/core/data/tests \
-                         F:/Workspace/BetaTrader/docs \
-                         F:/Workspace/BetaTrader/doxygen-theme \
-                         F:/Workspace/BetaTrader/vendor
-
-
+EXCLUDE                = core/trading_core/tests \
+                         core/data/tests \
+                         docs \
+                         doxygen-theme \
+                         vendor
 
 EXCLUDE_PATTERNS       = */tests/* \
                          */mocks/*
