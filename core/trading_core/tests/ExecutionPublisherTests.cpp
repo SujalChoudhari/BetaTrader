@@ -20,7 +20,7 @@ private:
 };
 
 TEST(ExecutionPublisherTests, PublishExecution) {
-    common::Order order(123, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, 100, 1.25, std::chrono::system_clock::now());
+    common::Order order(123, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.25, std::chrono::system_clock::now());
     order.setRemainingQuantity(50);
     std::string action = "PARTIAL_FILL";
 

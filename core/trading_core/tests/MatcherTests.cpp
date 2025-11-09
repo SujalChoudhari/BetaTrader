@@ -48,7 +48,7 @@ protected:
     }
 
     common::Order* createOrder(common::OrderID id, common::OrderSide side, common::Price price, common::Quantity qty = 100, common::OrderType type = common::OrderType::Limit) {
-        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "test_client", side, type, qty, price, std::chrono::system_clock::now());
+        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "test_client", side, type, common::TimeInForce::DAY, qty, price, std::chrono::system_clock::now());
         common::Order* ptr = order.get();
         orderStore.push_back(std::move(order));
         return ptr;

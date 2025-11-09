@@ -31,6 +31,7 @@ std::unique_ptr<Order> create_order() {
         "STRESS_CLIENT_" + std::to_string(OrderIDGenerator::getId()),
         (OrderIDGenerator::getId() % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
         OrderType::Limit,
+        common::TimeInForce::DAY,
         100,
         1.2000 + price_dist(gen),
         system_clock::now()

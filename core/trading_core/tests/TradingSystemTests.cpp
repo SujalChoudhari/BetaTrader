@@ -78,7 +78,7 @@ TEST_F(TradingSystemTest, SubmitNewOrderEndToEnd) {
     setupMockPartition(common::Instrument::EURUSD);
     tradingCore->start();
 
-    auto order = std::make_unique<common::Order>(123, common::Instrument::EURUSD, "test_client", common::OrderSide::Buy, common::OrderType::Limit, 100, 1.25, std::chrono::system_clock::now());
+    auto order = std::make_unique<common::Order>(123, common::Instrument::EURUSD, "test_client", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.25, std::chrono::system_clock::now());
     auto cmd = std::make_unique<trading_core::NewOrder>("test_client", order->getTimestamp(), std::move(order));
 
     std::stringstream buffer;
@@ -102,7 +102,7 @@ TEST_F(TradingSystemTest, SubmitNewOrderRoutesToCorrectPartition) {
     setupMockPartition(common::Instrument::EURUSD);
 
     // Don't start the core, so the command stays in the queue
-    auto order = std::make_unique<common::Order>(123, common::Instrument::USDJPY, "test_client", common::OrderSide::Buy, common::OrderType::Limit, 100, 1.25, std::chrono::system_clock::now());
+    auto order = std::make_unique<common::Order>(123, common::Instrument::USDJPY, "test_client", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.25, std::chrono::system_clock::now());
     auto cmd = std::make_unique<trading_core::NewOrder>("test_client", order->getTimestamp(), std::move(order));
 
     tradingCore->submitCommand(std::move(cmd));

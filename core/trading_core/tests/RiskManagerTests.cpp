@@ -56,31 +56,31 @@ protected:
 // --- preCheck Tests (unchanged) ---
 
 TEST_F(RiskManagerTest, ValidOrder) {
-    common::Order order(1, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, 100, 1.1, {});
+    common::Order order(1, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.1, {});
     ASSERT_TRUE(riskManager->preCheck(order, *orderBook));
 }
 
 TEST_F(RiskManagerTest, InvalidQuantity) {
-    common::Order order(1, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, 0, 1.1, {});
+    common::Order order(1, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 0, 1.1, {});
     ASSERT_FALSE(riskManager->preCheck(order, *orderBook));
 }
 
 TEST_F(RiskManagerTest, InvalidPrice) {
-    common::Order order(1, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, 100, 0.0, {});
+    common::Order order(1, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 100, 0.0, {});
     ASSERT_FALSE(riskManager->preCheck(order, *orderBook));
 }
 
 TEST_F(RiskManagerTest, FatFingerBuyRejection) {
-    common::Order restingSell(1, common::Instrument::EURUSD, "client2", common::OrderSide::Sell, common::OrderType::Limit, 100, 1.0, {});
+    common::Order restingSell(1, common::Instrument::EURUSD, "client2", common::OrderSide::Sell, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.0, {});
     orderBook->insertOrder(&restingSell);
-    common::Order incomingBuy(2, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, 100, 1.2, {});
+    common::Order incomingBuy(2, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.2, {});
     ASSERT_FALSE(riskManager->preCheck(incomingBuy, *orderBook));
 }
 
 TEST_F(RiskManagerTest, SelfMatchMarketRejection) {
-    common::Order restingSell(1, common::Instrument::EURUSD, "client1", common::OrderSide::Sell, common::OrderType::Limit, 100, 1.1, {});
+    common::Order restingSell(1, common::Instrument::EURUSD, "client1", common::OrderSide::Sell, common::OrderType::Limit, common::TimeInForce::DAY, 100, 1.1, {});
     orderBook->insertOrder(&restingSell);
-    common::Order incomingMarketBuy(2, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Market, 100, 0.0, {});
+    common::Order incomingMarketBuy(2, common::Instrument::EURUSD, "client1", common::OrderSide::Buy, common::OrderType::Market, common::TimeInForce::DAY, 100, 0.0, {});
     ASSERT_FALSE(riskManager->preCheck(incomingMarketBuy, *orderBook));
 }
 

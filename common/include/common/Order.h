@@ -23,6 +23,7 @@ namespace common {
          * @param client The identifier of the client placing the order.
          * @param side The side of the order (Buy or Sell).
          * @param type The type of the order (Limit or Market).
+         * @param timeInForce The time in force of the order.
          * @param quantity The original quantity of the order.
          * @param price The price of the order.
          * @param ts The timestamp of when the order was created.
@@ -32,6 +33,7 @@ namespace common {
               ClientID client,
               const OrderSide side,
               const OrderType type,
+              const TimeInForce timeInForce,
               const Quantity quantity,
               const Price price,
               const Timestamp ts)
@@ -40,6 +42,7 @@ namespace common {
               mClientId(std::move(client)),
               mOrderSide(side),
               mOrderType(type),
+              mTimeInForce(timeInForce),
               mOriginalQuantity(quantity),
               mRemainingQuantity(quantity),
               mPrice(price),
@@ -64,6 +67,8 @@ namespace common {
         [[nodiscard]] OrderStatus getStatus() const { return mOrderStatus; }
         /** @brief Gets the order type (Limit/Market). */
         [[nodiscard]] OrderType getOrderType() const { return mOrderType; }
+        /** @brief Gets the time in force of the order. */
+        [[nodiscard]] TimeInForce getTimeInForce() const { return mTimeInForce; }
         /** @brief Gets the original quantity of the order. */
         [[nodiscard]] Quantity getOriginalQuantity() const { return mOriginalQuantity; }
         /** @brief Gets the remaining quantity of the order. */
@@ -82,24 +87,23 @@ namespace common {
             mOriginalQuantity = qty;
             mRemainingQuantity = qty;
         }
+
         /** @brief Sets the timestamp of the order. */
         void setTimestamp(const Timestamp ts) { mTimestamp = ts; }
 
     private:
-        OrderID mId;                ///< Unique identifier for the order.
-        Symbol mSymbol;             ///< Financial instrument symbol.
-        ClientID mClientId;         ///< Identifier of the client placing the order.
-        OrderSide mOrderSide;       ///< The side of the order (Buy or Sell).
-        OrderType mOrderType;       ///< The type of the order (Limit or Market).
-
+        OrderID mId; ///< Unique identifier for the order.
+        Symbol mSymbol; ///< Financial instrument symbol.
+        ClientID mClientId; ///< Identifier of the client placing the order.
+        OrderSide mOrderSide; ///< The side of the order (Buy or Sell).
+        OrderType mOrderType; ///< The type of the order (Limit or Market).
+        TimeInForce mTimeInForce; ///< The time in force of the order.
         Quantity mOriginalQuantity; ///< The original quantity of the order.
-        Quantity mRemainingQuantity;///< The quantity of the order that has not yet been filled.
+        Quantity mRemainingQuantity; ///< The quantity of the order that has not yet been filled.
 
-        Price mPrice;               ///< The price of the order.
-        Timestamp mTimestamp;       ///< The timestamp of when the order was created.
+        Price mPrice; ///< The price of the order.
+        Timestamp mTimestamp; ///< The timestamp of when the order was created.
 
-        OrderStatus mOrderStatus;   ///< The current status of the order.
+        OrderStatus mOrderStatus; ///< The current status of the order.
     };
-
-
 }

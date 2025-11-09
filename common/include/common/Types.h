@@ -26,7 +26,9 @@ namespace common {
      */
     enum class OrderType: uint8_t {
         Limit, ///< A limit order, which is executed at a specified price or better.
-        Market ///< A market order, which is executed immediately at the best available price.
+        Market, ///< A market order, which is executed immediately at the best available price.
+        Stop, ///< Triggers a market order once a set price is reached (Not implemented)
+        StopLimit ///< Triggers a limit order once a set price is reached (Not implemented)
     };
 
     /**
@@ -39,6 +41,19 @@ namespace common {
         Filled, ///< The order has been fully matched.
         Cancelled, ///< The order has been cancelled before being fully matched.
         Rejected ///< The order was rejected by the system and never entered the matching engine.
+    };
+
+    /**
+     * @enum TimeInForce
+     * @brief Guides How long the order is in the system.
+     */
+    enum class TimeInForce: uint8_t {
+        DAY, ///< Keep the order in the system for a day
+        GTC, ///< Good till cancellation
+        IOC, ///< Immediate or cancel
+        FOK, ///< Fill or kill
+        MOO, ///< Market on Open
+        MOC, ///< Market on Close
     };
 
     // --- OrderSide Serialization ---
@@ -83,6 +98,22 @@ namespace common {
             if (order_status_names[i] == name)
                 return static_cast<OrderStatus>(i);
         throw std::invalid_argument("Unknown OrderStatus name");
+    }
+
+    // --- TimeInForce Serialization ---
+    constexpr std::array<std::string_view, 6> time_in_force_names = {
+        "DAY", "GTC", "IOC", "FOK", "MOO", "MOC"
+    };
+
+    inline std::string to_string(TimeInForce tif) {
+        return std::string(time_in_force_names[static_cast<size_t>(tif)]);
+    }
+
+    inline TimeInForce from_string_TimeInForce(std::string_view name) {
+        for (size_t i = 0; i < time_in_force_names.size(); ++i)
+            if (time_in_force_names[i] == name)
+                return static_cast<TimeInForce>(i);
+        throw std::invalid_argument("Unknown TimeInForce name");
     }
 
 

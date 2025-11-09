@@ -23,7 +23,7 @@ protected:
 
     // Helper to create and store an order, returning a raw pointer for insertion
     common::Order* createOrder(common::OrderID id, common::OrderSide side, common::Price price, common::Quantity qty = 100, common::OrderStatus status = common::OrderStatus::New) {
-        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "test_client", side, common::OrderType::Limit, qty, price, std::chrono::system_clock::now());
+        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "test_client", side, common::OrderType::Limit, common::TimeInForce::DAY, qty, price, std::chrono::system_clock::now());
         order->setStatus(status);
         if (status == common::OrderStatus::PartiallyFilled) {
             order->setRemainingQuantity(qty / 2);
@@ -177,7 +177,7 @@ protected:
 
     // Helper to create and store an order
     common::Order* createAndStoreOrder(common::OrderID id, common::OrderSide side, common::Price price, common::Quantity qty, common::OrderStatus status) {
-        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "client1", side, common::OrderType::Limit, qty, price, std::chrono::system_clock::now());
+        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "client1", side, common::OrderType::Limit, common::TimeInForce::DAY, qty, price, std::chrono::system_clock::now());
         order->setStatus(status);
         if (status == common::OrderStatus::PartiallyFilled) {
             order->setRemainingQuantity(qty / 2);

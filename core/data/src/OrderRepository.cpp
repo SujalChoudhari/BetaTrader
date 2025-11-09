@@ -32,13 +32,14 @@ namespace data {
                 query.bind(3, common::to_string(order.getSymbol()));
                 query.bind(4, common::to_string(order.getSide()));
                 query.bind(5, common::to_string(order.getOrderType()));
-                query.bind(6, order.getPrice());
-                query.bind(7, static_cast<sqlite3_int64>(order.getOriginalQuantity()));
-                query.bind(8, static_cast<sqlite3_int64>(order.getRemainingQuantity()));
-                query.bind(9, common::to_string(order.getStatus()));
+                query.bind(6, common::to_string(order.getTimeInForce()));
+                query.bind(7, order.getPrice());
+                query.bind(8, static_cast<sqlite3_int64>(order.getOriginalQuantity()));
+                query.bind(9, static_cast<sqlite3_int64>(order.getRemainingQuantity()));
+                query.bind(10, common::to_string(order.getStatus()));
                 const auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
                     order.getTimestamp().time_since_epoch()).count();
-                query.bind(10, ns);
+                query.bind(11, ns);
                 query.exec();
             } catch (const std::exception &e) {
                 LOG_ERROR(errors::EDATA9, "Error in OrderRepository::saveOrder: {}", std::string_view(e.what()));
@@ -60,18 +61,19 @@ namespace data {
                     const common::Instrument symbol = common::from_string(query.getColumn(2).getText());
                     const common::OrderSide side = common::from_string_OrderSide(query.getColumn(3).getText());
                     const common::OrderType type = common::from_string_OrderType(query.getColumn(4).getText());
-                    const common::Price price = query.getColumn(5).getDouble();
-                    const common::Quantity originalQuantity = static_cast<common::Quantity>(query.getColumn(6).
+                    const common::TimeInForce timeInForce = common::from_string_TimeInForce(query.getColumn(5).getText());
+                    const common::Price price = query.getColumn(6).getDouble();
+                    const common::Quantity originalQuantity = static_cast<common::Quantity>(query.getColumn(7).
                         getInt64());
-                    const common::Quantity remainingQuantity = static_cast<common::Quantity>(query.getColumn(7).
+                    const common::Quantity remainingQuantity = static_cast<common::Quantity>(query.getColumn(8).
                         getInt64());
-                    const common::OrderStatus status = common::from_string_OrderStatus(query.getColumn(8).getText());
+                    const common::OrderStatus status = common::from_string_OrderStatus(query.getColumn(9).getText());
 
-                    auto ns_duration = std::chrono::nanoseconds(query.getColumn(9).getInt64());
+                    auto ns_duration = std::chrono::nanoseconds(query.getColumn(10).getInt64());
                     const common::Timestamp timestamp(
                         std::chrono::duration_cast<common::Timestamp::duration>(ns_duration));
 
-                    common::Order order(orderId, symbol, clientId, side, type, originalQuantity, price, timestamp);
+                    common::Order order(orderId, symbol, clientId, side, type, timeInForce, originalQuantity, price, timestamp);
                     order.setRemainingQuantity(remainingQuantity);
                     order.setStatus(status);
                     orders.push_back(order);

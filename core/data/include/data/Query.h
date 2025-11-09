@@ -20,9 +20,9 @@ namespace data::query {
     constexpr auto truncateTradeIdQuery = "DELETE FROM trade_id;";
 
     // Order Table
-    constexpr auto createOrderTableQuery = "CREATE TABLE IF NOT EXISTS orders (order_id INTEGER PRIMARY KEY, client_id INTEGER, symbol TEXT, side TEXT, type TEXT, price REAL, original_quantity INTEGER, remaining_quantity INTEGER, status TEXT, timestamp INTEGER);";
-    constexpr auto insertIntoOrderTableQuery = "INSERT INTO orders (order_id, client_id, symbol, side, type, price, original_quantity, remaining_quantity, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    constexpr auto loadOrdersForInstrumentQuery = "SELECT order_id, client_id, symbol, side, type, price, original_quantity, remaining_quantity, status, timestamp FROM orders WHERE symbol = ? AND (status = 'New' OR status = 'PartiallyFilled');";
+    constexpr auto createOrderTableQuery = "CREATE TABLE IF NOT EXISTS orders (order_id INTEGER PRIMARY KEY, client_id INTEGER, symbol TEXT, side TEXT, type TEXT, time_in_force TEXT, price REAL, original_quantity INTEGER, remaining_quantity INTEGER, status TEXT, timestamp INTEGER);";
+    constexpr auto insertIntoOrderTableQuery = "INSERT INTO orders (order_id, client_id, symbol, side, type, time_in_force, price, original_quantity, remaining_quantity, status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    constexpr auto loadOrdersForInstrumentQuery = "SELECT order_id, client_id, symbol, side, type, time_in_force, price, original_quantity, remaining_quantity, status, timestamp FROM orders WHERE symbol = ? AND (status = 'New' OR status = 'PartiallyFilled');";
     constexpr auto removeOrderQuery = "DELETE FROM orders WHERE order_id = ?;";
     constexpr auto updateOrderQuery = "UPDATE orders SET remaining_quantity = ?, status = ? WHERE order_id = ?;";
 }
