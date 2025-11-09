@@ -1,3 +1,12 @@
+/**
+ * @file MockDependencies.h
+ * @brief Test mocks for data and trading_core dependencies used in unit tests.
+ *
+ * This header provides small mock implementations of repositories, workers,
+ * and managers so unit tests can run deterministically without real
+ * I/O or background threads.
+ */
+
 #pragma once
 
 #include "data/DatabaseWorker.h"

@@ -1,3 +1,12 @@
+/**
+ * @file Partition.h
+ * @brief Represents a partition (shard) of the trading engine for a single symbol.
+ *
+ * Partitions are independent units that contain an order book, matcher, risk
+ * manager, and a worker thread. They are suitable for parallel processing of
+ * different instruments.
+ */
+
 #pragma once
 #include "Command.h"
 #include "Matcher.h"
@@ -12,6 +21,10 @@
 #include <future>
 
 namespace trading_core {
+    /**
+     * @class Partition
+     * @brief Encapsulates all components needed to process commands for a symbol.
+     */
     class Partition {
     public:
         Partition(common::Instrument symbol, data::DatabaseWorker *databaseWorker, TradeIDGenerator *tradeIDGenerator);

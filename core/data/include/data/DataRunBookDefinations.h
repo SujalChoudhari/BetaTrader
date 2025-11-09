@@ -1,3 +1,11 @@
+/**
+ * @file DataRunBookDefinations.h
+ * @brief Runbook error definitions for the data module.
+ *
+ * Declares `runbook::ErrorDefinition` objects for data-layer failures so
+ * callers can log structured runbook messages with guidance for remediation.
+ */
+
 #pragma once
 
 #include "logging/Runbook.h"

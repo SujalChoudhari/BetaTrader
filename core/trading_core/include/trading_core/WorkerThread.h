@@ -1,3 +1,12 @@
+/**
+ * @file WorkerThread.h
+ * @brief Worker thread that consumes command queue and executes trading logic.
+ *
+ * The WorkerThread reads commands from a single-producer single-consumer queue,
+ * delegates them to the appropriate handlers (new/modify/cancel), and applies
+ * matching and persistence operations.
+ */
+
 #pragma once
 #include "CancelOrder.h"
 #include "Command.h"
@@ -15,6 +24,10 @@
 #include <stop_token>
 
 namespace trading_core {
+    /**
+     * @class WorkerThread
+     * @brief Background worker which processes batched commands.
+     */
     class WorkerThread {
     public:
         WorkerThread(
