@@ -1,27 +1,39 @@
-#include "trading_core/OrderIDGenerator.h"
+//
+// Created by sujal on 25-10-2025.
+//
 
+#include "trading_core/OrderIDGenerator.h"
+#include <future>
 
 namespace trading_core {
 
-    std::atomic<common::OrderID> OrderIDGenerator::currentId = 0;
-    std::mutex OrderIDGenerator::mutex;
-
-
-    common::OrderID OrderIDGenerator::getId() {
-        return OrderIDGenerator::currentId.load(std::memory_order_relaxed);
+    OrderIDGenerator::OrderIDGenerator(data::DatabaseWorker* dbWorker)
+        : mCurrentId(0), mDatabaseWorker(dbWorker) {
+        loadInitialState();
     }
 
     common::OrderID OrderIDGenerator::nextId() {
-        return ++currentId;
+        return ++mCurrentId;
     }
 
-    void OrderIDGenerator::saveState() {
-        // TODO: implement save and load state
+    void OrderIDGenerator::loadInitialState() {
+        auto promise = std::make_shared<std::promise<void>>();
+        auto future = promise->get_future();
+
+        mDatabaseWorker->enqueue([this, promise](SQLite::Database& db) {
+            try {
+                SQLite::Statement query(db, "SELECT MAX(order_id) FROM orders;");
+                if (query.executeStep()) {
+                    mCurrentId = query.getColumn(0).getInt64();
+                }
+            } catch (const std::exception& e) {
+                // Table might not exist or be empty, which is fine.
+                // In that case, the ID will start from 0.
+            }
+            promise->set_value();
+        });
+
+        future.wait();
     }
 
-    void OrderIDGenerator::loadState() {
-        // This is a temporary implementation to reset the ID for tests.
-        // A proper implementation would load the ID from a persistent store.
-        currentId = 0;
-    }
 }

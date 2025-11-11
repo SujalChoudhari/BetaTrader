@@ -1,93 +1,98 @@
-# Trading Core — Technical Specification & Design (TSD)
+# Trading Core: Technical System Design (TSD)
 
-This document describes the implemented design and practical details of the `core/trading_core` module. It is
-meant for developers and traders who want to understand or extend the matching engine, partitioning model, and
-hot-path invariants.
+This document provides a detailed technical specification of the `core/trading_core` module. It is intended for developers who want to understand the internal workings of the matching engine, its threading model, and its performance characteristics.
 
-## 1 — High-level design patterns
+## 1. Core Design Patterns
 
-- Partitioned single-writer: one worker thread owns a partition (usually one instrument) and is the only thread
-	that mutates the order book and order manager. This eliminates locks on the critical path.
-- Command pattern: external inputs are normalized into `Command` objects (`NewOrder`, `ModifyOrder`, `CancelOrder`) and
-	enqueued to partition queues.
-- Event-driven and asynchronous IO: matching and state mutation are synchronous inside the worker; persistence and
-	outbound publishing are performed asynchronously to avoid blocking.
-- Test-first and deterministic: the worker exposes deterministic helper methods to drive single steps in unit tests.
+The `trading_core` is built on a set of modern C++ design patterns chosen to meet the system's demanding requirements for low latency, high throughput, and determinism.
 
-## 2 — Class responsibilities (concise)
+| Pattern | Implementation | Benefit |
+| :--- | :--- | :--- |
+| **Partitioned Single-Writer** | Each instrument is assigned to a `Partition` with a single `WorkerThread` that is the only writer for that partition's state. | Eliminates the need for locks on the critical path, ensuring low-latency and deterministic command processing. |
+| **Command Sourcing** | All state changes are initiated by `Command` objects (`NewOrder`, `CancelOrder`) processed sequentially. | Provides a replayable, deterministic log of all actions, which is invaluable for testing and debugging. |
+| **Asynchronous I/O** | All blocking operations, such as database writes and network I/O, are offloaded to background threads. | The core matching engine never blocks, allowing it to focus solely on processing orders. |
+| **Test-Driven Development** | The system is designed to be easily testable, with deterministic helpers to drive state changes one step at a time. | Ensures correctness and allows for rapid, confident development. |
 
-- TradingCore: boots partitions and shared services (optional owned `DatabaseWorker`, `TradeIDGenerator`) and provides a
-	top-level submit API.
-- Partition: composes `OrderBook`, `OrderManager`, `Matcher`, `RiskManager`, `WorkerThread`, and repositories. It owns the
-	command queue and worker lifecycle.
-- WorkerThread: dequeues batches of `Command` objects and runs the deterministic processing pipeline: pre-check → insert/modify/cancel → match → publish → persist.
-- OrderManager: owns `common::Order` instances and provides constant-time lookup for cancels/modifies.
-- OrderBook: maintains price-level maps (bids sorted descending, asks ascending) with deque-based price levels for FIFO within a price.
-- Matcher: performs matching logic and returns `common::Trade` objects for each match.
-- RiskManager: pluggable, lightweight pre-checks and post-trade hooks.
+## 2. Component Responsibilities
 
-## 3 — Threading & concurrency model
+The `trading_core` is composed of several key components, each with a distinct responsibility.
 
-1. Producers (gateway or test code) create `Command` objects and push into a partition's SPSC queue.
-2. The partition's single `WorkerThread` pops commands in batches and performs all state mutation.
-3. Persistence and outbound publish happen via async adapters (e.g., `data::DatabaseWorker`) or lock-free queues consumed by IO workers.
+| Component | Description |
+| :--- | :--- |
+| **`TradingCore`** | The top-level orchestrator. It initializes and manages the lifecycle of all `Partitions` and shared services like the `DatabaseWorker`. |
+| **`Partition`** | A logical processing unit for a set of instruments. It owns the `WorkerThread`, command queue, and all other components for its instruments. |
+| **`WorkerThread`** | The engine of a partition. It runs a tight loop that dequeues commands in batches and orchestrates the entire processing pipeline. |
+| **`OrderManager`** | The "source of truth" for all live orders. It owns the `Order` objects and provides O(1) lookup by Order ID. |
+| **`OrderBook`** | A data structure that maintains the sorted bid and ask levels for an instrument, enabling efficient matching. |
+| **`Matcher`** | The component that implements the core matching logic. It takes an incoming order and matches it against the `OrderBook`. |
+| **`RiskManager`** | A pluggable component for enforcing risk limits. It performs pre-trade checks on incoming orders. |
 
-Consequences:
+## 3. Threading and Concurrency Model
 
-- No locks on the hot matching path.
-- Deterministic processing order when commands are timestamped/ingested in consistent order.
+The threading model is designed to maximize concurrency while minimizing contention.
 
-## 4 — Internal queues & batching
+1.  **Producers**: External clients (e.g., gateways, test harnesses) create `Command` objects and push them into a `Partition`'s dedicated SPSC (Single-Producer, Single-Consumer) queue.
+2.  **Consumers**: The `WorkerThread` for that partition is the sole consumer of the queue. It dequeues commands in batches and processes them sequentially.
+3.  **Asynchronous Workers**: Any I/O-bound tasks, such as persisting trades to the database or publishing execution reports, are handed off to background worker threads (e.g., the `DatabaseWorker`).
 
-- `Command` queue: `rigtorp::SPSCQueue<std::unique_ptr<Command>>` with a configurable batch size (default: 64).
-- Worker reads up to a batch or until empty, processes commands sequentially to amortize cost.
-- Outbound events (trades, exec reports) are aggregated and handed off to IO workers in batches to reduce syscalls.
+```mermaid
+graph TD
+    subgraph Producers
+        P1[Gateway 1]
+        P2[Gateway 2]
+    end
 
-## 5 — Matching rules & determinism
+    subgraph Trading Core
+        subgraph Partition 1
+            Q1[SPSC Queue] --> W1{WorkerThread 1}
+        end
+        subgraph Partition 2
+            Q2[SPSC Queue] --> W2{WorkerThread 2}
+        end
+    end
 
-- Price-time priority: better price first; for identical prices, earlier timestamp first.
-- Execution price is the resting order price (common exchange convention).
-- Partial fills: allowed — remaining quantity is updated and the partially filled order stays in the book.
-- Determinism: timestamps should be assigned once upon ingestion (gateway) to avoid variations between runs. Tests should
-	use deterministic timestamps to make results reproducible.
+    subgraph Async Workers
+        DBW(DatabaseWorker)
+        NW(Network Publisher)
+    end
 
-## 6 — Serialization & publishing
+    P1 --> Q1
+    P2 --> Q2
+    W1 -- "Persist Trade" --> DBW
+    W2 -- "Publish Execution" --> NW
+```
 
-- The repo includes an `ExecutionPublisher` helper used to format Execution Reports and Trades. In production you would
-	serialize using FlatBuffers (or another zero-copy format) and publish via ZeroMQ or another messaging layer.
-- The core only constructs `common::Trade` and `common::Order` objects; serialization is handled downstream by IO workers.
+This model ensures that the hot path (the `WorkerThread`'s processing loop) is never blocked by slow I/O operations.
 
-## 7 — Persistence and recovery notes
+## 4. Command Processing Pipeline
 
-- `data::DatabaseWorker` accepts lambdas and executes them on a background thread against a `SQLite::Database` instance.
-	This keeps disk I/O off the matching thread.
-- `TradeIDRepository` provides a persistent backing for trade id counters used by the `TradeIDGenerator`.
-- There is not yet a complete snapshot/restore orchestration in `trading_core` — persistence hooks exist for replay.
+The `WorkerThread` executes the following pipeline for each command:
 
-## 8 — Performance & engineering recommendations
+1.  **Dequeue**: Dequeue a batch of commands from the SPSC queue.
+2.  **Process Sequentially**: For each command in the batch:
+    a. **Pre-Trade Risk Check**: The `RiskManager` validates the command.
+    b. **State Update**: The `OrderManager` and `OrderBook` update their state (e.g., add a new order).
+    c. **Matching**: The `Matcher` attempts to match the incoming order against the `OrderBook`.
+    d. **Execution Publishing**: Any resulting trades are published via the `ExecutionPublisher`.
+    e. **Persistence**: The `DatabaseWorker` is tasked with persisting the trades and order status changes.
 
-- Avoid heap allocations on the hot path; prefer pre-allocated pools for `Order` entries if needed.
-- Minimize virtual calls in inner loops (the `Matcher` is designed to be concrete and inline-friendly).
-- Tune batch size and queue capacities based on observed throughput and latency.
+## 5. Matching Algorithm
 
-## 9 — How to experiment / run small scenarios
+*   **Priority**: The matching algorithm follows a strict **price-time priority**.
+    *   Orders with a better price are matched first.
+    *   For orders at the same price, the one that was submitted earlier is matched first.
+*   **Execution Price**: The execution price is always the price of the resting order on the book. This is a common convention in exchanges that rewards liquidity providers.
+*   **Fills**: The system supports both full and partial fills. If an order is partially filled, its remaining quantity stays on the book at the same time priority.
 
-1. Build the tests as described in the top-level README.
-2. Use unit tests to examine small deterministic scenarios (see `core/trading_core/tests/`). Tests show how to build `NewOrder` commands and observe produced trades.
-3. For a manual experiment: create a small `main()` that constructs a `Partition`, enqueues `NewOrder` commands, calls `start()` and optionally uses test helper methods to step the worker.
+## 6. Performance and Optimization
 
-## 10 — Example processing sequence (concise)
+*   **Memory Management**: The `OrderManager` uses an object pool to pre-allocate `Order` objects, avoiding heap allocations on the critical path.
+*   **Batching**: The `WorkerThread` processes commands in batches to amortize the cost of dequeuing and other fixed overhead.
+*   **Cache-Friendly Data Structures**: The `OrderBook` and other data structures are designed to be cache-friendly to maximize performance.
+*   **Inlining**: Critical functions in the `Matcher` and `OrderBook` are designed to be easily inlined by the compiler.
 
-1. Gateway produces `NewOrder` for EURUSD and enqueues it to Partition A.
-2. WorkerThread dequeues the command and calls `RiskManager::preCheck`.
-3. If accepted, `OrderManager::addOrder` stores the `Order` and `OrderBook::insertOrder` places a pointer at the correct price level.
-4. `Matcher::match` compares incoming order vs resting book; for each match it creates a `common::Trade` object.
-5. Worker updates order states (remaining qty/status), calls `ExecutionPublisher` to enqueue messages for IO, and submits persistence lambdas to `data::DatabaseWorker`.
+## 7. Persistence and Recovery
 
----
-
-This TSD is intentionally practical: it focuses on the currently implemented architecture and the points you need to know to run
-tests, extend matching logic, or experiment with alternative rules. If you'd like, I can now add a small interactive example
-program (CLI) that runs a single partition and accepts JSON orders on stdin for manual experimentation.
-
-
+*   The `data::DatabaseWorker` provides an asynchronous interface for all database operations. It uses a dedicated thread to execute SQLite commands, ensuring the `trading_core` is never blocked.
+*   The `TradeIDRepository` provides a persistent backing for the `TradeIDGenerator`, ensuring that trade IDs are unique even across system restarts.
+*   **Note**: While the system persists all necessary data, a full snapshot and recovery mechanism is not yet implemented. This would be a key feature for a production system.

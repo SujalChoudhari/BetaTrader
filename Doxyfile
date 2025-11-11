@@ -72,7 +72,6 @@ ENUM_VALUES_PER_LINE   = 1
 SEARCHENGINE           = YES
 TREEVIEW_WIDTH         = 250
 
-HTML_EXTRA_STYLESHEET  = doxygen-theme/theme.css
 
 #---------------------------------------------------------------------------
 # Configuration options related to the LaTeX output

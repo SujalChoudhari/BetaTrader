@@ -83,7 +83,15 @@ namespace trading_core {
         }
     }
 
+    void Partition::stopAcceptingCommands() {
+        mAcceptingCommands.store(false, std::memory_order_relaxed);
+    }
+
     void Partition::enqueue(std::unique_ptr<Command> command) {
+        if (!mAcceptingCommands.load(std::memory_order_relaxed)) {
+            LOG_WARN("Partition {} is shutting down, rejecting new command.", common::to_string(mSymbol));
+            return;
+        }
         if (!mCommandQueue.try_push(std::move(command))) {
             LOG_ERROR(errors::ETRADE11, "Partition {} command queue full.", common::to_string(mSymbol));
         }

@@ -3,48 +3,30 @@
 //
 
 #pragma once
-#include <mutex>
 #include <atomic>
-
 #include "common/Types.h"
+#include "data/DatabaseWorker.h"
 
 namespace trading_core {
     /**
      * @class OrderIDGenerator
-     * @brief A thread-safe generator for unique order IDs.
-     *
-     * This class provides a static interface for generating unique, sequential order IDs.
-     * It is designed to be thread-safe, allowing it to be used by multiple threads
-     * simultaneously.
+     * @brief A thread-safe, database-aware generator for unique order IDs.
      */
     class OrderIDGenerator {
-        static std::atomic<common::OrderID> currentId; ///< The current order ID.
-        static std::mutex mutex;                       ///< A mutex for thread-safe state management.
-
     public:
-        /**
-         * @brief Gets the current order ID.
-         * @return The current order ID.
-         */
-        static common::OrderID getId();
+        explicit OrderIDGenerator(data::DatabaseWorker* dbWorker);
 
         /**
          * @brief Gets the next available order ID.
          * @return The next available order ID.
          */
-        static common::OrderID nextId();
+        common::OrderID nextId();
 
-        /**
-         * @brief Saves the current state of the generator.
-         * @note This method is not yet implemented.
-         */
-        static void saveState();
+    private:
+        void loadInitialState();
 
-        /**
-         * @brief Loads the state of the generator.
-         * @note This method is not yet implemented.
-         */
-        static void loadState();
+        std::atomic<common::OrderID> mCurrentId;
+        data::DatabaseWorker* mDatabaseWorker;
     };
 
 }

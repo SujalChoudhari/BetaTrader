@@ -1,104 +1,103 @@
-Welcome, This is BetaTrader, a hands-on learning project and a C++ blueprint that explores how a small,
-exchange-like FX trading engine is put together.
+# BetaTrader: A C++ FX Trading Engine Blueprint
 
-What this repository is: a deliberate, step-by-step engineering exercise. It contains the in-memory matching core,
-a compact persistence layer, shared types and logging utilities, and a suite of unit tests. The goal is to learn
-by building: the system is being constructed incrementally, this is a mammoth project done one piece at a time.
+Welcome to BetaTrader, a hands-on learning project and a C++ blueprint that explores how a small, exchange-like FX trading engine is put together.
 
-Who this is for: developers, engineers, and curious traders who want a readable, runnable codebase to study
-matching semantics, order lifecycle, risk checks, and toolchain practices.
+This repository is a deliberate, step-by-step engineering exercise. It contains an in-memory matching core, a compact persistence layer, shared types, logging utilities, and a comprehensive suite of unit tests. The goal is to learn by building: the system is being constructed incrementally, one piece at a time.
 
-Status: the `common/`, `core/trading_core/` and `core/data/` modules are implemented and covered by unit tests.
-Other layers (gateway adapters, venue simulators, business services) are intentionally left as integration points for
-future work and experiments.
+This project is for developers, engineers, and curious traders who want a readable, runnable codebase to study matching semantics, order lifecycle, risk checks, and modern C++ development practices.
 
-## Quick summary of what's implemented
+**Status**: The `common`, `core/trading_core`, and `core/data` modules are implemented and covered by unit tests. Other layers (gateway adapters, venue simulators, business services) are intentionally left as integration points for future work and experiments.
 
-- `common/` — shared types (`Order`, `Trade`, `Instrument`, `Types`) and logging helpers (`logging/Logger.h`, runbook macros).
-- `core/trading_core/` — in-memory matching engine, `OrderBook`, `Matcher`, `OrderManager`, `Partition` and `WorkerThread`.
-- `core/data/` — light persistence layer with `DatabaseWorker` (async SQLite task runner) and repositories: `OrderRepository`, `TradeRepository`, `TradeIDRepository`.
-- `vendor/` — included third-party libraries used by the project: `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp`.
-- `tests/` — unit tests covering the trading core and data repositories (GoogleTest).
+## Project Goals
 
-Short note for traders and researchers:
+*   **Learn by Building**: Provide a practical, open-source example of a trading system's core components.
+*   **Readability and Simplicity**: Prioritize clear, modern C++ code over premature optimization or overly complex designs.
+*   **Test-Driven Development**: Emphasize a strong testing culture with extensive unit tests for core logic.
+*   **Extensibility**: Design a modular architecture that allows for future expansion with new features, such as different gateways or persistence backends.
 
-- This is a learning and experimentation project, not a production trading system.
-- That said, the matching engine and order lifecycle implement realistic exchange-like semantics (price-time priority,
-  partial fills, execution reporting) so you can reproduce, test, and reason about execution behavior in a controlled,
-  reproducible environment.
+## Implemented Modules
 
-If you want to experiment, this repo is a good sandbox, but always treat results as academic/simulated until hardened and
-audited for production use.
+| Module | Description | Key Components |
+| :--- | :--- | :--- |
+| `common/` | Shared data structures, types, and utilities used across the project. | `Order`, `Trade`, `Instrument`, `Logger`, `Runbook` |
+| `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager` |
+| `core/data/` | A lightweight persistence layer for storing trades and orders. | `DatabaseWorker`, `OrderRepository`, `TradeRepository` |
+| `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
+| `tests/` | Unit tests for `trading_core` and `data` modules. | GoogleTest-based tests for all core logic. |
 
-## Repository layout (important parts)
+## Repository Layout
 
 ```
 BetaTrader/
-├── common/                         Shared types & logging (Order, Trade, Instrument)
-├── core/
-│   ├── data/                       Persistence layer (SQLite adapter, repositories)
-│   └── trading_core/                Matching engine, order manager, worker threads, tests
-├── vendor/                          Bundled third-party libs (gtest, spdlog, SQLiteCpp, SPSCQueue)
 ├── CMakeLists.txt
-└── README.md
+├── README.md
+├── SystemDesign.md
+├── common/             # Shared types & logging (Order, Trade, Instrument)
+├── core/
+│   ├── data/           # Persistence layer (SQLite adapter, repositories)
+│   └── trading_core/   # Matching engine, order manager, worker threads, tests
+└── vendor/             # Bundled third-party libs (gtest, spdlog, SQLiteCpp, SPSCQueue)
 ```
 
-## Build & test (quick)
+## Getting Started: Build and Test
 
-These steps build the project and run unit tests. They are the minimum required to validate the code locally.
+These steps will build the project and run all unit tests, which is the primary way to validate the codebase.
 
 ```bash
-# from repository root
+# From the repository root
 mkdir -p build && cd build
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . -j$(nproc)
 ctest --output-on-failure
 ```
 
-Notes:
-- The repo targets Linux and typical developer toolchains. Some vendored libraries are small copies used for tests.
-- If CMake cannot find system dependencies, install the required -dev packages (e.g., `libsqlite3-dev`, `libspdlog-dev`) or adjust `CMAKE_PREFIX_PATH`.
+**Notes:**
+*   The project targets a Linux-like environment with a modern C++ compiler.
+*   If CMake fails to find dependencies like SQLite3 or spdlog, install the development packages (e.g., `libsqlite3-dev`, `libspdlog-dev`) or provide their paths to CMake.
 
-## How to run a small smoke test (developer)
+## How to Explore the Code
 
-There is no single production binary yet. The tests exercise most of the behavior. To try quick interactions:
+Since there is no single executable entry point yet, the best way to understand the system is through its tests.
 
-1. Build and run unit tests (see above).
-2. Open `core/trading_core/tests/TradingCoreTests.cpp` and examine example flows — tests show how `NewOrder`, `ModifyOrder`, and `CancelOrder` are processed.
+1.  **Build and run the unit tests** as described above.
+2.  **Explore the tests**: The test files in `core/trading_core/tests/` and `core/data/tests/` are excellent starting points.
+    *   `TradingSystemTests.cpp` shows end-to-end order processing flows.
+    *   `MatcherTests.cpp` demonstrates the price-time priority matching logic.
+    *   `OrderRepositoryTests.cpp` shows how orders are persisted and retrieved.
 
-## Documentation & design (TSDs)
+## System Design and Architecture
 
-Each submodule contains a `README.md` and `TSD.md` describing architecture and current scope. Start with:
+For a deeper understanding of the architecture, refer to the technical system design (TSD) documents:
 
-- `core/trading_core/TSD.md` — explains partitioning, matching rules, and threading model.
-- `core/data/TSD.md` — explains the persistence choices and schema.
+*   **[SystemDesign.md](SystemDesign.md)**: High-level overview of the entire system.
+*   **[core/trading_core/TSD.md](core/trading_core/TSD.md)**: Detailed design of the matching engine, partitioning, and threading model.
+*   **[core/data/TSD.md](core/data/TSD.md)**: Design of the persistence layer, database schema, and asynchronous worker.
 
-## Notes for forex traders (domain primer)
+## For Forex Traders: A Domain Primer
 
-If you're a trader: this repo models a small exchange-like matching engine. Important concepts implemented:
+This repository models a small, exchange-like matching engine. Here are the key concepts implemented:
 
-- Instruments: a small enum of currency pairs lives in `common/include/common/Instrument.h` (e.g., `EURUSD`, `USDJPY`).
-- Order types: `Limit` and `Market` orders (`common/include/common/Types.h`).
-- Execution rule: price-time priority; execution price is the resting order price.
-- Partial fills are supported; trades are emitted as `common::Trade` objects and persisted by the data layer.
+*   **Instruments**: A simple `enum` of currency pairs is defined in `common/include/common/Instrument.h` (e.g., `EURUSD`, `USDJPY`).
+*   **Order Types**: `Limit` and `Market` orders are supported (`common/include/common/Types.h`).
+*   **Matching Algorithm**: The matching engine uses a standard **price-time priority** algorithm. The execution price is the price of the resting order on the book.
+*   **Fills**: Partial fills are supported. Each fill generates a `common::Trade` object, which is then published and persisted.
 
-If you want to experiment:
+To experiment with trading logic, you can:
+1.  Write a new unit test in `TradingSystemTests.cpp`.
+2.  Create `common::Order` objects and wrap them in `NewOrder` commands.
+3.  Push the commands into a `Partition` and use the mock `ExecutionPublisher` to inspect the resulting trades and order statuses.
 
-1. Write unit tests that create `common::Order` instances and push `NewOrder` commands into a `Partition`.
-2. Observe outcomes from `Matcher` and `ExecutionPublisher` (tests/mocks show how to inspect executions).
+## Contributing and Roadmap
 
-## Contributing & roadmap
+This project is open for contributions. Some potential areas for future work include:
 
-The repository is organized to accept contributions. Suggested near-term roadmap items:
+*   **Gateways**: Implement a simple FIX or REST gateway to submit orders from external clients.
+*   **Market Data**: Build a simulator to feed market data into the system for more realistic testing.
+*   **CLI Tool**: Create a command-line interface to interact with the trading core manually.
+*   **Advanced Persistence**: Add support for a more robust database like PostgreSQL or a time-series database.
 
-- Add a simple FIX/REST gateway example to inject orders.
-- Build a small venue simulator that emits market data and liquidity for integration tests.
-- Add a lightweight CLI to start a single-partition TradingCore for manual experimentation.
-- Improve persistence adapters (Postgres/Timescale-backed) for real historical storage.
-
-If you're planning to publish, please ensure unit tests pass and consider adding a CONTRIBUTING.md with PR guidelines.
+If you plan to contribute, please ensure all unit tests pass and consider updating the relevant documentation.
 
 ## License
-GPL-3.0 — See `LICENSE` for full terms.
 
-
+This project is licensed under the GPL-3.0 License. See the `LICENSE` file for details.

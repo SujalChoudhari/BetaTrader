@@ -1,48 +1,79 @@
-# core/data — persistence layer (current scope)
+# Data Module (`core/data`)
 
-This directory contains the small data/persistence layer used by the trading core. It focuses on
-simple, reliable local persistence using SQLite and an asynchronous worker pattern.
+This module contains the persistence layer for the BetaTrader system. It is responsible for asynchronously writing data, such as trades and orders, to a local SQLite database.
 
-Implemented components (what is present today):
+## Architecture: Asynchronous Worker Pattern
 
-- `data/DatabaseWorker.h/cpp` — an asynchronous task queue that executes lambdas against a `SQLite::Database` instance on a background thread.
-- `data/OrderRepository.h/cpp` — convenience wrappers to persist `common::Order` objects.
-- `data/TradeRepository.h/cpp` — wrapper to persist `common::Trade` objects.
-- `data/TradeIDRepository.h/cpp` — simple persistent store for the current trade id counter.
-- `data/Query.h` — SQL statements used by repositories.
-- Unit tests in `core/data/tests/` that exercise repository behavior.
+The `data` module is built around an **asynchronous worker pattern**. This design is essential for meeting the system's requirement that the core matching engine should never be blocked by I/O operations.
 
-Goals and constraints:
+*   **`DatabaseWorker`**: A dedicated background thread that owns the connection to the SQLite database.
+*   **Task Queue**: The `DatabaseWorker` consumes tasks from a lock-free SPSC (Single-Producer, Single-Consumer) queue.
+*   **Asynchronous Submission**: Other threads (such as the `trading_core`'s `WorkerThread`) can enqueue tasks (packaged as C++ lambdas) to be executed by the `DatabaseWorker`.
 
-- Keep the persistence layer simple and testable.
-- Avoid blocking the matching path: writes are enqueued and performed asynchronously.
-- Schema is intentionally minimal (orders, trades, trade_id).
+This architecture ensures that all disk I/O is handled on a separate thread, allowing the `trading_core` to operate with minimal latency.
 
-How to run the data unit tests
+```mermaid
+graph TD
+    subgraph Trading Core
+        W1[WorkerThread 1]
+        W2[WorkerThread 2]
+    end
 
-From repository root:
+    subgraph Data Module
+        Q[Task Queue]
+        DBW(DatabaseWorker)
+    end
 
-```bash
-mkdir -p build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
-cmake --build . -j$(nproc) --target core_data_tests
-ctest -R core_data_tests --output-on-failure
+    subgraph Database
+        DB[(SQLite)]
+    end
+
+    W1 -- "Enqueue Persist(Trade)" --> Q
+    W2 -- "Enqueue Persist(Order)" --> Q
+    DBW -- "Consumes Tasks" --> Q
+    DBW -- "Executes SQL" --> DB
 ```
 
-If the `core_data_tests` target is not present (depending on CMake configuration) run `ctest --output-on-failure` to run all tests.
+## Key Components
 
-How the code is organized
+| Component | Description | Responsibilities |
+| :--- | :--- | :--- |
+| **`DatabaseWorker`** | The heart of the data module. It manages the task queue and the database connection. | Executes arbitrary database operations (packaged as lambdas) on a dedicated thread. |
+| **`OrderRepository`** | A repository for persisting `common::Order` objects. | Provides methods to save and update orders in the database. |
+| **`TradeRepository`** | A repository for persisting `common::Trade` objects. | Provides methods to save trades in the database. |
+| **`TradeIDRepository`**| A repository for the global trade ID counter. | Ensures that trade IDs are unique and persistent across system restarts. |
+| **`Query.h`** | A header file containing all the SQL statements used by the repositories. | Centralizes all SQL queries for easy management and review. |
 
-- Repositories accept and serialize `common::Order`/`common::Trade` and enqueue database lambdas to `DatabaseWorker::enqueue`.
-- `DatabaseWorker` uses `rigtorp::SPSCQueue` and a `std::jthread` to run tasks; this keeps disk I/O off the matching threads.
+## How to Use This Module
 
-Extending the data layer
+The `data` module is designed to be used by other components in the system, primarily the `trading_core`. The unit tests provide the best examples of how to interact with the repositories.
 
-- Add new repository classes (e.g., `PositionRepository`) following existing patterns and tests.
-- Replace the backing DB layer by adding an adapter instead of changing repository APIs if you want to support Postgres later.
+### Building and Running Tests
 
-Limitations (current)
+1.  Follow the build instructions in the main [README.md](../../README.md).
+2.  Run the tests for this module:
 
-- Schema migrations are manual; there is no migration framework in this repo yet.
-- The design intentionally favors clarity over feature-completeness; it's a small, readable codebase for experimentation.
+```bash
+# After building, from the build directory
+./core/data/tests/DataTests
+```
 
+### Exploring the Code
+
+*   **Test Files**: The test files in the `tests/` directory demonstrate how to use the repositories to save and retrieve data.
+*   **Header Files**: The header files in `include/data/` provide the public interface for each component.
+*   **TSD**: For a detailed technical breakdown, read the [Data TSD](./TSD.md).
+
+## Database Schema
+
+The database schema is intentionally simple and is defined implicitly by the `CREATE TABLE` statements in `Query.h`.
+
+*   **`orders` table**: Stores the final state of all processed orders.
+*   **`trades` table**: Stores all executed trades.
+*   **`trade_id` table**: A simple key-value table to store the last used trade ID.
+
+## Limitations and Future Work
+
+*   **Manual Schema Migrations**: There is no automated schema migration framework. All schema changes must be managed manually.
+*   **SQLite Only**: The current implementation is tightly coupled to SQLite. A future improvement would be to introduce a database abstraction layer to support other backends like PostgreSQL.
+*   **Simple Repositories**: The repositories provide basic CRUD operations. More advanced query capabilities could be added as needed.

@@ -105,6 +105,7 @@ namespace trading_core {
             return;
         }
 
+        mOrderManager.addOrder(cmd.releaseOrder());
         mOrderRepository.saveOrder(*order);
         mOrderBook.insertOrder(order);
 
@@ -120,7 +121,6 @@ namespace trading_core {
         }
 
         ExecutionPublisher::publishExecution(*order, "NEW");
-        mOrderManager.addOrder(cmd.releaseOrder());
     }
 
     void WorkerThread::processCancelOrder(const CancelOrder &cmd) const {
@@ -133,9 +133,9 @@ namespace trading_core {
         const auto order = *orderOpt;
 
         if (mOrderBook.cancelOrder(cmd.getOrderId())) {
+            ExecutionPublisher::publishExecution(*order, "CANCELED");
             mOrderRepository.removeOrder(cmd.getOrderId());
             mOrderManager.removeOrderById(cmd.getOrderId());
-            ExecutionPublisher::publishExecution(*order, "CANCELED");
         } else {
             ExecutionPublisher::publishRejection(cmd.getOrderId(), cmd.getClientId(),
                                                  "Order cannot be canceled");

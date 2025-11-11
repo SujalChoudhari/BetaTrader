@@ -19,6 +19,7 @@
 #include "rigtorp/SPSCQueue.h"
 #include <memory>
 #include <future>
+#include <atomic>
 
 namespace trading_core {
     /**
@@ -46,6 +47,8 @@ namespace trading_core {
         void start();
 
         void stop();
+
+        void stopAcceptingCommands();
 
         void enqueue(std::unique_ptr<Command> command);
 
@@ -75,6 +78,7 @@ namespace trading_core {
         void init();
 
         rigtorp::SPSCQueue<std::unique_ptr<Command> > mCommandQueue;
+        std::atomic<bool> mAcceptingCommands{true};
         common::Symbol mSymbol;
         data::DatabaseWorker *mDatabaseWorker;
         TradeIDGenerator *mTradeIDGenerator;

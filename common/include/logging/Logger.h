@@ -72,7 +72,7 @@ namespace logging {
             const spdlog::level::level_enum globalLevel = spdlog::level::trace,
             const size_t queueSize = 8192,
             const size_t numThreads = 1,
-            size_t maxFileSize = 1024 * 1024 * 10,
+            size_t maxFileSize = 1024 * 1024 * 300,
             size_t maxFiles = 5) {
             spdlog::drop_all();
             spdlog::shutdown();
