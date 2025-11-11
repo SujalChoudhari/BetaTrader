@@ -15,12 +15,14 @@ namespace trading_core {
         mOwnedDatabaseWorker = std::make_unique<data::DatabaseWorker>(data::databasePath);
         mDatabaseWorker = mOwnedDatabaseWorker.get();
         mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+        mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         initPartitions();
     }
 
     TradingCore::TradingCore(data::DatabaseWorker *dbWorker, const bool autoInitPartitions)
         : mDatabaseWorker(dbWorker) {
         mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+        mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         if (autoInitPartitions) {
             initPartitions();
         }
@@ -47,7 +49,15 @@ namespace trading_core {
         }
     }
 
-    void TradingCore::waitUntilIdle() const {
+    void TradingCore::stopAcceptingCommands() {
+        for (const auto &partition : mPartitions) {
+            if (partition) {
+                partition->stopAcceptingCommands();
+            }
+        }
+    }
+
+    void TradingCore::waitAllQueuesIdle() const {
         while (true) {
             size_t total_queue_size = 0;
             for (const auto &partition: mPartitions) {
@@ -123,6 +133,10 @@ namespace trading_core {
 
     Partition *TradingCore::getPartition(common::Instrument instrument) const {
         return mPartitions[static_cast<int>(instrument)].get();
+    }
+
+    OrderIDGenerator* TradingCore::getOrderIDGenerator() {
+        return mOrderIDGenerator.get();
     }
 
     std::optional<common::Instrument> TradingCore::findPartitionForOrder(common::OrderID orderId) const {

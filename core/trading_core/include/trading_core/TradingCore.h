@@ -10,6 +10,7 @@
 #include "Command.h"
 #include "Partition.h"
 #include "TradeIDGenerator.h"
+#include "OrderIDGenerator.h"
 #include "data/DatabaseWorker.h"
 #include <memory> // Required for std::unique_ptr
 
@@ -30,11 +31,15 @@ namespace trading_core {
 
         void stop();
 
-        void waitUntilIdle() const;
+        void stopAcceptingCommands();
+
+        void waitAllQueuesIdle() const;
 
         void submitCommand(std::unique_ptr<Command> command) const;
 
         Partition *getPartition(common::Instrument instrument) const;
+
+        OrderIDGenerator* getOrderIDGenerator();
 
 #ifndef NDEBUG
         void setPartition(common::Instrument instrument, std::unique_ptr<Partition> partition);
@@ -49,6 +54,7 @@ namespace trading_core {
         data::DatabaseWorker *mDatabaseWorker = nullptr;
         std::unique_ptr<data::DatabaseWorker> mOwnedDatabaseWorker;
         std::unique_ptr<TradeIDGenerator> mTradeIDGenerator;
+        std::unique_ptr<OrderIDGenerator> mOrderIDGenerator;
         std::unique_ptr<Partition> mPartitions[static_cast<int>(common::Instrument::COUNT)];
     };
 }

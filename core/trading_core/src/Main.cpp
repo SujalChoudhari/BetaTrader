@@ -1,6 +1,5 @@
 #include "trading_core/TradingCore.h"
 #include "trading_core/NewOrder.h"
-#include "trading_core/OrderIDGenerator.h"
 #include "common/Order.h"
 #include "logging/Logger.h"
 #include <iostream>
@@ -17,23 +16,34 @@ using namespace common;
 using namespace std::chrono;
 
 // -------------------- Order Factory --------------------
-std::unique_ptr<Order> create_order() {
+std::unique_ptr<Order> create_order(OrderIDGenerator *orderIdGenerator) {
     static std::random_device rd;
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<> instrument_dist(0, static_cast<int>(Instrument::COUNT) - 1);
-    static std::uniform_real_distribution<> price_dist(0.0, 0.01);
+    static std::normal_distribution<double> noise_dist(0.0, 0.0002); // small volatility
+    static std::unordered_map<Instrument, double> last_price;
 
-    Instrument random_instrument = static_cast<Instrument>(instrument_dist(gen));
+    Instrument inst = static_cast<Instrument>(instrument_dist(gen));
+    auto orderId = orderIdGenerator->nextId();
+
+    // initialize price if first time
+    if (last_price.find(inst) == last_price.end())
+        last_price[inst] = 1.2000; // baseline per instrument
+
+    // random walk: price_t = price_{t-1} * (1 + noise)
+    double noise = noise_dist(gen);
+    double new_price = last_price[inst] * (1.0 + noise);
+    last_price[inst] = new_price;
 
     return std::make_unique<Order>(
-        OrderIDGenerator::nextId(),
-        random_instrument,
-        "STRESS_CLIENT_" + std::to_string(OrderIDGenerator::getId()),
-        (OrderIDGenerator::getId() % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
+        orderId,
+        inst,
+        "STRESS_CLIENT_" + std::to_string(orderId),
+        (orderId % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
         OrderType::Limit,
         common::TimeInForce::DAY,
         100,
-        1.2000 + price_dist(gen),
+        new_price,
         system_clock::now()
     );
 }
@@ -74,7 +84,7 @@ int main() {
     tradingCore->start();
     std::cout << "Trading Core started.\n" << std::endl;
 
-    const int num_orders_to_submit = 100;
+    const int num_orders_to_submit = 50000;
     std::cout << "Submitting " << num_orders_to_submit << " orders sequentially..." << std::endl;
 
     auto wall_start = steady_clock::now();
@@ -83,7 +93,7 @@ int main() {
     // ---------- DATA collection ----------
     auto start_time = high_resolution_clock::now();
     for (int j = 0; j < num_orders_to_submit; ++j) {
-        auto order = create_order();
+        auto order = create_order(tradingCore->getOrderIDGenerator());
         auto newOrderCmd = std::make_unique<NewOrder>(
             order->getClientId(),
             order->getTimestamp(),
@@ -96,7 +106,8 @@ int main() {
 
     // ---------- Grace period ----------
     std::cout << "Waiting for all tasks to complete..." << std::endl;
-    tradingCore->waitUntilIdle();
+    tradingCore->stopAcceptingCommands();
+    tradingCore->waitAllQueuesIdle();
 
     std::cout << "Stopping Trading Core..." << std::endl;
     tradingCore->stop();

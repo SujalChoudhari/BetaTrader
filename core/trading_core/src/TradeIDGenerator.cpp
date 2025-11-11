@@ -1,35 +1,35 @@
 #include "trading_core/TradeIDGenerator.h"
-#include "common/Types.h"
-#include "logging/Logger.h"
+#include <future>
 
 namespace trading_core {
-    TradeIDGenerator::TradeIDGenerator(data::DatabaseWorker* dbWorker) : repository(
-        data::TradeIDRepository(dbWorker)) {
-        LOG_INFO("TradeIDGenerator instance created at {}", (void*)this);
-        loadState();
-    }
 
-    TradeIDGenerator::~TradeIDGenerator() {
-        LOG_INFO("Saving final TradeID state from generator at {}...", (void*)this);
-        saveState();
-    }
-
-    common::TradeID TradeIDGenerator::getId() {
-        return mCurrentId.load(std::memory_order_relaxed);
+    TradeIDGenerator::TradeIDGenerator(data::DatabaseWorker* dbWorker)
+        : mCurrentId(0), mDatabaseWorker(dbWorker) {
+        loadInitialState();
     }
 
     common::TradeID TradeIDGenerator::nextId() {
-        // Only increment in memory for performance; state is saved on destruction.
         return ++mCurrentId;
     }
 
-    void TradeIDGenerator::saveState() {
-        repository.setCurrentTradeID(mCurrentId.load(std::memory_order_relaxed));
+    void TradeIDGenerator::loadInitialState() {
+        auto promise = std::make_shared<std::promise<void>>();
+        auto future = promise->get_future();
+
+        mDatabaseWorker->enqueue([this, promise](SQLite::Database& db) {
+            try {
+                SQLite::Statement query(db, "SELECT MAX(trade_id) FROM trades;");
+                if (query.executeStep()) {
+                    mCurrentId = query.getColumn(0).getInt64();
+                }
+            } catch (const std::exception& e) {
+                // Table might not exist or be empty, which is fine.
+                // In that case, the ID will start from 0.
+            }
+            promise->set_value();
+        });
+
+        future.wait();
     }
 
-    void TradeIDGenerator::loadState() {
-        repository.getCurrentTradeID([this](common::TradeID id) {
-            mCurrentId.store(id, std::memory_order_relaxed);
-        });
-    }
 }
