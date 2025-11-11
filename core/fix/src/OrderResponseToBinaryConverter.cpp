@@ -124,4 +124,4 @@ namespace fix {
         std::string finalString = finalStringStream.str();
         return {finalString.begin(), finalString.end()};
     }
-}
+} // namespace fix

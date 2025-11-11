@@ -54,7 +54,7 @@ namespace fix {
             throw std::invalid_argument("Invalid TimeInForce char");
         }
 
-    }
+    } // namespace
 
     OrderRequest
     BinaryToOrderRequestConverter::convert(const std::vector<char>& binaryData)

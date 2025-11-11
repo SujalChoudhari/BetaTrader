@@ -7,10 +7,10 @@
  */
 
 #pragma once
-#include "data/DatabaseWorker.h"
 #include "common/Order.h"
-#include <vector>
+#include "data/DatabaseWorker.h"
 #include <functional>
+#include <vector>
 
 namespace data {
     /**
@@ -24,10 +24,13 @@ namespace data {
 
         virtual void initDatabase();
         virtual void saveOrder(const common::Order& order);
-        virtual void loadOrdersForInstrument(common::Instrument instrument, std::function<void(std::vector<common::Order>)> callback);
+        virtual void loadOrdersForInstrument(
+                common::Instrument instrument,
+                std::function<void(std::vector<common::Order>)> callback);
         virtual void removeOrder(common::OrderID orderId);
         virtual void updateOrder(const common::Order& order);
+
     private:
         DatabaseWorker* mDb;
     };
-}
+} // namespace data

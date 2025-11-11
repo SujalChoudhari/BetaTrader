@@ -1,25 +1,37 @@
-#include <gtest/gtest.h>
-#include "trading_core/TradeIDGenerator.h"
 #include "data/DatabaseWorker.h"
 #include "data/TradeIDRepository.h"
-#include <future>
+#include "trading_core/TradeIDGenerator.h"
 #include <chrono>
+#include <future>
+#include <gtest/gtest.h>
+#include <memory>
+#include <set>
+#include <thread>
+#include <vector>
 
 class TradeIDGeneratorTest : public ::testing::Test {
 protected:
     std::unique_ptr<data::DatabaseWorker> dbWorker;
     std::unique_ptr<data::TradeIDRepository> tradeIDRepo;
+    std::unique_ptr<trading_core::TradeIDGenerator> generator;
 
-    void SetUp() override {
+    void SetUp() override
+    {
         // Use an in-memory database for tests
         dbWorker = std::make_unique<data::DatabaseWorker>(":memory:");
         tradeIDRepo = std::make_unique<data::TradeIDRepository>(dbWorker.get());
-        // Ensure the database table is created and the ID is reset before each test
+        // Ensure the database table is created and the ID is reset before each
+        // test
         tradeIDRepo->truncateTradeID();
         dbWorker->waitUntilIdle(); // Wait for truncate to finish
+
+        // Initialize the generator after the database is set up
+        generator = std::make_unique<trading_core::TradeIDGenerator>(
+                dbWorker.get());
     }
 
-    void TearDown() override {
+    void TearDown() override
+    {
         if (dbWorker) {
             dbWorker->waitUntilIdle(); // Wait for all pending tasks to complete
             dbWorker.reset(); // Now it's safe to destroy the worker
@@ -27,78 +39,104 @@ protected:
     }
 };
 
-TEST_F(TradeIDGeneratorTest, InitialStateLoading) {
+TEST_F(TradeIDGeneratorTest, InitialStateLoading)
+{
     // 1. Manually set a starting ID in the database
     const common::TradeID start_id = 100;
     tradeIDRepo->setCurrentTradeID(start_id);
     dbWorker->waitUntilIdle(); // Wait for the write to complete
 
-    // 2. Construct the generator, which triggers the asynchronous loadState()
-    trading_core::TradeIDGenerator generator(dbWorker.get());
+    // Re-initialize the generator to load the new state
+    generator
+            = std::make_unique<trading_core::TradeIDGenerator>(dbWorker.get());
 
-    // 3. Poll until the loaded value is reflected. This is the key to testing the race condition.
-    for (int i = 0; i < 100; ++i) { // Poll for a max of 1 second
-        if (generator.getId() == start_id) {
-            break;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-    
-    // 4. Assert that the state was loaded correctly
-    ASSERT_EQ(generator.getId(), start_id);
+    // The generator should have loaded the state, so the first generated ID
+    // should be start_id + 1.
+    EXPECT_EQ(generator->nextId(), start_id + 1);
 }
 
-TEST_F(TradeIDGeneratorTest, SequentialGenerationAfterLoading) {
+TEST_F(TradeIDGeneratorTest, SequentialGenerationAfterLoading)
+{
     const common::TradeID start_id = 50;
     tradeIDRepo->setCurrentTradeID(start_id);
     dbWorker->waitUntilIdle(); // Wait for write to complete
 
-    trading_core::TradeIDGenerator generator(dbWorker.get());
-
-    // Poll to wait for load
-    for (int i = 0; i < 100; ++i) {
-        if (generator.getId() == start_id) break;
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-    ASSERT_EQ(generator.getId(), start_id);
+    // Re-initialize the generator to load the new state
+    generator
+            = std::make_unique<trading_core::TradeIDGenerator>(dbWorker.get());
 
     // Verify sequential generation
-    EXPECT_EQ(generator.nextId(), start_id + 1);
-    EXPECT_EQ(generator.nextId(), start_id + 2);
-    EXPECT_EQ(generator.getId(), start_id + 2);
+    EXPECT_EQ(generator->nextId(), start_id + 1);
+    EXPECT_EQ(generator->nextId(), start_id + 2);
+    EXPECT_EQ(generator->nextId(), start_id + 3);
 }
 
-TEST_F(TradeIDGeneratorTest, StatePersistenceOnDestruction) {
+TEST_F(TradeIDGeneratorTest, StatePersistenceOnDestruction)
+{
     const common::TradeID final_id = 5;
 
     {
         // Create generator in a limited scope
-        trading_core::TradeIDGenerator generator(dbWorker.get());
-        // Poll to wait for initial load to complete
-        for (int i = 0; i < 100; ++i) {
-            if (generator.getId() == 0) break;
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
+        // Re-initialize the generator to ensure it starts from a known state (0
+        // in this case)
+        generator = std::make_unique<trading_core::TradeIDGenerator>(
+                dbWorker.get());
 
-        for (common::TradeID i = 0; i < final_id; ++i) {
-            generator.nextId();
-        }
-        ASSERT_EQ(generator.getId(), final_id);
-        // Destructor is called here, triggering saveState()
-    }
+        for (common::TradeID i = 0; i < final_id; ++i) { generator->nextId(); }
+        // The generator's destructor will be called here, triggering
+        // saveState()
+    } // generator goes out of scope and is destroyed
 
     // The save is async, so we must wait for it to land in the database.
-    // The TearDown method will now handle this wait.
+    dbWorker->waitUntilIdle();
 
     // Verify the saved state by using the repository directly
     std::promise<common::TradeID> read_promise;
     std::future<common::TradeID> read_future = read_promise.get_future();
-    tradeIDRepo->getCurrentTradeID([&](common::TradeID id) {
-        read_promise.set_value(id);
-    });
+    tradeIDRepo->getCurrentTradeID(
+            [&](common::TradeID id) { read_promise.set_value(id); });
 
     // We must still wait for the read operation itself to complete
     dbWorker->waitUntilIdle();
 
+    // The saved ID should be the last generated ID, which is 'final_id'.
     EXPECT_EQ(read_future.get(), final_id);
+}
+
+TEST_F(TradeIDGeneratorTest, ThreadSafety)
+{
+    const int num_threads = 10;
+    const int ids_per_thread = 1000;
+    const int total_ids = num_threads * ids_per_thread;
+
+    std::vector<std::thread> threads;
+    std::vector<common::TradeID> generated_ids(total_ids);
+
+    auto generate_ids_task = [&](int start_index) {
+        for (int i = 0; i < ids_per_thread; ++i) {
+            generated_ids[start_index + i] = generator->nextId();
+        }
+    };
+
+    for (int i = 0; i < num_threads; ++i) {
+        threads.emplace_back(generate_ids_task, i * ids_per_thread);
+    }
+
+    for (auto& t: threads) { t.join(); }
+
+    // Check for uniqueness.
+    std::sort(generated_ids.begin(), generated_ids.end());
+    auto it = std::unique(generated_ids.begin(), generated_ids.end());
+    bool is_unique = (it == generated_ids.end());
+
+    ASSERT_TRUE(is_unique)
+            << "Duplicate TradeIDs were generated by concurrent threads.";
+
+    // The last generated ID should be total_ids (assuming it started from 0 or
+    // loaded state was 0). If it started from 0, the last generated ID would be
+    // total_ids. If it loaded a state, say `S`, then the last generated ID
+    // would be `S + total_ids`. Since we truncate the ID in SetUp, it should
+    // start from 0. So, the next ID after all generations should be total_ids
+    // + 1.
+    EXPECT_EQ(generator->nextId(), total_ids + 1);
 }

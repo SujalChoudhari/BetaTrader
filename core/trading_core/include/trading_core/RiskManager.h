@@ -24,11 +24,11 @@ namespace trading_core {
 
         explicit RiskManager(data::TradeRepository* tradeRepository);
 
-        virtual bool preCheck(const common::Order &order, OrderBook& orderBook) ;
-        virtual void postTradeUpdate(const common::Trade &trade);
-        void postTradeUpdate(const std::vector<common::Trade> &trades);
+        virtual bool preCheck(const common::Order& order, OrderBook& orderBook);
+        virtual void postTradeUpdate(const common::Trade& trade);
+        void postTradeUpdate(const std::vector<common::Trade>& trades);
 
     private:
         data::TradeRepository* mTradeRepository;
     };
-}
+} // namespace trading_core

@@ -13,29 +13,29 @@ namespace {
         std::stringstream bodySs;
         bodySs << static_cast<int>(fix::Tag::ClOrdID) << "=12345" << SOH;
         bodySs << static_cast<int>(fix::Tag::Symbol) << "=EURUSD" << SOH;
-        bodySs << static_cast<int>(fix::Tag::Side) << "="
-                << fix::ORDER_SIDE_BUY << SOH;
+        bodySs << static_cast<int>(fix::Tag::Side) << "=" << fix::ORDER_SIDE_BUY
+               << SOH;
         bodySs << static_cast<int>(fix::Tag::OrdType) << "="
-                << fix::ORDER_TYPE_LIMIT << SOH;
+               << fix::ORDER_TYPE_LIMIT << SOH;
         bodySs << static_cast<int>(fix::Tag::OrderQty) << "=1000" << SOH;
         bodySs << static_cast<int>(fix::Tag::Price) << "=1.2345" << SOH;
         bodySs << static_cast<int>(fix::Tag::TimeInForce) << "="
-                << fix::TIME_IN_FORCE_DAY << SOH;
+               << fix::TIME_IN_FORCE_DAY << SOH;
 
         std::string body_str = bodySs.str();
 
         std::stringstream headerSs;
         headerSs << static_cast<int>(fix::Tag::BeginString) << "="
-                  << fix::FIX_BEGIN_STRING << SOH;
+                 << fix::FIX_BEGIN_STRING << SOH;
         headerSs << static_cast<int>(fix::Tag::BodyLength) << "="
-                  << body_str.length() << SOH;
+                 << body_str.length() << SOH;
         headerSs << static_cast<int>(fix::Tag::MsgType) << "="
-                  << fix::MSG_TYPE_NEW_ORDER_SINGLE << SOH;
+                 << fix::MSG_TYPE_NEW_ORDER_SINGLE << SOH;
         headerSs << static_cast<int>(fix::Tag::SenderCompID) << "=1" << SOH;
         headerSs << static_cast<int>(fix::Tag::TargetCompID) << "=2" << SOH;
         headerSs << static_cast<int>(fix::Tag::MsgSeqNum) << "=3" << SOH;
         headerSs << static_cast<int>(fix::Tag::SendingTime)
-                  << "=20230401-12:30:00.000" << SOH;
+                 << "=20230401-12:30:00.000" << SOH;
 
         std::string headerStr = headerSs.str();
         std::string messageSansChecksum = headerStr + body_str;
@@ -49,7 +49,7 @@ namespace {
         std::stringstream finalSs;
         finalSs << messageSansChecksum;
         finalSs << static_cast<int>(fix::Tag::CheckSum) << "="
-                 << std::setfill('0') << std::setw(3) << checksum << SOH;
+                << std::setfill('0') << std::setw(3) << checksum << SOH;
 
         std::string finalStr = finalSs.str();
         return {finalStr.begin(), finalStr.end()};

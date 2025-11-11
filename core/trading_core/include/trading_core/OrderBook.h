@@ -3,20 +3,20 @@
 //
 
 #pragma once
+#include "common/Order.h"
+#include "common/Types.h"
 #include <deque>
 #include <map>
 #include <memory>
-
-#include "common/Order.h"
-#include "common/Types.h"
 
 namespace trading_core {
     /**
      * @class OrderBook
      * @brief Represents the order book for a single financial instrument.
      *
-     * The order book maintains two separate books for buy (bid) and sell (ask) orders,
-     * organized by price levels. It provides methods for inserting and canceling orders.
+     * The order book maintains two separate books for buy (bid) and sell (ask)
+     * orders, organized by price levels. It provides methods for inserting and
+     * canceling orders.
      */
     class OrderBook {
     public:
@@ -28,12 +28,14 @@ namespace trading_core {
         using PriceLevel = std::deque<common::Order*>;
 
         /**
-         * @brief A map of prices to price levels for buy orders, sorted in descending order.
+         * @brief A map of prices to price levels for buy orders, sorted in
+         * descending order.
          */
-        using BidMap = std::map<common::Price, PriceLevel, std::greater<> >;
+        using BidMap = std::map<common::Price, PriceLevel, std::greater<>>;
 
         /**
-         * @brief A map of prices to price levels for sell orders, sorted in ascending order.
+         * @brief A map of prices to price levels for sell orders, sorted in
+         * ascending order.
          */
         using AskMap = std::map<common::Price, PriceLevel>;
 
@@ -47,9 +49,10 @@ namespace trading_core {
         /**
          * @brief Cancels an order from the order book.
          * @param orderId The ID of the order to be cancelled.
-         * @return True if the order was successfully cancelled, false otherwise.
+         * @return True if the order was successfully cancelled, false
+         * otherwise.
          */
-        virtual bool cancelOrder(const common::OrderID &orderId);
+        virtual bool cancelOrder(const common::OrderID& orderId);
 
         /**
          * @brief Gets a raw pointer to the bid map.
@@ -65,6 +68,6 @@ namespace trading_core {
 
     private:
         BidMap mBidMap; ///< The map of buy orders.
-        AskMap mAskMap;   ///< The map of sell orders.
+        AskMap mAskMap; ///< The map of sell orders.
     };
-}
+} // namespace trading_core

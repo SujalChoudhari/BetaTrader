@@ -10,4 +10,4 @@ namespace fix {
         static std::vector<char> convert(const OrderResponse& orderResponse);
     };
 
-}
+} // namespace fix

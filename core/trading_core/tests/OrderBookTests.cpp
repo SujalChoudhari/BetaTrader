@@ -1,29 +1,39 @@
-#include <gtest/gtest.h>
-#include "trading_core/OrderBook.h"
 #include "common/Order.h"
-#include "data/OrderRepository.h"
 #include "data/DatabaseWorker.h"
+#include "data/OrderRepository.h"
 #include "data/Query.h" // To ensure create table query is available
-#include <memory>
-#include <vector>
+#include "trading_core/OrderBook.h"
 #include <filesystem> // For temporary file management
 #include <future> // Required for std::promise and std::future
+#include <gtest/gtest.h>
+#include <memory>
+#include <vector>
 
 // Test Fixture for OrderBook tests
 class OrderBookTest : public ::testing::Test {
 protected:
     std::unique_ptr<trading_core::OrderBook> orderBook;
-    
-    // The fixture owns the orders, because the OrderBook only stores raw pointers.
+
+    // The fixture owns the orders, because the OrderBook only stores raw
+    // pointers.
     std::vector<std::unique_ptr<common::Order>> orderStore;
 
-    void SetUp() override {
+    void SetUp() override
+    {
         orderBook = std::make_unique<trading_core::OrderBook>();
     }
 
-    // Helper to create and store an order, returning a raw pointer for insertion
-    common::Order* createOrder(common::OrderID id, common::OrderSide side, common::Price price, common::Quantity qty = 100, common::OrderStatus status = common::OrderStatus::New) {
-        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "test_client", side, common::OrderType::Limit, common::TimeInForce::DAY, qty, price, std::chrono::system_clock::now());
+    // Helper to create and store an order, returning a raw pointer for
+    // insertion
+    common::Order* createOrder(common::OrderID id, common::OrderSide side,
+                               common::Price price, common::Quantity qty = 100,
+                               common::OrderStatus status
+                               = common::OrderStatus::New)
+    {
+        auto order = std::make_unique<common::Order>(
+                id, common::Instrument::EURUSD, "test_client", side,
+                common::OrderType::Limit, common::TimeInForce::DAY, qty, price,
+                std::chrono::system_clock::now());
         order->setStatus(status);
         if (status == common::OrderStatus::PartiallyFilled) {
             order->setRemainingQuantity(qty / 2);
@@ -36,7 +46,8 @@ protected:
 
 // --- insertOrder Tests ---
 
-TEST_F(OrderBookTest, InsertSingleBuyOrder) {
+TEST_F(OrderBookTest, InsertSingleBuyOrder)
+{
     common::Order* buyOrder = createOrder(1, common::OrderSide::Buy, 100.0);
     orderBook->insertOrder(buyOrder);
 
@@ -46,7 +57,8 @@ TEST_F(OrderBookTest, InsertSingleBuyOrder) {
     EXPECT_EQ(orderBook->getBidMap()->at(100.0).front()->getId(), 1);
 }
 
-TEST_F(OrderBookTest, InsertMultipleOrdersAtSamePrice) {
+TEST_F(OrderBookTest, InsertMultipleOrdersAtSamePrice)
+{
     common::Order* buyOrder1 = createOrder(1, common::OrderSide::Buy, 100.0);
     common::Order* buyOrder2 = createOrder(2, common::OrderSide::Buy, 100.0);
     orderBook->insertOrder(buyOrder1);
@@ -59,7 +71,8 @@ TEST_F(OrderBookTest, InsertMultipleOrdersAtSamePrice) {
     EXPECT_EQ(priceLevel[1]->getId(), 2);
 }
 
-TEST_F(OrderBookTest, InsertMultipleOrdersAtDifferentPrices) {
+TEST_F(OrderBookTest, InsertMultipleOrdersAtDifferentPrices)
+{
     orderBook->insertOrder(createOrder(1, common::OrderSide::Buy, 100.0));
     orderBook->insertOrder(createOrder(2, common::OrderSide::Buy, 102.0));
     orderBook->insertOrder(createOrder(3, common::OrderSide::Buy, 101.0));
@@ -75,7 +88,8 @@ TEST_F(OrderBookTest, InsertMultipleOrdersAtDifferentPrices) {
 
 // --- cancelOrder Tests ---
 
-TEST_F(OrderBookTest, CancelExistingOrder) {
+TEST_F(OrderBookTest, CancelExistingOrder)
+{
     common::Order* buyOrder = createOrder(1, common::OrderSide::Buy, 100.0);
     orderBook->insertOrder(buyOrder);
     ASSERT_EQ(orderBook->getBidMap()->size(), 1);
@@ -85,16 +99,18 @@ TEST_F(OrderBookTest, CancelExistingOrder) {
     EXPECT_EQ(orderBook->getBidMap()->size(), 0);
 }
 
-TEST_F(OrderBookTest, CancelNonExistentOrder) {
+TEST_F(OrderBookTest, CancelNonExistentOrder)
+{
     common::Order* buyOrder = createOrder(1, common::OrderSide::Buy, 100.0);
     orderBook->insertOrder(buyOrder);
-    
+
     bool result = orderBook->cancelOrder(999); // ID does not exist
     ASSERT_FALSE(result);
     EXPECT_EQ(orderBook->getBidMap()->size(), 1);
 }
 
-TEST_F(OrderBookTest, CancelOrderEmptiesPriceLevel) {
+TEST_F(OrderBookTest, CancelOrderEmptiesPriceLevel)
+{
     orderBook->insertOrder(createOrder(1, common::OrderSide::Buy, 100.0));
     orderBook->insertOrder(createOrder(2, common::OrderSide::Buy, 101.0));
     ASSERT_EQ(orderBook->getBidMap()->size(), 2);
@@ -105,7 +121,8 @@ TEST_F(OrderBookTest, CancelOrderEmptiesPriceLevel) {
     EXPECT_FALSE(orderBook->getBidMap()->count(101.0));
 }
 
-TEST_F(OrderBookTest, CancelOrderLeavesPriceLevel) {
+TEST_F(OrderBookTest, CancelOrderLeavesPriceLevel)
+{
     orderBook->insertOrder(createOrder(1, common::OrderSide::Buy, 100.0));
     orderBook->insertOrder(createOrder(2, common::OrderSide::Buy, 100.0));
     ASSERT_EQ(orderBook->getBidMap()->at(100.0).size(), 2);
@@ -118,23 +135,25 @@ TEST_F(OrderBookTest, CancelOrderLeavesPriceLevel) {
 }
 
 // This test is designed to fail if the iterator invalidation bug exists.
-TEST_F(OrderBookTest, CancelOrderIteratorInvalidationBug) {
+TEST_F(OrderBookTest, CancelOrderIteratorInvalidationBug)
+{
     // Insert two orders at adjacent price levels.
     orderBook->insertOrder(createOrder(1, common::OrderSide::Buy, 101.0));
     orderBook->insertOrder(createOrder(2, common::OrderSide::Buy, 100.0));
     ASSERT_EQ(orderBook->getBidMap()->size(), 2);
 
-    // Cancel the first element (price 101.0). 
-    // The buggy implementation will erase this iterator, then the loop will increment,
-    // skipping the next element (price 100.0).
+    // Cancel the first element (price 101.0).
+    // The buggy implementation will erase this iterator, then the loop will
+    // increment, skipping the next element (price 100.0).
     bool result1 = orderBook->cancelOrder(1);
     ASSERT_TRUE(result1);
 
-    // Now, try to cancel the second element. 
+    // Now, try to cancel the second element.
     // With the bug, this element was skipped and will not be found.
     // A correct implementation would find and cancel it.
     bool result2 = orderBook->cancelOrder(2);
-    ASSERT_TRUE(result2) << "The cancelOrder implementation likely has an iterator invalidation bug.";
+    ASSERT_TRUE(result2) << "The cancelOrder implementation likely has an "
+                            "iterator invalidation bug.";
     EXPECT_EQ(orderBook->getBidMap()->size(), 0);
 }
 
@@ -146,13 +165,15 @@ protected:
     std::unique_ptr<data::OrderRepository> orderRepository;
     std::vector<std::unique_ptr<common::Order>> orderStore;
 
-    void SetUp() override {
+    void SetUp() override
+    {
         // Clean up any previous test database
         std::filesystem::remove(dbPath);
 
         dbWorker = std::make_unique<data::DatabaseWorker>(dbPath);
-        orderRepository = std::make_unique<data::OrderRepository>(dbWorker.get());
-        
+        orderRepository
+                = std::make_unique<data::OrderRepository>(dbWorker.get());
+
         // Ensure database is initialized before proceeding
         std::promise<void> db_init_promise;
         std::future<void> db_init_future = db_init_promise.get_future();
@@ -162,7 +183,8 @@ protected:
         db_init_future.wait();
     }
 
-    void TearDown() override {
+    void TearDown() override
+    {
         // Ensure all pending DB operations are complete before closing
         std::promise<void> db_shutdown_promise;
         std::future<void> db_shutdown_future = db_shutdown_promise.get_future();
@@ -176,8 +198,16 @@ protected:
     }
 
     // Helper to create and store an order
-    common::Order* createAndStoreOrder(common::OrderID id, common::OrderSide side, common::Price price, common::Quantity qty, common::OrderStatus status) {
-        auto order = std::make_unique<common::Order>(id, common::Instrument::EURUSD, "client1", side, common::OrderType::Limit, common::TimeInForce::DAY, qty, price, std::chrono::system_clock::now());
+    common::Order* createAndStoreOrder(common::OrderID id,
+                                       common::OrderSide side,
+                                       common::Price price,
+                                       common::Quantity qty,
+                                       common::OrderStatus status)
+    {
+        auto order = std::make_unique<common::Order>(
+                id, common::Instrument::EURUSD, "client1", side,
+                common::OrderType::Limit, common::TimeInForce::DAY, qty, price,
+                std::chrono::system_clock::now());
         order->setStatus(status);
         if (status == common::OrderStatus::PartiallyFilled) {
             order->setRemainingQuantity(qty / 2);
@@ -188,13 +218,21 @@ protected:
     }
 };
 
-TEST_F(OrderBookPersistenceTest, LoadsOnlyActiveOrdersIntoOrderBook) {
+TEST_F(OrderBookPersistenceTest, LoadsOnlyActiveOrdersIntoOrderBook)
+{
     // 1. Save a mix of active and inactive orders
-    common::Order* newOrder = createAndStoreOrder(1, common::OrderSide::Buy, 100.0, 100, common::OrderStatus::New);
-    common::Order* partiallyFilledOrder = createAndStoreOrder(2, common::OrderSide::Sell, 101.0, 200, common::OrderStatus::PartiallyFilled);
-    common::Order* filledOrder = createAndStoreOrder(3, common::OrderSide::Buy, 99.0, 50, common::OrderStatus::Filled);
-    common::Order* cancelledOrder = createAndStoreOrder(4, common::OrderSide::Sell, 102.0, 150, common::OrderStatus::Cancelled);
-    common::Order* anotherNewOrder = createAndStoreOrder(5, common::OrderSide::Buy, 100.0, 75, common::OrderStatus::New);
+    common::Order* newOrder = createAndStoreOrder(
+            1, common::OrderSide::Buy, 100.0, 100, common::OrderStatus::New);
+    common::Order* partiallyFilledOrder
+            = createAndStoreOrder(2, common::OrderSide::Sell, 101.0, 200,
+                                  common::OrderStatus::PartiallyFilled);
+    common::Order* filledOrder = createAndStoreOrder(
+            3, common::OrderSide::Buy, 99.0, 50, common::OrderStatus::Filled);
+    common::Order* cancelledOrder
+            = createAndStoreOrder(4, common::OrderSide::Sell, 102.0, 150,
+                                  common::OrderStatus::Cancelled);
+    common::Order* anotherNewOrder = createAndStoreOrder(
+            5, common::OrderSide::Buy, 100.0, 75, common::OrderStatus::New);
 
     orderRepository->saveOrder(*newOrder);
     orderRepository->saveOrder(*partiallyFilledOrder);
@@ -216,29 +254,31 @@ TEST_F(OrderBookPersistenceTest, LoadsOnlyActiveOrdersIntoOrderBook) {
     std::promise<void> load_promise;
     std::future<void> load_future = load_promise.get_future();
 
-    orderRepository->loadOrdersForInstrument(common::Instrument::EURUSD, 
-        [&loadedOrders, &load_promise](std::vector<common::Order> orders) {
-            loadedOrders = std::move(orders);
-            load_promise.set_value();
-        }
-    );
+    orderRepository->loadOrdersForInstrument(
+            common::Instrument::EURUSD,
+            [&loadedOrders, &load_promise](std::vector<common::Order> orders) {
+                loadedOrders = std::move(orders);
+                load_promise.set_value();
+            });
     load_future.wait();
 
     // 3. Populate the new OrderBook with loaded orders
     // We need to manage the lifetime of these loaded orders for the OrderBook
     std::vector<std::unique_ptr<common::Order>> activeOrdersForBook;
-    for (auto& order : loadedOrders) {
+    for (auto& order: loadedOrders) {
         activeOrdersForBook.push_back(std::make_unique<common::Order>(order));
         newOrderBook.insertOrder(activeOrdersForBook.back().get());
     }
 
     // 4. Verify the state of the new OrderBook
-    ASSERT_EQ(loadedOrders.size(), 3); // Only New and PartiallyFilled orders should be loaded
-    
+    ASSERT_EQ(loadedOrders.size(),
+              3); // Only New and PartiallyFilled orders should be loaded
+
     // Check BidMap (Buy orders)
     ASSERT_EQ(newOrderBook.getBidMap()->size(), 1);
     ASSERT_TRUE(newOrderBook.getBidMap()->count(100.0));
-    ASSERT_EQ(newOrderBook.getBidMap()->at(100.0).size(), 2); // Order 1 and Order 5
+    ASSERT_EQ(newOrderBook.getBidMap()->at(100.0).size(),
+              2); // Order 1 and Order 5
     EXPECT_EQ(newOrderBook.getBidMap()->at(100.0)[0]->getId(), 1);
     EXPECT_EQ(newOrderBook.getBidMap()->at(100.0)[1]->getId(), 5);
 

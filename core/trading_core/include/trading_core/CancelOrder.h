@@ -3,9 +3,9 @@
 //
 
 #pragma once
-#include "trading_core/CommandType.h"
-#include "trading_core/Command.h"
 #include "common/Order.h"
+#include "trading_core/Command.h"
+#include "trading_core/CommandType.h"
 
 namespace trading_core {
     /**
@@ -23,10 +23,11 @@ namespace trading_core {
          * @param timestamp The time at which the command was created.
          * @param orderId The ID of the order to be cancelled.
          */
-        explicit CancelOrder(const common::ClientID &clientId, const common::Timestamp timestamp,
-                             const common::OrderID orderId) : Command(CommandType::CancelOrder, clientId, timestamp),
-                                                               mOrderId(orderId) {
-        };
+        explicit CancelOrder(const common::ClientID& clientId,
+                             const common::Timestamp timestamp,
+                             const common::OrderID orderId)
+            : Command(CommandType::CancelOrder, clientId, timestamp),
+              mOrderId(orderId) {};
 
         /** @brief Gets the ID of the order to be cancelled. */
         [[nodiscard]] common::OrderID getOrderId() const { return mOrderId; }
@@ -34,4 +35,4 @@ namespace trading_core {
     private:
         common::OrderID mOrderId; ///< The ID of the order to be cancelled.
     };
-}
+} // namespace trading_core
