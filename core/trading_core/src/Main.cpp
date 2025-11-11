@@ -14,26 +14,63 @@
 using namespace trading_core;
 using namespace common;
 using namespace std::chrono;
-
 // -------------------- Order Factory --------------------
 std::unique_ptr<Order> create_order(OrderIDGenerator *orderIdGenerator) {
+    using namespace std::chrono;
+
     static std::random_device rd;
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<> instrument_dist(0, static_cast<int>(Instrument::COUNT) - 1);
-    static std::normal_distribution<double> noise_dist(0.0, 0.0002); // small volatility
+
+    // long-term mean price each instrument gravitates around
+    static const double mean_price = 1.2000;
+    static const double reversion_speed = 0.05;       // pull-back strength
+    static const double base_vol = 0.002;             // baseline daily vol
+    static const double vol_cluster_factor = 0.3;     // smooth volatility memory
+
+    // state memory
     static std::unordered_map<Instrument, double> last_price;
+    static std::unordered_map<Instrument, double> inst_vol;
+
+    // random quantity distribution with realistic heavy-tail
+    static std::lognormal_distribution<double> qty_dist(4.0, 1.0);
 
     Instrument inst = static_cast<Instrument>(instrument_dist(gen));
     auto orderId = orderIdGenerator->nextId();
 
-    // initialize price if first time
-    if (last_price.find(inst) == last_price.end())
-        last_price[inst] = 1.2000; // baseline per instrument
+    // initialize state per instrument
+    if (last_price.find(inst) == last_price.end()) {
+        last_price[inst] = mean_price;
+        inst_vol[inst]  = base_vol;
+    }
 
-    // random walk: price_t = price_{t-1} * (1 + noise)
-    double noise = noise_dist(gen);
-    double new_price = last_price[inst] * (1.0 + noise);
+    // volatility clustering update
+    inst_vol[inst] =
+        inst_vol[inst] * (1.0 - vol_cluster_factor) +
+        base_vol       * vol_cluster_factor;
+
+    // occasional volatility explosion (news-like)
+    if (std::bernoulli_distribution(0.005)(gen)) {
+        inst_vol[inst] *= 3.0;
+    }
+
+    // shock sampled from current volatility
+    std::normal_distribution<double> price_step(0.0, inst_vol[inst]);
+    double shock = price_step(gen);
+
+    // mean reversion term
+    double reversion = reversion_speed * (mean_price - last_price[inst]);
+
+    // updated price (OU-like with lognormal step)
+    double new_price = last_price[inst] * std::exp(shock) + reversion;
+    if (new_price < 0.0001) new_price = 0.0001;
+
     last_price[inst] = new_price;
+
+    // quantity
+    int qty = (int)qty_dist(gen);
+    if (qty < 1) qty = 1;
+    if (qty > 5000) qty = 5000;
 
     return std::make_unique<Order>(
         orderId,
@@ -42,11 +79,12 @@ std::unique_ptr<Order> create_order(OrderIDGenerator *orderIdGenerator) {
         (orderId % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
         OrderType::Limit,
         common::TimeInForce::DAY,
-        100,
+        qty,
         new_price,
         system_clock::now()
     );
 }
+
 
 // -------------------- Print Functions --------------------
 void print_header(const std::string &title) {
@@ -84,7 +122,7 @@ int main() {
     tradingCore->start();
     std::cout << "Trading Core started.\n" << std::endl;
 
-    const int num_orders_to_submit = 50000;
+    const int num_orders_to_submit = 10000;
     std::cout << "Submitting " << num_orders_to_submit << " orders sequentially..." << std::endl;
 
     auto wall_start = steady_clock::now();

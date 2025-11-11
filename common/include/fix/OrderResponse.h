@@ -97,7 +97,7 @@ namespace fix {
         /** @brief Gets the quantity of the last fill (Tag 32). */
         [[nodiscard]] Quantity getLastQuantity() const { return mLastQuantity; }
         /** @brief Gets the time of the transaction (Tag 60). */
-        [[nodiscard]] const Timestamp &getTransactionTime() const { return mTransactionTime; }
+        [[nodiscard]] const common::Timestamp &getTransactionTime() const { return mTransactionTime; }
 
     private:
         // Session
@@ -122,6 +122,6 @@ namespace fix {
         Quantity mLeavesQuantity; ///< Tag 151: Remaining quantity.
         Price mLastPrice; ///< Tag 31: Price of the last fill.
         Quantity mLastQuantity; ///< Tag 32: Quantity of the last fill.
-        Timestamp mTransactionTime; ///< Tag 60: Time of the transaction.
+        common::Timestamp mTransactionTime; ///< Tag 60: Time of the transaction.
     };
 }

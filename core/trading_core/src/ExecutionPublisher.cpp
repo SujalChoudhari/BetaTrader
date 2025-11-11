@@ -14,7 +14,7 @@ namespace trading_core {
         ss << "EXECUTION | Action=" << action
            << " | OrderID=" << order.getId()
            << " | Symbol=" << common::to_string(order.getSymbol())
-           << " | Qty=" << order.getRemainingQuantity()
+           << " | Qty=" << (action == "NEW" ? order.getOriginalQuantity() : order.getRemainingQuantity())
            << " | Price=" << std::fixed << std::setprecision(6) << order.getPrice()
            << " | Client=" << order.getClientId();
         LOG_INFO(ss.str());

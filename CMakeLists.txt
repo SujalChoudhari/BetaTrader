@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory(common)
 add_subdirectory(core/trading_core)
 add_subdirectory(core/data)
+add_subdirectory(core/fix)
 
 enable_testing()
 
@@ -22,3 +23,4 @@ include_directories(vendor/lib/SPSCQueue/include)
 
 add_subdirectory(core/trading_core/tests)
 add_subdirectory(core/data/tests)
+add_subdirectory(core/fix/tests)

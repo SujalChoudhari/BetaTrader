@@ -109,6 +109,8 @@ namespace trading_core {
         mOrderRepository.saveOrder(*order);
         mOrderBook.insertOrder(order);
 
+        ExecutionPublisher::publishExecution(*order, "NEW");
+
         for (const auto trades = mMatcher.match(order, mOrderBook); auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
             mOrderRepository.updateOrder(*mOrderManager.getOrderById(trade.getBuyOrderId()).value());
@@ -119,8 +121,6 @@ namespace trading_core {
         if (order->getRemainingQuantity() == 0 || order->getOrderType() == common::OrderType::Market) {
             mOrderRepository.removeOrder(order->getId());
         }
-
-        ExecutionPublisher::publishExecution(*order, "NEW");
     }
 
     void WorkerThread::processCancelOrder(const CancelOrder &cmd) const {
@@ -160,6 +160,8 @@ namespace trading_core {
         mOrderRepository.saveOrder(*order);
         mOrderBook.insertOrder(order);
 
+        ExecutionPublisher::publishExecution(*order, "REPLACED");
+
         for (const auto trades = mMatcher.match(order, mOrderBook); auto &trade: trades) {
             mRiskManager.postTradeUpdate(trade);
             mOrderRepository.updateOrder(*mOrderManager.getOrderById(trade.getBuyOrderId()).value());
@@ -170,7 +172,5 @@ namespace trading_core {
         if (order->getRemainingQuantity() == 0) {
             mOrderRepository.removeOrder(order->getId());
         }
-
-        ExecutionPublisher::publishExecution(*order, "REPLACED");
     }
 }
