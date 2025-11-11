@@ -1,21 +1,22 @@
 # Data Module: Technical System Design (TSD)
 
-This document provides a detailed technical specification of the `core/data` module. It is intended for developers who want to understand the internal workings of the persistence layer, its threading model, and its database schema.
+This document provides a detailed technical specification of the `core/data` module.
 
-## 1. Architecture: Asynchronous Task Execution
+## 1. Architecture
 
-The `data` module is designed around a simple yet powerful asynchronous task execution model. The goal is to decouple the high-performance `trading_core` from the high-latency world of disk I/O.
+The `data` module is designed around an **asynchronous worker pattern**. The primary goal is to decouple the high-performance `trading_core` from high-latency disk I/O operations. All database writes are submitted to a lock-free queue and processed by a dedicated background thread.
 
-*   **`DatabaseWorker`**: The central component of this architecture. It runs on a dedicated background thread (`std::jthread`) and owns the sole `SQLite::Database` connection.
-*   **SPSC Queue**: The `DatabaseWorker` consumes tasks from a `rigtorp::SPSCQueue`. This lock-free, single-producer, single-consumer queue is the conduit for all database operations.
-*   **Task Submission**: Any thread in the application can act as a producer, enqueuing a task to be executed by the `DatabaseWorker`. A task is simply a `std::function<void(SQLite::Database&)>`, giving the caller full control over the database operation to be performed.
+### Key Characteristics:
+
+*   **Asynchronous I/O**: The `trading_core` never blocks on database writes.
+*   **Single Writer Thread**: A single `DatabaseWorker` thread owns the database connection, eliminating the need for complex locking.
+*   **Task-Based Execution**: Operations are enqueued as `std::function` tasks, providing flexibility.
 
 ```mermaid
 graph TD
     subgraph Application Threads
         T1[Trading Core Worker 1]
         T2[Trading Core Worker 2]
-        T3[Other Thread]
     end
 
     subgraph Data Module
@@ -29,14 +30,47 @@ graph TD
 
     T1 -- "Enqueue Task" --> Q
     T2 -- "Enqueue Task" --> Q
-    T3 -- "Enqueue Task" --> Q
     DBW -- "Consumes & Executes Tasks" --> Q
     DBW -- "Performs I/O" --> DB
 ```
 
-This design ensures that the calling threads never block on database operations, which is critical for the low-latency performance of the `trading_core`.
+## 2. Class Diagram
 
-## 2. Component Responsibilities
+The following diagram illustrates the relationships between the key components in the `data` module.
+
+```mermaid
+classDiagram
+    class DatabaseWorker {
+        +enqueue(Task task)
+        -workerLoop()
+        -m_queue: SPSCQueue<Task>
+        -m_db: SQLite::Database
+        -m_thread: jthread
+    }
+
+    class OrderRepository {
+        +save(Order order)
+        +update(Order order)
+        -m_worker: DatabaseWorker&
+    }
+
+    class TradeRepository {
+        +save(Trade trade)
+        -m_worker: DatabaseWorker&
+    }
+
+    class TradeIDRepository {
+        +save(TradeID id)
+        +load(): TradeID
+        -m_worker: DatabaseWorker&
+    }
+
+    DatabaseWorker <--o OrderRepository : Uses
+    DatabaseWorker <--o TradeRepository : Uses
+    DatabaseWorker <--o TradeIDRepository : Uses
+```
+
+## 3. Component Responsibilities
 
 | Component | Description |
 | :--- | :--- |
@@ -46,13 +80,11 @@ This design ensures that the calling threads never block on database operations,
 | **`TradeIDRepository`**| A specialized repository for managing the global trade ID counter. It ensures that trade IDs are unique and persist across application restarts. |
 | **`Query.h`** | A centralized header file that contains all the raw SQL query strings used by the repositories. This makes the SQL easy to find, review, and manage. |
 
-## 3. Database Schema
+## 4. Database Schema
 
-The database schema is defined by the `CREATE TABLE` statements found in `data::query`. It is designed to be simple and efficient for the system's current needs.
+The schema is defined by `CREATE TABLE` statements in `data::query`.
 
 ### `trades` Table
-Stores a record of every executed trade.
-
 ```sql
 CREATE TABLE IF NOT EXISTS trades (
     trade_id          INTEGER PRIMARY KEY,
@@ -66,8 +98,6 @@ CREATE TABLE IF NOT EXISTS trades (
 ```
 
 ### `orders` Table
-Stores the final state of every order that has been processed by the system.
-
 ```sql
 CREATE TABLE IF NOT EXISTS orders (
     order_id          INTEGER PRIMARY KEY,
@@ -84,27 +114,8 @@ CREATE TABLE IF NOT EXISTS orders (
 ```
 
 ### `trade_id` Table
-A simple single-row, single-column table used to persist the last used trade ID, ensuring uniqueness across restarts.
-
 ```sql
 CREATE TABLE IF NOT EXISTS trade_id (
     id INTEGER PRIMARY KEY
 );
 ```
-
-## 4. Operational Notes
-
-*   **Synchronous Operations**: While the design is fundamentally asynchronous, a caller can achieve synchronous behavior by wrapping the `enqueue` call in a `std::promise` and waiting on the associated `std::future`. This should be used sparingly to avoid blocking critical threads.
-*   **Error Handling**: Errors that occur within a database task (e.g., SQL constraint violations) are currently logged by the `DatabaseWorker`. There is no mechanism to propagate these errors back to the original caller.
-*   **Schema Migrations**: The system does not have an automated schema migration framework. Any changes to the schema must be managed manually.
-
-## 5. Extending the Module
-
-*   **Adding a New Entity**:
-    1.  Add the necessary `CREATE TABLE` and DML query strings to `Query.h`.
-    2.  Implement a new repository class (e.g., `MarketDataRepository`) following the existing pattern.
-    3.  Add unit tests for the new repository in the `core/data/tests/` directory.
-*   **Supporting a Different Database**:
-    1.  Create a new `DatabaseWorker`-like component for the target database (e.g., `PostgresWorker`).
-    2.  Implement the repository logic to enqueue tasks for the new worker.
-    3.  Use a factory or dependency injection to provide the correct repositories to the `trading_core`.
