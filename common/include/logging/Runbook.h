@@ -4,6 +4,7 @@
 #include "spdlog/spdlog.h" // needed for get_default()
 #include <stdexcept>
 #include <string>
+#include "logging/Logger.h"
 #include <string_view>
 
 namespace runbook {

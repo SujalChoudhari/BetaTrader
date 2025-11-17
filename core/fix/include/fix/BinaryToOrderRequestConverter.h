@@ -10,4 +10,4 @@ namespace fix {
         static OrderRequest convert(const std::vector<char>& binaryData);
     };
 
-} // namespace fix
+}

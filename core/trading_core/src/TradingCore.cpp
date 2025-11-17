@@ -9,6 +9,10 @@
 #include "trading_core/NewOrder.h"
 #include "trading_core/TradingCoreRunbookDefinations.h"
 
+namespace {
+    trading_core::TradingCore* g_instance = nullptr;
+}
+
 namespace trading_core {
     TradingCore::TradingCore()
     {
@@ -18,20 +22,25 @@ namespace trading_core {
         mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
         mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         initPartitions();
+        g_instance = this;
     }
 
     TradingCore::TradingCore(data::DatabaseWorker* dbWorker,
                              const bool autoInitPartitions)
         : mDatabaseWorker(dbWorker)
     {
-        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
-        mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
+        if (mDatabaseWorker) {
+            mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+            mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
+        }
         if (autoInitPartitions) { initPartitions(); }
+        g_instance = this;
     }
 
     TradingCore::~TradingCore()
     {
         stop();
+        g_instance = nullptr;
     };
 
     void TradingCore::start()
@@ -140,6 +149,18 @@ namespace trading_core {
     OrderIDGenerator* TradingCore::getOrderIDGenerator()
     {
         return mOrderIDGenerator.get();
+    }
+
+    void TradingCore::subscribeToExecutions(ExecutionReportCallback callback) {
+        mExecutionReportCallback = callback;
+    }
+
+    const TradingCore::ExecutionReportCallback& TradingCore::getExecutionReportCallback() const {
+        return mExecutionReportCallback;
+    }
+
+    TradingCore& TradingCore::getInstance() {
+        return *g_instance;
     }
 
     std::optional<common::Instrument>

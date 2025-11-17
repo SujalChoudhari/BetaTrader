@@ -12,7 +12,10 @@
 #include "Partition.h"
 #include "TradeIDGenerator.h"
 #include "data/DatabaseWorker.h"
-#include <memory> // Required for std::unique_ptr
+#include "common/Order.h"
+#include "fix/ExecutionReport.h" // Include the report type
+#include <memory>
+#include <functional>
 
 namespace trading_core {
     /**
@@ -21,12 +24,15 @@ namespace trading_core {
      */
     class TradingCore {
     public:
+        // Callback now publishes the fully-formed FIX ExecutionReport
+        using ExecutionReportCallback = std::function<void(const fix::ExecutionReport&)>;
+
         TradingCore();
 
         explicit TradingCore(data::DatabaseWorker* dbWorker,
                              bool autoInitPartitions = true);
 
-        ~TradingCore();
+        virtual ~TradingCore();
 
         void start();
 
@@ -36,11 +42,18 @@ namespace trading_core {
 
         void waitAllQueuesIdle() const;
 
-        void submitCommand(std::unique_ptr<Command> command) const;
+        virtual void submitCommand(std::unique_ptr<Command> command) const;
 
         Partition* getPartition(common::Instrument instrument) const;
 
         OrderIDGenerator* getOrderIDGenerator();
+
+        void subscribeToExecutions(ExecutionReportCallback callback);
+
+        const ExecutionReportCallback& getExecutionReportCallback() const;
+
+        static TradingCore& getInstance();
+
 
 #ifndef NDEBUG
         void setPartition(common::Instrument instrument,
@@ -60,5 +73,6 @@ namespace trading_core {
         std::unique_ptr<OrderIDGenerator> mOrderIDGenerator;
         std::unique_ptr<Partition>
                 mPartitions[static_cast<int>(common::Instrument::COUNT)];
+        ExecutionReportCallback mExecutionReportCallback;
     };
 } // namespace trading_core
