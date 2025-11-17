@@ -155,8 +155,24 @@ namespace trading_core {
         mExecutionReportCallback = callback;
     }
 
+    void TradingCore::subscribeToMarketDataSnapshots(MarketDataSnapshotCallback callback) {
+        mMarketDataSnapshotCallback = callback;
+    }
+
+    void TradingCore::subscribeToMarketDataIncrements(MarketDataIncrementalCallback callback) {
+        mMarketDataIncrementalCallback = callback;
+    }
+
     const TradingCore::ExecutionReportCallback& TradingCore::getExecutionReportCallback() const {
         return mExecutionReportCallback;
+    }
+
+    const TradingCore::MarketDataSnapshotCallback& TradingCore::getMarketDataSnapshotCallback() const {
+        return mMarketDataSnapshotCallback;
+    }
+
+    const TradingCore::MarketDataIncrementalCallback& TradingCore::getMarketDataIncrementalCallback() const {
+        return mMarketDataIncrementalCallback;
     }
 
     TradingCore& TradingCore::getInstance() {

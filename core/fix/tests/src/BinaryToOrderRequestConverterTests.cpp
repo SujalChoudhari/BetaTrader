@@ -7,7 +7,7 @@
 #include <sstream>
 
 namespace {
-    std::vector<char> createFixMessage()
+    std::string createFixMessageString() // Changed return type to std::string
     {
         constexpr char SOH = fix::SOH;
         std::stringstream bodySs;
@@ -47,17 +47,19 @@ namespace {
         finalSs << static_cast<int>(fix::Tag::CheckSum) << "="
                 << std::setfill('0') << std::setw(3) << checksum << SOH;
 
-        std::string finalStr = finalSs.str();
-        return {finalStr.begin(), finalStr.end()};
+        return finalSs.str(); // Return std::string
     }
 } // namespace
 
 TEST(BinaryToOrderRequestConverterTests, BasicConversion)
 {
-    const std::vector<char> binaryData = createFixMessage();
+    const std::string fixMessage = createFixMessageString(); // Get std::string
 
-    const fix::OrderRequest orderRequest
-            = fix::BinaryToOrderRequestConverter::convert(binaryData);
+    const std::optional<fix::OrderRequest> orderRequestOpt // Changed type to optional
+            = fix::BinaryToOrderRequestConverter::convert(fixMessage);
+
+    ASSERT_TRUE(orderRequestOpt.has_value()); // Assert that optional has a value
+    const fix::OrderRequest& orderRequest = orderRequestOpt.value(); // Get the underlying value
 
     ASSERT_EQ(orderRequest.clientId, "CLIENT_A");
     ASSERT_EQ(orderRequest.clientOrderId, 12345);

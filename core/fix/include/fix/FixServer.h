@@ -1,11 +1,14 @@
 #pragma once
 
 #include "fix/ExecutionReport.h"
+#include "fix/MarketDataSnapshotFullRefresh.h"
+#include "fix/MarketDataIncrementalRefresh.h"
 #include "fix/FixSession.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
 #include <map>
 #include <memory>
+#include <string> // For MDReqID mapping
 
 namespace fix {
 
@@ -39,6 +42,18 @@ namespace fix {
          */
         void onExecutionReport(const ExecutionReport& report);
 
+        /**
+         * @brief Callback for receiving a market data snapshot full refresh from the trading core.
+         * @param snapshot The market data snapshot to be sent to a client.
+         */
+        void onMarketDataSnapshotFullRefresh(const MarketDataSnapshotFullRefresh& snapshot);
+
+        /**
+         * @brief Callback for receiving a market data incremental refresh from the trading core.
+         * @param refresh The market data incremental refresh to be sent to a client.
+         */
+        void onMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh);
+
     private:
         /**
          * @brief Initiates an asynchronous accept operation to listen for a new client.
@@ -65,6 +80,14 @@ namespace fix {
         trading_core::TradingCore& mTradingCore; ///< A reference to the business logic layer.
         std::map<uint32_t, std::shared_ptr<FixSession>> mSessions; ///< A map of all active client sessions.
         uint32_t mNextSessionId = 1; ///< A simple counter to generate unique session IDs.
+
+        /**
+         * @brief Map to track which sessions are subscribed to which MDReqID for routing market data.
+         *
+         * The key is the Market Data Request ID (MDReqID), and the value is a vector
+         * of weak pointers to FixSession objects that have subscribed to that MDReqID.
+         */
+        std::map<std::string, std::vector<std::weak_ptr<FixSession>>> mMarketDataSubscriptions;
     };
 
 } // namespace fix

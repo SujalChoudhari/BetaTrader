@@ -18,14 +18,25 @@ int main() {
         tradingCore.start();
         LOG_INFO("Trading Core started.");
 
+        // TODO: Make port configurable, e.g., via command line arguments or a config file.
         fix::FixServer server(io_context, 12345, tradingCore);
         LOG_INFO("FIX Server started on port 12345.");
 
-        // Subscribe to the fully-formed execution reports from the trading core.
         tradingCore.subscribeToExecutions(
             [&](const fix::ExecutionReport& report) {
-                // The lambda's only job is to forward the report to the server.
                 server.onExecutionReport(report);
+            }
+        );
+
+        tradingCore.subscribeToMarketDataSnapshots(
+            [&](const fix::MarketDataSnapshotFullRefresh& snapshot) {
+                server.onMarketDataSnapshotFullRefresh(snapshot);
+            }
+        );
+
+        tradingCore.subscribeToMarketDataIncrements(
+            [&](const fix::MarketDataIncrementalRefresh& refresh) {
+                server.onMarketDataIncrementalRefresh(refresh);
             }
         );
 

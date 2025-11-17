@@ -9,6 +9,7 @@
 
 namespace fix {
     namespace {
+        // TODO: Consider making these helper functions private static members of ExecutionReportToBinaryConverter.
         char orderStatusToChar(const common::OrderStatus status)
         {
             switch (status) {
@@ -49,7 +50,7 @@ namespace fix {
         }
     } // namespace
 
-    std::vector<char> ExecutionReportToBinaryConverter::convert(
+    std::string ExecutionReportToBinaryConverter::convert(
             const ExecutionReport& executionReport)
     {
         std::stringstream bodyStringStream;
@@ -123,7 +124,6 @@ namespace fix {
                           << std::setfill('0') << std::setw(3) << checksum
                           << SOH;
 
-        std::string finalString = finalStringStream.str();
-        return {finalString.begin(), finalString.end()};
+        return finalStringStream.str();
     }
 } // namespace fix

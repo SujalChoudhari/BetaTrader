@@ -24,6 +24,28 @@ namespace fix {
         }
     }
 
+    void FixServer::onMarketDataSnapshotFullRefresh(const MarketDataSnapshotFullRefresh& snapshot)
+    {
+        uint32_t sessionId = snapshot.targetSessionID;
+        if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
+            it->second->sendMarketDataSnapshotFullRefresh(snapshot);
+        } else {
+            LOG_ERROR("Could not find session with ID {} to send market data snapshot.",
+                      sessionId);
+        }
+    }
+
+    void FixServer::onMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh)
+    {
+        uint32_t sessionId = refresh.targetSessionID;
+        if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
+            it->second->sendMarketDataIncrementalRefresh(refresh);
+        } else {
+            LOG_ERROR("Could not find session with ID {} to send market data incremental refresh.",
+                      sessionId);
+        }
+    }
+
     void FixServer::doAccept()
     {
         mAcceptor.async_accept(mSocket, [this](const std::error_code ec) {
@@ -46,6 +68,7 @@ namespace fix {
     void FixServer::unregisterSession(uint32_t sessionId)
     {
         mSessions.erase(sessionId);
+        // TODO: Also remove from mMarketDataSubscriptions if this session was a subscriber
     }
 
 } // namespace fix

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fix/ExecutionReport.h"
-#include <vector>
+#include <string> // Changed from <vector>
 
 namespace fix {
 
@@ -17,9 +17,9 @@ namespace fix {
         /**
          * @brief Converts an `ExecutionReport` object into a raw FIX message.
          * @param executionReport The report object to serialize.
-         * @return A vector of characters containing the complete, valid FIX message.
+         * @return A string containing the complete, valid FIX message.
          */
-        static std::vector<char> convert(const ExecutionReport& executionReport);
+        static std::string convert(const ExecutionReport& executionReport); // Changed return type
     };
 
 } // namespace fix

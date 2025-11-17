@@ -1,10 +1,13 @@
 #pragma once
 
 #include "fix/ExecutionReport.h"
+#include "fix/MarketDataSnapshotFullRefresh.h"
+#include "fix/MarketDataIncrementalRefresh.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace fix {
 
@@ -44,6 +47,18 @@ namespace fix {
         void sendExecutionReport(const ExecutionReport& report);
 
         /**
+         * @brief Asynchronously sends a market data snapshot full refresh to the client.
+         * @param snapshot The market data snapshot to send.
+         */
+        void sendMarketDataSnapshotFullRefresh(const MarketDataSnapshotFullRefresh& snapshot);
+
+        /**
+         * @brief Asynchronously sends a market data incremental refresh to the client.
+         * @param refresh The market data incremental refresh to send.
+         */
+        void sendMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh);
+
+        /**
          * @brief Gets the unique identifier for this session.
          * @return The session ID.
          */
@@ -58,11 +73,44 @@ namespace fix {
          */
         void doRead();
 
+        /**
+         * @brief Handles a parsed FIX message.
+         * @param fixMessage The raw FIX message string.
+         * @param msgType The MsgType of the FIX message.
+         * //TODO: Refine handleFixMessage to dispatch to specific handlers based on MsgType more robustly.
+         */
+        void handleFixMessage(const std::string& fixMessage, char msgType);
+
+        /**
+         * @brief Handles an incoming Cancel Order Request.
+         * @param fixMessage The raw FIX message string for the cancel order.
+         */
+        void handleCancelOrderRequest(const std::string& fixMessage);
+
+        /**
+         * @brief Handles an incoming Modify Order Request.
+         * @param fixMessage The raw FIX message string for the modify order.
+         */
+        void handleModifyOrderRequest(const std::string& fixMessage);
+
+        /**
+         * @brief Handles an incoming Market Data Request.
+         * @param fixMessage The raw FIX message string for the market data request.
+         */
+        void handleMarketDataRequest(const std::string& fixMessage);
+
+        /**
+         * @brief Initiates an asynchronous write operation to send a message to the client.
+         * @param message The message string to be sent.
+         */
+        void doWrite(const std::string& message);
+
         asio::ip::tcp::socket mSocket; ///< The socket for this client connection.
         trading_core::TradingCore& mTradingCore; ///< Reference to the business logic layer.
         enum { MaxLength = 1024 }; ///< The maximum size of the read buffer.
         std::vector<char> mData; ///< The buffer for incoming socket data.
         uint32_t mSessionId; ///< The unique ID for this session.
+        std::string mReadBuffer; ///< Buffer to accumulate partial FIX messages.
     };
 
 } // namespace fix

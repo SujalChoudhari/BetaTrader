@@ -1,12 +1,23 @@
 #include "fix/FixSession.h"
 #include "fix/BinaryToOrderRequestConverter.h"
+#include "fix/BinaryToCancelOrderRequestConverter.h"
+#include "fix/BinaryToModifyOrderRequestConverter.h"
+#include "fix/BinaryToMarketDataRequestConverter.h"
 #include "fix/ExecutionReportToBinaryConverter.h"
+#include "fix/MarketDataSnapshotFullRefreshToBinaryConverter.h"
+#include "fix/MarketDataIncrementalRefreshToBinaryConverter.h"
 #include "fix/FixRunbookDefinations.h"
+#include "fix/Protocol.h"
 #include "logging/Runbook.h"
 #include "trading_core/NewOrder.h"
+#include "trading_core/CancelOrder.h"
+#include "trading_core/ModifyOrder.h"
+#include "common/Instrument.h"
 #include <iostream>
+#include <string_view>
 
 namespace fix {
+
 
     FixSession::FixSession(asio::ip::tcp::socket socket,
                            trading_core::TradingCore& tradingCore,
@@ -25,24 +36,19 @@ namespace fix {
     void FixSession::sendExecutionReport(const ExecutionReport& report)
     {
         auto binaryReport = ExecutionReportToBinaryConverter::convert(report);
-        auto self(shared_from_this());
-        asio::async_write(
-                mSocket, asio::buffer(binaryReport),
-                [this, self, report](const std::error_code ec,
-                                     std::size_t /*length*/) {
-                    if (!ec) {
-                        LOG_INFO("Sent ExecutionReport to Session {}: "
-                                 "OrderID={}, Status={}",
-                                 mSessionId, report.getExchangeOrderId(),
-                                 static_cast<int>(report.getStatus()));
-                    }
-                    else {
-                        LOG_ERROR(errors::EFIX3,
-                                  "Failed to send ExecutionReport to Session "
-                                  "{}: {}",
-                                  mSessionId, ec.message());
-                    }
-                });
+        doWrite(binaryReport);
+    }
+
+    void FixSession::sendMarketDataSnapshotFullRefresh(const MarketDataSnapshotFullRefresh& snapshot)
+    {
+        auto binarySnapshot = MarketDataSnapshotFullRefreshToBinaryConverter::convert(snapshot);
+        doWrite(binarySnapshot);
+    }
+
+    void FixSession::sendMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh)
+    {
+        auto binaryRefresh = MarketDataIncrementalRefreshToBinaryConverter::convert(refresh);
+        doWrite(binaryRefresh);
     }
 
     uint32_t FixSession::getSessionID() const
@@ -50,59 +56,214 @@ namespace fix {
         return mSessionId;
     }
 
+    void FixSession::doWrite(const std::string& message)
+    {
+        auto self(shared_from_this());
+        asio::async_write(
+            mSocket, asio::buffer(message),
+            [this, self, message](const std::error_code ec, std::size_t /*length*/) {
+                if (!ec) {
+                    LOG_INFO("Sent FIX message to Session {}: {}", mSessionId, message.substr(0, 100));
+                }
+                else {
+                    LOG_ERROR(errors::EFIX3, "Failed to send message to Session {}: {}", mSessionId, ec.message());
+                }
+            });
+    }
+
     void FixSession::doRead()
     {
         auto self(shared_from_this());
-        mSocket.async_read_some(asio::buffer(mData), [this,
-                                                      self](const std::
-                                                                    error_code
-                                                                            ec,
-                                                            const std::size_t
-                                                                    length) {
+        mSocket.async_read_some(asio::buffer(mData), [this, self](const std::error_code ec, const std::size_t length) {
             if (!ec) {
-                try {
-                    auto orderRequest = BinaryToOrderRequestConverter::convert(
-                            std::vector<char>(mData.begin(),
-                                              mData.begin() + length));
+                mReadBuffer.append(mData.begin(), mData.begin() + length);
 
-                    LOG_INFO("Received NewOrderSingle from Session {}: "
-                             "Symbol={}, Qty={}, Price={}",
-                             mSessionId, common::to_string(orderRequest.symbol),
-                             orderRequest.quantity, orderRequest.price);
+                size_t pos = 0;
+                while ((pos = mReadBuffer.find(std::string(1, SOH) + "10=", pos)) != std::string::npos) {
+                    size_t endOfMessage = mReadBuffer.find(SOH, pos + 4);
+                    if (endOfMessage != std::string::npos) {
+                        endOfMessage++;
 
-                    auto common_order = std::make_unique<common::Order>(
-                            0, orderRequest.symbol, std::to_string(mSessionId),
-                            orderRequest.side, common::OrderType::Limit,
-                            common::TimeInForce::DAY,
-                            static_cast<int>(orderRequest.quantity),
-                            orderRequest.price,
-                            std::chrono::system_clock::now());
+                        std::string fullFixMessage = mReadBuffer.substr(0, endOfMessage);
 
-                    auto newOrderCmd = std::make_unique<trading_core::NewOrder>(
-                            common_order->getClientId(),
-                            common_order->getTimestamp(),
-                            std::move(common_order));
+                        size_t msgTypeStart = fullFixMessage.find("35=");
+                        if (msgTypeStart != std::string::npos && msgTypeStart + 4 < fullFixMessage.length()) {
+                            char msgType = fullFixMessage[msgTypeStart + 3];
+                            handleFixMessage(fullFixMessage, msgType);
+                        } else {
+                            LOG_WARN("Could not extract MsgType from FIX message: {}", fullFixMessage.substr(0, 50));
+                            // TODO: Send Reject (35=3) for malformed message or missing MsgType.
+                        }
 
-                    mTradingCore.submitCommand(std::move(newOrderCmd));
-
-                    doRead();
+                        mReadBuffer.erase(0, endOfMessage);
+                        pos = 0;
+                    } else {
+                        break;
+                    }
                 }
-                catch (const std::exception& e) {
-                    LOG_ERROR(errors::EFIX2,
-                              "Failed to process message from Session {}: {}",
-                              mSessionId, e.what());
-                    // TODO: Disconnect session here
-                }
+                doRead();
             }
             else {
                 if (ec != asio::error::eof) {
-                    LOG_ERROR(errors::EFIX3,
-                              "Error reading from socket for Session {}: {}",
-                              mSessionId, ec.message());
+                    LOG_ERROR(errors::EFIX3, "Error reading from socket for Session {}: {}", mSessionId, ec.message());
                 }
-                // Client disconnected
+                LOG_INFO("FIX Session {} disconnected.", mSessionId);
             }
         });
+    }
+
+    void FixSession::handleFixMessage(const std::string& fixMessage, char msgType)
+    {
+        try {
+            switch (msgType) {
+                case MSG_TYPE_NEW_ORDER_SINGLE:
+                    {
+                        auto orderRequest = BinaryToOrderRequestConverter::convert(fixMessage);
+                        if (orderRequest) {
+                            LOG_INFO("Received NewOrderSingle from Session {}: Symbol={}, Qty={}, Price={}",
+                                     mSessionId, common::to_string(orderRequest->symbol),
+                                     orderRequest->quantity, orderRequest->price);
+
+                            // TODO: Extract actual OrderType (Tag 40) and TimeInForce (Tag 59) from FIX message.
+                            // Currently assuming Limit and DAY.
+                            auto common_order = std::make_unique<common::Order>(
+                                    0, orderRequest->symbol, std::to_string(mSessionId),
+                                    orderRequest->side, common::OrderType::Limit,
+                                    common::TimeInForce::DAY,
+                                    orderRequest->quantity,
+                                    orderRequest->price,
+                                    std::chrono::system_clock::now());
+
+                            auto newOrderCmd = std::make_unique<trading_core::NewOrder>(
+                                    common_order->getClientId(),
+                                    common_order->getTimestamp(),
+                                    std::move(common_order));
+
+                            mTradingCore.submitCommand(std::move(newOrderCmd));
+                        } else {
+                            LOG_WARN("Failed to parse NewOrderSingle from Session {}.", mSessionId);
+                            // TODO: Send BusinessMessageReject (35=j) for parsing failure.
+                        }
+                    }
+                    break;
+                case MSG_TYPE_ORDER_CANCEL_REQUEST:
+                    handleCancelOrderRequest(fixMessage);
+                    break;
+                case MSG_TYPE_ORDER_CANCEL_REPLACE_REQUEST:
+                    handleModifyOrderRequest(fixMessage);
+                    break;
+                case MSG_TYPE_MARKET_DATA_REQUEST:
+                    handleMarketDataRequest(fixMessage);
+                    break;
+                // TODO: Add cases for other common FIX message types: Logon (A), Logout (5), Heartbeat (0), Test Request (1), Resend Request (2), Sequence Reset (4), Reject (3), Business Message Reject (j).
+                default:
+                    LOG_WARN("Received unhandled FIX message type '{}' from Session {}: {}", msgType, mSessionId, fixMessage.substr(0, 50));
+                    // TODO: Send Reject (35=3) for unsupported MsgType.
+                    break;
+            }
+        }
+        catch (const std::exception& e) {
+            LOG_ERROR(errors::EFIX2, "Exception processing FIX message from Session {}: {}", mSessionId, e.what());
+            // TODO: Send Reject (35=3) or BusinessMessageReject (35=j) depending on error context.
+        }
+    }
+
+    void FixSession::handleCancelOrderRequest(const std::string& fixMessage)
+    {
+        auto cancelOrder = BinaryToCancelOrderRequestConverter::convert(fixMessage);
+        if (cancelOrder) {
+            LOG_INFO("Received CancelOrderRequest from Session {}: ClOrdID={}, OrderID={}, Symbol={}",
+                     mSessionId, cancelOrder->clOrdID, cancelOrder->orderID, common::to_string(cancelOrder->symbol));
+
+            common::OrderID orderIdToCancel = 0;
+            try {
+                if (!cancelOrder->orderID.empty()) {
+                    orderIdToCancel = std::stoull(cancelOrder->orderID);
+                } else if (!cancelOrder->clOrdID.empty()) {
+                    // TODO: Send BusinessMessageReject (35=j) if neither OrderID nor ClOrdID is present.
+                    orderIdToCancel = std::stoull(cancelOrder->clOrdID);
+                } else {
+                    LOG_WARN("CancelOrderRequest from Session {} has no OrderID or ClOrdID.", mSessionId);
+                    return;
+                }
+            } catch (const std::exception& e) {
+                LOG_WARN("Failed to convert OrderID/ClOrdID to uint64_t for Session {}: {}", mSessionId, e.what());
+                // TODO: Send BusinessMessageReject (35=j) for invalid OrderID/ClOrdID format.
+                return;
+            }
+
+            auto cancelCmd = std::make_unique<trading_core::CancelOrder>(
+                std::to_string(mSessionId),
+                cancelOrder->transactTime,
+                orderIdToCancel
+            );
+            mTradingCore.submitCommand(std::move(cancelCmd));
+        } else {
+            LOG_WARN("Failed to parse CancelOrderRequest from Session {}.", mSessionId);
+            // TODO: Send BusinessMessageReject (35=j) for parsing failure.
+        }
+    }
+
+    void FixSession::handleModifyOrderRequest(const std::string& fixMessage)
+    {
+        auto modifyOrder = BinaryToModifyOrderRequestConverter::convert(fixMessage);
+        if (modifyOrder) {
+            LOG_INFO("Received ModifyOrderRequest from Session {}: ClOrdID={}, OrigClOrdID={}, OrderID={}, Symbol={}, Qty={}, Price={}",
+                     mSessionId, modifyOrder->clOrdID, modifyOrder->origClOrdID, modifyOrder->orderID,
+                     common::to_string(modifyOrder->symbol), modifyOrder->orderQty, modifyOrder->price);
+
+            // TODO: Implement actual submission of trading_core::ModifyOrder command.
+            // This requires ensuring the trading_core::ModifyOrder constructor arguments align
+            // with the data available in the fix::ModifyOrder object.
+            LOG_WARN("ModifyOrderRequest handling is currently a placeholder. Actual command submission is pending.");
+        } else {
+            LOG_WARN("Failed to parse ModifyOrderRequest from Session {}.", mSessionId);
+            // TODO: Send BusinessMessageReject (35=j) for parsing failure.
+        }
+    }
+
+    void FixSession::handleMarketDataRequest(const std::string& fixMessage)
+    {
+        auto mdRequest = BinaryToMarketDataRequestConverter::convert(fixMessage);
+        if (mdRequest) {
+            LOG_INFO("Received MarketDataRequest from Session {}: MDReqID={}, Type={}, Depth={}, Symbols={}",
+                     mSessionId, mdRequest->mdReqID, mdRequest->subscriptionRequestType,
+                     mdRequest->marketDepth, mdRequest->symbols.empty() ? "N/A" : common::to_string(mdRequest->symbols[0]));
+
+            // TODO: Integrate with actual market data system to provide real data.
+            // This skeleton currently simulates a market data response.
+            if (mdRequest->subscriptionRequestType == SUBSCRIPTION_REQUEST_TYPE_SNAPSHOT ||
+                mdRequest->subscriptionRequestType == SUBSCRIPTION_REQUEST_TYPE_SNAPSHOT_AND_UPDATES)
+            {
+                MarketDataSnapshotFullRefresh snapshot;
+                snapshot.targetSessionID = mSessionId;
+                snapshot.mdReqID = mdRequest->mdReqID;
+                if (!mdRequest->symbols.empty()) {
+                    snapshot.symbol = mdRequest->symbols[0];
+                } else {
+                    snapshot.symbol = common::from_string("EURUSD");
+                }
+
+                MarketDataEntry bid1 = {MD_ENTRY_TYPE_BID, 100.0, static_cast<fix::Quantity>(100)};
+                MarketDataEntry offer1 = {MD_ENTRY_TYPE_OFFER, 101.0, static_cast<fix::Quantity>(150)};
+                snapshot.entries.push_back(bid1);
+                snapshot.entries.push_back(offer1);
+
+                sendMarketDataSnapshotFullRefresh(snapshot);
+
+                if (mdRequest->subscriptionRequestType == SUBSCRIPTION_REQUEST_TYPE_SNAPSHOT_AND_UPDATES) {
+                    // TODO: Implement continuous incremental market data updates.
+                    // This would typically involve a dedicated publisher or timer-based mechanism.
+                    LOG_INFO("Session {} subscribed to market data updates for MDReqID {}", mSessionId, mdRequest->mdReqID);
+                }
+            } else if (mdRequest->subscriptionRequestType == SUBSCRIPTION_REQUEST_TYPE_UNSUBSCRIBE) {
+                LOG_INFO("Session {} unsubscribed from market data for MDReqID {}", mSessionId, mdRequest->mdReqID);
+                // TODO: Implement actual unsubscription logic, removing the session from market data distribution lists.
+            }
+        } else {
+            LOG_WARN("Failed to parse MarketDataRequest from Session {}.", mSessionId);
+            // TODO: Send BusinessMessageReject (35=j) for parsing failure.
+        }
     }
 
 } // namespace fix
