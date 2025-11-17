@@ -1,28 +1,37 @@
-# FIX Protocol Library (`@fix`)
+# FIX Protocol Server (`@fix`)
 
-The FIX Protocol Library provides tools for serializing and deserializing Financial Information eXchange (FIX) messages.
+The `@fix` component is a standalone server responsible for handling client connections over the Financial Information eXchange (FIX) protocol. It acts as the primary gateway for clients to submit orders to the BetaTrader trading engine.
 
 ## Overview
 
-This library acts as a translation layer between the raw, text-based FIX protocol and the strongly-typed C++ objects used within the BetaTrader application. It is specifically focused on handling order-related messages required for the trading core.
+This component implements a fully asynchronous, multi-client FIX server using the Asio networking library. It listens for incoming TCP connections, manages client sessions, and translates FIX messages into commands for the `@trading_core`.
 
 ## Key Responsibilities
 
-*   Deserialize FIX "New Order - Single" (`35=D`) messages into `OrderRequest` objects.
-*   Serialize `OrderResponse` objects into FIX "Execution Report" (`35=8`) messages.
-*   Perform basic FIX message validation (checksum, body length).
+*   **Accepting Connections**: Listens on a configured TCP port for new client connections.
+*   **Session Management**: Manages the lifecycle of each client session, including reading and writing data.
+*   **Message Processing**:
+    *   Deserializes FIX "New Order - Single" (`35=D`) messages into internal `OrderRequest` objects.
+    *   Submits new orders to the `@trading_core` for processing.
+*   **Execution Reporting**:
+    *   Subscribes to execution events from the `@trading_core`.
+    *   Serializes `ExecutionReport` objects into FIX "Execution Report" (`35=8`) messages and sends them to the appropriate client.
+*   **Logging**: Provides structured, detailed logging for all major events and errors using the application-wide runbook system.
 
-## Getting Started
+## Building and Running
 
-To use the library, include the necessary headers and link against the `fix_lib` target in CMake.
+The FIX server is built as a separate executable target named `fix_server`.
 
-```cpp
-#include "fix/BinaryToOrderRequestConverter.h"
-#include "fix/OrderResponseToBinaryConverter.h"
-
-// Example usage (see TSD for details)
-```
+1.  **Build the target**:
+    ```bash
+    cmake --build . --target fix_server
+    ```
+2.  **Run the server**:
+    ```bash
+    ./build/core/fix/fix_server
+    ```
+The server will start and begin listening for connections on the configured port (default: 12345).
 
 ## Further Reading
 
-For detailed message formats, class designs, and implementation specifics, please refer to the [Technical System Design (TSD)](./TSD.md).
+For a detailed architectural overview, class designs, and the order lifecycle flow, please refer to the [Technical System Design (TSD)](./TSD.md).
