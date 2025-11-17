@@ -11,3 +11,6 @@
 [submodule "vendor/lib/SPSCQueue"]
 	path = vendor/lib/SPSCQueue
 	url = https://github.com/rigtorp/SPSCQueue
+[submodule "vendor/lib/asio"]
+	path = vendor/lib/asio
+	url = https://github.com/chriskohlhoff/asio

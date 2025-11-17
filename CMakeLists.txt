@@ -5,22 +5,23 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_subdirectory(common)
-add_subdirectory(core/trading_core)
-add_subdirectory(core/data)
-add_subdirectory(core/fix)
-
 enable_testing()
-
 set(gtest_build_tests OFF CACHE BOOL "")
+
 
 add_subdirectory(vendor/lib/googletest)
 add_subdirectory(vendor/lib/SQLiteCpp)
 add_subdirectory(vendor/lib/spdlog)
-
 add_subdirectory(vendor/lib/SPSCQueue)
-include_directories(vendor/lib/SPSCQueue/include)
 
-add_subdirectory(core/trading_core/tests)
+include_directories(vendor/lib/SPSCQueue/include)
+include_directories(vendor/lib/asio/include)
+
+add_subdirectory(common)
+add_subdirectory(core/data)
+add_subdirectory(core/fix)
+add_subdirectory(core/trading_core)
+
 add_subdirectory(core/data/tests)
 add_subdirectory(core/fix/tests)
+add_subdirectory(core/trading_core/tests)
