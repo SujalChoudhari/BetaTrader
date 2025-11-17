@@ -3,22 +3,22 @@
 //
 
 #pragma once
-#include <vector>
-#include <memory>
-
 #include "OrderBook.h"
 #include "TradeIDGenerator.h"
 #include "common/Trade.h"
 #include "data/DatabaseWorker.h"
 #include "data/TradeRepository.h"
+#include <memory>
+#include <vector>
 
 namespace trading_core {
     /**
      * @class Matcher
      * @brief The matching engine that pairs buy and sell orders.
      *
-     * This class is responsible for matching incoming orders against the existing orders
-     * in the order book. It generates trades when a match is found.
+     * This class is responsible for matching incoming orders against the
+     * existing orders in the order book. It generates trades when a match is
+     * found.
      */
     class Matcher {
     public:
@@ -36,21 +36,26 @@ namespace trading_core {
          * @param orderBook The order book to match against.
          * @return A vector of trades that were generated.
          */
-        virtual std::vector<common::Trade> match(common::Order* incomingOrder, OrderBook &orderBook);
+        virtual std::vector<common::Trade> match(common::Order* incomingOrder,
+                                                 OrderBook& orderBook);
 
     private:
         /**
-         * @brief A template function to match an incoming order against a map of resting orders.
-         * @tparam TMap The type of the map of resting orders (BidMap or AskMap).
+         * @brief A template function to match an incoming order against a map
+         * of resting orders.
+         * @tparam TMap The type of the map of resting orders (BidMap or
+         * AskMap).
          * @param incomingOrder The order to be matched.
          * @param restingMap A raw pointer to the map of resting orders.
-         * @param trades A reference to a vector of trades to which any generated trades will be added.
+         * @param trades A reference to a vector of trades to which any
+         * generated trades will be added.
          */
         template<typename TMap>
         void matchTable(common::Order* incomingOrder, TMap* restingMap,
-                        std::vector<common::Trade> &trades);
+                        std::vector<common::Trade>& trades);
 
     private:
-        TradeIDGenerator* mTradeIdGenerator; ///< A generator for unique trade IDs.
+        TradeIDGenerator*
+                mTradeIdGenerator; ///< A generator for unique trade IDs.
     };
-}
+} // namespace trading_core

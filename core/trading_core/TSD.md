@@ -1,98 +1,92 @@
 # Trading Core: Technical System Design (TSD)
 
-This document provides a detailed technical specification of the `core/trading_core` module. It is intended for developers who want to understand the internal workings of the matching engine, its threading model, and its performance characteristics.
+This document provides a detailed technical specification of the `core/trading_core` module.
 
-## 1. Core Design Patterns
+## 1. Architecture
 
-The `trading_core` is built on a set of modern C++ design patterns chosen to meet the system's demanding requirements for low latency, high throughput, and determinism.
+The `trading_core` is built on a **partitioned, single-writer** architecture. This design is crucial for achieving low latency and high throughput while ensuring deterministic behavior.
 
-| Pattern | Implementation | Benefit |
-| :--- | :--- | :--- |
-| **Partitioned Single-Writer** | Each instrument is assigned to a `Partition` with a single `WorkerThread` that is the only writer for that partition's state. | Eliminates the need for locks on the critical path, ensuring low-latency and deterministic command processing. |
-| **Command Sourcing** | All state changes are initiated by `Command` objects (`NewOrder`, `CancelOrder`) processed sequentially. | Provides a replayable, deterministic log of all actions, which is invaluable for testing and debugging. |
-| **Asynchronous I/O** | All blocking operations, such as database writes and network I/O, are offloaded to background threads. | The core matching engine never blocks, allowing it to focus solely on processing orders. |
-| **Test-Driven Development** | The system is designed to be easily testable, with deterministic helpers to drive state changes one step at a time. | Ensures correctness and allows for rapid, confident development. |
-
-## 2. Component Responsibilities
-
-The `trading_core` is composed of several key components, each with a distinct responsibility.
-
-| Component | Description |
-| :--- | :--- |
-| **`TradingCore`** | The top-level orchestrator. It initializes and manages the lifecycle of all `Partitions` and shared services like the `DatabaseWorker`. |
-| **`Partition`** | A logical processing unit for a set of instruments. It owns the `WorkerThread`, command queue, and all other components for its instruments. |
-| **`WorkerThread`** | The engine of a partition. It runs a tight loop that dequeues commands in batches and orchestrates the entire processing pipeline. |
-| **`OrderManager`** | The "source of truth" for all live orders. It owns the `Order` objects and provides O(1) lookup by Order ID. |
-| **`OrderBook`** | A data structure that maintains the sorted bid and ask levels for an instrument, enabling efficient matching. |
-| **`Matcher`** | The component that implements the core matching logic. It takes an incoming order and matches it against the `OrderBook`. |
-| **`RiskManager`** | A pluggable component for enforcing risk limits. It performs pre-trade checks on incoming orders. |
-
-## 3. Threading and Concurrency Model
-
-The threading model is designed to maximize concurrency while minimizing contention.
-
-1.  **Producers**: External clients (e.g., gateways, test harnesses) create `Command` objects and push them into a `Partition`'s dedicated SPSC (Single-Producer, Single-Consumer) queue.
-2.  **Consumers**: The `WorkerThread` for that partition is the sole consumer of the queue. It dequeues commands in batches and processes them sequentially.
-3.  **Asynchronous Workers**: Any I/O-bound tasks, such as persisting trades to the database or publishing execution reports, are handed off to background worker threads (e.g., the `DatabaseWorker`).
+*   **Partitioning**: The system is divided into multiple `Partitions`, with each partition responsible for a specific set of instruments (e.g., `EURUSD`). This allows for concurrent processing of different instruments.
+*   **Single Writer**: Each `Partition` has a dedicated `WorkerThread` that processes commands sequentially from a lock-free SPSC queue. This thread is the **only writer** for that partition's state (e.g., its order book), which eliminates the need for locks on the critical path.
 
 ```mermaid
 graph TD
-    subgraph Producers
-        P1[Gateway 1]
-        P2[Gateway 2]
+    subgraph "Partition 1 (EURUSD)"
+        Q1[Command Queue] --> W1(WorkerThread 1)
+        W1 --> OB1{OrderBook}
+        W1 --> M1(Matcher)
     end
 
-    subgraph Trading Core
-        subgraph Partition 1
-            Q1[SPSC Queue] --> W1{WorkerThread 1}
-        end
-        subgraph Partition 2
-            Q2[SPSC Queue] --> W2{WorkerThread 2}
-        end
+    subgraph "Partition 2 (USDJPY)"
+        Q2[Command Queue] --> W2(WorkerThread 2)
+        W2 --> OB2{OrderBook}
+        W2 --> M2(Matcher)
     end
 
-    subgraph Async Workers
-        DBW(DatabaseWorker)
-        NW(Network Publisher)
-    end
-
-    P1 --> Q1
-    P2 --> Q2
-    W1 -- "Persist Trade" --> DBW
-    W2 -- "Publish Execution" --> NW
+    ClientA[Client A] --> Q1
+    ClientB[Client B] --> Q2
 ```
 
-This model ensures that the hot path (the `WorkerThread`'s processing loop) is never blocked by slow I/O operations.
+## 2. Class Diagram
 
-## 4. Command Processing Pipeline
+The following diagram shows the high-level relationships between the key components within a single partition.
 
-The `WorkerThread` executes the following pipeline for each command:
+```mermaid
+classDiagram
+    class WorkerThread {
+        -processCommands()
+    }
 
-1.  **Dequeue**: Dequeue a batch of commands from the SPSC queue.
-2.  **Process Sequentially**: For each command in the batch:
-    a. **Pre-Trade Risk Check**: The `RiskManager` validates the command.
-    b. **State Update**: The `OrderManager` and `OrderBook` update their state (e.g., add a new order).
-    c. **Matching**: The `Matcher` attempts to match the incoming order against the `OrderBook`.
-    d. **Execution Publishing**: Any resulting trades are published via the `ExecutionPublisher`.
-    e. **Persistence**: The `DatabaseWorker` is tasked with persisting the trades and order status changes.
+    class OrderBook {
+        +add(Order* order)
+        +remove(Order* order)
+        +getBids(): Level*
+        +getAsks(): Level*
+    }
 
-## 5. Matching Algorithm
+    class Matcher {
+        +match(Order* incomingOrder): list<Trade>
+    }
 
-*   **Priority**: The matching algorithm follows a strict **price-time priority**.
-    *   Orders with a better price are matched first.
-    *   For orders at the same price, the one that was submitted earlier is matched first.
-*   **Execution Price**: The execution price is always the price of the resting order on the book. This is a common convention in exchanges that rewards liquidity providers.
-*   **Fills**: The system supports both full and partial fills. If an order is partially filled, its remaining quantity stays on the book at the same time priority.
+    class OrderManager {
+        +add(Order* order)
+        +find(OrderID id): Order*
+        -m_orders: map<OrderID, Order*>
+    }
 
-## 6. Performance and Optimization
+    class RiskManager {
+        +check(Order* order): bool
+    }
 
-*   **Memory Management**: The `OrderManager` uses an object pool to pre-allocate `Order` objects, avoiding heap allocations on the critical path.
-*   **Batching**: The `WorkerThread` processes commands in batches to amortize the cost of dequeuing and other fixed overhead.
-*   **Cache-Friendly Data Structures**: The `OrderBook` and other data structures are designed to be cache-friendly to maximize performance.
-*   **Inlining**: Critical functions in the `Matcher` and `OrderBook` are designed to be easily inlined by the compiler.
+    class ExecutionPublisher {
+        +publish(Trade trade)
+        +publish(Order order)
+    }
 
-## 7. Persistence and Recovery
+    WorkerThread o--> OrderBook : Manages
+    WorkerThread o--> Matcher : Uses
+    WorkerThread o--> OrderManager : Manages
+    WorkerThread o--> RiskManager : Uses
+    WorkerThread o--> ExecutionPublisher : Uses
 
-*   The `data::DatabaseWorker` provides an asynchronous interface for all database operations. It uses a dedicated thread to execute SQLite commands, ensuring the `trading_core` is never blocked.
-*   The `TradeIDRepository` provides a persistent backing for the `TradeIDGenerator`, ensuring that trade IDs are unique even across system restarts.
-*   **Note**: While the system persists all necessary data, a full snapshot and recovery mechanism is not yet implemented. This would be a key feature for a production system.
+    Matcher --> OrderBook : Reads from
+    Matcher --> OrderManager : Updates
+```
+
+## 3. Component Responsibilities
+
+| Component | Description |
+| :--- | :--- |
+| **`Partition`** | A logical unit of processing for a set of instruments. Owns the `WorkerThread` and the command queue. |
+| **`WorkerThread`** | A dedicated thread for a single partition. Dequeues and processes commands, orchestrating all state changes. |
+| **`OrderBook`** | A data structure that stores resting limit orders, sorted by price and time for a single instrument. |
+| **`OrderManager`** | A repository for all live orders within a partition. It owns the `Order` objects and provides fast lookups by Order ID. |
+| **`Matcher`** | The core matching engine. It implements the price-time priority matching algorithm and produces trades when an incoming order crosses the book. |
+| **`RiskManager`** | A component for pre-trade risk checks. It validates incoming orders against configurable risk limits. |
+| **`ExecutionPublisher`** | An interface for distributing execution reports (trades and order status updates) to downstream consumers. |
+
+## 4. Critical Design Conventions
+
+*   **Ownership**: The `OrderManager` is the sole owner of all `Order` objects. Other components operate on raw pointers to these objects for performance, with clear ownership semantics to prevent memory errors.
+*   **No Blocking I/O**: The `WorkerThread` and all components it calls directly **must not** perform blocking I/O. All persistence is delegated to the `data` module via an asynchronous queue.
+*   **Performance**: The critical path (the `WorkerThread`'s command processing loop) is highly optimized. It avoids heap allocations where possible and uses lock-free data structures for inter-thread communication.

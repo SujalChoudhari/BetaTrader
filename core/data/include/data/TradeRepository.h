@@ -7,8 +7,8 @@
  */
 
 #pragma once
-#include "data/DatabaseWorker.h"
 #include "common/Trade.h"
+#include "data/DatabaseWorker.h"
 
 namespace data {
     /**
@@ -21,9 +21,9 @@ namespace data {
         virtual ~TradeRepository() = default;
 
         virtual void initDatabase();
-        virtual void addTrade(const common::Trade &trade);
+        virtual void addTrade(const common::Trade& trade);
 
     private:
         DatabaseWorker* mDb;
     };
-}
+} // namespace data

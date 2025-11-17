@@ -3,9 +3,9 @@
 //
 
 #pragma once
-#include <atomic>
 #include "common/Types.h"
 #include "data/DatabaseWorker.h"
+#include <atomic>
 
 namespace trading_core {
     /**
@@ -20,7 +20,7 @@ namespace trading_core {
          * @brief Gets the next available trade ID.
          * @return The next available trade ID.
          */
-        common::TradeID nextId();
+        virtual common::TradeID nextId();
 
     private:
         void loadInitialState();
@@ -28,4 +28,4 @@ namespace trading_core {
         std::atomic<common::TradeID> mCurrentId;
         data::DatabaseWorker* mDatabaseWorker;
     };
-}
+} // namespace trading_core

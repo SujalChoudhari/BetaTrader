@@ -3,19 +3,18 @@
 //
 
 #pragma once
-#include <cstdint>
-#include <string>
-#include <stdexcept>
-#include <array>
-
 #include "Instrument.h"
+#include <array>
+#include <cstdint>
+#include <stdexcept>
+#include <string>
 
 namespace common {
     /**
      * @enum OrderSide
      * @brief Represents the side of an order (Buy or Sell).
      */
-    enum class OrderSide: uint8_t {
+    enum class OrderSide : uint8_t {
         Buy, ///< A buy order.
         Sell, ///< a sell order.
     };
@@ -24,30 +23,35 @@ namespace common {
      * @enum OrderType
      * @brief Represents the execution logic of an order.
      */
-    enum class OrderType: uint8_t {
-        Limit, ///< A limit order, which is executed at a specified price or better.
-        Market, ///< A market order, which is executed immediately at the best available price.
-        Stop, ///< Triggers a market order once a set price is reached (Not implemented)
-        StopLimit ///< Triggers a limit order once a set price is reached (Not implemented)
+    enum class OrderType : uint8_t {
+        Limit, ///< A limit order, which is executed at a specified price or
+               ///< better.
+        Market, ///< A market order, which is executed immediately at the best
+                ///< available price.
+        Stop, ///< Triggers a market order once a set price is reached (Not
+              ///< implemented)
+        StopLimit ///< Triggers a limit order once a set price is reached (Not
+                  ///< implemented)
     };
 
     /**
      * @enum OrderStatus
      * @brief Represents the lifecycle of an order.
      */
-    enum class OrderStatus: uint8_t {
+    enum class OrderStatus : uint8_t {
         New, ///< The order has been created but not yet matched.
         PartiallyFilled, ///< The order has been partially matched.
         Filled, ///< The order has been fully matched.
         Cancelled, ///< The order has been cancelled before being fully matched.
-        Rejected ///< The order was rejected by the system and never entered the matching engine.
+        Rejected ///< The order was rejected by the system and never entered the
+                 ///< matching engine.
     };
 
     /**
      * @enum TimeInForce
      * @brief Guides How long the order is in the system.
      */
-    enum class TimeInForce: uint8_t {
+    enum class TimeInForce : uint8_t {
         DAY, ///< Keep the order in the system for a day
         GTC, ///< Good till cancellation
         IOC, ///< Immediate or cancel
@@ -57,43 +61,48 @@ namespace common {
     };
 
     // --- OrderSide Serialization ---
-    constexpr std::array<std::string_view, 2> order_side_names = {"Buy", "Sell"};
+    constexpr std::array<std::string_view, 2> order_side_names
+            = {"Buy", "Sell"};
 
-    inline std::string to_string(OrderSide side) {
+    inline std::string to_string(OrderSide side)
+    {
         return std::string(order_side_names[static_cast<size_t>(side)]);
     }
 
-    inline OrderSide from_string_OrderSide(std::string_view name) {
+    inline OrderSide from_string_OrderSide(std::string_view name)
+    {
         for (size_t i = 0; i < order_side_names.size(); ++i)
-            if (order_side_names[i] == name)
-                return static_cast<OrderSide>(i);
+            if (order_side_names[i] == name) return static_cast<OrderSide>(i);
         throw std::invalid_argument("Unknown OrderSide name");
     }
 
     // --- OrderType Serialization ---
-    constexpr std::array<std::string_view, 2> order_type_names = {"Limit", "Market"};
+    constexpr std::array<std::string_view, 2> order_type_names
+            = {"Limit", "Market"};
 
-    inline std::string to_string(OrderType type) {
+    inline std::string to_string(OrderType type)
+    {
         return std::string(order_type_names[static_cast<size_t>(type)]);
     }
 
-    inline OrderType from_string_OrderType(std::string_view name) {
+    inline OrderType from_string_OrderType(std::string_view name)
+    {
         for (size_t i = 0; i < order_type_names.size(); ++i)
-            if (order_type_names[i] == name)
-                return static_cast<OrderType>(i);
+            if (order_type_names[i] == name) return static_cast<OrderType>(i);
         throw std::invalid_argument("Unknown OrderType name");
     }
 
     // --- OrderStatus Serialization ---
-    constexpr std::array<std::string_view, 5> order_status_names = {
-        "New", "PartiallyFilled", "Filled", "Cancelled", "Rejected"
-    };
+    constexpr std::array<std::string_view, 5> order_status_names
+            = {"New", "PartiallyFilled", "Filled", "Cancelled", "Rejected"};
 
-    inline std::string to_string(OrderStatus status) {
+    inline std::string to_string(OrderStatus status)
+    {
         return std::string(order_status_names[static_cast<size_t>(status)]);
     }
 
-    inline OrderStatus from_string_OrderStatus(std::string_view name) {
+    inline OrderStatus from_string_OrderStatus(std::string_view name)
+    {
         for (size_t i = 0; i < order_status_names.size(); ++i)
             if (order_status_names[i] == name)
                 return static_cast<OrderStatus>(i);
@@ -101,21 +110,21 @@ namespace common {
     }
 
     // --- TimeInForce Serialization ---
-    constexpr std::array<std::string_view, 6> time_in_force_names = {
-        "DAY", "GTC", "IOC", "FOK", "MOO", "MOC"
-    };
+    constexpr std::array<std::string_view, 6> time_in_force_names
+            = {"DAY", "GTC", "IOC", "FOK", "MOO", "MOC"};
 
-    inline std::string to_string(TimeInForce tif) {
+    inline std::string to_string(TimeInForce tif)
+    {
         return std::string(time_in_force_names[static_cast<size_t>(tif)]);
     }
 
-    inline TimeInForce from_string_TimeInForce(std::string_view name) {
+    inline TimeInForce from_string_TimeInForce(std::string_view name)
+    {
         for (size_t i = 0; i < time_in_force_names.size(); ++i)
             if (time_in_force_names[i] == name)
                 return static_cast<TimeInForce>(i);
         throw std::invalid_argument("Unknown TimeInForce name");
     }
-
 
     /** @brief A type alias for price values. */
     using Price = double;
@@ -129,4 +138,4 @@ namespace common {
     using Symbol = Instrument;
     /** @brief A type alias for client identifiers. */
     using ClientID = std::string;
-}
+} // namespace common

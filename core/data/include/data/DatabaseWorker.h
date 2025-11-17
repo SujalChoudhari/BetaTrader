@@ -8,11 +8,11 @@
  */
 
 #pragma once
+#include "rigtorp/SPSCQueue.h"
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <functional>
 #include <string>
 #include <thread>
-#include <functional>
-#include <SQLiteCpp/SQLiteCpp.h>
-#include "rigtorp/SPSCQueue.h"
 
 namespace data {
     /**
@@ -39,4 +39,4 @@ namespace data {
         std::jthread mWorker;
         rigtorp::SPSCQueue<std::function<void(SQLite::Database&)>> mTasks;
     };
-}
+} // namespace data

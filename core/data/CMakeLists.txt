@@ -15,8 +15,3 @@ target_link_libraries(data_lib
         PUBLIC common
         PUBLIC SQLiteCpp sqlite3
 )
-
-#target_compile_options(data_lib PRIVATE -Wall -Wextra -Wpedantic)
-
-add_executable(data src/Main.cpp)
-target_link_libraries(data PRIVATE data_lib SQLiteCpp sqlite3)
