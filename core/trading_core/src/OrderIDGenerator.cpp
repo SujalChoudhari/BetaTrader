@@ -26,7 +26,7 @@ namespace trading_core {
         mDatabaseWorker->enqueue([this, promise](SQLite::Database& db) {
             try {
                 SQLite::Statement query(db,
-                                        "SELECT MAX(order_id) FROM orders;");
+                                        "SELECT MAX(core_order_id) FROM orders;");
                 if (query.executeStep()) {
                     mCurrentId = query.getColumn(0).getInt64();
                 }

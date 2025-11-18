@@ -13,12 +13,12 @@ namespace trading_core {
             const auto& bestPriceLevel = oppositeMap->begin()->second;
             if (!bestPriceLevel.empty()) {
                 const auto& bestOrder = bestPriceLevel.front();
-                if (bestOrder->getClientId() == order.getClientId()) {
+                if (bestOrder->getSenderCompID() == order.getSenderCompID()) { // Use SenderCompID for check
                     if (order.getOrderType() == common::OrderType::Market) {
                         LOG_ERROR("ETRADE12",
                                   "Pre-check failed for order ID {}: "
                                   "Self-match detected with market order.",
-                                  order.getId());
+                                  order.getClientOrderId());
                         return true; // Self-match detected
                     }
                     else if (order.getSide() == common::OrderSide::Buy
@@ -26,7 +26,7 @@ namespace trading_core {
                         LOG_ERROR("ETRADE12",
                                   "Pre-check failed for order ID {}: "
                                   "Self-match detected with limit order.",
-                                  order.getId());
+                                  order.getClientOrderId());
                         return true; // Self-match detected
                     }
                     else if (order.getSide() == common::OrderSide::Sell
@@ -34,7 +34,7 @@ namespace trading_core {
                         LOG_ERROR("ETRADE12",
                                   "Pre-check failed for order ID {}: "
                                   "Self-match detected with limit order.",
-                                  order.getId());
+                                  order.getClientOrderId());
                         return true; // Self-match detected
                     }
                 }
@@ -58,7 +58,7 @@ namespace trading_core {
             LOG_ERROR("ETRADE10",
                       "Pre-check failed for order ID {}: Invalid quantity or "
                       "price.",
-                      order.getId());
+                      order.getClientOrderId());
             return false;
         }
 
@@ -81,7 +81,7 @@ namespace trading_core {
                     LOG_ERROR("ETRADE11",
                               "Pre-check failed for order ID {}: Price "
                               "deviates too much from top of book.",
-                              order.getId());
+                              order.getClientOrderId());
                     return false;
                 }
             }
@@ -99,7 +99,7 @@ namespace trading_core {
             }
         }
 
-        LOG_INFO("Pre-check passed for order ID {}.", order.getId());
+        LOG_INFO("Pre-check passed for order ID {}.", order.getClientOrderId());
         return true;
     }
 

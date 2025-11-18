@@ -41,7 +41,7 @@ TEST_F(OrderRepositoryTests, SaveAndLoadOrder)
     std::vector<common::Order> loadedOrders = future.get();
 
     ASSERT_EQ(loadedOrders.size(), 1);
-    EXPECT_EQ(loadedOrders[0].getId(), order.getId());
+    EXPECT_EQ(loadedOrders[0].getClientOrderId(), order.getClientOrderId());
     EXPECT_EQ(loadedOrders[0].getClientId(), order.getClientId());
     EXPECT_EQ(loadedOrders[0].getSymbol(), order.getSymbol());
     EXPECT_EQ(loadedOrders[0].getSide(), order.getSide());
@@ -91,7 +91,7 @@ TEST_F(OrderRepositoryTests, RemoveOrder)
                               std::chrono::system_clock::now());
     orderRepository->saveOrder(order);
 
-    orderRepository->removeOrder(order.getId());
+    orderRepository->removeOrder(order.getClientOrderId());
 
     std::promise<std::vector<common::Order>> promise;
     std::future<std::vector<common::Order>> future = promise.get_future();

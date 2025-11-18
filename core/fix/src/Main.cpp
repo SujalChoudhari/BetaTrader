@@ -13,7 +13,7 @@ int main() {
 
         asio::io_context io_context;
 
-        LOG_INFO("Initializing Trading Core...");
+        LOG_DEBUG("Initializing Trading Core...");
         TradingCore tradingCore;
         tradingCore.start();
         LOG_INFO("Trading Core started.");
@@ -28,13 +28,14 @@ int main() {
             }
         );
 
-        tradingCore.subscribeToMarketDataSnapshots(
+        // Subscribe to market data publisher
+        tradingCore.getMarketDataPublisher().subscribeToSnapshots(
             [&](const fix::MarketDataSnapshotFullRefresh& snapshot) {
                 server.onMarketDataSnapshotFullRefresh(snapshot);
             }
         );
 
-        tradingCore.subscribeToMarketDataIncrements(
+        tradingCore.getMarketDataPublisher().subscribeToIncrementals(
             [&](const fix::MarketDataIncrementalRefresh& refresh) {
                 server.onMarketDataIncrementalRefresh(refresh);
             }

@@ -11,13 +11,13 @@
 #include "OrderIDGenerator.h"
 #include "Partition.h"
 #include "TradeIDGenerator.h"
+#include "MarketDataPublisher.h"
 #include "common/Order.h"
-#include "common_fix/ExecutionReport.h" // Include the report type
-#include "common_fix/MarketDataIncrementalRefresh.h" // New: Include market data incremental type
-#include "common_fix/MarketDataSnapshotFullRefresh.h" // New: Include market data snapshot type
+#include "common_fix/ExecutionReport.h"
 #include "data/DatabaseWorker.h"
 #include <functional>
 #include <memory>
+#include <optional>
 
 namespace trading_core {
     /**
@@ -26,13 +26,7 @@ namespace trading_core {
      */
     class TradingCore {
     public:
-        // Callback now publishes the fully-formed FIX ExecutionReport
         using ExecutionReportCallback = std::function<void(const fix::ExecutionReport&)>;
-        // New: Callback for market data snapshot full refresh
-        using MarketDataSnapshotCallback = std::function<void(const fix::MarketDataSnapshotFullRefresh&)>;
-        // New: Callback for market data incremental refresh
-        using MarketDataIncrementalCallback = std::function<void(const fix::MarketDataIncrementalRefresh&)>;
-
 
         TradingCore();
 
@@ -56,20 +50,25 @@ namespace trading_core {
         OrderIDGenerator* getOrderIDGenerator();
 
         void subscribeToExecutions(ExecutionReportCallback callback);
-        // New: Subscribe to market data snapshots
-        void subscribeToMarketDataSnapshots(MarketDataSnapshotCallback callback);
-        // New: Subscribe to market data incremental refreshes
-        void subscribeToMarketDataIncrements(MarketDataIncrementalCallback callback);
 
+        void subscribeToMarketData(common::Symbol symbol, common::SessionID sessionId);
+
+        void unsubscribeFromMarketData(common::Symbol symbol, common::SessionID sessionId);
+        
+        void unsubscribeFromMarketData(common::SessionID sessionId);
 
         const ExecutionReportCallback& getExecutionReportCallback() const;
-        // New: Get market data snapshot callback
-        const MarketDataSnapshotCallback& getMarketDataSnapshotCallback() const;
-        // New: Get market data incremental callback
-        const MarketDataIncrementalCallback& getMarketDataIncrementalCallback() const;
 
+        MarketDataPublisher& getMarketDataPublisher();
 
         static TradingCore& getInstance();
+
+        std::optional<common::Instrument>
+        findPartitionForOrder(common::OrderID orderId) const;
+
+        std::optional<common::Order> getOrder(common::OrderID orderId) const;
+        
+        std::optional<common::Order> getOrderByClientOrderId(const std::string& clientOrderId) const;
 
 
 #ifndef NDEBUG
@@ -80,9 +79,6 @@ namespace trading_core {
     private:
         void initPartitions();
 
-        std::optional<common::Instrument>
-        findPartitionForOrder(common::OrderID orderId) const;
-
     private:
         data::DatabaseWorker* mDatabaseWorker = nullptr;
         std::unique_ptr<data::DatabaseWorker> mOwnedDatabaseWorker;
@@ -91,8 +87,6 @@ namespace trading_core {
         std::unique_ptr<Partition>
                 mPartitions[static_cast<int>(common::Instrument::COUNT)];
         ExecutionReportCallback mExecutionReportCallback;
-        // New: Market data callbacks
-        MarketDataSnapshotCallback mMarketDataSnapshotCallback;
-        MarketDataIncrementalCallback mMarketDataIncrementalCallback;
+        MarketDataPublisher mMarketDataPublisher;
     };
 } // namespace trading_core

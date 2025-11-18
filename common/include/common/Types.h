@@ -138,4 +138,6 @@ namespace common {
     using Symbol = Instrument;
     /** @brief A type alias for client identifiers. */
     using ClientID = std::string;
+    /** @brief A type alias for session identifiers. */
+    using SessionID = uint64_t;
 } // namespace common

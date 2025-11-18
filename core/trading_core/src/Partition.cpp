@@ -6,16 +6,16 @@
 namespace trading_core {
     Partition::Partition(common::Instrument symbol,
                          data::DatabaseWorker* databaseWorker,
-                         TradeIDGenerator* tradeIDGenerator)
+                         TradeIDGenerator* tradeIDGenerator,
+                         MarketDataPublisher& publisher)
         : mCommandQueue(262144), mSymbol(symbol),
-          mDatabaseWorker(databaseWorker), mTradeIDGenerator(tradeIDGenerator)
+          mDatabaseWorker(databaseWorker), mTradeIDGenerator(tradeIDGenerator),
+          mPublisher(publisher)
     {
-        mTradeRepository
-                = std::make_unique<data::TradeRepository>(mDatabaseWorker);
-        mOrderRepository
-                = std::make_unique<data::OrderRepository>(mDatabaseWorker);
+        mTradeRepository = std::make_unique<data::TradeRepository>(mDatabaseWorker);
+        mOrderRepository = std::make_unique<data::OrderRepository>(mDatabaseWorker);
         mOrderManager = std::make_unique<OrderManager>();
-        mOrderBook = std::make_unique<OrderBook>();
+        mOrderBook = std::make_unique<OrderBook>(mSymbol, mPublisher);
         mMatcher = std::make_unique<Matcher>(mTradeIDGenerator);
         mRiskManager = std::make_unique<RiskManager>(mTradeRepository.get());
         init();
@@ -24,6 +24,7 @@ namespace trading_core {
     Partition::Partition(common::Instrument symbol,
                          data::DatabaseWorker* databaseWorker,
                          TradeIDGenerator* tradeIDGenerator,
+                         MarketDataPublisher& publisher,
                          std::unique_ptr<data::TradeRepository> tradeRepository,
                          std::unique_ptr<data::OrderRepository> orderRepository,
                          std::unique_ptr<OrderManager> orderManager,
@@ -32,6 +33,7 @@ namespace trading_core {
                          std::unique_ptr<RiskManager> riskManager)
         : mCommandQueue(262144), mSymbol(symbol),
           mDatabaseWorker(databaseWorker), mTradeIDGenerator(tradeIDGenerator),
+          mPublisher(publisher),
           mTradeRepository(std::move(tradeRepository)),
           mOrderRepository(std::move(orderRepository)),
           mOrderManager(std::move(orderManager)),
@@ -50,14 +52,12 @@ namespace trading_core {
                 mSymbol,
                 [this, loadPromise](std::vector<common::Order> orders) {
                     for (auto& order: orders) {
-                        auto orderUniquePtr
-                                = std::make_unique<common::Order>(order);
-                        mOrderBook->insertOrder(orderUniquePtr.get());
-                        mOrderManager->addOrder(std::move(orderUniquePtr));
+                        // FIX: Only add to OrderManager during init. OrderBook will be populated on start.
+                        mOrderManager->addOrder(std::make_unique<common::Order>(order));
                     }
                     LOG_INFO("Loaded {} orders for symbol {}", orders.size(),
                              common::to_string(mSymbol));
-                    loadPromise->set_value(); // Signal that loading is complete
+                    loadPromise->set_value();
                 });
 
         LOG_INFO("Partition for symbol {} constructed and loading started.",
@@ -78,6 +78,12 @@ namespace trading_core {
                      common::to_string(mSymbol));
             return;
         }
+
+        // FIX: Populate the order book from the manager *after* loading is complete.
+        for (const auto& [orderId, orderPtr] : mOrderManager->getOrders()) {
+            mOrderBook->insertOrder(orderPtr.get());
+        }
+        
         mWorker = std::make_unique<WorkerThread>(
                 mCommandQueue, *mOrderManager, *mOrderBook, *mMatcher,
                 *mRiskManager, *mOrderRepository, mTradeIDGenerator,

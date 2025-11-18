@@ -1,69 +1,70 @@
 #include "trading_core/OrderManager.h"
 #include "logging/Logger.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
+#include <algorithm>
 
 namespace trading_core {
+
     bool OrderManager::addOrder(std::unique_ptr<common::Order> order)
     {
-        if (!order) {
-            LOG_ERROR(errors::ETRADE4, "Attempted to add a null order.");
+        if (!order) return false;
+
+        const auto orderId = order->getId();
+        if (mOrderMap.count(orderId)) {
+            LOG_WARN("Order {} already exists in OrderManager.", orderId);
             return false;
         }
 
-        const auto [it, status]
-                = mOrderMap.try_emplace(order->getId(), std::move(order));
-        if (status) {
-            LOG_INFO("Added Order {} to OrderManager.", it->second->getId());
-        }
-        else {
-            LOG_WARN("Order {} already exists in OrderManager.",
-                     order->getId());
-        }
-        return status;
+        mOrderMap[orderId] = std::move(order);
+        LOG_INFO("Added Order {} to OrderManager.", orderId);
+        return true;
     }
 
     std::optional<common::Order*>
     OrderManager::getOrderById(const common::OrderID& id) const
     {
-        const auto it = mOrderMap.find(id);
-
-        if (it == mOrderMap.end()) {
-            LOG_ERROR(errors::ETRADE6,
-                      "Order with ID {} not found in OrderManager.", id);
-            return std::nullopt;
+        auto it = mOrderMap.find(id);
+        if (it != mOrderMap.end()) {
+            return it->second.get();
         }
-        LOG_INFO("Retrieved order with ID {} from OrderManager.", id);
-        return it->second.get();
+        return std::nullopt;
+    }
+
+    std::optional<common::Order*>
+    OrderManager::getOrderByClientOrderId(const std::string& clOrdId) const
+    {
+        auto it = std::find_if(mOrderMap.begin(), mOrderMap.end(),
+            [&clOrdId](const auto& pair) {
+                return std::to_string(pair.second->getClientOrderId()) == clOrdId;
+            });
+
+        if (it != mOrderMap.end()) {
+            return it->second.get();
+        }
+        return std::nullopt;
     }
 
     bool OrderManager::removeOrderById(const common::OrderID& id)
     {
-        const size_t totalErased = mOrderMap.erase(id);
-
-        if (totalErased == 1) {
-            LOG_INFO("Removed order with ID {} from OrderManager.", id);
+        if (mOrderMap.erase(id)) {
+            LOG_INFO("Removed Order {} from OrderManager.", id);
             return true;
         }
-        else {
-            LOG_ERROR(errors::ETRADE6,
-                      "Failed to remove order with ID {} from OrderManager. "
-                      "Order not found or multiple orders removed.",
-                      id);
-            return false;
-        }
+        return false;
     }
 
     bool OrderManager::containsOrderById(const common::OrderID& id) const
     {
-        bool contains = mOrderMap.contains(id);
-        LOG_DEBUG("OrderManager {} order with ID {}.",
-                  contains ? "contains" : "does not contain", id);
-        return contains;
+        return mOrderMap.count(id) > 0;
     }
 
     size_t OrderManager::size() const
     {
-        LOG_DEBUG("OrderManager current size: {}.", mOrderMap.size());
         return mOrderMap.size();
     }
+
+    const std::unordered_map<common::OrderID, std::unique_ptr<common::Order>>& OrderManager::getOrders() const
+    {
+        return mOrderMap;
+    }
+
 } // namespace trading_core

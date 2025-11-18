@@ -1,6 +1,7 @@
 #pragma once
 #include "common/Types.h"
 #include "common_fix/Types.h"
+#include <string>
 
 namespace fix {
     /**
@@ -15,7 +16,7 @@ namespace fix {
     public:
         /**
          * @brief Constructs a new OrderRequest object.
-         * @param clientId The client identifier.
+         * @param senderCompID The sender's component ID (SenderCompID, FIX Tag 49).
          * @param clientOrderId The client-assigned order ID (ClOrdID, FIX Tag 11).
          * @param symbol The trading symbol (Symbol, FIX Tag 55).
          * @param side The side of the order (Side, FIX Tag 54).
@@ -23,16 +24,16 @@ namespace fix {
          * @param price The price of the order (Price, FIX Tag 44).
          */
         OrderRequest(
-            const common::ClientID& clientId,
+            const std::string& senderCompID,
             const ClientOrderID& clientOrderId,
             const Symbol& symbol,
             common::OrderSide side,
             fix::Quantity quantity,
             fix::Price price
-        ) : clientId(clientId), clientOrderId(clientOrderId), symbol(symbol), side(side), quantity(quantity), price(price) {}
+        ) : senderCompID(senderCompID), clientOrderId(clientOrderId), symbol(symbol), side(side), quantity(quantity), price(price) {}
 
-        /** @brief The client identifier. */
-        common::ClientID clientId;
+        /** @brief The sender's component ID (SenderCompID, FIX Tag 49). */
+        std::string senderCompID;
         /** @brief Client-assigned Order ID (ClOrdID, FIX Tag 11). */
         ClientOrderID clientOrderId;
         /** @brief Trading symbol (Symbol, FIX Tag 55). */

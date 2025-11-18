@@ -18,6 +18,7 @@
 #include "data/OrderRepository.h"
 #include "data/TradeRepository.h"
 #include "rigtorp/SPSCQueue.h"
+#include "MarketDataPublisher.h"
 #include <atomic>
 #include <future>
 #include <memory>
@@ -32,11 +33,13 @@ namespace trading_core {
     public:
         Partition(common::Instrument symbol,
                   data::DatabaseWorker* databaseWorker,
-                  TradeIDGenerator* tradeIDGenerator);
+                  TradeIDGenerator* tradeIDGenerator,
+                  MarketDataPublisher& publisher);
 
         Partition(common::Instrument symbol,
                   data::DatabaseWorker* databaseWorker,
                   TradeIDGenerator* tradeIDGenerator,
+                  MarketDataPublisher& publisher,
                   std::unique_ptr<data::TradeRepository> tradeRepository,
                   std::unique_ptr<data::OrderRepository> orderRepository,
                   std::unique_ptr<OrderManager> orderManager,
@@ -84,6 +87,7 @@ namespace trading_core {
         common::Symbol mSymbol;
         data::DatabaseWorker* mDatabaseWorker;
         TradeIDGenerator* mTradeIDGenerator;
+        MarketDataPublisher& mPublisher;
 
         std::unique_ptr<data::TradeRepository> mTradeRepository;
         std::unique_ptr<data::OrderRepository> mOrderRepository;

@@ -51,7 +51,7 @@ namespace fix {
         mAcceptor.async_accept(mSocket, [this](const std::error_code ec) {
             if (!ec) {
                 const auto session = std::make_shared<FixSession>(
-                        std::move(mSocket), mTradingCore, mNextSessionId++);
+                        std::move(mSocket), *this, mTradingCore, mNextSessionId++);
                 registerSession(session);
                 session->start();
             }
@@ -68,7 +68,7 @@ namespace fix {
     void FixServer::unregisterSession(uint32_t sessionId)
     {
         mSessions.erase(sessionId);
-        // TODO: Also remove from mMarketDataSubscriptions if this session was a subscriber
+        mTradingCore.unsubscribeFromMarketData(sessionId); // Unsubscribe from all symbols
     }
 
 } // namespace fix

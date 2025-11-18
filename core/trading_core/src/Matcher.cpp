@@ -22,7 +22,8 @@ namespace trading_core {
             return trades;
         }
 
-        LOG_INFO("Matching order {} with quantity {}", incomingOrder->getId(),
+        LOG_INFO("Matching order {} with quantity {}",
+                 incomingOrder->getClientOrderId(),
                  incomingOrder->getRemainingQuantity());
 
         if (incomingOrder->getSide() == common::OrderSide::Buy) {
@@ -32,8 +33,9 @@ namespace trading_core {
             matchTable(incomingOrder, orderBook.getBidMap(), trades);
         }
 
-        LOG_INFO("Order {} matched, {} trades created", incomingOrder->getId(),
-                 trades.size());
+        LOG_INFO("Order {} {}, {} trades created",
+                 trades.size() > 0 ? "matched" : "not matched",
+                 incomingOrder->getClientOrderId(), trades.size());
 
         return trades;
     }
@@ -69,12 +71,12 @@ namespace trading_core {
 
                 common::OrderID buyId
                         = (incomingOrder->getSide() == common::OrderSide::Buy)
-                                  ? incomingOrder->getId()
+                                  ? incomingOrder->getClientOrderId()
                                   : restingOrder->getId();
                 common::OrderID sellId
                         = (incomingOrder->getSide() == common::OrderSide::Buy)
                                   ? restingOrder->getId()
-                                  : incomingOrder->getId();
+                                  : incomingOrder->getClientOrderId();
 
                 common::TradeID newId = mTradeIdGenerator->nextId();
                 trades.emplace_back(newId, incomingOrder->getSymbol(), buyId,

@@ -18,7 +18,7 @@ target_link_libraries(fix_lib
         trading_core_lib
         Threads::Threads
 )
-
+target_compile_definitions(fix_lib PRIVATE _WIN32_WINNT=0x0601)
 target_compile_definitions(fix_lib PUBLIC ASIO_STANDALONE)
 
 add_executable(fix src/Main.cpp)
@@ -31,3 +31,4 @@ target_link_libraries(fix
         Threads::Threads
 
 )
+target_compile_definitions(fix PRIVATE _WIN32_WINNT=0x0601)
