@@ -3,6 +3,8 @@
 #include "common_fix/ExecutionReport.h"
 #include "common_fix/MarketDataIncrementalRefresh.h"
 #include "common_fix/MarketDataSnapshotFullRefresh.h"
+#include "fix/Reject.h"
+#include "fix/BusinessMessageReject.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
 #include <memory>
@@ -57,6 +59,18 @@ namespace fix {
          * @param refresh The market data incremental refresh to send.
          */
         void sendMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh);
+
+        /**
+         * @brief Asynchronously sends a session-level Reject message to the client.
+         * @param reject The reject message data to send.
+         */
+        void sendReject(const Reject& reject);
+
+        /**
+         * @brief Asynchronously sends a business message reject to the client.
+         * @param bizReject The business reject message data to send.
+         */
+        void sendBusinessMessageReject(const BusinessMessageReject& bizReject);
 
         /**
          * @brief Gets the unique identifier for this session.

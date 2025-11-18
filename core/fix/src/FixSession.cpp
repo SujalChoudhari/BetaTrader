@@ -51,6 +51,18 @@ namespace fix {
         doWrite(binaryRefresh);
     }
 
+    void FixSession::sendReject(const Reject& reject)
+    {
+        // TODO: Implement serialization for Reject message and send it.
+        LOG_WARN("Placeholder: Would send session-level Reject to Session {}: {}", mSessionId, reject.text);
+    }
+
+    void FixSession::sendBusinessMessageReject(const BusinessMessageReject& bizReject)
+    {
+        // TODO: Implement serialization for BusinessMessageReject message and send it.
+        LOG_WARN("Placeholder: Would send business-level Reject to Session {}: {}", mSessionId, bizReject.text);
+    }
+
     uint32_t FixSession::getSessionID() const
     {
         return mSessionId;
@@ -116,6 +128,30 @@ namespace fix {
     {
         try {
             switch (msgType) {
+                case 'A': // Logon
+                    // TODO: Implement Logon message handling.
+                    LOG_INFO("Received Logon message from Session {}. Handling not yet implemented.", mSessionId);
+                    break;
+                case '5': // Logout
+                    // TODO: Implement Logout message handling.
+                    LOG_INFO("Received Logout message from Session {}. Handling not yet implemented.", mSessionId);
+                    break;
+                case '0': // Heartbeat
+                    // TODO: Implement Heartbeat message handling.
+                    LOG_INFO("Received Heartbeat message from Session {}. Handling not yet implemented.", mSessionId);
+                    break;
+                case '1': // Test Request
+                    // TODO: Implement Test Request message handling.
+                    LOG_INFO("Received Test Request message from Session {}. Handling not yet implemented.", mSessionId);
+                    break;
+                case '2': // Resend Request
+                    // TODO: Implement Resend Request message handling.
+                    LOG_INFO("Received Resend Request message from Session {}. Handling not yet implemented.", mSessionId);
+                    break;
+                case '4': // Sequence Reset
+                    // TODO: Implement Sequence Reset message handling.
+                    LOG_INFO("Received Sequence Reset message from Session {}. Handling not yet implemented.", mSessionId);
+                    break;
                 case MSG_TYPE_NEW_ORDER_SINGLE:
                     {
                         auto orderRequest = BinaryToOrderRequestConverter::convert(fixMessage);
@@ -158,7 +194,6 @@ namespace fix {
                 case MSG_TYPE_MARKET_DATA_REQUEST:
                     handleMarketDataRequest(fixMessage);
                     break;
-                // TODO: Add cases for other common FIX message types: Logon (A), Logout (5), Heartbeat (0), Test Request (1), Resend Request (2), Sequence Reset (4), Reject (3), Business Message Reject (j).
                 default:
                     LOG_WARN("Received unhandled FIX message type '{}' from Session {}: {}", msgType, mSessionId, fixMessage.substr(0, 50));
                     // TODO: Send Reject (35=3) for unsupported MsgType.
