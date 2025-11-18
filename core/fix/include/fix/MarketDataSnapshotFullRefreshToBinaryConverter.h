@@ -5,8 +5,8 @@
 
 #pragma once
 
+#include "common_fix/MarketDataSnapshotFullRefresh.h"
 #include <string>
-#include "fix/MarketDataSnapshotFullRefresh.h"
 
 namespace fix
 {

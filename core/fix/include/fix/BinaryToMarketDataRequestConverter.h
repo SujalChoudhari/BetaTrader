@@ -5,9 +5,9 @@
 
 #pragma once
 
-#include <string>
-#include <optional>
 #include "fix/MarketDataRequest.h"
+#include <optional>
+#include <string>
 
 namespace fix
 {

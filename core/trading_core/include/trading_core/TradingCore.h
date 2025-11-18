@@ -11,13 +11,13 @@
 #include "OrderIDGenerator.h"
 #include "Partition.h"
 #include "TradeIDGenerator.h"
-#include "data/DatabaseWorker.h"
 #include "common/Order.h"
-#include "fix/ExecutionReport.h" // Include the report type
-#include "fix/MarketDataSnapshotFullRefresh.h" // New: Include market data snapshot type
-#include "fix/MarketDataIncrementalRefresh.h" // New: Include market data incremental type
-#include <memory>
+#include "common_fix/ExecutionReport.h" // Include the report type
+#include "common_fix/MarketDataIncrementalRefresh.h" // New: Include market data incremental type
+#include "common_fix/MarketDataSnapshotFullRefresh.h" // New: Include market data snapshot type
+#include "data/DatabaseWorker.h"
 #include <functional>
+#include <memory>
 
 namespace trading_core {
     /**

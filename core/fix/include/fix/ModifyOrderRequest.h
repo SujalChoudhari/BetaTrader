@@ -1,35 +1,36 @@
 /**
- * @file ModifyOrder.h
+ * @file ModifyOrderRequest.h
  * @brief Defines the structure for a FIX Order Cancel Replace Request.
  */
 
 #pragma once
 
-#include <string>
-#include <chrono>
-#include "fix/Types.h"
 #include "common/Types.h"
+#include "common_fix/Types.h"
+#include <chrono>
+#include <string>
 
 namespace fix
 {
 
 /**
- * @brief Represents a FIX Order Cancel Replace Request message.
+ * @brief Represents a parsed FIX Order Cancel Replace Request (Modify Order) message.
  *
- * This struct encapsulates the necessary fields for modifying an existing order
- * in the FIX protocol.
+ * This struct encapsulates the necessary fields from a raw FIX message
+ * for modifying an existing order. It serves as an intermediate representation
+ * before being converted into a trading core command.
  */
-struct ModifyOrder
+struct ModifyOrderRequest
 {
     /** @brief Client-assigned Order ID (ClOrdID, FIX Tag 11).
      *         Unique identifier for the modification request. */
-    std::string clOrdID;
+    fix::ClientOrderID clOrdID;
     /** @brief Original Client Order ID (OrigClOrdID, FIX Tag 41).
      *         The Client Order ID of the order being replaced. */
-    std::string origClOrdID;
+    fix::ClientOrderID origClOrdID;
     /** @brief Original Order ID (OrderID, FIX Tag 37).
      *         The ID of the order to be modified. */
-    std::string orderID;
+    fix::ExchangeOrderID orderID;
     /** @brief Trading symbol of the order (Symbol, FIX Tag 55). */
     fix::Symbol symbol;
     /** @brief Side of the order (Side, FIX Tag 54).

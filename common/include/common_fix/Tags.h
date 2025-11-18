@@ -75,9 +75,12 @@ namespace fix {
         MDEntryPx = 270,
         /// \brief Market Data Entry Size
         MDEntrySize = 271,
+        /// \brief Market Data Entry Time
+        MDEntryTime = 273,
         /// \brief Number of Market Data Entries
         NoMDEntries = 268,
-
+        /// \brief Market Data Entry Position Number
+        MDEntryPositionNo = 290,
 
         /// \brief Checksum
         CheckSum = 10,

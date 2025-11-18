@@ -12,11 +12,20 @@ This component implements a fully asynchronous, multi-client FIX server using th
 *   **Session Management**: Manages the lifecycle of each client session, including reading and writing data.
 *   **Message Processing**:
     *   Deserializes FIX "New Order - Single" (`35=D`) messages into internal `OrderRequest` objects.
-    *   Submits new orders to the `@trading_core` for processing.
+    *   Deserializes FIX "Order Cancel Request" (`35=F`) messages into internal `CancelOrderRequest` objects and submits cancel commands to the `@trading_core`.
+    *   Deserializes FIX "Order Cancel/Replace Request" (`35=G`) messages into internal `ModifyOrderRequest` objects and submits modify commands to the `@trading_core`.
+    *   Submits new, cancel, and modify orders to the `@trading_core` for processing.
 *   **Execution Reporting**:
     *   Subscribes to execution events from the `@trading_core`.
     *   Serializes `ExecutionReport` objects into FIX "Execution Report" (`35=8`) messages and sends them to the appropriate client.
+*   **Market Data Provision**:
+    *   Handles FIX "Market Data Request" (`35=V`) messages, providing simulated market data snapshots and incremental refreshes.
 *   **Logging**: Provides structured, detailed logging for all major events and errors using the application-wide runbook system.
+
+## Recent Enhancements
+
+*   **Improved Type Safety and Consistency**: Refactored internal FIX message representation to use strongly-typed enums and aliases (`fix::MDEntryType`, `fix::MDUpdateAction`, `fix::ClientOrderID`, `fix::ExchangeOrderID`), enhancing code clarity and reducing errors.
+*   **Centralized Utility Functions**: Moved common FIX parsing helper functions (`splitToMap`, `charToOrderSide`, `charToOrderType`) into a dedicated `FixUtils` module to eliminate code duplication and improve maintainability.
 
 ## Building and Running
 
@@ -55,24 +64,21 @@ This section outlines planned improvements and outstanding tasks for the FIX ser
     *   Send `BusinessMessageReject` (35=j) if neither `OrderID` nor `ClOrdID` is present in `CancelOrderRequest`.
     *   Send `BusinessMessageReject` (35=j) for invalid `OrderID`/`ClOrdID` format in `CancelOrderRequest`.
     *   Send `BusinessMessageReject` (35=j) for parsing failures in `CancelOrderRequest`.
-    *   Implement actual submission of `trading_core::ModifyOrder` command, ensuring constructor arguments align with `fix::ModifyOrder` data.
+    *   Send `BusinessMessageReject` (35=j) if neither `OrigClOrdID` nor `OrderID` is present in `ModifyOrderRequest`.
+    *   Send `BusinessMessageReject` (35=j) for invalid `OrigClOrdID`/`OrderID` format in `ModifyOrderRequest`.
     *   Send `BusinessMessageReject` (35=j) for parsing failures in `ModifyOrderRequest`.
     *   Integrate with an actual market data system to provide real data for `MarketDataRequest`.
     *   Implement continuous incremental market data updates (e.g., via a timer or a dedicated publisher) for subscribed sessions.
     *   Implement actual unsubscription logic, removing the session from market data distribution lists.
     *   Send `BusinessMessageReject` (35=j) for parsing failures in `MarketDataRequest`.
-*   **`BinaryToOrderRequestConverter.cpp`**:
-    *   Consider moving helper functions (`splitToMap`, `charToOrderSide`) to a common utility or making them private static members if only used by this class.
 *   **`ExecutionReportToBinaryConverter.cpp`**:
     *   Consider making helper functions (`orderStatusToChar`, `orderSideToChar`, `timestampToString`) private static members of `ExecutionReportToBinaryConverter`.
 *   **`BinaryToMarketDataRequestConverter.cpp`**:
     *   Implement a robust FIX message parsing utility (e.g., using a tag-value map approach similar to `BinaryToOrderRequestConverter`). The current implementation is a simplified skeleton and needs to be made production-ready.
 *   **`BinaryToCancelOrderRequestConverter.cpp`**:
-    *   Implement a robust FIX message parsing utility.
     *   Decide if `ClOrdID`, `OrderID`, `Symbol`, `Side` are mandatory for `CancelOrder`. If so, return `nullopt` if missing.
     *   Implement proper `TransactTime` (60) parsing from FIX message.
 *   **`BinaryToModifyOrderRequestConverter.cpp`**:
-    *   Implement a robust FIX message parsing utility.
     *   Decide if `ClOrdID`, `OrigClOrdID`, `OrderID`, `Symbol`, `Side`, `OrderQty`, `OrdType`, `Price` are mandatory for `ModifyOrder`. If so, return `nullopt` if missing.
     *   Implement proper `TransactTime` (60) parsing from FIX message.
 *   **`MarketDataIncrementalRefreshToBinaryConverter.cpp`**:

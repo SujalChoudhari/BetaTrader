@@ -1,5 +1,5 @@
 #include "fix/ExecutionReportToBinaryConverter.h"
-#include "fix/Protocol.h"
+#include "common_fix/Protocol.h"
 #include <gtest/gtest.h>
 #include <string>
 

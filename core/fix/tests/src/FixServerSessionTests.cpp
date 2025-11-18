@@ -1,8 +1,8 @@
 #include "fix/FixServer.h"
-#include "trading_core/TradingCore.h"
 #include "trading_core/ExecutionPublisher.h"
-#include <gtest/gtest.h>
+#include "trading_core/TradingCore.h"
 #include <future>
+#include <gtest/gtest.h>
 
 class MockTradingCore : public trading_core::TradingCore {
 public:

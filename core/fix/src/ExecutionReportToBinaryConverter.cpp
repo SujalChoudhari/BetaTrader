@@ -1,7 +1,7 @@
 #include "fix/ExecutionReportToBinaryConverter.h"
 #include "common/Instrument.h"
-#include "fix/Protocol.h"
-#include "fix/Tags.h"
+#include "common_fix/Protocol.h"
+#include "common_fix/Tags.h"
 #include <chrono>
 #include <iomanip>
 #include <numeric>

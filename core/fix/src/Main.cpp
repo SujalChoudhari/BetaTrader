@@ -1,7 +1,7 @@
-#include "fix/FixServer.h"
-#include "trading_core/TradingCore.h"
-#include "logging/Logger.h"
 #include "fix/FixRunbookDefinations.h"
+#include "fix/FixServer.h"
+#include "logging/Logger.h"
+#include "trading_core/TradingCore.h"
 #include <asio.hpp>
 
 using namespace trading_core;
@@ -19,8 +19,8 @@ int main() {
         LOG_INFO("Trading Core started.");
 
         // TODO: Make port configurable, e.g., via command line arguments or a config file.
-        fix::FixServer server(io_context, 12345, tradingCore);
-        LOG_INFO("FIX Server started on port 12345.");
+        fix::FixServer server(io_context, 8088, tradingCore);
+        LOG_INFO("FIX Server started on port 8088.");
 
         tradingCore.subscribeToExecutions(
             [&](const fix::ExecutionReport& report) {

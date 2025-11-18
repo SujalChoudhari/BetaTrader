@@ -1,9 +1,9 @@
 #pragma once
 
-#include "fix/ExecutionReport.h"
-#include "fix/MarketDataSnapshotFullRefresh.h"
-#include "fix/MarketDataIncrementalRefresh.h"
+#include "common_fix/ExecutionReport.h"
 #include "fix/FixSession.h"
+#include "common_fix/MarketDataIncrementalRefresh.h"
+#include "common_fix/MarketDataSnapshotFullRefresh.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
 #include <map>

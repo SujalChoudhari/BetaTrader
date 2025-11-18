@@ -1,11 +1,11 @@
 #include "fix/MarketDataSnapshotFullRefreshToBinaryConverter.h"
-#include "fix/Protocol.h"
-#include "fix/Tags.h"
 #include "common/Types.h"
+#include "common_fix/Protocol.h"
+#include "common_fix/Tags.h"
 #include "logging/Logger.h"
-#include <sstream>
-#include <iomanip>
 #include <chrono>
+#include <iomanip>
+#include <sstream>
 
 namespace fix
 {
@@ -24,9 +24,12 @@ std::string MarketDataSnapshotFullRefreshToBinaryConverter::convert(const Market
 
     for (const auto& entry : snapshot.entries)
     {
-        bodyContentStream << static_cast<int>(fix::Tag::MDEntryType) << "=" << entry.entryType << fix::SOH;
+        bodyContentStream << static_cast<int>(fix::Tag::MDEntryType) << "=" << static_cast<char>(entry.entryType) << fix::SOH;
         bodyContentStream << static_cast<int>(fix::Tag::MDEntryPx) << "=" << std::fixed << std::setprecision(4) << entry.price << fix::SOH;
         bodyContentStream << static_cast<int>(fix::Tag::MDEntrySize) << "=" << std::fixed << std::setprecision(0) << entry.size << fix::SOH;
+        bodyContentStream << static_cast<int>(fix::Tag::MDEntryPositionNo) << "=" << entry.entryPosition << fix::SOH;
+        // TODO: Implement a proper timestamp to string conversion utility for FIX.
+        bodyContentStream << static_cast<int>(fix::Tag::MDEntryTime) << "=" << "YYYYMMDD-HH:MM:SS.sss" << fix::SOH;
     }
 
     std::string bodyString = bodyContentStream.str();

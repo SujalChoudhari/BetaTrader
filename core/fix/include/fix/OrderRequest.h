@@ -1,14 +1,15 @@
 #pragma once
-#include "Types.h"
 #include "common/Types.h"
+#include "common_fix/Types.h"
 
 namespace fix {
     /**
      * @class OrderRequest
-     * @brief Represents a FIX New Order - Single (35=D) message.
+     * @brief Represents a parsed FIX New Order - Single (35=D) message.
      *
-     * This class encapsulates the fields required to request a new order
-     * in the FIX protocol.
+     * This class encapsulates the fields from a raw FIX message required to
+     * request a new order. It serves as an intermediate representation before
+     * being converted into a trading core command.
      */
     class OrderRequest {
     public:

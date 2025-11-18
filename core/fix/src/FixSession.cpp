@@ -1,18 +1,18 @@
 #include "fix/FixSession.h"
-#include "fix/BinaryToOrderRequestConverter.h"
+#include "common/Instrument.h"
 #include "fix/BinaryToCancelOrderRequestConverter.h"
-#include "fix/BinaryToModifyOrderRequestConverter.h"
 #include "fix/BinaryToMarketDataRequestConverter.h"
+#include "fix/BinaryToModifyOrderRequestConverter.h"
+#include "fix/BinaryToOrderRequestConverter.h"
 #include "fix/ExecutionReportToBinaryConverter.h"
-#include "fix/MarketDataSnapshotFullRefreshToBinaryConverter.h"
-#include "fix/MarketDataIncrementalRefreshToBinaryConverter.h"
 #include "fix/FixRunbookDefinations.h"
-#include "fix/Protocol.h"
+#include "fix/MarketDataIncrementalRefreshToBinaryConverter.h"
+#include "fix/MarketDataSnapshotFullRefreshToBinaryConverter.h"
+#include "common_fix/Protocol.h"
 #include "logging/Runbook.h"
-#include "trading_core/NewOrder.h"
 #include "trading_core/CancelOrder.h"
 #include "trading_core/ModifyOrder.h"
-#include "common/Instrument.h"
+#include "trading_core/NewOrder.h"
 #include <iostream>
 #include <string_view>
 
@@ -120,15 +120,18 @@ namespace fix {
                     {
                         auto orderRequest = BinaryToOrderRequestConverter::convert(fixMessage);
                         if (orderRequest) {
-                            LOG_INFO("Received NewOrderSingle from Session {}: Symbol={}, Qty={}, Price={}",
-                                     mSessionId, common::to_string(orderRequest->symbol),
+                            LOG_INFO("Received NewOrderSingle from Session {}: ClOrdID={}, Symbol={}, Qty={}, Price={}",
+                                     mSessionId, orderRequest->clientOrderId, common::to_string(orderRequest->symbol),
                                      orderRequest->quantity, orderRequest->price);
 
                             // TODO: Extract actual OrderType (Tag 40) and TimeInForce (Tag 59) from FIX message.
                             // Currently assuming Limit and DAY.
                             auto common_order = std::make_unique<common::Order>(
-                                    0, orderRequest->symbol, std::to_string(mSessionId),
-                                    orderRequest->side, common::OrderType::Limit,
+                                    orderRequest->clientOrderId, // Use the parsed uint64_t ID
+                                    orderRequest->symbol, 
+                                    std::to_string(mSessionId),
+                                    orderRequest->side, 
+                                    common::OrderType::Limit,
                                     common::TimeInForce::DAY,
                                     orderRequest->quantity,
                                     orderRequest->price,
@@ -170,31 +173,23 @@ namespace fix {
 
     void FixSession::handleCancelOrderRequest(const std::string& fixMessage)
     {
-        auto cancelOrder = BinaryToCancelOrderRequestConverter::convert(fixMessage);
-        if (cancelOrder) {
+        auto cancelRequest = BinaryToCancelOrderRequestConverter::convert(fixMessage);
+        if (cancelRequest) {
             LOG_INFO("Received CancelOrderRequest from Session {}: ClOrdID={}, OrderID={}, Symbol={}",
-                     mSessionId, cancelOrder->clOrdID, cancelOrder->orderID, common::to_string(cancelOrder->symbol));
+                     mSessionId, cancelRequest->clOrdID, cancelRequest->orderID, common::to_string(cancelRequest->symbol));
 
-            common::OrderID orderIdToCancel = 0;
-            try {
-                if (!cancelOrder->orderID.empty()) {
-                    orderIdToCancel = std::stoull(cancelOrder->orderID);
-                } else if (!cancelOrder->clOrdID.empty()) {
-                    // TODO: Send BusinessMessageReject (35=j) if neither OrderID nor ClOrdID is present.
-                    orderIdToCancel = std::stoull(cancelOrder->clOrdID);
-                } else {
-                    LOG_WARN("CancelOrderRequest from Session {} has no OrderID or ClOrdID.", mSessionId);
-                    return;
-                }
-            } catch (const std::exception& e) {
-                LOG_WARN("Failed to convert OrderID/ClOrdID to uint64_t for Session {}: {}", mSessionId, e.what());
-                // TODO: Send BusinessMessageReject (35=j) for invalid OrderID/ClOrdID format.
+            // Prefer OrderID (37) if present, otherwise use ClOrdID (11).
+            common::OrderID orderIdToCancel = (cancelRequest->orderID != 0) ? cancelRequest->orderID : cancelRequest->clOrdID;
+
+            if (orderIdToCancel == 0) {
+                LOG_WARN("CancelOrderRequest from Session {} has no valid OrderID or ClOrdID.", mSessionId);
+                // TODO: Send BusinessMessageReject (35=j) if neither OrderID nor ClOrdID is present.
                 return;
             }
 
             auto cancelCmd = std::make_unique<trading_core::CancelOrder>(
                 std::to_string(mSessionId),
-                cancelOrder->transactTime,
+                cancelRequest->transactTime,
                 orderIdToCancel
             );
             mTradingCore.submitCommand(std::move(cancelCmd));
@@ -206,16 +201,31 @@ namespace fix {
 
     void FixSession::handleModifyOrderRequest(const std::string& fixMessage)
     {
-        auto modifyOrder = BinaryToModifyOrderRequestConverter::convert(fixMessage);
-        if (modifyOrder) {
+        auto modifyRequest = BinaryToModifyOrderRequestConverter::convert(fixMessage);
+        if (modifyRequest) {
             LOG_INFO("Received ModifyOrderRequest from Session {}: ClOrdID={}, OrigClOrdID={}, OrderID={}, Symbol={}, Qty={}, Price={}",
-                     mSessionId, modifyOrder->clOrdID, modifyOrder->origClOrdID, modifyOrder->orderID,
-                     common::to_string(modifyOrder->symbol), modifyOrder->orderQty, modifyOrder->price);
+                     mSessionId, modifyRequest->clOrdID, modifyRequest->origClOrdID, modifyRequest->orderID,
+                     common::to_string(modifyRequest->symbol), modifyRequest->orderQty, modifyRequest->price);
 
-            // TODO: Implement actual submission of trading_core::ModifyOrder command.
-            // This requires ensuring the trading_core::ModifyOrder constructor arguments align
-            // with the data available in the fix::ModifyOrder object.
-            LOG_WARN("ModifyOrderRequest handling is currently a placeholder. Actual command submission is pending.");
+            // Per FIX spec, OrigClOrdID (41) is required. Some systems might use OrderID (37).
+            common::OrderID orderIdToModify = (modifyRequest->origClOrdID != 0) ? modifyRequest->origClOrdID : modifyRequest->orderID;
+
+            if (orderIdToModify == 0) {
+                LOG_WARN("ModifyOrderRequest from Session {} has no valid OrigClOrdID or OrderID.", mSessionId);
+                // TODO: Send BusinessMessageReject (35=j) if neither is present.
+                return;
+            }
+
+            auto modifyCmd = std::make_unique<trading_core::ModifyOrder>(
+                std::to_string(mSessionId),
+                modifyRequest->transactTime,
+                orderIdToModify,
+                modifyRequest->price,
+                modifyRequest->orderQty
+            );
+
+            mTradingCore.submitCommand(std::move(modifyCmd));
+
         } else {
             LOG_WARN("Failed to parse ModifyOrderRequest from Session {}.", mSessionId);
             // TODO: Send BusinessMessageReject (35=j) for parsing failure.
@@ -244,8 +254,8 @@ namespace fix {
                     snapshot.symbol = common::from_string("EURUSD");
                 }
 
-                MarketDataEntry bid1 = {MD_ENTRY_TYPE_BID, 100.0, static_cast<fix::Quantity>(100)};
-                MarketDataEntry offer1 = {MD_ENTRY_TYPE_OFFER, 101.0, static_cast<fix::Quantity>(150)};
+                MarketDataEntry bid1 = {MDEntryType::Bid, 100.0, 100, std::chrono::system_clock::now(), 1};
+                MarketDataEntry offer1 = {MDEntryType::Offer, 101.0, 150, std::chrono::system_clock::now(), 1};
                 snapshot.entries.push_back(bid1);
                 snapshot.entries.push_back(offer1);
 

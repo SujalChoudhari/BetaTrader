@@ -2,8 +2,9 @@
  * @file Protocol.h
  * @brief Defines constants and enumerations for the FIX protocol.
  *
- * This file contains various character and string constants used in the FIX protocol,
- * such as SOH delimiter, message types, order sides, order types, and order statuses.
+ * This file contains various character and string constants used in the FIX
+ * protocol, such as SOH delimiter, message types, order sides, order types, and
+ * order statuses.
  */
 
 #pragma once
@@ -11,7 +12,8 @@
 #include <string_view>
 
 namespace fix {
-    /// @brief Start of Header (SOH) character, used as a field delimiter in FIX messages.
+    /// @brief Start of Header (SOH) character, used as a field delimiter in FIX
+    /// messages.
     constexpr char SOH = '\x01';
     /// @brief The BeginString field (Tag 8) for FIX protocol version.
     constexpr std::string_view FIX_BEGIN_STRING = "FIX.4.4";
@@ -77,18 +79,16 @@ namespace fix {
     /// @brief Market Depth (Tag 264) for Top of Book.
     constexpr int MARKET_DEPTH_TOP_OF_BOOK = 1;
 
-    /// @brief Market Data Entry Type (Tag 269) for Bid.
-    constexpr char MD_ENTRY_TYPE_BID = '0';
-    /// @brief Market Data Entry Type (Tag 269) for Offer.
-    constexpr char MD_ENTRY_TYPE_OFFER = '1';
-    /// @brief Market Data Entry Type (Tag 269) for Trade.
-    constexpr char MD_ENTRY_TYPE_TRADE = '2';
+    /**
+     * @enum MDEntryType
+     * @brief Defines the type of market data entry (Tag 269).
+     */
+    enum class MDEntryType : char { Bid = '0', Offer = '1', Trade = '2' };
 
-    /// @brief Market Data Update Action (Tag 279) for New entry.
-    constexpr char MD_UPDATE_ACTION_NEW = '0';
-    /// @brief Market Data Update Action (Tag 279) for Change to an existing entry.
-    constexpr char MD_UPDATE_ACTION_CHANGE = '1';
-    /// @brief Market Data Update Action (Tag 279) for Delete an entry.
-    constexpr char MD_UPDATE_ACTION_DELETE = '2';
+    /**
+     * @enum MDUpdateAction
+     * @brief Defines the update action for a market data entry (Tag 279).
+     */
+    enum class MDUpdateAction : char { New = '0', Change = '1', Delete = '2' };
 
 } // namespace fix
