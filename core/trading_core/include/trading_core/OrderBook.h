@@ -5,6 +5,7 @@
 #pragma once
 #include "common/Order.h"
 #include "common/Types.h"
+#include "trading_core/MarketDataPublisher.h"
 #include <deque>
 #include <map>
 #include <memory>
@@ -16,12 +17,10 @@ namespace trading_core {
      *
      * The order book maintains two separate books for buy (bid) and sell (ask)
      * orders, organized by price levels. It provides methods for inserting and
-     * canceling orders.
+     * canceling orders and publishes market data updates.
      */
     class OrderBook {
     public:
-        virtual ~OrderBook() = default;
-
         /**
          * @brief A deque of orders at a specific price level.
          */
@@ -39,7 +38,14 @@ namespace trading_core {
          */
         using AskMap = std::map<common::Price, PriceLevel>;
 
-    public:
+        /**
+         * @brief Constructs a new OrderBook.
+         * @param symbol The symbol this order book represents.
+         * @param publisher A reference to the market data publisher.
+         */
+        OrderBook(common::Symbol symbol, MarketDataPublisher& publisher);
+        virtual ~OrderBook() = default;
+
         /**
          * @brief Inserts an order into the order book.
          * @param order A raw pointer to the order to be inserted.
@@ -53,6 +59,12 @@ namespace trading_core {
          * otherwise.
          */
         virtual bool cancelOrder(const common::OrderID& orderId);
+
+        /**
+         * @brief Publishes a full snapshot of the current order book for a specific session.
+         * @param sessionId The session to send the snapshot to.
+         */
+        virtual void publishSnapshot(common::SessionID sessionId) const;
 
         /**
          * @brief Gets a raw pointer to the bid map.
@@ -69,5 +81,7 @@ namespace trading_core {
     private:
         BidMap mBidMap; ///< The map of buy orders.
         AskMap mAskMap; ///< The map of sell orders.
+        common::Symbol mSymbol;
+        MarketDataPublisher& mPublisher;
     };
 } // namespace trading_core

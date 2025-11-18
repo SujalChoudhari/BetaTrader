@@ -54,7 +54,7 @@ TEST_F(OrderBookTest, InsertSingleBuyOrder)
     ASSERT_EQ(orderBook->getBidMap()->size(), 1);
     ASSERT_EQ(orderBook->getAskMap()->size(), 0);
     ASSERT_EQ(orderBook->getBidMap()->at(100.0).size(), 1);
-    EXPECT_EQ(orderBook->getBidMap()->at(100.0).front()->getId(), 1);
+    EXPECT_EQ(orderBook->getBidMap()->at(100.0).front()->getClientOrderId(), 1);
 }
 
 TEST_F(OrderBookTest, InsertMultipleOrdersAtSamePrice)
@@ -67,8 +67,8 @@ TEST_F(OrderBookTest, InsertMultipleOrdersAtSamePrice)
     ASSERT_EQ(orderBook->getBidMap()->size(), 1);
     const auto& priceLevel = orderBook->getBidMap()->at(100.0);
     ASSERT_EQ(priceLevel.size(), 2);
-    EXPECT_EQ(priceLevel[0]->getId(), 1); // Check time priority
-    EXPECT_EQ(priceLevel[1]->getId(), 2);
+    EXPECT_EQ(priceLevel[0]->getClientOrderId(), 1); // Check time priority
+    EXPECT_EQ(priceLevel[1]->getClientOrderId(), 2);
 }
 
 TEST_F(OrderBookTest, InsertMultipleOrdersAtDifferentPrices)
@@ -131,7 +131,7 @@ TEST_F(OrderBookTest, CancelOrderLeavesPriceLevel)
     ASSERT_EQ(orderBook->getBidMap()->size(), 1);
     const auto& priceLevel = orderBook->getBidMap()->at(100.0);
     ASSERT_EQ(priceLevel.size(), 1);
-    EXPECT_EQ(priceLevel.front()->getId(), 2);
+    EXPECT_EQ(priceLevel.front()->getClientOrderId(), 2);
 }
 
 // This test is designed to fail if the iterator invalidation bug exists.
@@ -279,14 +279,14 @@ TEST_F(OrderBookPersistenceTest, LoadsOnlyActiveOrdersIntoOrderBook)
     ASSERT_TRUE(newOrderBook.getBidMap()->count(100.0));
     ASSERT_EQ(newOrderBook.getBidMap()->at(100.0).size(),
               2); // Order 1 and Order 5
-    EXPECT_EQ(newOrderBook.getBidMap()->at(100.0)[0]->getId(), 1);
-    EXPECT_EQ(newOrderBook.getBidMap()->at(100.0)[1]->getId(), 5);
+    EXPECT_EQ(newOrderBook.getBidMap()->at(100.0)[0]->getClientOrderId(), 1);
+    EXPECT_EQ(newOrderBook.getBidMap()->at(100.0)[1]->getClientOrderId(), 5);
 
     // Check AskMap (Sell orders)
     ASSERT_EQ(newOrderBook.getAskMap()->size(), 1);
     ASSERT_TRUE(newOrderBook.getAskMap()->count(101.0));
     ASSERT_EQ(newOrderBook.getAskMap()->at(101.0).size(), 1); // Order 2
-    EXPECT_EQ(newOrderBook.getAskMap()->at(101.0)[0]->getId(), 2);
+    EXPECT_EQ(newOrderBook.getAskMap()->at(101.0)[0]->getClientOrderId(), 2);
 
     // Ensure inactive orders are NOT in the book
     ASSERT_FALSE(newOrderBook.getBidMap()->count(99.0)); // Filled order

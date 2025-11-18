@@ -5,6 +5,7 @@
     <mapping directory="$PROJECT_DIR$/vendor/lib/SPSCQueue" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/lib/SQLiteCpp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/lib/SQLiteCpp/googletest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/lib/asio" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/lib/googletest" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/vendor/lib/spdlog" vcs="Git" />
   </component>

@@ -30,8 +30,10 @@ namespace trading_core {
         : mDatabaseWorker(dbWorker)
     {
         if (mDatabaseWorker) {
-            mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
-            mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
+            mTradeIDGenerator
+                    = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+            mOrderIDGenerator
+                    = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         }
         if (autoInitPartitions) { initPartitions(); }
         g_instance = this;
@@ -137,7 +139,8 @@ namespace trading_core {
         for (int i = 0; i < static_cast<int>(common::Instrument::COUNT); ++i) {
             auto instrument = static_cast<common::Instrument>(i);
             mPartitions[i] = std::make_unique<Partition>(
-                    instrument, mDatabaseWorker, mTradeIDGenerator.get());
+                    instrument, mDatabaseWorker, mTradeIDGenerator.get(),
+                    mMarketDataPublisher);
         }
     }
 
@@ -151,15 +154,45 @@ namespace trading_core {
         return mOrderIDGenerator.get();
     }
 
-    void TradingCore::subscribeToExecutions(ExecutionReportCallback callback) {
+    void TradingCore::subscribeToExecutions(ExecutionReportCallback callback)
+    {
         mExecutionReportCallback = callback;
     }
 
-    const TradingCore::ExecutionReportCallback& TradingCore::getExecutionReportCallback() const {
+    void TradingCore::subscribeToMarketData(common::Symbol symbol,
+                                            common::SessionID sessionId)
+    {
+        mMarketDataPublisher.addSubscription(symbol, sessionId);
+        auto partition = getPartition(symbol);
+        if (partition) {
+            partition->getOrderBook()->publishSnapshot(sessionId);
+        }
+    }
+
+    void TradingCore::unsubscribeFromMarketData(common::Symbol symbol,
+                                                common::SessionID sessionId)
+    {
+        mMarketDataPublisher.removeSubscription(symbol, sessionId);
+    }
+
+    void TradingCore::unsubscribeFromMarketData(common::SessionID sessionId)
+    {
+        mMarketDataPublisher.removeSubscription(sessionId);
+    }
+
+    const TradingCore::ExecutionReportCallback&
+    TradingCore::getExecutionReportCallback() const
+    {
         return mExecutionReportCallback;
     }
 
-    TradingCore& TradingCore::getInstance() {
+    MarketDataPublisher& TradingCore::getMarketDataPublisher()
+    {
+        return mMarketDataPublisher;
+    }
+
+    TradingCore& TradingCore::getInstance()
+    {
         return *g_instance;
     }
 
@@ -170,6 +203,34 @@ namespace trading_core {
             if (partition
                 && partition->getOrderManager()->containsOrderById(orderId)) {
                 return partition->getSymbol();
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::optional<common::Order> TradingCore::getOrder(common::OrderID orderId) const
+    {
+        auto instrumentOpt = this->findPartitionForOrder(orderId);
+        if (instrumentOpt) {
+            auto partition = this->getPartition(*instrumentOpt);
+            if (partition) {
+                auto orderOpt = partition->getOrderManager()->getOrderById(orderId);
+                if (orderOpt) {
+                    return **orderOpt;
+                }
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::optional<common::Order> TradingCore::getOrderByClientOrderId(const std::string& clientOrderId) const
+    {
+        for (const auto& partition : mPartitions) {
+            if (partition) {
+                auto orderOpt = partition->getOrderManager()->getOrderByClientOrderId(clientOrderId);
+                if (orderOpt) {
+                    return **orderOpt;
+                }
             }
         }
         return std::nullopt;

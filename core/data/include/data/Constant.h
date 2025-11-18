@@ -11,5 +11,5 @@
 #include <string>
 
 namespace data {
-    const std::string databasePath = "db.sqlite";
+    const std::string databasePath = ":memory:";
 }

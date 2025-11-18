@@ -19,6 +19,8 @@ namespace fix {
 
         /// \brief Client Order ID
         ClOrdID = 11,
+        /// \brief Original Client Order ID
+        OrigClOrdID = 41,
         /// \brief Security Symbol
         Symbol = 55,
         /// \brief Side of order (Buy/Sell)
@@ -55,6 +57,30 @@ namespace fix {
         LastQty = 32,
         /// \brief Transaction Time
         TransactTime = 60,
+
+        // Market Data Tags
+        /// \brief Market Data Request ID
+        MDReqID = 262,
+        /// \brief Subscription Request Type
+        SubscriptionRequestType = 263,
+        /// \brief Market Depth
+        MarketDepth = 264,
+        /// \brief Number of Related Symbols
+        NoRelatedSym = 146,
+        /// \brief Market Data Update Action
+        MDUpdateAction = 279,
+        /// \brief Market Data Entry Type
+        MDEntryType = 269,
+        /// \brief Market Data Entry Price
+        MDEntryPx = 270,
+        /// \brief Market Data Entry Size
+        MDEntrySize = 271,
+        /// \brief Market Data Entry Time
+        MDEntryTime = 273,
+        /// \brief Number of Market Data Entries
+        NoMDEntries = 268,
+        /// \brief Market Data Entry Position Number
+        MDEntryPositionNo = 290,
 
         /// \brief Checksum
         CheckSum = 10,

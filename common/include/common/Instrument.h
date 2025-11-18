@@ -22,7 +22,7 @@ namespace common {
         USDINR, ///< US Dollar / Indian Rupee
         EURINR, ///< Euro / Indian Rupee
         GBPINR, ///< British Pound / Indian Rupee
-        AUDJSD, ///< Australian Dollar / US Dollar
+        AUDUSD, ///< Australian Dollar / US Dollar
         USDMXN, ///< US Dollar / Mexican Peso
         COUNT ///< Helper to get the number of instruments.
     };
@@ -33,7 +33,7 @@ namespace common {
     constexpr std::array<std::string_view,
                          static_cast<size_t>(Instrument::COUNT)>
             symbol_names = {"EURUSD", "USDJPY", "GBPUSD", "USDCAD", "USDINR",
-                            "EURINR", "GBPINR", "AUDJSD", "USDMXN"};
+                            "EURINR", "GBPINR", "AUDUSD", "USDMXN"};
 
     /**
      * @brief Converts an Instrument enum to its string representation.

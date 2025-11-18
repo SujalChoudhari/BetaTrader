@@ -96,7 +96,7 @@ namespace trading_core {
 
         if (!mRiskManager.preCheck(*order, mOrderBook)) {
             ExecutionPublisher::publishRejection(
-                    order->getId(), order->getClientId(), "Risk check failed");
+                    order->getClientOrderId(), order->getClientId(), "Risk check failed");
             return;
         }
 
@@ -119,7 +119,7 @@ namespace trading_core {
 
         if (order->getRemainingQuantity() == 0
             || order->getOrderType() == common::OrderType::Market) {
-            mOrderRepository.removeOrder(order->getId());
+            mOrderRepository.removeOrder(order->getClientOrderId());
         }
     }
 
@@ -178,7 +178,7 @@ namespace trading_core {
         }
 
         if (order->getRemainingQuantity() == 0) {
-            mOrderRepository.removeOrder(order->getId());
+            mOrderRepository.removeOrder(order->getClientOrderId());
         }
     }
 } // namespace trading_core

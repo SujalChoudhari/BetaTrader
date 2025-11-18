@@ -1,5 +1,5 @@
 #include "fix/ExecutionReportToBinaryConverter.h"
-#include "fix/Protocol.h"
+#include "common_fix/Protocol.h"
 #include <gtest/gtest.h>
 #include <string>
 
@@ -39,8 +39,7 @@ TEST(ExecutionReportToBinaryConverterTests, BasicConversion)
             std::chrono::system_clock::now()
     );
 
-    std::vector<char> binary_data = fix::ExecutionReportToBinaryConverter::convert(report);
-    std::string message(binary_data.begin(), binary_data.end());
+    std::string message = fix::ExecutionReportToBinaryConverter::convert(report); // Changed to std::string
 
     // Basic assertions
     ASSERT_NE(message.find("35=8"), std::string::npos); // MsgType = ExecutionReport

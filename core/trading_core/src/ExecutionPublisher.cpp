@@ -1,8 +1,7 @@
-//
-// Created by sujal on 29-10-2025.
-//
 #include "trading_core/ExecutionPublisher.h"
 #include "trading_core/TradingCore.h"
+#include "trading_core/Partition.h"
+#include "trading_core/OrderManager.h"
 #include "logging/Logger.h"
 #include <chrono>
 #include <iomanip>
@@ -10,46 +9,38 @@
 #include <string_view>
 
 namespace trading_core {
-    void ExecutionPublisher::publishExecution(const common::Order& order,
-                                              const std::string& action)
+
+    void ExecutionPublisher::publishExecution(const common::Order& order, const std::string& action)
     {
-        // Log the internal event
         std::stringstream ss;
-        ss << "EXECUTION | Action=" << action << " | OrderID=" << order.getId()
-           << " | Client=" << order.getClientId();
+        ss << "EXECUTION | Action=" << action << " | CoreOrderID=" << order.getId()
+           << " | ClientID=" << order.getClientId() << " | ClOrdID=" << order.getClientOrderId();
         LOG_INFO(ss.str());
 
-        // Determine the correct FIX order status
-        common::OrderStatus status = order.getStatus();
-        if (action == "NEW") {
-            status = common::OrderStatus::New;
-        } else if (action == "CANCELED") {
+        common::OrderStatus status = (action == "NEW") ? common::OrderStatus::New : order.getStatus();
+        if (action == "CANCELED") {
             status = common::OrderStatus::Cancelled;
         }
-        // For fills, the order status will already be PartiallyFilled or Filled.
 
-        // Create the definitive FIX ExecutionReport
-        // TODO: The hardcoded values for SenderCompID, ExecID, and SeqNum need to be managed properly.
         fix::ExecutionReport report(
-            static_cast<fix::CompID>(1), // SenderCompID (Server)
-            static_cast<fix::CompID>(std::stoul(order.getClientId())), // TargetCompID (Client Session ID)
-            static_cast<fix::SequenceNumber>(0), // MsgSeqNum - Should be managed per session
-            static_cast<fix::ExchangeOrderID>(order.getId()), // ExchangeOrderID
-            static_cast<fix::ClientOrderID>(std::stoul(order.getClientId())), // ClientOrderID
-            "exec_id", // ExecutionID - Should be unique per execution
+            static_cast<fix::CompID>(1),
+            static_cast<fix::CompID>(std::stoul(order.getClientId())),
+            static_cast<fix::SequenceNumber>(0),
+            order.getId(),
+            order.getClientOrderId(),
+            "exec_" + std::to_string(order.getId()),
             status,
             action,
             order.getSymbol(),
             order.getSide(),
-            static_cast<fix::Quantity>(order.getOriginalQuantity()),
-            static_cast<fix::Quantity>(order.getOriginalQuantity() - order.getRemainingQuantity()), // CumQty
-            static_cast<fix::Quantity>(order.getRemainingQuantity()), // LeavesQty
-            static_cast<fix::Price>(order.getPrice()), // LastPx
-            static_cast<fix::Quantity>(0), // LastQty - Should be the quantity of this specific execution
+            order.getOriginalQuantity(),
+            order.getOriginalQuantity() - order.getRemainingQuantity(),
+            order.getRemainingQuantity(),
+            order.getPrice(),
+            0,
             order.getTimestamp()
         );
 
-        // Publish the report to subscribers
         auto& core = TradingCore::getInstance();
         if (auto& callback = core.getExecutionReportCallback()) {
             callback(report);
@@ -58,34 +49,101 @@ namespace trading_core {
 
     void ExecutionPublisher::publishTrade(const common::Trade& trade)
     {
-        // This function should also create and publish a fill ExecutionReport
-        // For now, it only logs.
-        // TODO: Implement trade-to-execution-report logic.
-        auto timestamp_us
-                = std::chrono::duration_cast<std::chrono::microseconds>(
-                          trade.getTimestamp().time_since_epoch())
-                          .count();
+        LOG_INFO("TRADE | TradeID={} | BuyOrder={} | SellOrder={} | Qty={} | Price={}",
+                 trade.getTradeId(), trade.getBuyOrderId(), trade.getSellOrderId(),
+                 trade.getQuantity(), trade.getPrice());
 
-        std::stringstream ss;
-        ss << "TRADE | TradeID=" << trade.getTradeId()
-           << " | BuyOrder=" << trade.getBuyOrderId()
-           << " | SellOrder=" << trade.getSellOrderId()
-           << " | Qty=" << trade.getQuantity() << " | Price=" << std::fixed
-           << std::setprecision(6) << trade.getPrice()
-           << " | Timestamp=" << timestamp_us << "us";
-        LOG_INFO(ss.str());
+        auto& core = TradingCore::getInstance();
+
+        auto buyOrderOpt = core.getOrder(trade.getBuyOrderId());
+        auto sellOrderOpt = core.getOrder(trade.getSellOrderId());
+
+        if (!buyOrderOpt || !sellOrderOpt) {
+            LOG_ERROR("Could not find one or both orders for trade {}", trade.getTradeId());
+            return;
+        }
+        
+        const auto& buyOrder = *buyOrderOpt;
+        const auto& sellOrder = *sellOrderOpt;
+
+        fix::ExecutionReport buyReport(
+            static_cast<fix::CompID>(1),
+            static_cast<fix::CompID>(std::stoul(buyOrder.getClientId())),
+            0,
+            buyOrder.getId(),
+            buyOrder.getClientOrderId(),
+            "exec_trade_" + std::to_string(trade.getTradeId()) + "_buy",
+            buyOrder.getStatus(),
+            "TRADE",
+            buyOrder.getSymbol(),
+            buyOrder.getSide(),
+            buyOrder.getOriginalQuantity(),
+            buyOrder.getOriginalQuantity() - buyOrder.getRemainingQuantity(),
+            buyOrder.getRemainingQuantity(),
+            trade.getPrice(),
+            trade.getQuantity(),
+            trade.getTimestamp()
+        );
+
+        fix::ExecutionReport sellReport(
+            static_cast<fix::CompID>(1),
+            static_cast<fix::CompID>(std::stoul(sellOrder.getClientId())),
+            0,
+            sellOrder.getId(),
+            sellOrder.getClientOrderId(),
+            "exec_trade_" + std::to_string(trade.getTradeId()) + "_sell",
+            sellOrder.getStatus(),
+            "TRADE",
+            sellOrder.getSymbol(),
+            sellOrder.getSide(),
+            sellOrder.getOriginalQuantity(),
+            sellOrder.getOriginalQuantity() - sellOrder.getRemainingQuantity(),
+            sellOrder.getRemainingQuantity(),
+            trade.getPrice(),
+            trade.getQuantity(),
+            trade.getTimestamp()
+        );
+
+        if (auto& callback = core.getExecutionReportCallback()) {
+            callback(buyReport);
+            callback(sellReport);
+        }
     }
 
-    void ExecutionPublisher::publishRejection(const common::OrderID& orderId,
-                                              const common::ClientID& clientId,
-                                              const std::string_view& reason)
+    void ExecutionPublisher::publishRejection(const common::OrderID& clOrdId, const common::ClientID& clientId, const std::string_view& reason)
     {
-        // This function should also create and publish a reject ExecutionReport
-        // For now, it only logs.
-        // TODO: Implement rejection-to-execution-report logic.
-        std::stringstream ss;
-        ss << "REJECT | OrderID=" << orderId << " | Client=" << clientId
-           << " | Reason=" << reason;
-        LOG_INFO(ss.str());
+        LOG_INFO("REJECT | ClOrdID={} | Client={} | Reason={}", clOrdId, clientId, reason);
+        
+        auto& core = TradingCore::getInstance();
+        auto orderOpt = core.getOrderByClientOrderId(std::to_string(clOrdId));
+
+        if (!orderOpt) {
+            LOG_ERROR("Could not find order with ClOrdID {} to publish rejection.", clOrdId);
+            return;
+        }
+        const auto& order = *orderOpt;
+
+        fix::ExecutionReport report(
+            static_cast<fix::CompID>(1),
+            static_cast<fix::CompID>(std::stoul(std::string(clientId))),
+            0,
+            order.getId(),
+            order.getClientOrderId(),
+            "exec_reject_" + std::to_string(order.getId()),
+            common::OrderStatus::Rejected,
+            "REJECTED",
+            order.getSymbol(),
+            order.getSide(),
+            order.getOriginalQuantity(),
+            order.getOriginalQuantity() - order.getRemainingQuantity(),
+            order.getRemainingQuantity(),
+            order.getPrice(),
+            0,
+            order.getTimestamp()
+        );
+        
+        if (auto& callback = core.getExecutionReportCallback()) {
+            callback(report);
+        }
     }
 } // namespace trading_core

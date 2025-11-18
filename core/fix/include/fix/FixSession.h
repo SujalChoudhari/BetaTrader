@@ -1,68 +1,55 @@
 #pragma once
 
-#include "fix/ExecutionReport.h"
+#include "common/Instrument.h"
+#include "fix/BusinessMessageReject.h"
+#include "common_fix/ExecutionReport.h"
+#include "common_fix/MarketDataIncrementalRefresh.h"
+#include "common_fix/MarketDataSnapshotFullRefresh.h"
+#include "fix/Reject.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
+#include <cstdint>
+#include <deque>
 #include <memory>
-#include <vector>
+#include <string>
+#include <unordered_map>
 
 namespace fix {
+    class FixServer; // Forward declaration
 
-    /**
-     * @class FixSession
-     * @brief Represents and manages a single connected client FIX session.
-     *
-     * Each instance of this class is responsible for the lifecycle of one client
-     * connection. It handles reading incoming FIX messages, submitting them to the
-     * trading core, and writing outgoing execution reports back to the client.
-     * The session's lifetime is managed by a `std::shared_ptr`.
-     */
     class FixSession : public std::enable_shared_from_this<FixSession> {
     public:
-        /**
-         * @brief Constructs a new FIX session.
-         * @param socket The Asio TCP socket for this client connection.
-         * @param tradingCore A reference to the application's trading core.
-         * @param sessionId A unique identifier for this session.
-         */
-        FixSession(asio::ip::tcp::socket socket,
-                   trading_core::TradingCore& tradingCore,
-                   uint32_t sessionId);
+        FixSession(asio::ip::tcp::socket socket, FixServer& server, // Add server reference
+                   trading_core::TradingCore& tradingCore, uint32_t sessionId);
 
-        /**
-         * @brief Starts the session's asynchronous read loop.
-         */
         void start();
 
-        /**
-         * @brief Asynchronously sends an execution report to the client.
-         *
-         * This method serializes the `ExecutionReport` into a binary FIX message
-         * and writes it to the socket.
-         * @param report The report to send.
-         */
         void sendExecutionReport(const ExecutionReport& report);
+        void sendMarketDataSnapshotFullRefresh(
+                const MarketDataSnapshotFullRefresh& snapshot);
+        void sendMarketDataIncrementalRefresh(
+                const MarketDataIncrementalRefresh& refresh);
+        void sendReject(const Reject& reject);
+        void sendBusinessMessageReject(const BusinessMessageReject& bizReject);
 
-        /**
-         * @brief Gets the unique identifier for this session.
-         * @return The session ID.
-         */
-        uint32_t getSessionID() const;
+        [[nodiscard]] uint32_t getSessionID() const;
 
     private:
-        /**
-         * @brief Initiates an asynchronous read operation on the socket.
-         *
-         * This is the core of the session's event loop. When data is received,
-         * it is processed, and another read is initiated.
-         */
         void doRead();
+        void doWrite(std::shared_ptr<std::string> message);
+        void handleFixMessage(const std::string& fixMessage, char msgType);
+        void handleCancelOrderRequest(const std::string& fixMessage);
+        void handleModifyOrderRequest(const std::string& fixMessage);
+        void handleMarketDataRequest(const std::string& fixMessage);
 
-        asio::ip::tcp::socket mSocket; ///< The socket for this client connection.
-        trading_core::TradingCore& mTradingCore; ///< Reference to the business logic layer.
-        enum { MaxLength = 1024 }; ///< The maximum size of the read buffer.
-        std::vector<char> mData; ///< The buffer for incoming socket data.
-        uint32_t mSessionId; ///< The unique ID for this session.
+        static constexpr size_t MaxLength = 8192;
+        asio::ip::tcp::socket mSocket;
+        FixServer& mServer; // Store server reference
+        trading_core::TradingCore& mTradingCore;
+        std::vector<char> mData;
+        std::string mReadBuffer;
+        uint32_t mSessionId;
+        std::unordered_map<common::Symbol, std::string> mMarketDataReqIdMap;
     };
 
 } // namespace fix

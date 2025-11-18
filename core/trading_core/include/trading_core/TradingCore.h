@@ -11,11 +11,13 @@
 #include "OrderIDGenerator.h"
 #include "Partition.h"
 #include "TradeIDGenerator.h"
-#include "data/DatabaseWorker.h"
+#include "MarketDataPublisher.h"
 #include "common/Order.h"
-#include "fix/ExecutionReport.h" // Include the report type
-#include <memory>
+#include "common_fix/ExecutionReport.h"
+#include "data/DatabaseWorker.h"
 #include <functional>
+#include <memory>
+#include <optional>
 
 namespace trading_core {
     /**
@@ -24,7 +26,6 @@ namespace trading_core {
      */
     class TradingCore {
     public:
-        // Callback now publishes the fully-formed FIX ExecutionReport
         using ExecutionReportCallback = std::function<void(const fix::ExecutionReport&)>;
 
         TradingCore();
@@ -50,9 +51,24 @@ namespace trading_core {
 
         void subscribeToExecutions(ExecutionReportCallback callback);
 
+        void subscribeToMarketData(common::Symbol symbol, common::SessionID sessionId);
+
+        void unsubscribeFromMarketData(common::Symbol symbol, common::SessionID sessionId);
+        
+        void unsubscribeFromMarketData(common::SessionID sessionId);
+
         const ExecutionReportCallback& getExecutionReportCallback() const;
 
+        MarketDataPublisher& getMarketDataPublisher();
+
         static TradingCore& getInstance();
+
+        std::optional<common::Instrument>
+        findPartitionForOrder(common::OrderID orderId) const;
+
+        std::optional<common::Order> getOrder(common::OrderID orderId) const;
+        
+        std::optional<common::Order> getOrderByClientOrderId(const std::string& clientOrderId) const;
 
 
 #ifndef NDEBUG
@@ -63,9 +79,6 @@ namespace trading_core {
     private:
         void initPartitions();
 
-        std::optional<common::Instrument>
-        findPartitionForOrder(common::OrderID orderId) const;
-
     private:
         data::DatabaseWorker* mDatabaseWorker = nullptr;
         std::unique_ptr<data::DatabaseWorker> mOwnedDatabaseWorker;
@@ -74,5 +87,6 @@ namespace trading_core {
         std::unique_ptr<Partition>
                 mPartitions[static_cast<int>(common::Instrument::COUNT)];
         ExecutionReportCallback mExecutionReportCallback;
+        MarketDataPublisher mMarketDataPublisher;
     };
 } // namespace trading_core

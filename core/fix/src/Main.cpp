@@ -1,7 +1,7 @@
-#include "fix/FixServer.h"
-#include "trading_core/TradingCore.h"
-#include "logging/Logger.h"
 #include "fix/FixRunbookDefinations.h"
+#include "fix/FixServer.h"
+#include "logging/Logger.h"
+#include "trading_core/TradingCore.h"
 #include <asio.hpp>
 
 using namespace trading_core;
@@ -13,19 +13,31 @@ int main() {
 
         asio::io_context io_context;
 
-        LOG_INFO("Initializing Trading Core...");
+        LOG_DEBUG("Initializing Trading Core...");
         TradingCore tradingCore;
         tradingCore.start();
         LOG_INFO("Trading Core started.");
 
-        fix::FixServer server(io_context, 12345, tradingCore);
-        LOG_INFO("FIX Server started on port 12345.");
+        // TODO: Make port configurable, e.g., via command line arguments or a config file.
+        fix::FixServer server(io_context, 8088, tradingCore);
+        LOG_INFO("FIX Server started on port 8088.");
 
-        // Subscribe to the fully-formed execution reports from the trading core.
         tradingCore.subscribeToExecutions(
             [&](const fix::ExecutionReport& report) {
-                // The lambda's only job is to forward the report to the server.
                 server.onExecutionReport(report);
+            }
+        );
+
+        // Subscribe to market data publisher
+        tradingCore.getMarketDataPublisher().subscribeToSnapshots(
+            [&](const fix::MarketDataSnapshotFullRefresh& snapshot) {
+                server.onMarketDataSnapshotFullRefresh(snapshot);
+            }
+        );
+
+        tradingCore.getMarketDataPublisher().subscribeToIncrementals(
+            [&](const fix::MarketDataIncrementalRefresh& refresh) {
+                server.onMarketDataIncrementalRefresh(refresh);
             }
         );
 

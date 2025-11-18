@@ -6,6 +6,7 @@
 #include "common/Types.h"
 #include <memory>
 #include <unordered_map>
+#include <optional>
 
 namespace trading_core {
     /**
@@ -33,13 +34,21 @@ namespace trading_core {
         virtual bool addOrder(std::unique_ptr<common::Order> order);
 
         /**
-         * @brief Gets an order by its ID.
+         * @brief Gets an order by its core ID.
          * @param id The ID of the order to retrieve.
          * @return An optional containing a raw pointer to the order if it was
          * found, otherwise an empty optional.
          */
         [[nodiscard]] virtual std::optional<common::Order*>
         getOrderById(const common::OrderID& id) const;
+
+        /**
+         * @brief Gets an order by its client-assigned ID.
+         * @param clOrdId The client order ID to search for.
+         * @return An optional containing a raw pointer to the order if found.
+         */
+        [[nodiscard]] virtual std::optional<common::Order*>
+        getOrderByClientOrderId(const std::string& clOrdId) const;
 
         /**
          * @brief Removes an order by its ID.
@@ -60,6 +69,12 @@ namespace trading_core {
          * @return The number of orders.
          */
         size_t size() const;
+
+        /**
+         * @brief Gets a const reference to the underlying order map.
+         * @return A const reference to the order map.
+         */
+        const std::unordered_map<common::OrderID, std::unique_ptr<common::Order>>& getOrders() const;
 
     private:
         std::unordered_map<common::OrderID, std::unique_ptr<common::Order>>

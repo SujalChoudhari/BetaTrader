@@ -5,7 +5,7 @@
 
 #include "common/Order.h"
 #include "common/Trade.h"
-#include "fix/ExecutionReport.h" // Include the report type
+#include "common_fix/ExecutionReport.h" // Include the report type
 #include <string>
 
 namespace trading_core {
