@@ -3,3 +3,6 @@
 /docs/
 *.bak
 *.log
+
+/build
+/.vscode
