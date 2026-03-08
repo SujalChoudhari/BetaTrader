@@ -44,6 +44,7 @@ protected:
     std::unique_ptr<MockTradeRepository> mockTradeRepo;
     std::unique_ptr<trading_core::RiskManager> riskManager;
     std::unique_ptr<trading_core::OrderBook> orderBook;
+    trading_core::MarketDataPublisher publisher;
 
     void SetUp() override
     {
@@ -55,7 +56,8 @@ protected:
         // Now, create the object under test with valid mock pointers
         riskManager = std::make_unique<trading_core::RiskManager>(
                 mockTradeRepo.get());
-        orderBook = std::make_unique<trading_core::OrderBook>();
+        orderBook = std::make_unique<trading_core::OrderBook>(
+                common::Instrument::EURUSD, publisher);
     }
 };
 
@@ -63,7 +65,7 @@ protected:
 
 TEST_F(RiskManagerTest, ValidOrder)
 {
-    common::Order order(1, common::Instrument::EURUSD, "client1",
+    common::Order order(1, 1, common::Instrument::EURUSD, "client1", "client1",
                         common::OrderSide::Buy, common::OrderType::Limit,
                         common::TimeInForce::DAY, 100, 1.1, {});
     ASSERT_TRUE(riskManager->preCheck(order, *orderBook));
@@ -71,7 +73,7 @@ TEST_F(RiskManagerTest, ValidOrder)
 
 TEST_F(RiskManagerTest, InvalidQuantity)
 {
-    common::Order order(1, common::Instrument::EURUSD, "client1",
+    common::Order order(1, 1, common::Instrument::EURUSD, "client1", "client1",
                         common::OrderSide::Buy, common::OrderType::Limit,
                         common::TimeInForce::DAY, 0, 1.1, {});
     ASSERT_FALSE(riskManager->preCheck(order, *orderBook));
@@ -79,7 +81,7 @@ TEST_F(RiskManagerTest, InvalidQuantity)
 
 TEST_F(RiskManagerTest, InvalidPrice)
 {
-    common::Order order(1, common::Instrument::EURUSD, "client1",
+    common::Order order(1, 1, common::Instrument::EURUSD, "client1", "client1",
                         common::OrderSide::Buy, common::OrderType::Limit,
                         common::TimeInForce::DAY, 100, 0.0, {});
     ASSERT_FALSE(riskManager->preCheck(order, *orderBook));
@@ -87,25 +89,29 @@ TEST_F(RiskManagerTest, InvalidPrice)
 
 TEST_F(RiskManagerTest, FatFingerBuyRejection)
 {
-    common::Order restingSell(1, common::Instrument::EURUSD, "client2",
-                              common::OrderSide::Sell, common::OrderType::Limit,
+    common::Order restingSell(1, 1, common::Instrument::EURUSD, "client2",
+                              "client2", common::OrderSide::Sell,
+                              common::OrderType::Limit,
                               common::TimeInForce::DAY, 100, 1.0, {});
     orderBook->insertOrder(&restingSell);
-    common::Order incomingBuy(2, common::Instrument::EURUSD, "client1",
-                              common::OrderSide::Buy, common::OrderType::Limit,
+    common::Order incomingBuy(2, 2, common::Instrument::EURUSD, "client1",
+                              "client1", common::OrderSide::Buy,
+                              common::OrderType::Limit,
                               common::TimeInForce::DAY, 100, 1.2, {});
     ASSERT_FALSE(riskManager->preCheck(incomingBuy, *orderBook));
 }
 
 TEST_F(RiskManagerTest, SelfMatchMarketRejection)
 {
-    common::Order restingSell(1, common::Instrument::EURUSD, "client1",
-                              common::OrderSide::Sell, common::OrderType::Limit,
+    common::Order restingSell(1, 1, common::Instrument::EURUSD, "client1",
+                              "client1", common::OrderSide::Sell,
+                              common::OrderType::Limit,
                               common::TimeInForce::DAY, 100, 1.1, {});
     orderBook->insertOrder(&restingSell);
     common::Order incomingMarketBuy(
-            2, common::Instrument::EURUSD, "client1", common::OrderSide::Buy,
-            common::OrderType::Market, common::TimeInForce::DAY, 100, 0.0, {});
+            2, 2, common::Instrument::EURUSD, "client1", "client1",
+            common::OrderSide::Buy, common::OrderType::Market,
+            common::TimeInForce::DAY, 100, 0.0, {});
     ASSERT_FALSE(riskManager->preCheck(incomingMarketBuy, *orderBook));
 }
 

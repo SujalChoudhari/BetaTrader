@@ -13,6 +13,7 @@
 class OrderBookTest : public ::testing::Test {
 protected:
     std::unique_ptr<trading_core::OrderBook> orderBook;
+    trading_core::MarketDataPublisher publisher;
 
     // The fixture owns the orders, because the OrderBook only stores raw
     // pointers.
@@ -20,7 +21,8 @@ protected:
 
     void SetUp() override
     {
-        orderBook = std::make_unique<trading_core::OrderBook>();
+        orderBook = std::make_unique<trading_core::OrderBook>(
+                common::Instrument::EURUSD, publisher);
     }
 
     // Helper to create and store an order, returning a raw pointer for
@@ -31,8 +33,9 @@ protected:
                                = common::OrderStatus::New)
     {
         auto order = std::make_unique<common::Order>(
-                id, common::Instrument::EURUSD, "test_client", side,
-                common::OrderType::Limit, common::TimeInForce::DAY, qty, price,
+                id, id, common::Instrument::EURUSD, "test_client",
+                "test_client", side, common::OrderType::Limit,
+                common::TimeInForce::DAY, qty, price,
                 std::chrono::system_clock::now());
         order->setStatus(status);
         if (status == common::OrderStatus::PartiallyFilled) {
@@ -205,7 +208,7 @@ protected:
                                        common::OrderStatus status)
     {
         auto order = std::make_unique<common::Order>(
-                id, common::Instrument::EURUSD, "client1", side,
+                id, id, common::Instrument::EURUSD, "client1", "client1", side,
                 common::OrderType::Limit, common::TimeInForce::DAY, qty, price,
                 std::chrono::system_clock::now());
         order->setStatus(status);
@@ -249,7 +252,9 @@ TEST_F(OrderBookPersistenceTest, LoadsOnlyActiveOrdersIntoOrderBook)
     save_future.wait();
 
     // 2. Simulate restart: Create a new OrderBook and load orders
-    trading_core::OrderBook newOrderBook;
+    trading_core::MarketDataPublisher publisher;
+    trading_core::OrderBook newOrderBook(common::Instrument::EURUSD,
+                                         publisher);
     std::vector<common::Order> loadedOrders;
     std::promise<void> load_promise;
     std::future<void> load_future = load_promise.get_future();

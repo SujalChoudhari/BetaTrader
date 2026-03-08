@@ -61,7 +61,7 @@ TEST(BinaryToOrderRequestConverterTests, BasicConversion)
     ASSERT_TRUE(orderRequestOpt.has_value()); // Assert that optional has a value
     const fix::OrderRequest& orderRequest = orderRequestOpt.value(); // Get the underlying value
 
-    ASSERT_EQ(orderRequest.clientId, "CLIENT_A");
+    ASSERT_EQ(orderRequest.senderCompID, "CLIENT_A");
     ASSERT_EQ(orderRequest.clientOrderId, 12345);
     ASSERT_EQ(orderRequest.symbol, common::Instrument::EURUSD);
     ASSERT_EQ(orderRequest.side, common::OrderSide::Buy);

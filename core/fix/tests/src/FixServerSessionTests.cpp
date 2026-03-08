@@ -40,11 +40,13 @@ TEST(FixServerSessionTests, NewOrderEndToEnd) {
     // The ClientID is a string representation of the session ID.
     common::Order test_order(
         123, // Order ID
-        common::Instrument::EURUSD, 
+        0,
+        common::Instrument::EURUSD,
         "456", // ClientID (Session ID)
-        common::OrderSide::Buy, 
-        common::OrderType::Limit, 
-        common::TimeInForce::DAY, 
+        "fix_client",
+        common::OrderSide::Buy,
+        common::OrderType::Limit,
+        common::TimeInForce::DAY,
         1000, // Quantity
         1.25, // Price
         std::chrono::system_clock::now()

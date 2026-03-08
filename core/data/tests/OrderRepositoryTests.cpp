@@ -22,10 +22,10 @@ protected:
 
 TEST_F(OrderRepositoryTests, SaveAndLoadOrder)
 {
-    const common::Order order(1, common::Instrument::EURUSD, "client1",
-                              common::OrderSide::Buy, common::OrderType::Limit,
-                              common::TimeInForce::DAY, 100, 1.1,
-                              std::chrono::system_clock::now());
+    const common::Order order(1, 1, common::Instrument::EURUSD, "client1",
+                              "test", common::OrderSide::Buy,
+                              common::OrderType::Limit, common::TimeInForce::DAY,
+                              100, 1.1, std::chrono::system_clock::now());
 
     orderRepository->saveOrder(order);
 
@@ -56,7 +56,7 @@ TEST_F(OrderRepositoryTests, SaveAndLoadOrder)
 
 TEST_F(OrderRepositoryTests, UpdateOrder)
 {
-    common::Order order(1, common::Instrument::EURUSD, "client1",
+    common::Order order(1, 1, common::Instrument::EURUSD, "client1", "test",
                         common::OrderSide::Buy, common::OrderType::Limit,
                         common::TimeInForce::DAY, 100, 1.1,
                         std::chrono::system_clock::now());
@@ -85,10 +85,10 @@ TEST_F(OrderRepositoryTests, UpdateOrder)
 
 TEST_F(OrderRepositoryTests, RemoveOrder)
 {
-    const common::Order order(1, common::Instrument::EURUSD, "client1",
-                              common::OrderSide::Buy, common::OrderType::Limit,
-                              common::TimeInForce::DAY, 100, 1.1,
-                              std::chrono::system_clock::now());
+    const common::Order order(1, 1, common::Instrument::EURUSD, "client1",
+                              "test", common::OrderSide::Buy,
+                              common::OrderType::Limit, common::TimeInForce::DAY,
+                              100, 1.1, std::chrono::system_clock::now());
     orderRepository->saveOrder(order);
 
     orderRepository->removeOrder(order.getClientOrderId());

@@ -72,7 +72,8 @@ std::unique_ptr<Order> create_order(OrderIDGenerator* orderIdGenerator)
     if (qty > 5000) qty = 5000;
 
     return std::make_unique<Order>(
-            orderId, inst, "STRESS_CLIENT_" + std::to_string(orderId),
+            orderId, orderId, inst, "STRESS_CLIENT_" + std::to_string(orderId),
+            "STRESS_CLIENT",
             (orderId % 2 == 0) ? OrderSide::Buy : OrderSide::Sell,
             OrderType::Limit, common::TimeInForce::DAY, qty, new_price,
             system_clock::now());
