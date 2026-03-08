@@ -36,7 +36,7 @@ std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketD
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
         
         std::tm tm_buf;
-        gmtime_s(&tm_buf, &time_t_now);
+        gmtime_r(&time_t_now, &tm_buf);
 
         bodyStream << static_cast<int>(fix::Tag::MDEntryTime) << "=" 
                    << std::put_time(&tm_buf, "%H:%M:%S") << "." << std::setfill('0') << std::setw(3) << ms.count()
@@ -57,7 +57,7 @@ std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketD
     auto time_t_now = std::chrono::system_clock::to_time_t(now);
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
     std::tm tm_buf;
-    gmtime_s(&tm_buf, &time_t_now);
+    gmtime_r(&time_t_now, &tm_buf);
     headerStream << static_cast<int>(fix::Tag::SendingTime) << "=" 
                   << std::put_time(&tm_buf, "%Y%m%d-%H:%M:%S") << "." << std::setfill('0') << std::setw(3) << ms.count()
                   << fix::SOH;

@@ -33,7 +33,7 @@ namespace fix {
         {
             const auto timeT = std::chrono::system_clock::to_time_t(ts);
             std::tm tm_buf;
-            gmtime_s(&tm_buf, &timeT);
+            gmtime_r(&timeT, &tm_buf);
             std::stringstream ss;
             ss << std::put_time(&tm_buf, "%Y%m%d-%H:%M:%S");
             const auto duration = ts.time_since_epoch();
