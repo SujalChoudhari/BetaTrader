@@ -33,8 +33,8 @@ namespace data {
             try {
                 SQLite::Statement query(db,
                                         data::query::insertIntoOrderTableQuery);
-                query.bind(1, static_cast<sqlite3_int64>(order.getId()));
-                query.bind(2, static_cast<sqlite3_int64>(order.getClientOrderId()));
+                query.bind(1, static_cast<int64_t>(order.getId()));
+                query.bind(2, static_cast<int64_t>(order.getClientOrderId()));
                 query.bind(3, order.getClientId());
                 query.bind(4, order.getSenderCompID());
                 query.bind(5, common::to_string(order.getSymbol()));
@@ -42,9 +42,9 @@ namespace data {
                 query.bind(7, common::to_string(order.getOrderType()));
                 query.bind(8, common::to_string(order.getTimeInForce()));
                 query.bind(9, order.getPrice());
-                query.bind(10, static_cast<sqlite3_int64>(
+                query.bind(10, static_cast<int64_t>(
                                       order.getOriginalQuantity()));
-                query.bind(11, static_cast<sqlite3_int64>(
+                query.bind(11, static_cast<int64_t>(
                                       order.getRemainingQuantity()));
                 query.bind(12, common::to_string(order.getStatus()));
                 const auto ns
@@ -135,7 +135,7 @@ namespace data {
         mDb->enqueue([orderId](const SQLite::Database& db) {
             try {
                 SQLite::Statement query(db, query::removeOrderQuery);
-                query.bind(1, static_cast<sqlite3_int64>(orderId));
+                query.bind(1, static_cast<int64_t>(orderId));
                 query.exec();
             }
             catch (const std::exception& e) {
@@ -151,10 +151,10 @@ namespace data {
         mDb->enqueue([order](SQLite::Database& db) {
             try {
                 SQLite::Statement query(db, data::query::updateOrderQuery);
-                query.bind(1, static_cast<sqlite3_int64>(
+                query.bind(1, static_cast<int64_t>(
                                       order.getRemainingQuantity()));
                 query.bind(2, common::to_string(order.getStatus()));
-                query.bind(3, static_cast<sqlite3_int64>(order.getId()));
+                query.bind(3, static_cast<int64_t>(order.getId()));
                 query.exec();
             }
             catch (const std::exception& e) {

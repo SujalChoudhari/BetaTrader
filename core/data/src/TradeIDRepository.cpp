@@ -61,7 +61,7 @@ namespace data {
 
                 if (tradeID > current) {
                     SQLite::Statement updateStmt(db, query::setTradeIdQuery);
-                    updateStmt.bind(1, static_cast<sqlite3_int64>(tradeID));
+                    updateStmt.bind(1, static_cast<int64_t>(tradeID));
                     updateStmt.exec();
                 }
             }

@@ -34,14 +34,14 @@ namespace data {
             try {
                 SQLite::Statement query(db,
                                         data::query::insertIntoTradeTableQuery);
-                query.bind(1, static_cast<sqlite3_int64>(trade.getTradeId()));
+                query.bind(1, static_cast<int64_t>(trade.getTradeId()));
                 query.bind(2, std::string(common::to_string(
                                       trade.getOrderSymbol())));
                 query.bind(3,
-                           static_cast<sqlite3_int64>(trade.getBuyOrderId()));
+                           static_cast<int64_t>(trade.getBuyOrderId()));
                 query.bind(4,
-                           static_cast<sqlite3_int64>(trade.getSellOrderId()));
-                query.bind(5, static_cast<sqlite3_int64>(trade.getQuantity()));
+                           static_cast<int64_t>(trade.getSellOrderId()));
+                query.bind(5, static_cast<int64_t>(trade.getQuantity()));
                 query.bind(6, trade.getPrice());
                 const auto ns
                         = std::chrono::duration_cast<std::chrono::nanoseconds>(
