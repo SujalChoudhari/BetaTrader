@@ -33,6 +33,11 @@ The following diagram shows the high-level relationships between the key compone
 
 ```mermaid
 classDiagram
+    class Partition {
+        +start()
+        +enqueue(Command)
+    }
+
     class WorkerThread {
         -processCommands()
     }
@@ -68,9 +73,15 @@ classDiagram
         +publish(Order order)
     }
 
-    WorkerThread o--> OrderBook : Manages
+    Partition *--> WorkerThread : Owns
+    Partition *--> OrderBook : Owns
+    Partition *--> Matcher : Owns
+    Partition *--> OrderManager : Owns
+    Partition *--> RiskManager : Owns
+
+    WorkerThread o--> OrderBook : Mutates
     WorkerThread o--> Matcher : Uses
-    WorkerThread o--> OrderManager : Manages
+    WorkerThread o--> OrderManager : Mutates
     WorkerThread o--> RiskManager : Uses
     WorkerThread o--> TradeIDGenerator : Uses
     WorkerThread o--> ExecutionPublisher : Uses
