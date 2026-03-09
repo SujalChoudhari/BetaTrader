@@ -2,6 +2,12 @@
 // Created by sujal on 29-10-2025.
 //
 
+/**
+ * @file Instrument.h
+ * @ingroup common
+ * @brief Shared instrument definitions.
+ */
+
 #pragma once
 #include <array>
 #include <cstdint>

@@ -1,3 +1,9 @@
+/**
+ * @file AuthRepository.h
+ * @ingroup data_layer
+ * @brief Repository for authorized FIX clients.
+ */
+
 #pragma once
 #include "data/DatabaseWorker.h"
 #include <functional>

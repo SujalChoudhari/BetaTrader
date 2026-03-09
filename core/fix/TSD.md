@@ -1,4 +1,5 @@
-# Technical Specification Document: FIX Server (`@fix`)
+# FIX Gateway Technical Specification
+@page fix_tsd FIX Gateway Specification
 
 ## 1. Overview
 

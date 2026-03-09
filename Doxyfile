@@ -65,6 +65,9 @@ IMPLICIT_DIR_DOCS      = YES
 
 GENERATE_HTML          = YES
 GENERATE_TREEVIEW      = YES
+HTML_EXTRA_STYLESHEET  = vendor/doxygen-awesome-css/doxygen-awesome.css
+HTML_COLORSTYLE        = LIGHT_AND_DARK
+HTML_HEADER            = docs/header.html
 PAGE_OUTLINE_PANEL     = YES
 HTML_CODE_FOLDING      = YES
 HTML_COPY_CLIPBOARD    = YES

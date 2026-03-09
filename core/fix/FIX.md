@@ -1,4 +1,5 @@
-# 🛠️ FIX Protocol Developer Tag=Value Reference Guide
+# FIX Protocol Developer Tag-Value Reference Guide
+@page fix_guide FIX Protocol Guide
 
 This guide serves as a quick, technical reference for developers, detailing the most critical and frequently used FIX tags, their required values, and their purpose. Understanding these values is essential for successful message construction, validation, and session management.
 
@@ -17,7 +18,7 @@ These fields are essential for transport and session identification. They **must
 | 52 | SendingTime | Time message was generated (UTC). | **UTC Timestamp** (`YYYYMMDD-HH:MM:SS.mmm`). | 
 | 10 | CheckSum | Three-digit integrity check. Must be the **last field** in the message. | **Three-digit Integer** (Calculated: sum ASCII chars mod 256). | 
 
-## II. FIX Session Control Messages (MsgType)
+## 2. FIX Session Control Messages (MsgType)
 
 Messages used by the **Session Layer** to manage connection, sequence, and recovery.
 
@@ -79,7 +80,7 @@ Used when an application message is syntactically valid (passes session checks) 
 | 371 | RefTagID | The specific field tag (if applicable) that caused the business rule violation. | **Integer Tag ID** (e.g., `40` if OrdType was unsupported). | 
 | 58 | Text | Descriptive explanation of the business failure. | **Descriptive String.** | 
 
-## IV. Market Data & Order Book Management
+## 4. Market Data and Order Book Management
 
 This section covers the request for market data (MsgType=V) and the subsequent data messages used to build and update the order book (MsgType=W and X).
 
@@ -125,7 +126,7 @@ These fields **must** repeat for every entry listed under **NoMDEntries(268)**. 
 | 273 | MDEntryTime | The time the entry was generated (for timestamping the event). | **Time/UTC Timestamp.** | 
 | 1023 | MDEntryPositionNo | Required for maintaining order book depth (e.g., 1st level, 2nd level). | **Integer.** | 
 
-## V. Generic Repeating Group Constraints
+## 5. Generic Repeating Group Constraints
 
 When constructing complex messages (like an Allocation message or an order with multiple legs), repeating groups must adhere to strict sequencing.
 

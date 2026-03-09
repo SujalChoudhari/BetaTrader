@@ -1,4 +1,4 @@
-# BetaTrader: A C++ FX Trading Engine Blueprint
+# BetaTrader C++ FX Trading Engine Blueprint
 
 Welcome to BetaTrader, a hands-on learning project and a C++ blueprint that explores how a small, exchange-like FX trading engine is put together.
 
@@ -73,12 +73,14 @@ python3 ../../tools/coverage_reporter.py
 
 ## System Design and Architecture
 
-For a deeper understanding of the architecture, refer to the technical system design (TSD) documents:
+For a deeper understanding of the architecture, refer to the technical specifications:
 
-*   **[core/trading_core/TSD.md](core/trading_core/TSD.md)**: Detailed design of the matching engine, partitioning, and threading model.
-*   **[core/data/TSD.md](core/data/TSD.md)**: Design of the persistence layer, database schema, and asynchronous worker.
+*   @subpage data_tsd "Data Persistence Technical Specification"
+*   @subpage fix_tsd "FIX Gateway Technical Specification"
+*   @subpage trading_tsd "Trading Core Technical Specification"
+*   @subpage fix_guide "FIX Protocol Reference Guide"
 
-## For Forex Traders: A Domain Primer
+## Forex Trading Domain Concepts
 
 This repository models a small, exchange-like matching engine. Here are the key concepts implemented:
 
