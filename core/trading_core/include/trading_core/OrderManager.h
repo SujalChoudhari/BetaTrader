@@ -62,7 +62,7 @@ namespace trading_core {
          * @param id The ID of the order to check.
          * @return True if the order exists, false otherwise.
          */
-        bool containsOrderById(const common::OrderID& id) const;
+        virtual bool containsOrderById(const common::OrderID& id) const;
 
         /**
          * @brief Gets the number of orders in the order manager.

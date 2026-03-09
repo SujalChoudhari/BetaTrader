@@ -19,6 +19,7 @@ namespace trading_core {
         mOwnedDatabaseWorker
                 = std::make_unique<data::DatabaseWorker>(data::databasePath);
         mDatabaseWorker = mOwnedDatabaseWorker.get();
+        mAuthRepo = std::make_unique<data::AuthRepository>(mDatabaseWorker);
         mTradeIDRepo = std::make_unique<data::TradeIDRepository>(mDatabaseWorker);
         mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mTradeIDRepo.get());
         mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
@@ -31,6 +32,7 @@ namespace trading_core {
         : mDatabaseWorker(dbWorker)
     {
         if (mDatabaseWorker) {
+            mAuthRepo = std::make_unique<data::AuthRepository>(mDatabaseWorker);
             mTradeIDRepo = std::make_unique<data::TradeIDRepository>(mDatabaseWorker);
             mTradeIDGenerator
                     = std::make_unique<TradeIDGenerator>(mTradeIDRepo.get());
@@ -154,6 +156,11 @@ namespace trading_core {
     OrderIDGenerator* TradingCore::getOrderIDGenerator()
     {
         return mOrderIDGenerator.get();
+    }
+    
+    data::AuthRepository* TradingCore::getAuthRepository() const
+    {
+        return mAuthRepo.get();
     }
 
     void TradingCore::subscribeToExecutions(ExecutionReportCallback callback)

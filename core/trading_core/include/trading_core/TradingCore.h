@@ -16,6 +16,7 @@
 #include "common_fix/ExecutionReport.h"
 #include "data/DatabaseWorker.h"
 #include "data/TradeIDRepository.h"
+#include "data/AuthRepository.h"
 #include <functional>
 #include <memory>
 #include <optional>
@@ -49,14 +50,16 @@ namespace trading_core {
         Partition* getPartition(common::Instrument instrument) const;
 
         OrderIDGenerator* getOrderIDGenerator();
-
-        void subscribeToExecutions(ExecutionReportCallback callback);
-
-        void subscribeToMarketData(common::Symbol symbol, common::SessionID sessionId);
-
-        void unsubscribeFromMarketData(common::Symbol symbol, common::SessionID sessionId);
         
-        void unsubscribeFromMarketData(common::SessionID sessionId);
+        data::AuthRepository* getAuthRepository() const;
+
+        virtual void subscribeToExecutions(ExecutionReportCallback callback);
+
+        virtual void subscribeToMarketData(common::Symbol symbol, common::SessionID sessionId);
+
+        virtual void unsubscribeFromMarketData(common::Symbol symbol, common::SessionID sessionId);
+        
+        virtual void unsubscribeFromMarketData(common::SessionID sessionId);
 
         const ExecutionReportCallback& getExecutionReportCallback() const;
 
@@ -83,6 +86,7 @@ namespace trading_core {
     private:
         data::DatabaseWorker* mDatabaseWorker = nullptr;
         std::unique_ptr<data::DatabaseWorker> mOwnedDatabaseWorker;
+        std::unique_ptr<data::AuthRepository> mAuthRepo;
         std::unique_ptr<data::TradeIDRepository> mTradeIDRepo;
         std::unique_ptr<TradeIDGenerator> mTradeIDGenerator;
         std::unique_ptr<OrderIDGenerator> mOrderIDGenerator;
