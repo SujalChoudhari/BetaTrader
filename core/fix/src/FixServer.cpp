@@ -10,6 +10,12 @@ namespace fix {
                     asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)),
           mSocket(ioContext), mTradingCore(tradingCore)
     {
+        if (auto authRepo = mTradingCore.getAuthRepository()) {
+            authRepo->loadValidClients([this](const std::vector<std::string>& clients) {
+                mSessionManager.loadConfig(clients);
+            });
+        }
+        
         doAccept();
     }
 

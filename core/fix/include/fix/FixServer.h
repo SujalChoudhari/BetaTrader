@@ -2,6 +2,7 @@
 
 #include "common_fix/ExecutionReport.h"
 #include "fix/FixSession.h"
+#include "fix/FixSessionManager.h"
 #include "common_fix/MarketDataIncrementalRefresh.h"
 #include "common_fix/MarketDataSnapshotFullRefresh.h"
 #include "trading_core/TradingCore.h"
@@ -26,6 +27,8 @@ namespace fix {
         void registerSession(const std::shared_ptr<FixSession>& session);
 
         void unregisterSession(uint32_t sessionId);
+        
+        FixSessionManager& getManager() { return mSessionManager; }
 
     private:
         void doAccept();
@@ -33,6 +36,7 @@ namespace fix {
         asio::ip::tcp::acceptor mAcceptor;
         asio::ip::tcp::socket mSocket;
         trading_core::TradingCore& mTradingCore;
+        FixSessionManager mSessionManager;
         std::map<uint32_t, std::shared_ptr<FixSession>> mSessions;
         uint32_t mNextSessionId = 1;
         std::map<std::string, std::vector<std::weak_ptr<FixSession>>> mMarketDataSubscriptions;
