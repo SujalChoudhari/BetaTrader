@@ -45,4 +45,12 @@ namespace data::query {
     constexpr auto removeOrderQuery = "DELETE FROM orders WHERE core_order_id = ?;";
     constexpr auto updateOrderQuery = "UPDATE orders SET remaining_quantity = "
                                       "?, status = ? WHERE core_order_id = ?;";
+
+    // Clients Table
+    constexpr auto createClientTableQuery
+            = "CREATE TABLE IF NOT EXISTS clients (sender_comp_id TEXT PRIMARY KEY, is_active INTEGER);";
+    constexpr auto insertClientQuery
+            = "INSERT OR IGNORE INTO clients (sender_comp_id, is_active) VALUES (?, ?);";
+    constexpr auto loadClientsQuery
+            = "SELECT sender_comp_id FROM clients WHERE is_active = 1;";
 } // namespace data::query

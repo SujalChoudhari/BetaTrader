@@ -1,6 +1,7 @@
 #include "data/DatabaseWorker.h"
 #include "data/DataRunBookDefinations.h"
 #include "logging/Runbook.h"
+#include <future>
 
 namespace data {
 
@@ -16,7 +17,10 @@ namespace data {
 
     DatabaseWorker::~DatabaseWorker()
     {
-        if (mWorker.joinable()) { mWorker.request_stop(); }
+        if (mWorker.joinable()) {
+            mWorker.request_stop();
+            mWorker.join();
+        }
     }
 
     void DatabaseWorker::enqueue(std::function<void(SQLite::Database&)> task)
@@ -32,6 +36,16 @@ namespace data {
     void DatabaseWorker::waitUntilIdle()
     {
         while (getQueueSize() > 0) { std::this_thread::yield(); }
+    }
+
+    void DatabaseWorker::sync()
+    {
+        std::promise<void> promise;
+        auto future = promise.get_future();
+        enqueue([&promise](SQLite::Database&) {
+            promise.set_value();
+        });
+        future.wait();
     }
 
     void DatabaseWorker::workerLoop(std::stop_token stopToken)

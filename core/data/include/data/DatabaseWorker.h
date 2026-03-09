@@ -27,6 +27,7 @@ namespace data {
         virtual void enqueue(std::function<void(SQLite::Database&)> task);
         size_t getQueueSize() const;
         void waitUntilIdle();
+        void sync();
 
     protected:
         // Protected constructor for mocking

@@ -73,4 +73,12 @@ namespace errors {
             "Failed to update an order in the 'Order' database table.",
             "Check the underlying database connection and the SQL syntax for "
             "the order table creation query."};
+
+    inline constexpr runbook::ErrorDefinition EDATA13{
+            "EDATA13", "Failed to initialize the 'clients' Auth database table.",
+            "Check the underlying database connection and SQL syntax."};
+
+    inline constexpr runbook::ErrorDefinition EDATA14{
+            "EDATA14", "Failed to load FIX clients from the Auth database table.",
+            "Check the underlying database connection and SQL syntax."};
 } // namespace errors
