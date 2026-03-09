@@ -71,14 +71,22 @@ python3 ../../tools/coverage_reporter.py
     *   `MatcherTests.cpp`: Price-time priority matching logic details.
     *   `AuthRepositoryTests.cpp`: Verification of database-backed client authentication.
 
-## System Design and Architecture
+## System Components
 
-For a deeper understanding of the architecture, refer to the technical specifications:
+BetaTrader is divided into several high-level components. Each component contains its own overview and technical specification:
 
-*   @subpage data_tsd "Data Persistence Technical Specification"
-*   @subpage fix_tsd "FIX Gateway Technical Specification"
-*   @subpage trading_tsd "Trading Core Technical Specification"
-*   @subpage fix_guide "FIX Protocol Reference Guide"
+### Trading Core
+*   @subpage trading_readme "Trading Core Overview": Matching engine and order management details.
+*   @subpage trading_tsd "Technical Specification": Detailed architectural breakdown and threading model.
+
+### FIX Gateway
+*   @subpage fix_readme "FIX Gateway Overview": Networking and session management details.
+*   @subpage fix_tsd "Technical Specification": Protocol implementation and gateway architecture.
+*   @subpage fix_guide "FIX Protocol Reference Guide": Quick reference for tag-value pairs.
+
+### Data Persistence
+*   @subpage data_readme "Data Persistence Overview": Repository and background worker details.
+*   @subpage data_tsd "Technical Specification": Schema design and persistence mechanics.
 
 ## Forex Trading Domain Concepts
 

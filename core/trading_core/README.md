@@ -1,4 +1,5 @@
-# Trading Core Module (`core/trading_core`)
+# Trading Core Component
+@page trading_readme Trading Core Overview
 
 The Trading Core is the in-memory matching engine and order management system for BetaTrader.
 

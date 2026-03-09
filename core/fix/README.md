@@ -1,4 +1,5 @@
-# FIX Protocol Server (`@fix`)
+# FIX Gateway Component
+@page fix_readme FIX Gateway Overview
 
 The `@fix` component is a standalone server responsible for handling client connections over the Financial Information eXchange (FIX) protocol. It acts as the primary gateway for clients to submit orders to the BetaTrader trading engine.
 

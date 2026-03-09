@@ -1,4 +1,5 @@
-# Data Module (`core/data`)
+# Data Persistence Component
+@page data_readme Data Persistence Overview
 
 The Data module provides a persistence layer for the BetaTrader system.
 
