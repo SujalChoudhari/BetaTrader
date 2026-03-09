@@ -20,8 +20,8 @@ This project is for developers, engineers, and curious traders who want a readab
 | Module | Description | Key Components |
 | :--- | :--- | :--- |
 | `common/` | Shared data structures, types, and utilities used across the project. | `Order`, `Trade`, `Instrument`, `Logger`, `Runbook` |
-| `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager` |
-| `core/data/` | A lightweight persistence layer for storing trades and orders. | `DatabaseWorker`, `OrderRepository`, `TradeRepository` |
+| `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager`, `ExecutionPublisher` |
+| `core/data/` | A lightweight persistence layer for storing trades and orders. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `TradeIDRepository` |
 | `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
 | `tests/` | Unit tests for `trading_core` and `data` modules. | GoogleTest-based tests for all core logic. |
 
@@ -31,7 +31,6 @@ This project is for developers, engineers, and curious traders who want a readab
 BetaTrader/
 ├── CMakeLists.txt
 ├── README.md
-├── SystemDesign.md
 ├── common/             # Shared types & logging (Order, Trade, Instrument)
 ├── core/
 │   ├── data/           # Persistence layer (SQLite adapter, repositories)
@@ -69,7 +68,6 @@ Since there is no single executable entry point yet, the best way to understand 
 
 For a deeper understanding of the architecture, refer to the technical system design (TSD) documents:
 
-*   **[SystemDesign.md](SystemDesign.md)**: High-level overview of the entire system.
 *   **[core/trading_core/TSD.md](core/trading_core/TSD.md)**: Detailed design of the matching engine, partitioning, and threading model.
 *   **[core/data/TSD.md](core/data/TSD.md)**: Design of the persistence layer, database schema, and asynchronous worker.
 
@@ -81,6 +79,7 @@ This repository models a small, exchange-like matching engine. Here are the key 
 *   **Order Types**: `Limit` and `Market` orders are supported (`common/include/common/Types.h`).
 *   **Matching Algorithm**: The matching engine uses a standard **price-time priority** algorithm. The execution price is the price of the resting order on the book.
 *   **Fills**: Partial fills are supported. Each fill generates a `common::Trade` object, which is then published and persisted.
+*   **Execution Monitoring**: Real-time trade executions and order rejections are formatted and dumped directly to standard output, making it easy to track engine activity.
 
 To experiment with trading logic, you can:
 1.  Write a new unit test in `TradingSystemTests.cpp`.

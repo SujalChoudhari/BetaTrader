@@ -58,6 +58,11 @@ classDiagram
         +check(Order* order): bool
     }
 
+    class TradeIDGenerator {
+        +nextId(): TradeID
+        -m_repo: TradeIDRepository*
+    }
+
     class ExecutionPublisher {
         +publish(Trade trade)
         +publish(Order order)
@@ -67,6 +72,7 @@ classDiagram
     WorkerThread o--> Matcher : Uses
     WorkerThread o--> OrderManager : Manages
     WorkerThread o--> RiskManager : Uses
+    WorkerThread o--> TradeIDGenerator : Uses
     WorkerThread o--> ExecutionPublisher : Uses
 
     Matcher --> OrderBook : Reads from
@@ -83,7 +89,8 @@ classDiagram
 | **`OrderManager`** | A repository for all live orders within a partition. It owns the `Order` objects and provides fast lookups by Order ID. |
 | **`Matcher`** | The core matching engine. It implements the price-time priority matching algorithm and produces trades when an incoming order crosses the book. |
 | **`RiskManager`** | A component for pre-trade risk checks. It validates incoming orders against configurable risk limits. |
-| **`ExecutionPublisher`** | An interface for distributing execution reports (trades and order status updates) to downstream consumers. |
+| **`TradeIDGenerator`**| Thread-safe generator for `TradeIDs`. Depends strictly on the `TradeIDRepository` interface for fetching and persisting the sequence asynchronously. |
+| **`ExecutionPublisher`** | An interface for distributing execution reports (trades and order status updates). It now logs structured strings to standard output in real-time. |
 
 ## 4. Critical Design Conventions
 
