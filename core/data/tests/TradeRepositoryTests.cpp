@@ -26,6 +26,7 @@ TEST_F(TradeRepositoryTest, InitDatabase)
     dbWorker->enqueue([](SQLite::Database& db) {
         ASSERT_TRUE(db.tableExists("trades"));
     });
+    dbWorker->sync();
 }
 
 TEST_F(TradeRepositoryTest, AddTrade)
@@ -40,4 +41,5 @@ TEST_F(TradeRepositoryTest, AddTrade)
         ASSERT_TRUE(query.executeStep());
         ASSERT_EQ(query.getColumn(0).getInt64(), 1);
     });
+    dbWorker->sync();
 }

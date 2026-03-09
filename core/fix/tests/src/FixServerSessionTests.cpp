@@ -39,8 +39,8 @@ TEST(FixServerSessionTests, NewOrderEndToEnd) {
     // This simulates what the TradingCore's WorkerThread would do.
     // The ClientID is a string representation of the session ID.
     common::Order test_order(
-        123, // Order ID
-        0,
+        123, // Client ID
+        123, // Order ID (Engine ID)
         common::Instrument::EURUSD,
         "456", // ClientID (Session ID)
         "fix_client",
@@ -61,7 +61,7 @@ TEST(FixServerSessionTests, NewOrderEndToEnd) {
     // Verify that the received ExecutionReport contains the correct data.
     auto received_report = future.get();
     ASSERT_EQ(received_report.getExchangeOrderId(), 123);
-    ASSERT_EQ(received_report.getTargetCompId(), 456); // Should match the ClientID/SessionID
+    ASSERT_EQ(received_report.getTargetCompId(), 456); // TargetCompID is typically the client ID
     ASSERT_EQ(received_report.getStatus(), common::OrderStatus::New);
     ASSERT_EQ(received_report.getSymbol(), common::Instrument::EURUSD);
     ASSERT_EQ(received_report.getOrderQuantity(), 1000);

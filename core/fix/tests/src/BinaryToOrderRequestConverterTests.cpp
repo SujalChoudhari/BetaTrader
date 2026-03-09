@@ -68,3 +68,58 @@ TEST(BinaryToOrderRequestConverterTests, BasicConversion)
     ASSERT_EQ(orderRequest.quantity, 1000);
     ASSERT_DOUBLE_EQ(orderRequest.price, 1.2345);
 }
+
+TEST(BinaryToOrderRequestConverterTests, MissingChecksum)
+{
+    std::string msg = "8=FIX.4.4\x01" "9=50\x01" "35=D\x01" "49=CLIENT_A\x01";
+    auto result = fix::BinaryToOrderRequestConverter::convert(msg);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(BinaryToOrderRequestConverterTests, ChecksumValidationFailed)
+{
+    std::string msg = createFixMessageString();
+    // Corrupt the checksum
+    size_t pos = msg.rfind("10=");
+    msg[pos + 3] = '9'; 
+    msg[pos + 4] = '9';
+    msg[pos + 5] = '9';
+    
+    auto result = fix::BinaryToOrderRequestConverter::convert(msg);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(BinaryToOrderRequestConverterTests, InvalidChecksumFormat)
+{
+    std::string msg = createFixMessageString();
+    size_t pos = msg.rfind("10=");
+    msg.replace(pos + 3, 3, "ABC");
+    
+    auto result = fix::BinaryToOrderRequestConverter::convert(msg);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(BinaryToOrderRequestConverterTests, MissingMandatoryTags)
+{
+    // Missing Side (Tag 54)
+    std::string msg = "8=FIX.4.4\x01" "9=40\x01" "35=D\x01" "49=CLIENT_A\x01" "11=1\x01" "55=EURUSD\x01" "38=100\x01" "44=1.1\x01" "10=185\x01";
+    auto result = fix::BinaryToOrderRequestConverter::convert(msg);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(BinaryToOrderRequestConverterTests, InvalidQuantityFormat)
+{
+    // Tag 38 is "ABC" instead of numeric
+    std::string msg = "8=FIX.4.4\x01" "9=45\x01" "35=D\x01" "49=CLIENT_A\x01" "11=1\x01" "55=EURUSD\x01" "54=1\x01" "38=ABC\x01" "44=1.1\x01" "10=050\x01";
+    auto result = fix::BinaryToOrderRequestConverter::convert(msg);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST(BinaryToOrderRequestConverterTests, InvalidSymbol)
+{
+    // Invalid symbol "INVALID"
+    std::string msg = "8=FIX.4.4\x01" "9=45\x01" "35=D\x01" "49=CLIENT_A\x01" "11=1\x01" "55=INVALID\x01" "54=1\x01" "38=100\x01" "44=1.1\x01" "10=150\x01";
+    auto result = fix::BinaryToOrderRequestConverter::convert(msg);
+    EXPECT_FALSE(result.has_value());
+}
+

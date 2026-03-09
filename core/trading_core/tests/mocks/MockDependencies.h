@@ -70,6 +70,20 @@ public:
     void initDatabase() override {}
 };
 
+// Mock for TradeIDRepository
+class MockTradeIDRepository : public data::TradeIDRepository {
+public:
+    explicit MockTradeIDRepository(data::DatabaseWorker* dbWorker)
+        : data::TradeIDRepository(dbWorker)
+    {}
+    void initDatabase() {}
+    void getCurrentTradeID(std::function<void(common::TradeID)> callback) {
+        callback(0);
+    }
+    void setCurrentTradeID(common::TradeID id) {}
+    void truncateTradeID() {}
+};
+
 // Mock for OrderManager
 class MockOrderManager : public trading_core::OrderManager {
 public:
@@ -94,11 +108,25 @@ public:
         if (orders.count(id)) { return orders.at(id); }
         return std::nullopt;
     }
+    std::optional<common::Order*>
+    getOrderByClientOrderId(const std::string& clOrdId) const override
+    {
+        for (auto it = orders.begin(); it != orders.end(); ++it) {
+            if (it->second != nullptr && std::to_string(it->second->getClientOrderId()) == clOrdId) {
+                return it->second;
+            }
+        }
+        return std::nullopt;
+    }
     bool removeOrderById(const common::OrderID& id) override
     {
         removeOrderByIdCallCount++;
         if (orders.count(id)) { orders.erase(id); }
         return true;
+    }
+    bool containsOrderById(const common::OrderID& id) const override
+    {
+        return orders.count(id) > 0;
     }
 };
 
@@ -160,8 +188,8 @@ public:
 // Mock for TradeIDGenerator
 class MockTradeIDGenerator : public trading_core::TradeIDGenerator {
 public:
-    explicit MockTradeIDGenerator(data::DatabaseWorker* dbWorker)
-        : trading_core::TradeIDGenerator(dbWorker)
+    explicit MockTradeIDGenerator(data::TradeIDRepository* repo)
+        : trading_core::TradeIDGenerator(repo)
     {}
     MOCK_METHOD(common::TradeID, nextId, (), (override));
 };

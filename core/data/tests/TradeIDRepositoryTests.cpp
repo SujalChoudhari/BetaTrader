@@ -23,8 +23,9 @@ TEST_F(TradeIDRepositoryTest, InitDatabase)
     // The initDatabase is called in the constructor, so we just need to check
     // if the table exists.
     dbWorker->enqueue([](SQLite::Database& db) {
-        ASSERT_TRUE(db.tableExists("trade_id_sequence"));
+        ASSERT_TRUE(db.tableExists("trade_id"));
     });
+    dbWorker->sync();
 }
 
 TEST_F(TradeIDRepositoryTest, GetCurrentTradeID)

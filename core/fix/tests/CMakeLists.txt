@@ -4,6 +4,9 @@ add_executable(fix_tests
     src/BinaryToOrderRequestConverterTests.cpp
     src/ExecutionReportToBinaryConverterTests.cpp
     src/FixServerSessionTests.cpp
+    src/FixSessionManagerTests.cpp
+    src/FixUtilsTests.cpp
+    src/FixEndToEndTests.cpp
 )
 
 # Link against required libraries
@@ -15,3 +18,6 @@ target_link_libraries(fix_tests
         fix_lib
         trading_core_lib # The mock core needs this
 )
+
+include(GoogleTest)
+gtest_discover_tests(fix_tests)
