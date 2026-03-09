@@ -12,10 +12,10 @@ namespace trading_core {
     void OrderBook::insertOrder(common::Order* order)
     {
         if (order->getSide() == common::OrderSide::Buy) {
-            mBidMap[order->getPrice()].push_front(order);
+            mBidMap[order->getPrice()].push_back(order);
         }
         else {
-            mAskMap[order->getPrice()].push_front(order);
+            mAskMap[order->getPrice()].push_back(order);
         }
 
         fix::MarketDataIncrementalRefresh refresh;

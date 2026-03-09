@@ -4,7 +4,7 @@
 
 #pragma once
 #include "common/Types.h"
-#include "data/DatabaseWorker.h"
+#include "data/TradeIDRepository.h"
 #include <atomic>
 
 namespace trading_core {
@@ -14,7 +14,8 @@ namespace trading_core {
      */
     class TradeIDGenerator {
     public:
-        explicit TradeIDGenerator(data::DatabaseWorker* dbWorker);
+        explicit TradeIDGenerator(data::TradeIDRepository* tradeIdRepo);
+        ~TradeIDGenerator();
 
         /**
          * @brief Gets the next available trade ID.
@@ -24,8 +25,9 @@ namespace trading_core {
 
     private:
         void loadInitialState();
+        void saveState();
 
         std::atomic<common::TradeID> mCurrentId;
-        data::DatabaseWorker* mDatabaseWorker;
+        data::TradeIDRepository* mTradeIDRepo;
     };
 } // namespace trading_core

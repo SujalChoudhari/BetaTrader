@@ -1,4 +1,5 @@
 #include "trading_core/ExecutionPublisher.h"
+#include <iostream>
 #include "trading_core/TradingCore.h"
 #include "trading_core/Partition.h"
 #include "trading_core/OrderManager.h"
@@ -13,8 +14,12 @@ namespace trading_core {
     void ExecutionPublisher::publishExecution(const common::Order& order, const std::string& action)
     {
         std::stringstream ss;
-        ss << "EXECUTION | Action=" << action << " | CoreOrderID=" << order.getId()
-           << " | ClientID=" << order.getClientId() << " | ClOrdID=" << order.getClientOrderId();
+        ss << "EXECUTION | Action=" << action << " | OrderID=" << order.getId()
+           << " | Symbol=" << common::to_string(order.getSymbol())
+           << " | Qty=" << order.getRemainingQuantity()
+           << " | Price=" << std::fixed << std::setprecision(6) << order.getPrice()
+           << " | Client=" << order.getClientId();
+        std::cout << "[ExecutionPublisher] " << ss.str() << std::endl;
         LOG_INFO(ss.str());
 
         common::OrderStatus status = (action == "NEW") ? common::OrderStatus::New : order.getStatus();
@@ -49,6 +54,14 @@ namespace trading_core {
 
     void ExecutionPublisher::publishTrade(const common::Trade& trade)
     {
+        std::stringstream ss;
+        ss << "TRADE | TradeID=" << trade.getTradeId()
+           << " | BuyOrder=" << trade.getBuyOrderId()
+           << " | SellOrder=" << trade.getSellOrderId()
+           << " | Qty=" << trade.getQuantity()
+           << " | Price=" << std::fixed << std::setprecision(6) << trade.getPrice()
+           << " | Timestamp=" << std::chrono::duration_cast<std::chrono::microseconds>(trade.getTimestamp().time_since_epoch()).count() << "us";
+        std::cout << "[ExecutionPublisher] " << ss.str() << std::endl;
         LOG_INFO("TRADE | TradeID={} | BuyOrder={} | SellOrder={} | Qty={} | Price={}",
                  trade.getTradeId(), trade.getBuyOrderId(), trade.getSellOrderId(),
                  trade.getQuantity(), trade.getPrice());
@@ -112,6 +125,9 @@ namespace trading_core {
 
     void ExecutionPublisher::publishRejection(const common::OrderID& clOrdId, const common::ClientID& clientId, const std::string_view& reason)
     {
+        std::stringstream ss;
+        ss << "REJECT | OrderID=" << clOrdId << " | Client=" << clientId << " | Reason=" << reason;
+        std::cout << "[ExecutionPublisher] " << ss.str() << std::endl;
         LOG_INFO("REJECT | ClOrdID={} | Client={} | Reason={}", clOrdId, clientId, reason);
         
         auto& core = TradingCore::getInstance();

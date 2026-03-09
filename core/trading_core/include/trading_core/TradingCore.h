@@ -15,6 +15,7 @@
 #include "common/Order.h"
 #include "common_fix/ExecutionReport.h"
 #include "data/DatabaseWorker.h"
+#include "data/TradeIDRepository.h"
 #include <functional>
 #include <memory>
 #include <optional>
@@ -82,6 +83,7 @@ namespace trading_core {
     private:
         data::DatabaseWorker* mDatabaseWorker = nullptr;
         std::unique_ptr<data::DatabaseWorker> mOwnedDatabaseWorker;
+        std::unique_ptr<data::TradeIDRepository> mTradeIDRepo;
         std::unique_ptr<TradeIDGenerator> mTradeIDGenerator;
         std::unique_ptr<OrderIDGenerator> mOrderIDGenerator;
         std::unique_ptr<Partition>

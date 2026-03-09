@@ -19,7 +19,8 @@ namespace trading_core {
         mOwnedDatabaseWorker
                 = std::make_unique<data::DatabaseWorker>(data::databasePath);
         mDatabaseWorker = mOwnedDatabaseWorker.get();
-        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+        mTradeIDRepo = std::make_unique<data::TradeIDRepository>(mDatabaseWorker);
+        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mTradeIDRepo.get());
         mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         initPartitions();
         g_instance = this;
@@ -30,8 +31,9 @@ namespace trading_core {
         : mDatabaseWorker(dbWorker)
     {
         if (mDatabaseWorker) {
+            mTradeIDRepo = std::make_unique<data::TradeIDRepository>(mDatabaseWorker);
             mTradeIDGenerator
-                    = std::make_unique<TradeIDGenerator>(mDatabaseWorker);
+                    = std::make_unique<TradeIDGenerator>(mTradeIDRepo.get());
             mOrderIDGenerator
                     = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         }
