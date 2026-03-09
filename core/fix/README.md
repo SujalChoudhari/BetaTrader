@@ -9,23 +9,21 @@ This component implements a fully asynchronous, multi-client FIX server using th
 ## Key Responsibilities
 
 *   **Accepting Connections**: Listens on a configured TCP port for new client connections.
-*   **Session Management**: Manages the lifecycle of each client session, including reading and writing data.
+*   **Session Management**: Manages the lifecycle of each client session via `FixSessionManager`, including authentication and sequence number validation.
 *   **Message Processing**:
-    *   Deserializes FIX "New Order - Single" (`35=D`) messages into internal `OrderRequest` objects.
-    *   Deserializes FIX "Order Cancel Request" (`35=F`) messages into internal `CancelOrderRequest` objects and submits cancel commands to the `@trading_core`.
-    *   Deserializes FIX "Order Cancel/Replace Request" (`35=G`) messages into internal `ModifyOrderRequest` objects and submits modify commands to the `@trading_core`.
-    *   Submits new, cancel, and modify orders to the `@trading_core` for processing.
+    *   Deserializes FIX messages into internal request objects.
+    *   Uses `OutboundMessageBuilder` for consistent, protocol-compliant binary FIX serialization (BodyLength, Checksum).
+    *   Submits commands to the `@trading_core`.
 *   **Execution Reporting**:
-    *   Subscribes to execution events from the `@trading_core`.
-    *   Serializes `ExecutionReport` objects into FIX "Execution Report" (`35=8`) messages and sends them to the appropriate client.
-*   **Market Data Provision**:
-    *   Handles FIX "Market Data Request" (`35=V`) messages, providing simulated market data snapshots and incremental refreshes.
-*   **Logging**: Provides structured, detailed logging for all major events and errors using the application-wide runbook system.
+    *   Subscribes to execution events and routes them to the correct session.
 
-## Recent Enhancements
+## Key Components
 
-*   **Improved Type Safety and Consistency**: Refactored internal FIX message representation to use strongly-typed enums and aliases (`fix::MDEntryType`, `fix::MDUpdateAction`, `fix::ClientOrderID`, `fix::ExchangeOrderID`), enhancing code clarity and reducing errors.
-*   **Centralized Utility Functions**: Moved common FIX parsing helper functions (`splitToMap`, `charToOrderSide`, `charToOrderType`) into a dedicated `FixUtils` module to eliminate code duplication and improve maintainability.
+- `FixServer`: The network entry point.
+- `FixSession`: The per-client state machine.
+- `FixSessionManager`: Logic for Logon, sequence numbers, and auth.
+- `OutboundMessageBuilder`: Utility for building tags and calculating checksums.
+- `FixUtils`: Shared parsing helpers.
 
 ## Building and Running
 
@@ -39,55 +37,13 @@ The FIX server is built as a separate executable target named `fix_server`.
     ```bash
     ./build/core/fix/fix_server
     ```
-The server will start and begin listening for connections on the configured port (default: 12345).
 
 ## Further Reading
 
-For a detailed architectural overview, class designs, and the order lifecycle flow, please refer to the [Technical System Design (TSD)](./TSD.md).
+For a detailed architectural overview, class designs, and the session/order lifecycle flows, please refer to the [Technical System Design (TSD)](./TSD.md).
 
 ## Future Enhancements and TODOs
 
-This section outlines planned improvements and outstanding tasks for the FIX server component.
-
-*   **`Main.cpp`**:
-    *   Make the server port configurable (e.g., via command line arguments or a config file).
-*   **`FixServer.cpp`**:
-    *   Implement logic to remove sessions from `mMarketDataSubscriptions` when a session is unregistered.
-*   **`FixSession.cpp`**:
-    *   Refine `handleFixMessage` to dispatch to specific handlers based on `MsgType` more robustly.
-    *   Send Reject (35=3) for malformed messages or missing `MsgType` during message parsing.
-    *   Extract actual `OrderType` (Tag 40) and `TimeInForce` (Tag 59) from FIX message for `NewOrderSingle` requests.
-    *   Send `BusinessMessageReject` (35=j) for parsing failures in `NewOrderSingle` requests.
-    *   Add cases for other common FIX message types: Logon (A), Logout (5), Heartbeat (0), Test Request (1), Resend Request (2), Sequence Reset (4), Reject (3), Business Message Reject (j).
-    *   Send Reject (35=3) for unsupported `MsgType`.
-    *   Send Reject (35=3) or `BusinessMessageReject` (35=j) depending on error context in `handleFixMessage` exception handling.
-    *   Send `BusinessMessageReject` (35=j) if neither `OrderID` nor `ClOrdID` is present in `CancelOrderRequest`.
-    *   Send `BusinessMessageReject` (35=j) for invalid `OrderID`/`ClOrdID` format in `CancelOrderRequest`.
-    *   Send `BusinessMessageReject` (35=j) for parsing failures in `CancelOrderRequest`.
-    *   Send `BusinessMessageReject` (35=j) if neither `OrigClOrdID` nor `OrderID` is present in `ModifyOrderRequest`.
-    *   Send `BusinessMessageReject` (35=j) for invalid `OrigClOrdID`/`OrderID` format in `ModifyOrderRequest`.
-    *   Send `BusinessMessageReject` (35=j) for parsing failures in `ModifyOrderRequest`.
-    *   Integrate with an actual market data system to provide real data for `MarketDataRequest`.
-    *   Implement continuous incremental market data updates (e.g., via a timer or a dedicated publisher) for subscribed sessions.
-    *   Implement actual unsubscription logic, removing the session from market data distribution lists.
-    *   Send `BusinessMessageReject` (35=j) for parsing failures in `MarketDataRequest`.
-*   **`ExecutionReportToBinaryConverter.cpp`**:
-    *   Consider making helper functions (`orderStatusToChar`, `orderSideToChar`, `timestampToString`) private static members of `ExecutionReportToBinaryConverter`.
-*   **`BinaryToMarketDataRequestConverter.cpp`**:
-    *   Implement a robust FIX message parsing utility (e.g., using a tag-value map approach similar to `BinaryToOrderRequestConverter`). The current implementation is a simplified skeleton and needs to be made production-ready.
-*   **`BinaryToCancelOrderRequestConverter.cpp`**:
-    *   Decide if `ClOrdID`, `OrderID`, `Symbol`, `Side` are mandatory for `CancelOrder`. If so, return `nullopt` if missing.
-    *   Implement proper `TransactTime` (60) parsing from FIX message.
-*   **`BinaryToModifyOrderRequestConverter.cpp`**:
-    *   Decide if `ClOrdID`, `OrigClOrdID`, `OrderID`, `Symbol`, `Side`, `OrderQty`, `OrdType`, `Price` are mandatory for `ModifyOrder`. If so, return `nullopt` if missing.
-    *   Implement proper `TransactTime` (60) parsing from FIX message.
-*   **`MarketDataIncrementalRefreshToBinaryConverter.cpp`**:
-    *   Implement robust FIX message serialization, potentially using a dedicated FIX message builder class, to ensure correctness of header, body, and trailer.
-    *   Correctly calculate `BodyLength` (Tag 9) based on FIX specification.
-    *   Add `SenderCompID` (Tag 49), `TargetCompID` (Tag 56), `MsgSeqNum` (Tag 34) from the session context.
-    *   Implement a proper timestamp to string conversion utility for FIX.
-*   **`MarketDataSnapshotFullRefreshToBinaryConverter.cpp`**:
-    *   Implement robust FIX message serialization, potentially using a dedicated FIX message builder class, to ensure correctness of header, body, and trailer.
-    *   Correctly calculate `BodyLength` (Tag 9) based on FIX specification.
-    *   Add `SenderCompID` (Tag 49), `TargetCompID` (Tag 56), `MsgSeqNum` (Tag 34) from the session context.
-    *   Implement a proper timestamp to string conversion utility for FIX.
+*   **Heartbeat Management**: Automatically send TestRequests and track latency.
+*   **Sequence Number Persistence**: Load/Save session sequence numbers to `core/data`.
+*   **Market Data Integration**: Connect `MarketDataRequest` handlers to the actual engine snapshots.

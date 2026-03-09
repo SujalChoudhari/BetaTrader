@@ -94,8 +94,9 @@ classDiagram
 
 | Component | Description |
 | :--- | :--- |
-| **`Partition`** | A logical unit of processing for a set of instruments. Owns the `WorkerThread` and the command queue. |
-| **`WorkerThread`** | A dedicated thread for a single partition. Dequeues and processes commands, orchestrating all state changes. |
+| **`Partition`** | A logical unit of processing for a set of instruments. Owns the `WorkerThread` and its command queue. |
+| **`TradingCore`** | The top-level singleton entry point. Manages the lifecycle of partitions and provides the public API. It also owns the **`AuthRepository`** for client authentication. |
+| **`WorkerThread`** | A dedicated thread for a single partition. Dequeues and processes commands sequentially. |
 | **`OrderBook`** | A data structure that stores resting limit orders, sorted by price and time for a single instrument. |
 | **`OrderManager`** | A repository for all live orders within a partition. It owns the `Order` objects and provides fast lookups by Order ID. |
 | **`Matcher`** | The core matching engine. It implements the price-time priority matching algorithm and produces trades when an incoming order crosses the book. |

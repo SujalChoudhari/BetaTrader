@@ -15,54 +15,61 @@ This project is for developers, engineers, and curious traders who want a readab
 *   **Test-Driven Development**: Emphasize a strong testing culture with extensive unit tests for core logic.
 *   **Extensibility**: Design a modular architecture that allows for future expansion with new features, such as different gateways or persistence backends.
 
-## Implemented Modules
-
 | Module | Description | Key Components |
 | :--- | :--- | :--- |
 | `common/` | Shared data structures, types, and utilities used across the project. | `Order`, `Trade`, `Instrument`, `Logger`, `Runbook` |
 | `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager`, `ExecutionPublisher` |
-| `core/data/` | A lightweight persistence layer for storing trades and orders. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `TradeIDRepository` |
+| `core/data/` | A lightweight persistence layer for storing trades and orders. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `AuthRepository` |
+| `core/fix/` | FIX Gateway for client connectivity and session management. | `FixServer`, `FixSession`, `FixSessionManager`, `OutboundMessageBuilder` |
 | `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
-| `tests/` | Unit tests for `trading_core` and `data` modules. | GoogleTest-based tests for all core logic. |
 
 ## Repository Layout
 
 ```
 BetaTrader/
 ├── CMakeLists.txt
+├── CMakePresets.json   # Build & Coverage Presets
 ├── README.md
-├── common/             # Shared types & logging (Order, Trade, Instrument)
+├── common/             # Shared types & logging
 ├── core/
-│   ├── data/           # Persistence layer (SQLite adapter, repositories)
-│   └── trading_core/   # Matching engine, order manager, worker threads, tests
-└── vendor/             # Bundled third-party libs (gtest, spdlog, SQLiteCpp, SPSCQueue)
+│   ├── data/           # Persistence (SQLite, AuthRepository)
+│   ├── fix/            # FIX Gateway (Session Management, Converters)
+│   └── trading_core/   # Matching Engine, Partitioning
+├── tools/              # Helper tools (coverage_reporter.py)
+└── vendor/             # Bundled third-party libs
 ```
 
 ## Getting Started: Build and Test
 
-These steps will build the project and run all unit tests, which is the primary way to validate the codebase.
+These steps will build the project and run all unit tests.
 
+### Standard Build
 ```bash
-# From the repository root
 mkdir -p build && cd build
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . -j$(nproc)
 ctest --output-on-failure
 ```
 
-**Notes:**
-*   The project targets a Linux-like environment with a modern C++ compiler.
-*   If CMake fails to find dependencies like SQLite3 or spdlog, install the development packages (e.g., `libsqlite3-dev`, `libspdlog-dev`) or provide their paths to CMake.
+### Coverage Build
+```bash
+# Using CMake Presets
+cmake --preset coverage
+cmake --build build/coverage -j$(nproc)
+# Generate and run coverage report
+cd build/coverage && make coverage
+# View summary
+python3 ../../tools/coverage_reporter.py
+```
 
 ## How to Explore the Code
 
-Since there is no single executable entry point yet, the best way to understand the system is through its tests.
-
 1.  **Build and run the unit tests** as described above.
-2.  **Explore the tests**: The test files in `core/trading_core/tests/` and `core/data/tests/` are excellent starting points.
-    *   `TradingSystemTests.cpp` shows end-to-end order processing flows.
-    *   `MatcherTests.cpp` demonstrates the price-time priority matching logic.
-    *   `OrderRepositoryTests.cpp` shows how orders are persisted and retrieved.
+2.  **Explore the tests**:
+    *   `FixEndToEndTests.cpp`: Shows the full FIX lifecycle (Logon, Order, MD, Logout).
+    *   `TradingCoreTests.cpp`: Detailed tests for engine-level partitioning and command processing.
+    *   `MatcherTests.cpp`: Price-time priority matching logic details.
+    *   `AuthRepositoryTests.cpp`: Verification of database-backed client authentication.
 
 ## System Design and Architecture
 

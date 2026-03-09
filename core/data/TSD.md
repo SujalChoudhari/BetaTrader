@@ -67,16 +67,16 @@ classDiagram
         -m_worker: DatabaseWorker&
     }
 
-    class UserRepository {
-        +authenticate(string username, string password, function callback)
-        +recordLogin(int userId, string ip, bool success)
-        -m_worker: DatabaseWorker&
+    class AuthRepository {
+        +loadValidClients(function callback)
+        +initDatabase()
+        -m_db: DatabaseWorker*
     }
 
     DatabaseWorker <--o OrderRepository : Uses
     DatabaseWorker <--o TradeRepository : Uses
     DatabaseWorker <--o TradeIDRepository : Uses
-    DatabaseWorker <--o UserRepository : Uses
+    DatabaseWorker <--o AuthRepository : Uses
 ```
 
 ## 3. Component Responsibilities
@@ -87,8 +87,8 @@ classDiagram
 | **`OrderRepository`** | Provides a high-level API for persisting `common::Order` objects. It encapsulates the SQL logic for inserting and updating orders. |
 | **`TradeRepository`** | Provides a high-level API for persisting `common::Trade` objects. It encapsulates the SQL logic for inserting trades. |
 | **`TradeIDRepository`**| A specialized repository for managing the global trade ID counter. It ensures that trade IDs are unique and persist across application restarts. |
-| **`UserRepository`** | Handles persistence for user-related data, including authentication and login history. |
-| **`Query.h`** | A centralized header file that contains all the raw SQL query strings used by the repositories. This makes the SQL easy to find, review, and manage. |
+| **`AuthRepository`** | Handles persistence for FIX client authentication lists. It initializes the `clients` table and provides asynchronous loading of valid SenderCompIDs. |
+| **`Query.h`** | A centralized header file that contains all the raw SQL query strings used by the repositories. |
 
 ## 4. Lifecycle of a Save Request
 
@@ -145,30 +145,12 @@ CREATE TABLE IF NOT EXISTS trade_id (
 );
 ```
 
-### `users` Table
-*Stores user credentials and configuration.*
+### `clients` Table
+*Stores authorized FIX clients.*
 ```sql
-CREATE TABLE IF NOT EXISTS users (
-    user_id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    username          TEXT NOT NULL UNIQUE,
-    password_hash     TEXT NOT NULL,
-    salt              TEXT NOT NULL,
-    risk_appetite     TEXT NOT NULL CHECK(risk_appetite IN ('LOW', 'MEDIUM', 'HIGH')),
+CREATE TABLE IF NOT EXISTS clients (
+    client_id         TEXT PRIMARY KEY,
     is_active         INTEGER NOT NULL CHECK(is_active IN (0, 1))
-);
-```
-
-### `login_history` Table
-*Tracks all login attempts.*
-```sql
-CREATE TABLE IF NOT EXISTS login_history (
-    login_id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id           INTEGER,
-    ip_address        TEXT NOT NULL,
-    login_timestamp   INTEGER NOT NULL,
-    logout_timestamp  INTEGER,
-    status            TEXT NOT NULL CHECK(status IN ('SUCCESS', 'FAILED_PASSWORD', 'INACTIVE_USER', 'UNKNOWN_USER')),
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 ```
 
