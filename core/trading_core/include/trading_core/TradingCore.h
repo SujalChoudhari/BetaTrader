@@ -6,12 +6,6 @@
  * and the lifecycle of the trading engine.
  */
 
-/**
- * @file TradingCore.h
- * @ingroup trading_core
- * @brief The main entry point for the trading engine.
- */
-
 #pragma once
 #include "Command.h"
 #include "OrderIDGenerator.h"

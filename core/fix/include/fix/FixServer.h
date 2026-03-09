@@ -1,9 +1,3 @@
-/**
- * @file FixServer.h
- * @ingroup fix_gateway
- * @brief The FIX protocol server gateway.
- */
-
 #pragma once
 
 #include "common_fix/ExecutionReport.h"

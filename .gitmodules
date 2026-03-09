@@ -14,6 +14,3 @@
 [submodule "vendor/lib/asio"]
 	path = vendor/lib/asio
 	url = https://github.com/chriskohlhoff/asio
-[submodule "vendor/doxygen-awesome-css"]
-	path = vendor/doxygen-awesome-css
-	url = https://github.com/jothepro/doxygen-awesome-css.git
