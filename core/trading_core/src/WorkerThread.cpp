@@ -109,11 +109,14 @@ namespace trading_core {
         for (const auto trades = mMatcher.match(order, mOrderBook);
              auto& trade: trades) {
             mRiskManager.postTradeUpdate(trade);
-            mOrderRepository.updateOrder(
-                    *mOrderManager.getOrderById(trade.getBuyOrderId()).value());
-            mOrderRepository.updateOrder(
-                    *mOrderManager.getOrderById(trade.getSellOrderId())
-                             .value());
+            auto buyOrderOpt = mOrderManager.getOrderById(trade.getBuyOrderId());
+            if (buyOrderOpt) {
+                mOrderRepository.updateOrder(**buyOrderOpt);
+            }
+            auto sellOrderOpt = mOrderManager.getOrderById(trade.getSellOrderId());
+            if (sellOrderOpt) {
+                mOrderRepository.updateOrder(**sellOrderOpt);
+            }
             ExecutionPublisher::publishTrade(trade);
         }
 
@@ -168,12 +171,14 @@ namespace trading_core {
 
         for (const auto trades = mMatcher.match(order, mOrderBook);
              auto& trade: trades) {
-            mRiskManager.postTradeUpdate(trade);
-            mOrderRepository.updateOrder(
-                    *mOrderManager.getOrderById(trade.getBuyOrderId()).value());
-            mOrderRepository.updateOrder(
-                    *mOrderManager.getOrderById(trade.getSellOrderId())
-                             .value());
+            auto buyOrderOpt = mOrderManager.getOrderById(trade.getBuyOrderId());
+            if (buyOrderOpt) {
+                mOrderRepository.updateOrder(**buyOrderOpt);
+            }
+            auto sellOrderOpt = mOrderManager.getOrderById(trade.getSellOrderId());
+            if (sellOrderOpt) {
+                mOrderRepository.updateOrder(**sellOrderOpt);
+            }
             ExecutionPublisher::publishTrade(trade);
         }
 

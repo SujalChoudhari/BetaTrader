@@ -10,7 +10,9 @@ namespace trading_core {
     OrderIDGenerator::OrderIDGenerator(data::DatabaseWorker* dbWorker)
         : mCurrentId(0), mDatabaseWorker(dbWorker)
     {
-        loadInitialState();
+        if (mDatabaseWorker) {
+            loadInitialState();
+        }
     }
 
     common::OrderID OrderIDGenerator::nextId()
