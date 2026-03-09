@@ -27,11 +27,12 @@ protected:
 
         // Initialize the generator after the database is set up
         generator = std::make_unique<trading_core::TradeIDGenerator>(
-                dbWorker.get());
+                tradeIDRepo.get());
     }
 
     void TearDown() override
     {
+        generator.reset(); // Destroy generator first so it can schedule saveState()
         if (dbWorker) {
             dbWorker->waitUntilIdle(); // Wait for all pending tasks to complete
             dbWorker.reset(); // Now it's safe to destroy the worker
@@ -48,7 +49,7 @@ TEST_F(TradeIDGeneratorTest, InitialStateLoading)
 
     // Re-initialize the generator to load the new state
     generator
-            = std::make_unique<trading_core::TradeIDGenerator>(dbWorker.get());
+            = std::make_unique<trading_core::TradeIDGenerator>(tradeIDRepo.get());
 
     // The generator should have loaded the state, so the first generated ID
     // should be start_id + 1.
@@ -63,7 +64,7 @@ TEST_F(TradeIDGeneratorTest, SequentialGenerationAfterLoading)
 
     // Re-initialize the generator to load the new state
     generator
-            = std::make_unique<trading_core::TradeIDGenerator>(dbWorker.get());
+            = std::make_unique<trading_core::TradeIDGenerator>(tradeIDRepo.get());
 
     // Verify sequential generation
     EXPECT_EQ(generator->nextId(), start_id + 1);
@@ -75,17 +76,15 @@ TEST_F(TradeIDGeneratorTest, StatePersistenceOnDestruction)
 {
     const common::TradeID final_id = 5;
 
-    {
-        // Create generator in a limited scope
-        // Re-initialize the generator to ensure it starts from a known state (0
-        // in this case)
-        generator = std::make_unique<trading_core::TradeIDGenerator>(
-                dbWorker.get());
+    // Re-initialize the generator to ensure it starts from a known state (0
+    // in this case)
+    generator = std::make_unique<trading_core::TradeIDGenerator>(
+            tradeIDRepo.get());
 
-        for (common::TradeID i = 0; i < final_id; ++i) { generator->nextId(); }
-        // The generator's destructor will be called here, triggering
-        // saveState()
-    } // generator goes out of scope and is destroyed
+    for (common::TradeID i = 0; i < final_id; ++i) { generator->nextId(); }
+    // The generator's destructor will be called here, triggering
+    // saveState()
+    generator.reset(); // explicitly destroy generator
 
     // The save is async, so we must wait for it to land in the database.
     dbWorker->waitUntilIdle();
