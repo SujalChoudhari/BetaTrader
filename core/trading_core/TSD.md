@@ -1,5 +1,4 @@
 # Trading Core Technical Specification
-@page trading_tsd Trading Core Specification
 
 This document provides a detailed technical specification of the `core/trading_core` module.
 

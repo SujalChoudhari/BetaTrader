@@ -1,5 +1,4 @@
 # FIX Protocol Developer Tag-Value Reference Guide
-@page fix_guide FIX Protocol Guide
 
 This guide serves as a quick, technical reference for developers, detailing the most critical and frequently used FIX tags, their required values, and their purpose. Understanding these values is essential for successful message construction, validation, and session management.
 

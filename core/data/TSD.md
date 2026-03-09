@@ -1,5 +1,4 @@
 # Data Persistence Module Technical Specification
-@page data_tsd Data Persistence Specification
 
 This document provides a detailed technical specification of the `core/data` module.
 

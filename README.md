@@ -76,17 +76,17 @@ python3 ../../tools/coverage_reporter.py
 BetaTrader is divided into several high-level components. Each component contains its own overview and technical specification:
 
 ### Trading Core
-*   @subpage trading_readme "Trading Core Overview": Matching engine and order management details.
-*   @subpage trading_tsd "Technical Specification": Detailed architectural breakdown and threading model.
+*   [Trading Core Overview](core/trading_core/README.md): Matching engine and order management details.
+*   [Technical Specification](core/trading_core/TSD.md): Detailed architectural breakdown and threading model.
 
 ### FIX Gateway
-*   @subpage fix_readme "FIX Gateway Overview": Networking and session management details.
-*   @subpage fix_tsd "Technical Specification": Protocol implementation and gateway architecture.
-*   @subpage fix_guide "FIX Protocol Reference Guide": Quick reference for tag-value pairs.
+*   [FIX Gateway Overview](core/fix/README.md): Networking and session management details.
+*   [Technical Specification](core/fix/TSD.md): Protocol implementation and gateway architecture.
+*   [FIX Protocol Reference Guide](core/fix/FIX.md): Quick reference for tag-value pairs.
 
 ### Data Persistence
-*   @subpage data_readme "Data Persistence Overview": Repository and background worker details.
-*   @subpage data_tsd "Technical Specification": Schema design and persistence mechanics.
+*   [Data Persistence Overview](core/data/README.md): Repository and background worker details.
+*   [Technical Specification](core/data/TSD.md): Schema design and persistence mechanics.
 
 ## Forex Trading Domain Concepts
 
