@@ -1,10 +1,11 @@
 #pragma once
 
 #include "common_fix/ExecutionReport.h"
-#include "fix/FixSession.h"
-#include "fix/FixSessionManager.h"
 #include "common_fix/MarketDataIncrementalRefresh.h"
 #include "common_fix/MarketDataSnapshotFullRefresh.h"
+#include "data/SequenceRepository.h"
+#include "fix/FixSession.h"
+#include "fix/FixSessionManager.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
 #include <map>
@@ -16,18 +17,21 @@ namespace fix {
     class FixServer {
     public:
         FixServer(asio::io_context& ioContext, short port,
-                  trading_core::TradingCore& tradingCore);
+                  trading_core::TradingCore& tradingCore,
+                  ::data::SequenceRepository* seqRepo = nullptr);
 
         void onExecutionReport(const ExecutionReport& report);
 
-        void onMarketDataSnapshotFullRefresh(const MarketDataSnapshotFullRefresh& snapshot);
+        void onMarketDataSnapshotFullRefresh(
+                const MarketDataSnapshotFullRefresh& snapshot);
 
-        void onMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh);
+        void onMarketDataIncrementalRefresh(
+                const MarketDataIncrementalRefresh& refresh);
 
         void registerSession(const std::shared_ptr<FixSession>& session);
 
         void unregisterSession(uint32_t sessionId);
-        
+
         FixSessionManager& getManager() { return mSessionManager; }
 
     private:
@@ -39,7 +43,8 @@ namespace fix {
         FixSessionManager mSessionManager;
         std::map<uint32_t, std::shared_ptr<FixSession>> mSessions;
         uint32_t mNextSessionId = 1;
-        std::map<std::string, std::vector<std::weak_ptr<FixSession>>> mMarketDataSubscriptions;
+        std::map<std::string, std::vector<std::weak_ptr<FixSession>>>
+                mMarketDataSubscriptions;
     };
 
 } // namespace fix

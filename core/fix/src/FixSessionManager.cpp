@@ -1,9 +1,10 @@
 #include "fix/FixSessionManager.h"
 #include "logging/Logger.h"
+#include "data/SequenceRepository.h"
 
 namespace fix {
 
-    FixSessionManager::FixSessionManager() {
+    FixSessionManager::FixSessionManager(data::SequenceRepository* seqRepo) : mSeqRepo(seqRepo) {
     }
 
     void FixSessionManager::loadConfig(const std::vector<std::string>& validClients) {
@@ -18,8 +19,18 @@ namespace fix {
         if (mValidClients.find(senderCompId) != mValidClients.end()) {
             SessionState state;
             state.isLoggedOn = true;
-            state.inSeqNum = 0; // Will be incremented when parsing the Logon message
-            state.outSeqNum = 1; 
+            state.senderCompId = senderCompId;
+            
+            if (mSeqRepo) {
+                auto seqs = mSeqRepo->getSequenceNumbers(senderCompId);
+                state.inSeqNum = std::get<0>(seqs);
+                state.outSeqNum = std::get<1>(seqs);
+                LOG_INFO("SessionManager: Loaded seqs for {} (IN: {}, OUT: {})", senderCompId, state.inSeqNum, state.outSeqNum);
+            } else {
+                state.inSeqNum = 0; 
+                state.outSeqNum = 1; 
+            }
+            
             mSessionStates[sessionId] = state;
             LOG_INFO("Session {} successfully authenticated as {}", sessionId, senderCompId);
             return true;
@@ -41,6 +52,10 @@ namespace fix {
         if (incomingSeqNum == expectedSeqNum) {
             // Perfect case
             it->second.inSeqNum = incomingSeqNum;
+            
+            if (mSeqRepo) {
+                mSeqRepo->updateSequenceNumbers(it->second.senderCompId, it->second.inSeqNum, it->second.outSeqNum);
+            }
             return true;
         } else if (incomingSeqNum > expectedSeqNum) {
             // Gap detected! We need a ResendRequest (MsgType=2)

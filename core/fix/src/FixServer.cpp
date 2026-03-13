@@ -5,10 +5,11 @@
 namespace fix {
 
     FixServer::FixServer(asio::io_context& ioContext, short port,
-                         trading_core::TradingCore& tradingCore)
+                         trading_core::TradingCore& tradingCore,
+                         data::SequenceRepository* seqRepo)
         : mAcceptor(ioContext,
                     asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)),
-          mSocket(ioContext), mTradingCore(tradingCore)
+          mSocket(ioContext), mTradingCore(tradingCore), mSessionManager(seqRepo)
     {
         if (auto authRepo = mTradingCore.getAuthRepository()) {
             authRepo->loadValidClients([this](const std::vector<std::string>& clients) {
@@ -74,7 +75,7 @@ namespace fix {
     void FixServer::unregisterSession(uint32_t sessionId)
     {
         mSessions.erase(sessionId);
-        mTradingCore.unsubscribeFromMarketData(sessionId); // Unsubscribe from all symbols
+        mTradingCore.unsubscribeFromMarketData(sessionId);
     }
 
 } // namespace fix

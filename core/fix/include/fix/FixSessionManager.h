@@ -1,21 +1,18 @@
 #pragma once
 
+#include "data/SequenceRepository.h"
+#include <cstdint>
 #include <string>
 #include <unordered_map>
-#include <cstdint>
 #include <vector>
+#include "SessionState.h"
 
 namespace fix {
 
-    struct SessionState {
-        bool isLoggedOn = false;
-        uint32_t inSeqNum = 0;
-        uint32_t outSeqNum = 0;
-    };
-
     class FixSessionManager {
     public:
-        FixSessionManager();
+        // Optional repository for sequence persistence
+        FixSessionManager(::data::SequenceRepository* seqRepo = nullptr);
 
         // Load valid clients provided by the database config
         void loadConfig(const std::vector<std::string>& validClients);
@@ -37,6 +34,7 @@ namespace fix {
     private:
         std::unordered_map<std::string, bool> mValidClients;
         std::unordered_map<uint32_t, SessionState> mSessionStates;
+        ::data::SequenceRepository* mSeqRepo;
     };
 
 } // namespace fix
