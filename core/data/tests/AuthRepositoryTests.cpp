@@ -3,8 +3,8 @@
 #include <future>
 #include <gtest/gtest.h>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 class AuthRepositoryTests : public ::testing::Test {
 protected:
@@ -21,21 +21,71 @@ protected:
     std::unique_ptr<data::AuthRepository> authRepository;
 };
 
-TEST_F(AuthRepositoryTests, InitDatabaseSeeded)
+TEST_F(AuthRepositoryTests, InitDatabase)
 {
     dbWorker->sync();
-    
+
     std::promise<std::vector<std::string>> promise;
     auto future = promise.get_future();
-    
-    authRepository->loadValidClients([&promise](std::vector<std::string> clients) {
-        promise.set_value(clients);
-    });
-    
+
+    authRepository->loadValidClients(
+            [&promise](std::vector<std::string> clients) {
+                promise.set_value(clients);
+            });
+
     auto clients = future.get();
-    ASSERT_EQ(clients.size(), 2);
+    ASSERT_EQ(clients.size(), 0);
+}
+
+TEST_F(AuthRepositoryTests, InsertNewClients)
+{
+    dbWorker->sync();
+
+    std::promise<std::vector<std::string>> promise;
+    auto future = promise.get_future();
+
+    authRepository->insertNewClient("TRADER_BOB", true);
+
+    authRepository->loadValidClients(
+            [&promise](std::vector<std::string> clients) {
+                promise.set_value(clients);
+            });
+
+    auto clients = future.get();
+    ASSERT_EQ(clients.size(), 1);
     EXPECT_EQ(clients[0], "TRADER_BOB");
-    EXPECT_EQ(clients[1], "ALICE_FIRM");
+}
+
+TEST_F(AuthRepositoryTests, RemoveAllClients)
+{
+    dbWorker->sync();
+
+    std::promise<std::vector<std::string>> promise;
+    auto future = promise.get_future();
+
+    authRepository->insertNewClient("TRADER_BOB", true);
+
+    authRepository->loadValidClients(
+            [&promise](std::vector<std::string> clients) {
+                promise.set_value(clients);
+            });
+
+    auto clients = future.get();
+    ASSERT_EQ(clients.size(), 1);
+    EXPECT_EQ(clients[0], "TRADER_BOB");
+
+    authRepository->removeAllClients();
+
+    std::promise<std::vector<std::string>> promise2;
+
+    auto future2 = promise2.get_future();
+    authRepository->loadValidClients(
+            [&promise2](std::vector<std::string> clients) {
+                promise2.set_value(clients);
+            });
+
+    auto clientsAfterDeletion = future2.get();
+    ASSERT_EQ(clientsAfterDeletion.size(), 0);
 }
 
 TEST_F(AuthRepositoryTests, DatabaseWorkerUtilities)

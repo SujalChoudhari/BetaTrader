@@ -14,39 +14,20 @@ namespace data {
     {
         mDb->enqueue([](SQLite::Database& db) {
             try {
-                // Create table
-                SQLite::Statement createQuery(db, data::query::createClientTableQuery);
+                SQLite::Statement createQuery(
+                        db, data::query::createClientTableQuery);
                 createQuery.exec();
-
-                // Check if empty
-                int count = db.execAndGet("SELECT COUNT(*) FROM clients").getInt();
-                
-                // Seed default test clients for initial setup
-                if (count == 0) {
-                    SQLite::Transaction transaction(db);
-                    
-                    SQLite::Statement insertQuery(db, data::query::insertClientQuery);
-                    
-                    insertQuery.bind(1, "TRADER_BOB");
-                    insertQuery.bind(2, 1); // active
-                    insertQuery.exec();
-                    insertQuery.reset();
-
-                    insertQuery.bind(1, "ALICE_FIRM");
-                    insertQuery.bind(2, 1); // active
-                    insertQuery.exec();
-                    
-                    transaction.commit();
-                    LOG_INFO("AuthRepository: Seeded default clients (TRADER_BOB, ALICE_FIRM).");
-                }
             }
             catch (const std::exception& e) {
-                LOG_ERROR(errors::EDATA13, "Error in AuthRepository::initDatabase: {}", std::string_view(e.what()));
+                LOG_ERROR(errors::EDATA13,
+                          "Error in AuthRepository::initDatabase: {}",
+                          std::string_view(e.what()));
             }
         });
     }
 
-    void AuthRepository::loadValidClients(std::function<void(std::vector<std::string>)> callback)
+    void AuthRepository::loadValidClients(
+            std::function<void(std::vector<std::string>)> callback)
     {
         mDb->enqueue([callback](const SQLite::Database& db) {
             std::vector<std::string> clients;
@@ -58,10 +39,34 @@ namespace data {
                 }
             }
             catch (const std::exception& e) {
-                LOG_ERROR(errors::EDATA14, "Error in AuthRepository::loadValidClients: {}", std::string_view(e.what()));
+                LOG_ERROR(errors::EDATA14,
+                          "Error in AuthRepository::loadValidClients: {}",
+                          std::string_view(e.what()));
             }
             callback(clients);
         });
     }
 
+    void AuthRepository::insertNewClient(std::string senderCompId,
+                                         bool isActive)
+    {
+        mDb->enqueue([senderCompId, isActive](const SQLite::Database& db) {
+            SQLite::Statement insertQuery(db, data::query::insertClientQuery);
+
+            insertQuery.bind(1, senderCompId);
+            insertQuery.bind(2, isActive);
+            insertQuery.exec();
+            LOG_INFO("Created a new client {}", senderCompId);
+        });
+    }
+
+    void AuthRepository::removeAllClients()
+    {
+        mDb->enqueue([](const SQLite::Database& db) {
+            SQLite::Statement createQuery(db,
+                                          data::query::truncateClientsQuery);
+            createQuery.exec();
+            LOG_INFO("Removed all clients");
+        });
+    }
 } // namespace data

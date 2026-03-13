@@ -29,28 +29,38 @@ namespace data::query {
 
     // Order Table
     constexpr auto createOrderTableQuery
-            = "CREATE TABLE IF NOT EXISTS orders (core_order_id INTEGER PRIMARY "
-              "KEY, client_order_id INTEGER, client_id TEXT, sender_comp_id TEXT, symbol TEXT, side TEXT, type TEXT, "
+            = "CREATE TABLE IF NOT EXISTS orders (core_order_id INTEGER "
+              "PRIMARY "
+              "KEY, client_order_id INTEGER, client_id TEXT, sender_comp_id "
+              "TEXT, symbol TEXT, side TEXT, type TEXT, "
               "time_in_force TEXT, price REAL, original_quantity INTEGER, "
               "remaining_quantity INTEGER, status TEXT, timestamp INTEGER);";
     constexpr auto insertIntoOrderTableQuery
-            = "INSERT INTO orders (core_order_id, client_order_id, client_id, sender_comp_id, symbol, side, type, "
+            = "INSERT INTO orders (core_order_id, client_order_id, client_id, "
+              "sender_comp_id, symbol, side, type, "
               "time_in_force, price, original_quantity, remaining_quantity, "
-              "status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+              "status, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+              "?);";
     constexpr auto loadOrdersForInstrumentQuery
-            = "SELECT core_order_id, client_order_id, client_id, sender_comp_id, symbol, side, type, time_in_force, "
+            = "SELECT core_order_id, client_order_id, client_id, "
+              "sender_comp_id, symbol, side, type, time_in_force, "
               "price, original_quantity, remaining_quantity, status, timestamp "
               "FROM orders WHERE symbol = ? AND (status = 'New' OR status = "
               "'PartiallyFilled');";
-    constexpr auto removeOrderQuery = "DELETE FROM orders WHERE core_order_id = ?;";
+    constexpr auto removeOrderQuery
+            = "DELETE FROM orders WHERE core_order_id = ?;";
     constexpr auto updateOrderQuery = "UPDATE orders SET remaining_quantity = "
                                       "?, status = ? WHERE core_order_id = ?;";
 
     // Clients Table
     constexpr auto createClientTableQuery
-            = "CREATE TABLE IF NOT EXISTS clients (sender_comp_id TEXT PRIMARY KEY, is_active INTEGER);";
+            = "CREATE TABLE IF NOT EXISTS clients (sender_comp_id TEXT PRIMARY "
+              "KEY, is_active INTEGER);";
     constexpr auto insertClientQuery
-            = "INSERT OR IGNORE INTO clients (sender_comp_id, is_active) VALUES (?, ?);";
+            = "INSERT OR IGNORE INTO clients (sender_comp_id, is_active) "
+              "VALUES (?, ?);";
     constexpr auto loadClientsQuery
             = "SELECT sender_comp_id FROM clients WHERE is_active = 1;";
+    constexpr auto truncateClientsQuery = "DELETE FROM clients;";
+
 } // namespace data::query
