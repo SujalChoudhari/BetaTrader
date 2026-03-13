@@ -5,7 +5,7 @@
 #pragma once
 #include "common/Order.h"
 #include "trading_core/Command.h"
-#include "trading_core/CommandType.h"
+#include "common_trading/CommandType.h"
 
 namespace trading_core {
     /**

@@ -1,6 +1,6 @@
 #include "trading_core/Partition.h"
 #include "logging/Logger.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
+#include "common_trading/TradingCoreRunbookDefinations.h"
 #include <future>
 
 namespace trading_core {

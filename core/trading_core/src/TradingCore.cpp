@@ -7,7 +7,7 @@
 #include "trading_core/CancelOrder.h"
 #include "trading_core/ModifyOrder.h"
 #include "trading_core/NewOrder.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
+#include "common_trading/TradingCoreRunbookDefinations.h"
 
 namespace {
     trading_core::TradingCore* g_instance = nullptr;

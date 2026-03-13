@@ -3,7 +3,7 @@
 #include "logging/Runbook.h"
 #include "trading_core/OrderBook.h"
 #include "trading_core/TradeIDGenerator.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
+#include "common_trading/TradingCoreRunbookDefinations.h"
 #include <utility>
 #include <vector>
 

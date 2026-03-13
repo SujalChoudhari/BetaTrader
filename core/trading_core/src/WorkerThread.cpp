@@ -1,6 +1,6 @@
 #include "trading_core/WorkerThread.h"
 #include "logging/Logger.h"
-#include "trading_core/TradingCoreRunbookDefinations.h"
+#include "common_trading/TradingCoreRunbookDefinations.h"
 #include <iostream>
 
 using namespace std::chrono_literals;

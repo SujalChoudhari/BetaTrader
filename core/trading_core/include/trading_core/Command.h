@@ -6,7 +6,7 @@
 #include "common/Order.h"
 #include "common/Time.h"
 #include "common/Types.h"
-#include "trading_core/CommandType.h"
+#include "common_trading/CommandType.h"
 #include <utility>
 
 namespace trading_core {
