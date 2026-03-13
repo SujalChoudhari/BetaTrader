@@ -6,6 +6,7 @@
 #pragma once
 
 #include "common/Types.h"
+#include "common/Time.h"
 #include <map>
 #include <string_view>
 
@@ -38,5 +39,11 @@ namespace fix {
      * @throws std::invalid_argument if the character is not a valid order type.
      */
     common::OrderType charToOrderType(char c);
+
+    /**
+     * @brief Parses a FIX TransactTime (Tag 60) string into a common::Timestamp.
+     * Expected format: YYYYMMDD-HH:MM:SS.sss
+     */
+    common::Timestamp parseTimestamp(const std::string& timestampStr);
 
 } // namespace fix
