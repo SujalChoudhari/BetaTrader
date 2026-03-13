@@ -1,13 +1,45 @@
 # Client Application
 
-The Client Application (`client`) is the front-end interface for interacting with the BetaTrader `fix_server`. It acts as a FIX client to connect, authenticate, send orders, and receive real-time execution and market data updates.
+The Client Application (`client`) is the primary interface for interacting with the BetaTrader ecosystem. It serves a dual purpose: providing a high-performance **Trader Terminal** for manual trading and a **Load Simulator** for stress-testing the matching core.
 
-## Architecture
+## Overview
 
-The client application is divided into three main modules:
+The client suite is designed to bridge the gap between human traders and automated systems. It connects to the `fix_server` via the standard FIX 4.2 protocol, enabling secure authentication, real-time market data visualization, and sub-millisecond order routing.
 
-1.  **`client_fix`**: The networking and protocol layer. Handles the TCP connection using ASIO and manages the FIX session state (sequence numbers, logon, heartbeat).
-2.  **`client_ui`**: The user interface layer built using **Dear ImGui**. Provides screens for connection management, order entry, and a live order blotter/market data viewer.
-3.  **`client_app`**: The application executable that glues the FIX client and UI together, managing the main event loop and dependency injection.
+Whether you are looking to trade manually via a modern GUI or simulate thousands of concurrent users to test system limits, the `client` module provides the necessary infrastructure.
 
-For more detailed technical design, please refer to the [TSD (Technical System Design)](./TSD.md).
+## Key Responsibilities
+
+-   **Secure Authentication**: Handles client registration and encrypted login flows to the FIX server.
+-   **FIX Session Management**: Robust handling of sequence numbers, heartbeats, and automatic reconnection.
+-   **Real-time Visualization**:
+    -   **Interactive Graphs**: Live price action using high-performance charting.
+    -   **Dynamic Orderbook**: Level 2 visualization showing market depth.
+-   **Order Lifecycle Management**: intuitive order entry (Limit/Market) and a real-time order blotter to track fills and rejections.
+-   **Stress Testing**: A dedicated simulation engine capable of spawning thousands of headless FIX clients to benchmark core throughput and latency.
+
+## Getting Started
+
+To build and run the client applications, follow these steps:
+
+### Build
+```bash
+# From the project root
+mkdir -p build && cd build
+cmake ..
+cmake --build . --target client_app client_simulator
+```
+
+### Run Trader Terminal
+```bash
+./client/client_app
+```
+
+### Run Load Simulator
+```bash
+./client/client_simulator --clients 1000 --rate 50
+```
+
+## Further Reading
+
+For a detailed technical breakdown of the UI components, the simulation engine, and the protocol handling logic, please refer to the [Technical System Design (TSD)](./TSD.md).

@@ -21,6 +21,7 @@ This project is for developers, engineers, and curious traders who want a readab
 | `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager`, `ExecutionPublisher` |
 | `core/data/` | A lightweight persistence layer for storing trades, orders, and sequences. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `AuthRepository`, `SequenceRepository` |
 | `core/fix/` | FIX Gateway for client connectivity and session management. | `FixServer`, `FixSession`, `FixSessionManager`, `OutboundMessageBuilder` |
+| `client/` | Frontend suite including a Trader UI and a Load Simulator. | `client_fix`, `client_ui`, `client_app`, `client_simulator` |
 | `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
 
 ## Repository Layout
@@ -30,6 +31,7 @@ BetaTrader/
 ├── CMakeLists.txt
 ├── CMakePresets.json   # Build & Coverage Presets
 ├── README.md
+├── client/             # Frontend UI & Simulator
 ├── common/             # Shared types & logging
 ├── core/
 │   ├── data/           # Persistence (SQLite, AuthRepository)
@@ -84,6 +86,10 @@ BetaTrader is divided into several high-level components. Each component contain
 *   [Technical Specification](core/fix/TSD.md): Protocol implementation and gateway architecture.
 *   [FIX Protocol Reference Guide](core/fix/FIX.md): Quick reference for tag-value pairs.
 
+### Client Application (In Progress)
+*   [Client Overview](client/README.md): Trader terminal and simulator details.
+*   [Technical Specification](client/TSD.md): UI architecture and stress-testing engine.
+
 ### Data Persistence
 *   [Data Persistence Overview](core/data/README.md): Repository and background worker details.
 *   [Technical Specification](core/data/TSD.md): Schema design and persistence mechanics.
@@ -107,8 +113,8 @@ To experiment with trading logic, you can:
 
 This project is a continuous engineering exercise. With the solid foundation of a functional matching core, asynchronous persistence, and a robust FIX gateway now established, here are the most logical next steps for future expansion:
 
-### 1. Build a FIX Client App / CLI
-Develop a standalone client application (`core/client` or similar) that uses standard networking to connect to the `FixServer`, logs in, and provides a command-line interface (CLI) or Text UI (TUI). This would allow manual sending of commands (e.g., `buy EURUSD 100 1.10`) and display incoming `ExecutionReports` and Market Data in the console.
+### 1. Build a FIX Client App / Simulator (In Progress)
+Develop a standalone client application (`client`) that provides a high-performance Trader UI (using ImGui) and a headless Load Simulator. This allows for both manual trading and system benchmarking at scale.
 
 ### 2. A REST / WebSocket API Gateway
 While FIX is ideal for high-performance institutional trading, REST and WebSockets are the standard for retail platforms and web UIs. Building a secondary HTTP/WS gateway alongside the `FixServer` that translates JSON requests into `trading_core::Command` objects would instantly open the door to building a frontend interface (like React).
