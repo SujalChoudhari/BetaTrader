@@ -127,7 +127,7 @@ TEST(FixEndToEndTests, FullLogonAndOrderFlow) {
     }
 
     // 4. Send OrderCancelRequest
-    std::string cancelBody = "11=67890\x01" "41=12345\x01" "37=999\x01" "55=EURUSD\x01" "54=1\x01";
+    std::string cancelBody = "11=67890\x01" "41=12345\x01" "37=999\x01" "55=EURUSD\x01" "54=1\x01" "60=20260313-10:00:00.000\x01";
     std::string cancelMsg = OutboundMessageBuilder::buildMessage("CLIENT_A", "BETA_EXCHANGE", 3, "F", cancelBody);
     mockCore->mPromise = std::promise<bool>();
     futureCmd = mockCore->mPromise.get_future();
@@ -140,7 +140,7 @@ TEST(FixEndToEndTests, FullLogonAndOrderFlow) {
     }
 
     // 5. Send OrderCancelReplaceRequest (Modify)
-    std::string modifyBody = "11=77777\x01" "41=67890\x01" "37=999\x01" "55=EURUSD\x01" "54=1\x01" "38=200\x01" "44=1.24\x01" "40=2\x01";
+    std::string modifyBody = "11=77777\x01" "41=67890\x01" "37=999\x01" "55=EURUSD\x01" "54=1\x01" "38=200\x01" "44=1.24\x01" "40=2\x01" "60=20260313-10:00:00.000\x01";
     std::string modifyMsg = OutboundMessageBuilder::buildMessage("CLIENT_A", "BETA_EXCHANGE", 4, "G", modifyBody);
     mockCore->mPromise = std::promise<bool>();
     futureCmd = mockCore->mPromise.get_future();
