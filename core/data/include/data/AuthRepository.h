@@ -15,12 +15,12 @@ namespace data {
         virtual ~AuthRepository() = default;
 
         virtual void initDatabase();
-        
-        // Loads active clients and fires the callback
-        virtual void loadValidClients(std::function<void(std::vector<std::string>)> callback);
+
+        virtual void loadValidClients(
+                std::function<void(std::vector<std::string>)> callback);
 
         void insertNewClient(std::string senderCompId, bool isActive);
-        
+
         void removeAllClients();
 
     private:
