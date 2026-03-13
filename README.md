@@ -1,4 +1,4 @@
-# BetaTrader C++ FX Trading Engine Blueprint {#mainpage}
+# BetaTrader | High-Performance FX Trading Engine {#mainpage}
 
 Welcome to BetaTrader, a project and a C++ blueprint that explores how a small, exchange-like FX trading engine is put together.
 

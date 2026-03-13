@@ -1,4 +1,4 @@
-# client_simulator — Stress Tester
+# Client | High-Concurrency Stress Tester
 
 The `client_simulator` is a headless, high-concurrency tool designed to benchmark the BetaTrader matching engine under heavy load.
 

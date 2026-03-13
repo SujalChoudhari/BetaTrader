@@ -1,4 +1,4 @@
-# FIX Gateway Component
+# Core | FIX Gateway & Session Manager
 
 The `@fix` component is a standalone server responsible for handling client connections over the Financial Information eXchange (FIX) protocol. It acts as the primary gateway for clients to submit orders to the BetaTrader trading engine.
 

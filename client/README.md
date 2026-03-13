@@ -1,4 +1,4 @@
-# Client Application
+# Client | Unified Trading Application
 
 The Client Application (`client`) is the primary interface for interacting with the BetaTrader ecosystem. It serves a dual purpose: providing a high-performance **Trader Terminal** for manual trading and a **Load Simulator** for stress-testing the matching core.
 

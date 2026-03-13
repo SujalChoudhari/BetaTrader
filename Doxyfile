@@ -41,7 +41,8 @@ WARN_LOGFILE           = doxygen_warnings.log
 
 INPUT                  = README.md \
                          common \
-                         core
+                         core \
+                         client
 
 FILE_PATTERNS          = *.h \
                          *.cpp \

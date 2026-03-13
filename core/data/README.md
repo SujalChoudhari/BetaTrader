@@ -1,4 +1,4 @@
-# Data Persistence Component
+# Core | Data Persistence & SQL Engine
 
 The Data module provides a persistence layer for the BetaTrader system.
 

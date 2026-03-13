@@ -1,4 +1,4 @@
-# Trading Core Component
+# Core | Matching Engine & Order Management
 
 The Trading Core is the in-memory matching engine and order management system for BetaTrader.
 

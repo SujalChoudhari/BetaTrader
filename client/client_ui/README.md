@@ -1,4 +1,4 @@
-# client_ui — Trader Terminal
+# Client | ImGui Trader Terminal
 
 The `client_ui` module provides the interactive interface for BetaTrader. Built with **Dear ImGui**, it is designed for low overhead and high-frequency data updates.
 

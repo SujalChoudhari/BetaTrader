@@ -1,4 +1,4 @@
-# client_fix — Protocol Engine
+# Client | FIX Protocol Engine
 
 The `client_fix` module is the backbone of the BetaTrader client suite. It provides a robust, asynchronous implementation of the FIX protocol, ensuring reliable session management and high-performance message handling.
 
