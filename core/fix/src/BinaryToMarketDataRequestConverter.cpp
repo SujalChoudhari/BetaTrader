@@ -1,5 +1,5 @@
 #include "fix/BinaryToMarketDataRequestConverter.h"
-#include "fix/MarketDataRequest.h"
+#include "common_fix/MarketDataRequest.h"
 #include "common/Instrument.h"
 #include "common/Types.h"
 #include "common_fix/Protocol.h"

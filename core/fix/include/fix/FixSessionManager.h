@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "SessionState.h"
+#include "common_fix/SessionState.h"
 
 namespace fix {
 

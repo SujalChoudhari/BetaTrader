@@ -3,8 +3,8 @@
 #include "common/Types.h"
 #include "common_fix/Protocol.h"
 #include "common_fix/Tags.h"
-#include "fix/FixUtils.h"
-#include "fix/ModifyOrderRequest.h"
+#include "common_fix/FixUtils.h"
+#include "common_fix/ModifyOrderRequest.h"
 #include "logging/Logger.h"
 #include <chrono>
 #include <map>

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "common/Instrument.h"
-#include "fix/BusinessMessageReject.h"
+#include "common_fix/BusinessMessageReject.h"
 #include "common_fix/ExecutionReport.h"
 #include "common_fix/MarketDataIncrementalRefresh.h"
 #include "common_fix/MarketDataSnapshotFullRefresh.h"
-#include "fix/Reject.h"
+#include "common_fix/Reject.h"
 #include "trading_core/TradingCore.h"
 #include <asio.hpp>
 #include <cstdint>

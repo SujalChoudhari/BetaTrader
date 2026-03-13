@@ -1,6 +1,6 @@
 #include "fix/BinaryToOrderRequestConverter.h"
 #include "common/Instrument.h"
-#include "fix/FixUtils.h"
+#include "common_fix/FixUtils.h"
 #include "common_fix/Protocol.h"
 #include "common_fix/Tags.h"
 #include "logging/Logger.h"
