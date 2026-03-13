@@ -63,4 +63,20 @@ namespace data::query {
             = "SELECT sender_comp_id FROM clients WHERE is_active = 1;";
     constexpr auto truncateClientsQuery = "DELETE FROM clients;";
 
+    // Sequence Table
+    constexpr auto createSequenceTable
+            = "CREATE TABLE IF NOT EXISTS FIX_Sequences ("
+              "compId TEXT PRIMARY KEY NOT NULL,"
+              "inSeqNum INTEGER NOT NULL,"
+              "outSeqNum INTEGER NOT NULL"
+              ");";
+    constexpr auto getSequenceNumberQuery = "SELECT inSeqNum, outSeqNum FROM "
+                                            "FIX_Sequences WHERE compId = ?";
+    constexpr auto updateSequenceNumberQuery
+            = "INSERT INTO FIX_Sequences (compId, "
+              "inSeqNum, outSeqNum) "
+              "VALUES (?, ?, ?) "
+              "ON CONFLICT(compId) DO UPDATE SET "
+              "inSeqNum=excluded.inSeqNum, "
+              "outSeqNum=excluded.outSeqNum;";
 } // namespace data::query
