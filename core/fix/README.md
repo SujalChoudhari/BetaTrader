@@ -17,13 +17,60 @@ This component implements a fully asynchronous, multi-client FIX server using th
 *   **Execution Reporting**:
     *   Subscribes to execution events and routes them to the correct session.
 
+## Architecture
+
+The system is designed with a clear separation of concerns between the transport layer (`@fix`) and the business logic layer (`@trading_core`). Communication is achieved via an asynchronous publisher-subscriber pattern.
+
+```mermaid
+graph TD
+    subgraph "Client"
+        C[FIX Client]
+    end
+
+    subgraph "@fix (Transport & Adaptor Layer)"
+        A[Asio Acceptor] -->|Creates| S1[FixSession 1]
+        A -->|Creates| S2[FixSession 2]
+        
+        S1 --"1. Submits Commands"--> TC_REF
+        S2 --"1. Submits Commands"--> TC_REF
+        TC_REF(TradingCore Ref)
+
+        SERVER[FixServer] -- "Owns" --> MGR[FixSessionManager]
+        MGR -- "Authenticates" --> S1
+        MGR -- "Uses" --> SEQ_REPO[SequenceRepository]
+        
+        SUB[Subscriber] --"3. Forwards Report"--> SERVER
+        SERVER --"4. Dispatches to Session"--> S1
+    end
+
+    subgraph "@trading_core"
+        TC[TradingCore Instance] --"2. Publishes fix::ExecutionReport"--> SUB
+    end
+
+    C --"TCP Link"--> A
+```
+
 ## Key Components
 
-- `FixServer`: The network entry point.
-- `FixSession`: The per-client state machine.
-- `FixSessionManager`: Logic for Logon, sequence numbers, and auth.
-- `OutboundMessageBuilder`: Utility for building tags and calculating checksums.
-- `FixUtils`: Shared parsing helpers.
+-   **`FixServer`**: Top-level server class that owns the Asio acceptor and session map.
+-   **`FixSession`**: Represents a single connected client, managing the async read/write loop.
+-   **`FixSessionManager`**: Manages session state (Logon, sequence numbers) and authentication.
+-   **`OutboundMessageBuilder`**: Centralized utility for constructing binary FIX strings including Checksum and BodyLength.
+-   **`FixUtils`**: Shared parsing and formatting helpers.
+
+## Session Lifecycle
+
+1.  **Connection**: TCP connection is accepted and a `FixSession` is created.
+2.  **Logon (35=A)**: `FixSessionManager` authenticates the `SenderCompID`.
+3.  **Authentication & Recovery**: Queries `SequenceRepository` to recover last known sequence numbers for seamless resumption.
+4.  **Sequencing**: Every subsequent message must have a valid `MsgSeqNum` (34). Gaps trigger a `ResendRequest`.
+
+## Order Lifecycle
+
+The FIX Gateway translates client messages into internal commands and routes them to the `@trading_core`:
+-   **New Order Single (35=D)** -> `trading_core::NewOrder`
+-   **Order Cancel Request (35=F)** -> `trading_core::CancelOrder`
+-   **Order Cancel/Replace Request (35=G)** -> `trading_core::ModifyOrder`
 
 ## Building and Running
 
@@ -37,10 +84,6 @@ The FIX server is built as a separate executable target named `fix_server`.
     ```bash
     ./build/core/fix/fix_server
     ```
-
-## Further Reading
-
-For a detailed architectural overview, class designs, and the session/order lifecycle flows, please refer to the [Technical System Design (TSD)](./TSD.md).
 
 ## Future Enhancements and TODOs
 

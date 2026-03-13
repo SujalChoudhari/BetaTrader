@@ -40,6 +40,64 @@ cmake --build . --target client_app client_simulator
 ./client/client_simulator --clients 1000 --rate 50
 ```
 
+## Architecture
+
+The BetaTrader Client suite follows a modular "FIX-First" principle, where both the graphical UI and the headless simulator share a common protocol engine.
+
+```mermaid
+graph TD
+    subgraph "Client Side"
+        UI[client_app - Trader UI]
+        SIM[client_simulator - Load Gen]
+        FIX[client_fix - FIX Engine]
+        
+        UI --> FIX
+        SIM --> FIX
+    end
+
+    subgraph "Core Side"
+        SRV[fix_server]
+        TC[trading_core]
+        DB[(SQLite DB)]
+        
+        SRV <--> TC
+        TC <--> DB
+    end
+
+    FIX <-->|FIX 4.4 over TCP| SRV
+```
+
+## Interaction Flows
+
+### Secure Auth & Subscription
+```mermaid
+sequenceDiagram
+    participant UI as client_ui
+    participant FIX as client_fix
+    participant SRV as fix_server
+
+    FIX->>SRV: Logon (35=A)
+    SRV-->>FIX: Logon (35=A)
+    UI->>FIX: authenticate(user, pass)
+    FIX->>SRV: UserRequest (35=BE)
+    SRV-->>FIX: UserResponse (35=BF, Status=LoggedOn)
+    FIX-->>UI: notifyAuthSuccess()
+    UI->>FIX: subscribe(EURUSD)
+    FIX->>SRV: MarketDataRequest (35=V)
+    SRV-->>FIX: MarketDataSnapshot (35=W)
+    FIX-->>UI: updateOrderbook()
+```
+
+## Design Conventions
+
+-   **Lock-Free UI Core**: Communication between the FIX thread and the UI thread is handled via an SPSC `UIEventQueue` to prevent GUI stutters.
+-   **Reconnect Backoff**: Exponential backoff policy for session re-establishment to avoid thundering herd on server restarts.
+-   **Zero-Allocation Paths**: Hot-paths in the simulator are heap-allocation-free to ensure accurate benchmarking.
+
 ## Further Reading
 
-For a detailed technical breakdown of the UI components, the simulation engine, and the protocol handling logic, please refer to the [Technical System Design (TSD)](./TSD.md).
+For a detailed technical breakdown of the individual modules, please refer to:
+
+-   **[`client_fix` Details](./client_fix/README.md)**: Protocol engine, session management, and auth specs.
+-   **[`client_ui` Details](./client_ui/README.md)**: ImGui architecture, Orderbook model, and subscription logic.
+-   **[`client_simulator` Details](./client_simulator/README.md)**: Performance benchmarking and rate control.

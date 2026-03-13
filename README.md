@@ -79,20 +79,16 @@ BetaTrader is divided into several high-level components. Each component contain
 
 ### Trading Core
 *   [Trading Core Overview](core/trading_core/README.md): Matching engine and order management details.
-*   [Technical Specification](core/trading_core/TSD.md): Detailed architectural breakdown and threading model.
 
 ### FIX Gateway
 *   [FIX Gateway Overview](core/fix/README.md): Networking and session management details.
-*   [Technical Specification](core/fix/TSD.md): Protocol implementation and gateway architecture.
 *   [FIX Protocol Reference Guide](core/fix/FIX.md): Quick reference for tag-value pairs.
 
 ### Client Application (In Progress)
 *   [Client Overview](client/README.md): Trader terminal and simulator details.
-*   [Technical Specification](client/TSD.md): UI architecture and stress-testing engine.
 
 ### Data Persistence
 *   [Data Persistence Overview](core/data/README.md): Repository and background worker details.
-*   [Technical Specification](core/data/TSD.md): Schema design and persistence mechanics.
 
 ## Forex Trading Domain Concepts
 
