@@ -73,10 +73,18 @@ classDiagram
         -m_db: DatabaseWorker*
     }
 
+    class SequenceRepository {
+        +getSequenceNumbers(compId: string)
+        +updateSequenceNumbers(compId: string, inSeq, outSeq)
+        +initDatabase()
+        -m_db: DatabaseWorker*
+    }
+
     DatabaseWorker <--o OrderRepository : Uses
     DatabaseWorker <--o TradeRepository : Uses
     DatabaseWorker <--o TradeIDRepository : Uses
     DatabaseWorker <--o AuthRepository : Uses
+    DatabaseWorker <--o SequenceRepository : Uses
 ```
 
 ## 3. Component Responsibilities
@@ -88,6 +96,7 @@ classDiagram
 | **`TradeRepository`** | Provides a high-level API for persisting `common::Trade` objects. It encapsulates the SQL logic for inserting trades. |
 | **`TradeIDRepository`**| A specialized repository for managing the global trade ID counter. It ensures that trade IDs are unique and persist across application restarts. |
 | **`AuthRepository`** | Handles persistence for FIX client authentication lists. It initializes the `clients` table and provides asynchronous loading of valid SenderCompIDs. |
+| **`SequenceRepository`**| Persists sequence numbers for FIX sessions based on their `SenderCompID`. Ensures seamless connection recovery and tracking of `inSeqNum` and `outSeqNum`. |
 | **`Query.h`** | A centralized header file that contains all the raw SQL query strings used by the repositories. |
 
 ## 4. Lifecycle of a Save Request
@@ -151,6 +160,16 @@ CREATE TABLE IF NOT EXISTS trade_id (
 CREATE TABLE IF NOT EXISTS clients (
     client_id         TEXT PRIMARY KEY,
     is_active         INTEGER NOT NULL CHECK(is_active IN (0, 1))
+);
+```
+
+### `FIX_Sequences` Table
+*Persists sequence numbers for FIX sessions to ensure message continuity.*
+```sql
+CREATE TABLE IF NOT EXISTS FIX_Sequences (
+    compId            TEXT PRIMARY KEY NOT NULL,
+    inSeqNum          INTEGER NOT NULL,
+    outSeqNum         INTEGER NOT NULL
 );
 ```
 

@@ -10,7 +10,7 @@ This module is responsible for asynchronously writing core business data, such a
 
 *   Provide an asynchronous mechanism for database writes.
 *   Manage a dedicated database connection on a background thread.
-*   Offer high-level repositories for persisting `Order` and `Trade` objects.
+*   Offer high-level repositories for persisting `Order`, `Trade` objects, and FIX session sequence numbers.
 *   Ensure trade ID uniqueness across system restarts.
 
 ## Getting Started

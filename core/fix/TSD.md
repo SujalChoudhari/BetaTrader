@@ -26,6 +26,7 @@ graph TD
 
         SERVER[FixServer] -- "Owns" --> MGR[FixSessionManager]
         MGR -- "Authenticates" --> S1
+        MGR -- "Uses" --> SEQ_REPO[SequenceRepository]
         
         SUB[Subscriber] --"3. Forwards Report"--> SERVER
         SERVER --"4. Dispatches to Session"--> S1
@@ -51,15 +52,14 @@ graph TD
 ### 3.1 Session Lifecycle (NEW)
 1.  **Connection**: Client connects via TCP. A `FixSession` is created in an `Unauthenticated` state.
 2.  **Logon (35=A)**: Client must send a Logon message. `FixSession` parses it and calls `FixSessionManager::authenticate()`. 
-3.  **Authentication**: `FixSessionManager` checks the `SenderCompID` against a list of valid clients (loaded from `AuthRepository`).
+3.  **Authentication & Recovery**: `FixSessionManager` checks the `SenderCompID` against a list of valid clients. It also queries the `SequenceRepository` to recover the last known `inSeqNum` and `outSeqNum` for seamless connection resumption.
 4.  **Acceptance**: If valid, the session is marked `LoggedOn`, and a Logon Ack is sent back.
-5.  **Sequencing**: Every subsequent message must have a valid `MsgSeqNum` (34). `FixSessionManager` detects gaps and fatal sequence errors.
+5.  **Sequencing**: Every subsequent message must have a valid `MsgSeqNum` (34). `FixSessionManager` detects gaps, fatal sequence errors, and persists the updated sequence numbers back to the `SequenceRepository`.
 
 ### 3.2 Order Lifecycle (New Order, Cancel, Modify)
 [... existing content for 35=D, F, G remains valid ...]
 
 ## 4. Future Enhancements
 
-*   **Persistence of Sequence Numbers**: Automatically save/load session sequence numbers from the database to survive restarts.
 *   **Heartbeat Management**: Automatically send TestRequests if no activity is detected within the HeartBtInt.
 *   **Business Message Reject (35=j)**: Handle application-level rejections more gracefully.

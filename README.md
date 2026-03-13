@@ -19,7 +19,7 @@ This project is for developers, engineers, and curious traders who want a readab
 | :--- | :--- | :--- |
 | `common/` | Shared data structures, types, and utilities used across the project. | `Order`, `Trade`, `Instrument`, `Logger`, `Runbook` |
 | `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager`, `ExecutionPublisher` |
-| `core/data/` | A lightweight persistence layer for storing trades and orders. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `AuthRepository` |
+| `core/data/` | A lightweight persistence layer for storing trades, orders, and sequences. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `AuthRepository`, `SequenceRepository` |
 | `core/fix/` | FIX Gateway for client connectivity and session management. | `FixServer`, `FixSession`, `FixSessionManager`, `OutboundMessageBuilder` |
 | `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
 
