@@ -3,7 +3,7 @@
 //
 
 #include "trading_core/TradingCore.h"
-#include "data/Constant.h"
+#include "common_data/Constant.h"
 #include "trading_core/CancelOrder.h"
 #include "trading_core/ModifyOrder.h"
 #include "trading_core/NewOrder.h"
