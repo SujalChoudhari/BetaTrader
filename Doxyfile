@@ -70,6 +70,14 @@ HTML_COPY_CLIPBOARD    = YES
 ENUM_VALUES_PER_LINE   = 1
 SEARCHENGINE           = YES
 
+HTML_HEADER            = docs/header.html
+HTML_FOOTER            = docs/footer.html
+HTML_EXTRA_STYLESHEET  = docs/stylesheet.css \
+                            docs/awesome.css \
+                            docs/sidebar.css \
+                            docs/sidebar-only-drkmode.css
+HTML_EXTRA_FILES       =
+
 
 #---------------------------------------------------------------------------
 # Configuration options related to the LaTeX output
