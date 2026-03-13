@@ -25,7 +25,7 @@ bool getPort(int argc, char** argv)
     return port;
 }
 
-short InitiateSystem(short port)
+short initiateSystem(short port)
 {
     try {
         logging::Logger::Init("fix_server", "logs/fix_server.log", true, true);
@@ -60,5 +60,5 @@ short InitiateSystem(short port)
 int main(int argc, char** argv)
 {
     short port = getPort(argc, argv);
-    return InitiateSystem(port);
+    return initiateSystem(port);
 }
