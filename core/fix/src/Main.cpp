@@ -1,25 +1,32 @@
+#include "data/SequenceRepository.h"
 #include "fix/FixRunbookDefinations.h"
 #include "fix/FixServer.h"
 #include "logging/Logger.h"
 #include "trading_core/TradingCore.h"
-#include "data/SequenceRepository.h"
 #include <asio.hpp>
 #include <iostream>
 
 using namespace trading_core;
 using namespace common;
 
-int main(int argc, char** argv) {
-    short port = 8088; // Default port
+bool getPort(int argc, char** argv)
+{
+    short port = 8088;
 
     if (argc >= 2) {
         try {
             port = static_cast<short>(std::stoi(argv[1]));
-        } catch (const std::exception& e) {
-            std::cerr << "Invalid port provided: " << argv[1] << ". Using default 8088." << std::endl;
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Invalid port provided: " << argv[1]
+                      << ". Using default 8088." << std::endl;
         }
     }
+    return port;
+}
 
+short InitiateSystem(short port)
+{
     try {
         logging::Logger::Init("fix_server", "logs/fix_server.log", true, true);
 
@@ -39,33 +46,19 @@ int main(int argc, char** argv) {
         fix::FixServer server(io_context, port, tradingCore, seqRepo.get());
         LOG_INFO("FIX Server started on port {}.", port);
 
-        tradingCore.subscribeToExecutions(
-            [&](const fix::ExecutionReport& report) {
-                server.onExecutionReport(report);
-            }
-        );
-
-        // Subscribe to market data publisher
-        tradingCore.getMarketDataPublisher().subscribeToSnapshots(
-            [&](const fix::MarketDataSnapshotFullRefresh& snapshot) {
-                server.onMarketDataSnapshotFullRefresh(snapshot);
-            }
-        );
-
-        tradingCore.getMarketDataPublisher().subscribeToIncrementals(
-            [&](const fix::MarketDataIncrementalRefresh& refresh) {
-                server.onMarketDataIncrementalRefresh(refresh);
-            }
-        );
-
-        io_context.run();
-
-    } catch (std::exception& e) {
+        server.run();
+    }
+    catch (std::exception& e) {
         LOG_CRITICAL(errors::EFIX1, "Exception in main: {}", e.what());
         logging::Logger::Shutdown();
         return 1;
     }
-
     logging::Logger::Shutdown();
     return 0;
+}
+
+int main(int argc, char** argv)
+{
+    short port = getPort(argc, argv);
+    return InitiateSystem(port);
 }

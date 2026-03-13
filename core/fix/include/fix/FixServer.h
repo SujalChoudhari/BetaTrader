@@ -20,6 +20,9 @@ namespace fix {
                   trading_core::TradingCore& tradingCore,
                   ::data::SequenceRepository* seqRepo = nullptr);
 
+        void run();
+        void stop();
+
         void onExecutionReport(const ExecutionReport& report);
 
         void onMarketDataSnapshotFullRefresh(
@@ -37,6 +40,7 @@ namespace fix {
     private:
         void doAccept();
 
+        asio::io_context& mIoContext;
         asio::ip::tcp::acceptor mAcceptor;
         asio::ip::tcp::socket mSocket;
         trading_core::TradingCore& mTradingCore;

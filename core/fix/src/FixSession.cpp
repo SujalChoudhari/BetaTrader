@@ -162,8 +162,7 @@ namespace fix {
                               mSessionId, ec.message());
                 }
                 LOG_INFO("FIX Session {} disconnected.", mSessionId);
-                mServer.unregisterSession(
-                        mSessionId);
+                mServer.unregisterSession(mSessionId);
             }
         });
     }

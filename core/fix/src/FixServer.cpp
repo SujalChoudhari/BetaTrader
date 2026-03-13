@@ -7,7 +7,8 @@ namespace fix {
     FixServer::FixServer(asio::io_context& ioContext, short port,
                          trading_core::TradingCore& tradingCore,
                          data::SequenceRepository* seqRepo)
-        : mAcceptor(ioContext,
+        : mIoContext(ioContext),
+          mAcceptor(ioContext,
                     asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port)),
           mSocket(ioContext), mTradingCore(tradingCore), mSessionManager(seqRepo)
     {
@@ -16,8 +17,36 @@ namespace fix {
                 mSessionManager.loadConfig(clients);
             });
         }
+
+        mTradingCore.subscribeToExecutions(
+            [this](const ExecutionReport& report) {
+                onExecutionReport(report);
+            }
+        );
+
+        mTradingCore.getMarketDataPublisher().subscribeToSnapshots(
+            [this](const MarketDataSnapshotFullRefresh& snapshot) {
+                onMarketDataSnapshotFullRefresh(snapshot);
+            }
+        );
+
+        mTradingCore.getMarketDataPublisher().subscribeToIncrementals(
+            [this](const MarketDataIncrementalRefresh& refresh) {
+                onMarketDataIncrementalRefresh(refresh);
+            }
+        );
         
         doAccept();
+    }
+
+    void FixServer::run()
+    {
+        mIoContext.run();
+    }
+
+    void FixServer::stop()
+    {
+        mIoContext.stop();
     }
 
     void FixServer::onExecutionReport(const ExecutionReport& report)
