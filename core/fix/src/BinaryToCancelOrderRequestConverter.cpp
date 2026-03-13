@@ -2,9 +2,10 @@
 #include "common/Instrument.h"
 #include "common/Types.h"
 #include "fix/FixUtils.h"
-#include "fix/CancelOrderRequest.h"
 #include "common_fix/Protocol.h"
 #include "common_fix/Tags.h"
+#include "fix/FixUtils.h"
+#include "fix/CancelOrderRequest.h"
 #include "logging/Logger.h"
 #include <chrono>
 #include <map>
@@ -24,8 +25,7 @@ std::optional<CancelOrderRequest> BinaryToCancelOrderRequestConverter::convert(c
             std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrderID)))),
             common::from_string(tagMap.at(static_cast<int>(fix::Tag::Symbol))),
             charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side)).front()),
-            // TODO: Implement proper TransactTime (60) parsing from FIX message.
-            std::chrono::system_clock::now()
+            fix::parseTimestamp(std::string(tagMap.at(static_cast<int>(fix::Tag::TransactTime))))
         };
 
         LOG_INFO("BinaryToCancelOrderRequestConverter::convert - Parsed CancelOrderRequest. ClOrdID: {}, OrderID: {}", request.clOrdID, request.orderID);

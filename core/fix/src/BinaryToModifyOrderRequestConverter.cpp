@@ -38,9 +38,9 @@ namespace fix {
                                     .front()),
                     std::stod(std::string(
                             tagMap.at(static_cast<int>(fix::Tag::Price)))),
-                    // TODO: Implement proper TransactTime (60) parsing from FIX
-                    // message.
-                    std::chrono::system_clock::now()};
+                    fix::parseTimestamp(std::string(
+                            tagMap.at(static_cast<int>(fix::Tag::TransactTime))))
+            };
 
             LOG_INFO("BinaryToModifyOrderRequestConverter::convert - Parsed "
                      "ModifyOrderRequest. ClOrdID: {}, OrigClOrdID: {}",
