@@ -1,0 +1,20 @@
+<map id="core/data/include/data/SequenceRepository.h" name="core/data/include/data/SequenceRepository.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="544,5,713,45"/>
+<area shape="rect" id="Node000002" href="$d6/d84/DatabaseWorker_8h.html" title="Asynchronous database worker abstraction." alt="" coords="369,93,542,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="588,48,494,90,492,85,586,43"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="581,167,639,192"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="628,46,622,94,615,153,610,153,617,93,623,46"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="631,93,698,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="640,44,656,79,651,82,635,47"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="723,93,777,119"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="659,43,722,84,719,88,657,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,161,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,121,158,167,157,161,395,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="185,167,357,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="427,121,315,164,313,159,425,116"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="381,167,468,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="453,120,437,155,433,153,448,118"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="481,116,573,158,571,163,479,121"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="493,167,557,192"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="469,117,506,155,502,159,465,121"/>
+</map>

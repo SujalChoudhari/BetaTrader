@@ -1,0 +1,25 @@
+<map id="common::Order::getClientId" name="common::Order::getClientId">
+<area shape="rect" id="Node000001" title="Gets the client&#39;s identifier (session ID)." alt="" coords="1535,109,1737,134"/>
+<area shape="rect" id="Node000002" href="$d8/dae/classtrading__core_1_1ExecutionPublisher.html#ab124b46f423d0e0e2827663ad299c888" title="Publishes an execution report for an order." alt="" coords="1252,69,1487,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1521,110,1486,106,1487,101,1522,105"/>
+<area shape="rect" id="Node000010" href="$de/dbb/classdata_1_1OrderRepository.html#a4256043ffc2a41c0cb60aaed55253d89" title=" " alt="" coords="1287,133,1452,173"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="1521,138,1453,146,1452,141,1521,132"/>
+<area shape="rect" id="Node000003" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#ac832f8919eaa3de4893013a5293f5974" title=" " alt="" coords="1003,5,1204,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1272,69,1186,48,1188,43,1273,63"/>
+<area shape="rect" id="Node000008" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a398d133d315255f57ada12746b0c0bba" title=" " alt="" coords="1003,133,1204,173"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1273,115,1188,136,1186,131,1272,110"/>
+<area shape="rect" id="Node000009" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0e2190f7181478ba9102c6c51a98dcf2" title=" " alt="" coords="1003,69,1204,109"/>
+<area shape="poly" id="edge9_Node000002_Node000009" title=" " alt="" coords="1238,92,1204,92,1204,87,1238,87"/>
+<area shape="rect" id="Node000004" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#aab07c99f0aa6a87008aeef44f7f9e843" title=" " alt="" coords="753,69,955,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1012,51,933,72,932,67,1011,46"/>
+<area shape="rect" id="Node000005" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a53a245b261d8859df49766ca47c41c6e" title=" " alt="" coords="504,69,705,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="739,92,706,92,706,87,739,87"/>
+<area shape="rect" id="Node000006" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0772a047b0fb303c53674d5dec9129bd" title=" " alt="" coords="255,69,456,109"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="490,92,456,92,456,87,490,87"/>
+<area shape="rect" id="Node000007" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a396a89449c28db9a19caf95ca1108695" title=" " alt="" coords="5,69,207,109"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="241,92,207,92,207,87,241,87"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="1011,132,932,112,933,107,1012,127"/>
+<area shape="poly" id="edge10_Node000009_Node000004" title=" " alt="" coords="989,92,955,92,955,87,989,87"/>
+<area shape="poly" id="edge12_Node000010_Node000008" title=" " alt="" coords="1273,156,1204,156,1204,151,1273,151"/>
+<area shape="poly" id="edge13_Node000010_Node000009" title=" " alt="" coords="1273,133,1187,112,1188,107,1274,128"/>
+</map>

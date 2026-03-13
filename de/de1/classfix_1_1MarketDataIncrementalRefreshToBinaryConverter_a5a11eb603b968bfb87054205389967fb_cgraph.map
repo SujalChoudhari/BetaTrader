@@ -1,0 +1,5 @@
+<map id="fix::MarketDataIncrementalRefreshToBinaryConverter::convert" name="fix::MarketDataIncrementalRefreshToBinaryConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a MarketDataIncrementalRefresh object into a raw FIX message string." alt="" coords="5,5,205,60"/>
+<area shape="rect" id="Node000002" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="253,20,397,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,30,239,30,239,35,206,35"/>
+</map>

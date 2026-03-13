@@ -1,0 +1,23 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,197,60,222"/>
+<area shape="rect" id="Node000002" href="$d7/daa/trading__core_2src_2Main_8cpp.html#acf78945690e6ecf39666416fc8d2c1ba" title=" " alt="" coords="153,19,257,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="34,196,42,167,56,130,77,91,106,58,139,40,141,45,110,62,81,94,61,132,47,169,39,197"/>
+<area shape="rect" id="Node000004" href="$d4/de5/classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="130,73,281,98"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="38,195,63,152,83,128,106,107,117,101,119,106,110,112,87,131,67,155,42,198"/>
+<area shape="rect" id="Node000006" href="$d7/daa/trading__core_2src_2Main_8cpp.html#ad1b781b41f2d13290ca18e5e635ac354" title=" " alt="" coords="156,122,255,147"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="48,194,74,175,107,156,142,144,143,149,109,161,77,179,51,198"/>
+<area shape="rect" id="Node000007" href="$d7/daa/trading__core_2src_2Main_8cpp.html#a7d0939161a8f5fb1d36b4e725207a6a4" title=" " alt="" coords="153,171,257,197"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="60,203,139,191,140,196,61,208"/>
+<area shape="rect" id="Node000008" href="$d7/daa/trading__core_2src_2Main_8cpp.html#a00ddfe59a55999eaee4d951388bb6647" title=" " alt="" coords="155,221,256,246"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="61,210,141,222,141,227,60,216"/>
+<area shape="rect" id="Node000009" href="$d7/daa/trading__core_2src_2Main_8cpp.html#a1156846072709ab6e482082b43aae398" title=" " alt="" coords="152,270,259,295"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="52,220,78,238,109,255,139,266,138,271,107,260,76,243,49,225"/>
+<area shape="rect" id="Node000010" href="$d7/daa/trading__core_2src_2Main_8cpp.html#ac1c57fa77126b78c71abd37839ce3cef" title=" " alt="" coords="145,319,266,345"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="42,221,68,263,87,285,109,304,133,316,130,321,107,309,83,289,64,266,38,224"/>
+<area shape="rect" id="Node000011" href="$d4/de5/classlogging_1_1Logger.html#a9749e79759e151a05063689c595ded4c" title=" " alt="" coords="108,369,303,394"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="39,221,47,249,61,285,81,322,110,354,119,360,116,365,106,358,77,326,56,287,42,251,34,223"/>
+<area shape="rect" id="Node000003" href="$dc/dd3/classtrading__core_1_1OrderIDGenerator.html#a1f01ef2cefba6a90ad9963154fa9bc4f" title="Gets the next available order ID." alt="" coords="351,5,577,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="258,28,336,26,337,31,258,33"/>
+<area shape="rect" id="Node000005" href="$d4/de5/classlogging_1_1Logger.html#ac3bd8c392e36698198387083fd1f59f8" title="Generates a timestamped filename." alt="" coords="369,69,559,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="281,84,355,85,355,90,281,89"/>
+</map>

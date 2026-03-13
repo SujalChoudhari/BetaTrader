@@ -1,0 +1,18 @@
+<map id="trading_core::Matcher::matchTable" name="trading_core::Matcher::matchTable">
+<area shape="rect" id="Node000001" title="A template function to match an incoming order against a map of resting orders." alt="" coords="1464,37,1628,77"/>
+<area shape="rect" id="Node000002" href="$d9/d97/classtrading__core_1_1Matcher.html#adba3a4f7c07ca8e9b27e3ac2869a0f12" title="Matches an incoming order against the order book." alt="" coords="1252,37,1416,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1450,60,1416,60,1416,55,1450,55"/>
+<area shape="rect" id="Node000003" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a398d133d315255f57ada12746b0c0bba" title=" " alt="" coords="1003,5,1204,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1238,47,1204,42,1205,37,1239,41"/>
+<area shape="rect" id="Node000008" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0e2190f7181478ba9102c6c51a98dcf2" title=" " alt="" coords="1003,69,1204,109"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="1239,73,1205,78,1204,73,1238,68"/>
+<area shape="rect" id="Node000004" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#aab07c99f0aa6a87008aeef44f7f9e843" title=" " alt="" coords="753,37,955,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="989,43,955,47,955,42,989,37"/>
+<area shape="rect" id="Node000005" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a53a245b261d8859df49766ca47c41c6e" title=" " alt="" coords="504,37,705,77"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="739,60,706,60,706,55,739,55"/>
+<area shape="rect" id="Node000006" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0772a047b0fb303c53674d5dec9129bd" title=" " alt="" coords="255,37,456,77"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="490,60,456,60,456,55,490,55"/>
+<area shape="rect" id="Node000007" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a396a89449c28db9a19caf95ca1108695" title=" " alt="" coords="5,37,207,77"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="241,60,207,60,207,55,241,55"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="989,77,955,73,955,68,989,72"/>
+</map>

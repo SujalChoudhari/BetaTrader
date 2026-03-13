@@ -1,0 +1,19 @@
+<map id="fix::FixSession" name="fix::FixSession">
+<area shape="rect" id="Node000001" title=" " alt="" coords="177,1527,403,1981"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="59,1244,241,1324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,1337,225,1525,220,1527,163,1338"/>
+<area shape="rect" id="Node000003" href="$d2/d74/classfix_1_1FixServer.html" title=" " alt="" coords="414,1104,673,1464"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="449,1465,413,1531,409,1528,444,1463"/>
+<area shape="rect" id="Node000004" href="$d3/d30/classtrading__core_1_1TradingCore.html" title="High&#45;level manager for partitions and command dispatch." alt="" coords="193,616,414,1041"/>
+<area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="303,1042,296,1510,291,1510,298,1042"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="417,1038,443,1088,438,1091,412,1040"/>
+<area shape="rect" id="Node000005" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="5,5,164,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="62,251,54,321,52,398,59,477,78,552,98,597,123,639,183,715,179,718,118,642,93,599,73,554,54,478,47,398,49,321,57,251"/>
+<area shape="rect" id="Node000008" href="$d4/df8/classdata_1_1SequenceRepository.html" title="Repository for managing sequence numbers." alt="" coords="441,351,646,516"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="165,161,294,225,364,266,430,311,461,337,458,342,427,315,361,270,291,229,163,166"/>
+<area shape="rect" id="Node000006" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title=" " alt="" coords="217,313,417,553"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="315,554,314,600,308,599,310,553"/>
+<area shape="rect" id="Node000007" href="$da/d82/classfix_1_1FixSessionManager.html" title=" " alt="" coords="461,736,626,921"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="546,922,546,1088,541,1088,541,922"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="546,516,546,719,541,719,541,516"/>
+</map>

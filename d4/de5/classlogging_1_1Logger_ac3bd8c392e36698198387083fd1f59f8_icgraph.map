@@ -1,0 +1,11 @@
+<map id="logging::Logger::GenerateTimestampedFilename" name="logging::Logger::GenerateTimestampedFilename">
+<area shape="rect" id="Node000001" title="Generates a timestamped filename." alt="" coords="472,23,663,63"/>
+<area shape="rect" id="Node000002" href="$d4/de5/classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="273,31,424,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="458,46,424,46,424,41,458,41"/>
+<area shape="rect" id="Node000003" href="$d2/dcd/fix_2src_2Main_8cpp.html#ae6acac0df1d5f6c48b70e408d63916c0" title=" " alt="" coords="108,5,225,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="259,34,225,29,226,23,260,28"/>
+<area shape="rect" id="Node000005" href="$d7/daa/trading__core_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="139,55,194,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="259,58,195,66,194,61,259,53"/>
+<area shape="rect" id="Node000004" href="$d2/dcd/fix_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
+</map>

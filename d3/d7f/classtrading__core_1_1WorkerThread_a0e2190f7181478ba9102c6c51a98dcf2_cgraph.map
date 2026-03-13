@@ -1,0 +1,150 @@
+<map id="trading_core::WorkerThread::processNewOrder" name="trading_core::WorkerThread::processNewOrder">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,859,207,899"/>
+<area shape="rect" id="Node000002" href="$de/db5/classtrading__core_1_1OrderManager.html#af506b8b5d1476e78475b0124b13e7419" title="Adds an order to the order manager." alt="" coords="270,73,474,113"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,859,117,714,142,493,162,377,186,271,216,183,234,149,253,123,257,119,260,123,257,126,238,151,221,185,192,272,167,378,148,494,122,715,111,859"/>
+<area shape="rect" id="Node000003" href="$d7/dd9/classtrading__core_1_1NewOrder.html#a4469917f2e9306614ebe09efe167b61a" title="Gets the order associated with this command." alt="" coords="284,137,460,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="106,859,119,725,146,523,166,418,190,321,219,241,235,210,253,187,270,173,273,177,257,190,240,213,224,243,195,323,171,419,152,524,124,726,112,860"/>
+<area shape="rect" id="Node000004" href="$de/db5/classtrading__core_1_1OrderManager.html#a0f8e672a7b177572004b1dc8d1a5df0e" title="Gets an order by its core ID." alt="" coords="270,201,474,241"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="107,859,121,736,150,553,170,458,194,371,221,300,236,272,253,251,257,247,260,251,257,254,241,275,226,302,199,373,175,460,156,554,127,737,112,860"/>
+<area shape="rect" id="Node000005" href="$da/de6/classtrading__core_1_1OrderBook.html#ad79dcffe3bb27e23018e605c0fb880c4" title="Inserts an order into the order book." alt="" coords="282,775,462,815"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="169,857,294,817,296,822,171,862"/>
+<area shape="rect" id="Node000012" href="$d9/d97/classtrading__core_1_1Matcher.html#adba3a4f7c07ca8e9b27e3ac2869a0f12" title="Matches an incoming order against the order book." alt="" coords="290,265,454,305"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="109,859,128,789,158,686,200,567,252,449,298,374,343,314,347,317,302,377,257,451,205,569,163,688,133,790,115,860"/>
+<area shape="rect" id="Node000023" href="$d9/d4f/classtrading__core_1_1RiskManager.html#acd4d5fc37de06daf39226eee24f48807" title=" " alt="" coords="274,1219,470,1259"/>
+<area shape="poly" id="edge28_Node000001_Node000023" title=" " alt="" coords="118,898,169,1008,209,1077,257,1143,293,1179,330,1209,327,1213,289,1183,253,1146,205,1080,164,1010,113,901"/>
+<area shape="rect" id="Node000033" href="$d9/d4f/classtrading__core_1_1RiskManager.html#a1cbb5612ff0a098a02b04421bcf89291" title=" " alt="" coords="274,462,470,502"/>
+<area shape="poly" id="edge40_Node000001_Node000033" title=" " alt="" coords="119,858,347,512,352,515,123,860"/>
+<area shape="rect" id="Node000036" href="$d8/dae/classtrading__core_1_1ExecutionPublisher.html#ab124b46f423d0e0e2827663ad299c888" title="Publishes an execution report for an order." alt="" coords="537,894,772,934"/>
+<area shape="poly" id="edge54_Node000001_Node000036" title=" " alt="" coords="207,883,524,903,523,908,207,888"/>
+<area shape="rect" id="Node000041" href="$d8/dae/classtrading__core_1_1ExecutionPublisher.html#affe230446dd13898d681c51704d57b13" title="Publishes a rejection for an order." alt="" coords="255,1283,489,1323"/>
+<area shape="poly" id="edge67_Node000001_Node000041" title=" " alt="" coords="111,899,120,970,143,1069,162,1124,187,1177,218,1226,257,1269,261,1273,258,1277,253,1273,214,1229,182,1179,157,1126,138,1071,115,970,106,900"/>
+<area shape="rect" id="Node000042" href="$d8/dae/classtrading__core_1_1ExecutionPublisher.html#a8c9c9cfe995e2e6ff104f1be3c98efae" title="Publishes a trade execution." alt="" coords="537,1334,772,1374"/>
+<area shape="poly" id="edge69_Node000001_Node000042" title=" " alt="" coords="121,898,175,979,213,1027,256,1071,289,1095,319,1112,376,1135,431,1158,461,1178,491,1205,508,1230,515,1253,523,1275,539,1297,559,1313,581,1326,579,1330,556,1317,535,1301,518,1277,510,1255,503,1232,487,1209,457,1182,429,1163,374,1140,317,1117,286,1100,253,1075,209,1030,170,982,117,901"/>
+<area shape="rect" id="Node000043" href="$d7/dd9/classtrading__core_1_1NewOrder.html#aedceff57f76db79c25749400e11041a5" title="Releases ownership of the order." alt="" coords="284,1347,460,1387"/>
+<area shape="poly" id="edge77_Node000001_Node000043" title=" " alt="" coords="110,899,116,980,123,1035,136,1097,154,1161,179,1223,213,1282,256,1333,273,1346,270,1350,253,1337,209,1285,175,1226,149,1162,130,1098,118,1036,110,980,105,900"/>
+<area shape="rect" id="Node000044" href="$de/dbb/classdata_1_1OrderRepository.html#a1095fa91a47ffe83db871c8d22c1c4cb" title=" " alt="" coords="289,1021,455,1061"/>
+<area shape="poly" id="edge78_Node000001_Node000044" title=" " alt="" coords="133,897,188,940,256,985,310,1012,307,1017,253,990,185,944,130,902"/>
+<area shape="rect" id="Node000045" href="$de/dbb/classdata_1_1OrderRepository.html#a4256043ffc2a41c0cb60aaed55253d89" title=" " alt="" coords="572,830,737,870"/>
+<area shape="poly" id="edge80_Node000001_Node000045" title=" " alt="" coords="207,871,558,852,558,858,207,877"/>
+<area shape="rect" id="Node000047" href="$de/dbb/classdata_1_1OrderRepository.html#a904bf33635ae7866763702818f76fabd" title=" " alt="" coords="572,1009,737,1049"/>
+<area shape="poly" id="edge96_Node000001_Node000047" title=" " alt="" coords="182,897,567,1002,566,1007,180,902"/>
+<area shape="rect" id="Node000006" href="$d0/dd8/classcommon_1_1Order.html#a660801c23f1df830689f5b375f43e78e" title="Gets the order price." alt="" coords="846,519,1030,544"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="402,773,474,728,575,669,694,608,819,554,849,545,851,550,821,559,696,612,578,674,477,732,405,777"/>
+<area shape="rect" id="Node000007" href="$d0/dd8/classcommon_1_1Order.html#a454866e05c7ff8020e109ac7879c5e64" title="Gets the remaining quantity of the order." alt="" coords="827,747,1049,787"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="462,788,813,771,813,776,463,793"/>
+<area shape="rect" id="Node000008" href="$d0/dd8/classcommon_1_1Order.html#a348ad40c66accf1d2a2157b37272c790" title="Gets the order side (Buy/Sell)." alt="" coords="848,469,1028,495"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="385,773,445,697,488,653,536,614,597,580,650,562,704,548,771,525,819,503,849,495,850,500,821,508,773,530,706,553,651,567,600,585,539,619,491,657,449,701,389,776"/>
+<area shape="rect" id="Node000009" href="$d0/dd8/classcommon_1_1Order.html#a743f41f3a7752dc477a7d2a113ef1d78" title="Gets the order creation timestamp." alt="" coords="825,925,1051,951"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="389,814,414,845,448,882,490,917,538,943,581,957,626,965,717,970,803,963,873,951,874,956,803,968,717,975,626,971,580,962,536,948,487,921,444,886,410,848,385,817"/>
+<area shape="rect" id="Node000010" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#a32ec3cd6649eab71c3383273436daefb" title=" " alt="" coords="547,1073,762,1113"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="386,814,456,945,500,1014,521,1041,539,1059,547,1064,544,1068,536,1063,517,1044,496,1017,452,948,381,817"/>
+<area shape="rect" id="Node000011" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="866,1073,1010,1099"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="762,1087,852,1085,852,1091,762,1093"/>
+<area shape="poly" id="edge15_Node000012_Node000007" title=" " alt="" coords="453,263,488,250,511,233,521,225,536,218,605,195,663,180,690,179,718,184,745,197,774,219,788,237,798,260,808,321,808,394,803,473,798,553,796,627,803,689,811,713,822,732,826,736,822,740,818,736,806,716,798,690,791,627,792,553,798,473,802,394,802,321,793,262,783,239,770,222,742,201,716,189,690,184,664,186,606,201,538,223,524,229,515,237,491,255,455,268"/>
+<area shape="poly" id="edge16_Node000012_Node000008" title=" " alt="" coords="453,268,488,250,503,232,510,212,517,192,536,174,600,143,630,134,659,130,687,131,715,139,744,153,774,175,790,190,801,207,811,242,809,277,802,313,795,350,792,386,799,421,808,438,822,455,837,467,834,471,818,458,804,441,794,423,787,386,789,349,797,312,804,277,805,242,796,209,785,194,770,179,741,157,714,144,686,136,659,135,631,139,602,148,539,179,522,195,515,214,508,235,491,255,456,273"/>
+<area shape="rect" id="Node000013" href="$da/de6/classtrading__core_1_1OrderBook.html#a7fe4f22598290584ebb6091503c7dd52" title="Gets a raw pointer to the ask map." alt="" coords="565,233,745,273"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="454,273,550,262,551,267,455,278"/>
+<area shape="rect" id="Node000014" href="$da/de6/classtrading__core_1_1OrderBook.html#a928ba1d54b28871dd1dd6a0b32d7173d" title="Gets a raw pointer to the bid map." alt="" coords="565,297,745,337"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="455,291,551,302,550,308,454,296"/>
+<area shape="rect" id="Node000015" href="$d0/dd8/classcommon_1_1Order.html#aa7197842cb7210174bfa2f27d44f5f99" title="Gets the order&#39;s client&#45;provided identifier." alt="" coords="843,405,1033,445"/>
+<area shape="poly" id="edge14_Node000012_Node000015" title=" " alt="" coords="453,272,472,263,487,251,504,227,511,202,511,177,508,151,505,125,506,100,515,76,536,53,566,32,596,16,626,6,656,3,685,6,715,15,744,31,774,53,792,72,805,92,813,113,816,133,814,175,804,218,794,261,789,305,791,326,797,347,807,368,822,389,832,399,829,403,818,393,802,371,792,349,786,327,784,305,789,261,799,217,808,175,811,134,808,114,800,95,788,76,770,57,741,35,713,20,684,11,656,8,627,12,599,21,569,36,539,57,520,78,511,101,510,125,513,150,516,176,516,203,509,229,491,254,475,268,455,277"/>
+<area shape="rect" id="Node000016" href="$d9/d97/classtrading__core_1_1Matcher.html#a3c4db1075847c1f47f90df8ee3e94a6a" title="A template function to match an incoming order against a map of resting orders." alt="" coords="573,67,737,107"/>
+<area shape="poly" id="edge17_Node000012_Node000016" title=" " alt="" coords="453,270,472,262,488,251,500,236,507,221,511,189,515,157,522,140,536,124,559,107,562,112,539,128,527,143,520,158,516,190,512,222,505,239,491,255,474,267,456,275"/>
+<area shape="poly" id="edge21_Node000016_Node000006" title=" " alt="" coords="697,105,739,134,758,153,774,175,794,222,800,267,796,309,789,349,783,388,783,426,794,465,822,504,835,515,832,519,818,508,790,467,778,427,778,388,784,348,791,308,794,267,789,224,770,178,754,157,735,138,694,110"/>
+<area shape="poly" id="edge22_Node000016_Node000007" title=" " alt="" coords="699,105,740,134,759,153,774,175,784,199,791,228,796,296,791,460,788,544,790,621,800,686,809,712,822,732,826,736,822,740,818,736,805,714,795,688,785,622,783,544,786,460,791,296,785,228,779,201,770,178,755,157,736,138,696,110"/>
+<area shape="poly" id="edge23_Node000016_Node000008" title=" " alt="" coords="738,99,757,109,774,124,789,146,800,168,808,210,805,252,796,294,788,335,786,375,795,415,806,435,822,455,837,467,834,471,818,458,802,438,790,417,781,375,783,334,791,293,800,252,803,211,795,169,785,149,770,128,754,114,736,104"/>
+<area shape="poly" id="edge18_Node000016_Node000015" title=" " alt="" coords="738,99,758,110,774,124,796,159,804,193,803,226,798,260,793,292,792,325,801,357,822,390,833,399,829,403,818,393,796,359,787,325,788,292,793,259,798,226,799,193,791,161,770,128,754,114,736,104"/>
+<area shape="rect" id="Node000017" href="$d0/dd8/classcommon_1_1Order.html#a3f3222cd2aa1e09a961504944264520a" title="Gets the order type (Limit/Market)." alt="" coords="829,355,1047,380"/>
+<area shape="poly" id="edge19_Node000016_Node000017" title=" " alt="" coords="738,104,774,124,810,163,853,224,925,341,920,344,848,227,806,167,770,128,736,109"/>
+<area shape="rect" id="Node000018" href="$d0/dd8/classcommon_1_1Order.html#a08fd36130533b29882fae06c9473674a" title="Gets the original quantity of the order." alt="" coords="837,633,1039,673"/>
+<area shape="poly" id="edge20_Node000016_Node000018" title=" " alt="" coords="698,105,740,134,759,153,774,175,788,217,794,272,793,403,792,470,795,531,804,583,812,603,822,619,828,625,824,628,818,622,807,605,799,584,790,532,787,470,787,403,788,272,783,218,770,178,755,157,736,138,695,110"/>
+<area shape="rect" id="Node000019" href="$d0/dd8/classcommon_1_1Order.html#af44223adcd59d4295fac2282ef90ff2d" title="Gets the financial instrument symbol." alt="" coords="837,697,1039,723"/>
+<area shape="poly" id="edge24_Node000016_Node000019" title=" " alt="" coords="699,105,740,134,759,153,774,175,783,197,789,223,795,286,791,436,789,513,791,583,801,642,810,665,822,683,828,689,824,692,818,686,805,667,796,643,786,584,784,513,786,436,789,286,784,224,778,199,770,178,755,157,736,138,695,110"/>
+<area shape="rect" id="Node000020" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html#a250c8fefd157d6c06253681f4329dde1" title="Gets the next available trade ID." alt="" coords="825,125,1051,165"/>
+<area shape="poly" id="edge25_Node000016_Node000020" title=" " alt="" coords="737,101,826,119,825,124,736,106"/>
+<area shape="rect" id="Node000021" href="$d0/dd8/classcommon_1_1Order.html#a854c4d0fb6b3e8113340776ccbb63f3d" title="Sets the remaining quantity of the order." alt="" coords="827,10,1049,50"/>
+<area shape="poly" id="edge26_Node000016_Node000021" title=" " alt="" coords="736,68,825,50,826,55,737,73"/>
+<area shape="rect" id="Node000022" href="$d0/dd8/classcommon_1_1Order.html#a2ab8c89cfdb364152c87d8e895bcff5c" title="Sets the status of the order." alt="" coords="842,75,1034,100"/>
+<area shape="poly" id="edge27_Node000016_Node000022" title=" " alt="" coords="737,85,828,85,828,90,737,90"/>
+<area shape="rect" id="Node000024" href="$d0/d5a/classdata_1_1TradeRepository.html#aab1fa2c333cb266ec42dd051ed3d1f0d" title=" " alt="" coords="573,1247,737,1287"/>
+<area shape="poly" id="edge29_Node000023_Node000024" title=" " alt="" coords="470,1246,559,1255,559,1260,470,1252"/>
+<area shape="rect" id="Node000032" href="$d4/dc4/classcommon_1_1Trade.html#aa7fd3ee9999bf268a41427391bb12b86" title="Gets the trade&#39;s unique identifier." alt="" coords="839,1549,1037,1575"/>
+<area shape="poly" id="edge39_Node000023_Node000032" title=" " alt="" coords="472,1256,491,1269,504,1283,512,1298,518,1326,523,1355,529,1369,539,1384,573,1419,605,1445,635,1465,666,1480,734,1505,821,1534,851,1543,849,1548,819,1539,732,1510,663,1485,632,1469,602,1449,570,1423,535,1388,524,1372,517,1357,512,1327,507,1300,500,1287,488,1273,469,1260"/>
+<area shape="poly" id="edge38_Node000024_Node000011" title=" " alt="" coords="669,1245,729,1177,771,1140,819,1109,851,1096,853,1101,821,1114,775,1144,733,1181,673,1249"/>
+<area shape="rect" id="Node000025" href="$d9/d9e/classdata_1_1DatabaseWorker.html#a5c99f0ef4800a689e9e73df9f700f905" title=" " alt="" coords="855,1123,1021,1163"/>
+<area shape="poly" id="edge30_Node000024_Node000025" title=" " alt="" coords="686,1245,747,1209,819,1174,843,1165,845,1170,821,1179,749,1214,689,1249"/>
+<area shape="rect" id="Node000026" href="$d4/dc4/classcommon_1_1Trade.html#af1c437490b95971f5e7e99bc7ebbc12e" title="Gets the buy order&#39;s unique identifier." alt="" coords="826,1336,1050,1361"/>
+<area shape="poly" id="edge31_Node000024_Node000026" title=" " alt="" coords="709,1285,821,1322,855,1330,853,1336,819,1327,707,1290"/>
+<area shape="rect" id="Node000027" href="$d4/dc4/classcommon_1_1Trade.html#a475c64fc9f3f5004a6d7efff9577f5cb" title="Gets the financial instrument symbol." alt="" coords="820,1188,1056,1213"/>
+<area shape="poly" id="edge32_Node000024_Node000027" title=" " alt="" coords="733,1245,819,1223,862,1214,863,1219,821,1229,734,1250"/>
+<area shape="rect" id="Node000028" href="$d4/dc4/classcommon_1_1Trade.html#abd9069ce2f9e808e8f2cc12137905a64" title="Gets the trade price." alt="" coords="847,1385,1029,1411"/>
+<area shape="poly" id="edge33_Node000024_Node000028" title=" " alt="" coords="711,1285,743,1301,774,1320,788,1334,797,1348,806,1360,821,1372,835,1378,832,1383,819,1376,803,1364,793,1351,784,1337,770,1324,740,1305,709,1290"/>
+<area shape="rect" id="Node000029" href="$d4/dc4/classcommon_1_1Trade.html#a2490a12cd80c36913032743b801c4d93" title="Gets the trade quantity." alt="" coords="835,1435,1041,1460"/>
+<area shape="poly" id="edge34_Node000024_Node000029" title=" " alt="" coords="720,1285,748,1300,774,1320,785,1334,791,1347,797,1374,803,1398,810,1410,822,1421,828,1426,825,1430,818,1425,806,1413,798,1400,792,1375,786,1349,780,1337,770,1324,745,1305,718,1290"/>
+<area shape="rect" id="Node000030" href="$d4/dc4/classcommon_1_1Trade.html#a562b2f50e887a3221548897045354d7a" title="Gets the sell order&#39;s unique identifier." alt="" coords="827,1237,1049,1263"/>
+<area shape="poly" id="edge35_Node000024_Node000030" title=" " alt="" coords="737,1260,813,1255,813,1260,737,1265"/>
+<area shape="rect" id="Node000031" href="$d4/dc4/classcommon_1_1Trade.html#a02371b2158b70110a7621a010723639c" title="Gets the trade timestamp." alt="" coords="825,1287,1051,1312"/>
+<area shape="poly" id="edge36_Node000024_Node000031" title=" " alt="" coords="737,1274,812,1282,811,1288,737,1279"/>
+<area shape="poly" id="edge37_Node000024_Node000032" title=" " alt="" coords="726,1285,752,1300,774,1320,791,1349,798,1378,798,1405,796,1432,793,1459,794,1484,803,1509,822,1535,829,1541,825,1545,818,1538,798,1512,789,1485,788,1458,790,1432,793,1405,793,1378,786,1351,770,1324,749,1304,724,1290"/>
+<area shape="poly" id="edge52_Node000033_Node000006" title=" " alt="" coords="432,499,483,514,538,525,614,533,692,536,832,535,832,540,692,541,614,538,537,530,482,519,431,504"/>
+<area shape="poly" id="edge53_Node000033_Node000008" title=" " alt="" coords="460,499,538,511,655,519,772,511,860,495,861,500,772,517,655,524,537,517,459,505"/>
+<area shape="poly" id="edge47_Node000033_Node000013" title=" " alt="" coords="382,460,406,422,440,374,484,325,536,282,550,274,553,279,539,287,488,328,444,377,410,425,387,463"/>
+<area shape="poly" id="edge48_Node000033_Node000014" title=" " alt="" coords="393,460,454,407,494,378,536,353,567,339,569,344,539,358,497,383,458,412,396,464"/>
+<area shape="poly" id="edge49_Node000033_Node000015" title=" " alt="" coords="465,459,537,447,689,433,829,425,829,430,690,438,538,453,465,465"/>
+<area shape="poly" id="edge50_Node000033_Node000017" title=" " alt="" coords="419,459,475,438,537,419,680,391,814,374,815,380,681,397,538,425,476,443,421,464"/>
+<area shape="poly" id="edge51_Node000033_Node000018" title=" " alt="" coords="421,499,538,543,695,590,838,627,837,632,694,595,536,548,420,504"/>
+<area shape="rect" id="Node000034" href="$d9/d8f/namespacetrading__core.html#ab256486db4c5818594b0304fb12a674a" title=" " alt="" coords="557,462,752,502"/>
+<area shape="poly" id="edge41_Node000033_Node000034" title=" " alt="" coords="470,479,544,479,544,485,470,485"/>
+<area shape="poly" id="edge44_Node000034_Node000006" title=" " alt="" coords="753,496,852,514,851,519,752,501"/>
+<area shape="poly" id="edge46_Node000034_Node000008" title=" " alt="" coords="752,479,834,479,834,485,752,485"/>
+<area shape="poly" id="edge42_Node000034_Node000015" title=" " alt="" coords="752,460,829,444,830,449,753,465"/>
+<area shape="poly" id="edge43_Node000034_Node000017" title=" " alt="" coords="685,459,746,424,819,390,849,381,851,386,821,395,748,429,688,464"/>
+<area shape="rect" id="Node000035" href="$d0/dd8/classcommon_1_1Order.html#a947c2cb8fc888c8c33f041cdca285c11" title="Gets the SenderCompID, identifying the actual trader." alt="" coords="839,569,1037,609"/>
+<area shape="poly" id="edge45_Node000034_Node000035" title=" " alt="" coords="698,499,821,553,848,562,846,567,819,558,695,504"/>
+<area shape="poly" id="edge60_Node000036_Node000006" title=" " alt="" coords="757,892,770,880,785,860,795,840,804,800,801,759,792,719,784,678,781,637,791,596,802,575,818,555,832,543,835,547,822,558,806,578,796,598,787,637,789,677,797,718,806,759,809,800,800,842,790,863,774,884,760,896"/>
+<area shape="poly" id="edge61_Node000036_Node000007" title=" " alt="" coords="751,892,770,880,787,860,793,840,801,818,818,797,826,792,829,796,822,801,805,821,799,841,791,863,774,884,754,896"/>
+<area shape="poly" id="edge62_Node000036_Node000008" title=" " alt="" coords="757,892,770,880,787,857,799,833,805,810,807,787,803,740,792,693,781,646,777,599,780,575,787,551,800,528,818,504,834,492,837,496,822,508,804,531,792,553,785,576,782,599,786,645,797,692,808,739,813,787,810,811,804,835,792,859,774,884,760,896"/>
+<area shape="poly" id="edge65_Node000036_Node000009" title=" " alt="" coords="772,921,811,925,811,930,772,927"/>
+<area shape="poly" id="edge66_Node000036_Node000011" title=" " alt="" coords="692,932,733,960,774,995,788,1013,797,1030,805,1045,821,1060,854,1074,851,1079,819,1064,801,1049,792,1033,784,1016,770,998,729,964,689,936"/>
+<area shape="poly" id="edge56_Node000036_Node000015" title=" " alt="" coords="757,892,770,880,789,854,802,827,809,801,812,775,806,722,793,670,780,617,775,564,778,537,785,509,798,482,818,455,829,444,833,448,822,458,803,485,790,511,783,538,780,564,786,616,799,669,812,721,817,775,814,802,807,829,794,856,774,884,761,896"/>
+<area shape="poly" id="edge59_Node000036_Node000018" title=" " alt="" coords="756,892,770,880,787,856,795,832,796,808,793,783,791,758,792,733,800,708,818,683,823,678,827,682,822,686,805,710,797,734,796,758,799,783,801,808,800,833,792,859,774,884,759,896"/>
+<area shape="poly" id="edge64_Node000036_Node000019" title=" " alt="" coords="754,892,770,880,784,863,791,845,793,808,795,770,803,751,818,733,825,728,828,732,822,737,808,754,801,771,798,808,796,846,789,865,774,884,757,896"/>
+<area shape="rect" id="Node000037" href="$d0/dd8/classcommon_1_1Order.html#a9bb368db65129a668dcce731478bac00" title="Gets the client&#39;s identifier (session ID)." alt="" coords="837,876,1039,901"/>
+<area shape="poly" id="edge55_Node000036_Node000037" title=" " alt="" coords="772,901,823,896,823,902,772,906"/>
+<area shape="rect" id="Node000038" href="$d0/dd8/classcommon_1_1Order.html#a49ca9218865bd9d0111b089d8ce1c5c4" title="Gets the order&#39;s core&#45;provided identifier. This is the primary ID for internal tracking." alt="" coords="856,975,1020,1000"/>
+<area shape="poly" id="edge57_Node000036_Node000038" title=" " alt="" coords="719,931,821,961,857,969,856,974,819,966,717,937"/>
+<area shape="rect" id="Node000039" href="$d3/d30/classtrading__core_1_1TradingCore.html#ac2aa2135c84113ff6c0ef71188757027" title=" " alt="" coords="844,1485,1032,1525"/>
+<area shape="poly" id="edge58_Node000036_Node000039" title=" " alt="" coords="702,932,742,958,760,975,774,995,783,1015,789,1040,795,1098,793,1239,791,1311,794,1377,803,1432,811,1454,822,1471,834,1482,830,1486,818,1474,806,1456,798,1433,788,1377,786,1311,788,1239,790,1098,784,1041,778,1017,770,998,756,979,738,962,699,936"/>
+<area shape="rect" id="Node000040" href="$d0/dd8/classcommon_1_1Order.html#af31a4fb9f87942049edbba523acc085f" title="Gets the current status of the order." alt="" coords="841,1024,1035,1049"/>
+<area shape="poly" id="edge63_Node000036_Node000040" title=" " alt="" coords="684,932,745,972,821,1010,844,1018,842,1023,819,1015,742,977,681,936"/>
+<area shape="poly" id="edge68_Node000041_Node000039" title=" " alt="" coords="466,1321,491,1333,506,1346,516,1359,524,1372,539,1384,578,1406,612,1421,674,1439,739,1451,821,1470,849,1478,848,1483,819,1475,738,1456,673,1444,610,1426,575,1410,536,1388,520,1375,511,1362,502,1349,488,1337,464,1326"/>
+<area shape="poly" id="edge70_Node000042_Node000026" title=" " alt="" coords="772,1349,813,1348,813,1354,772,1354"/>
+<area shape="poly" id="edge72_Node000042_Node000028" title=" " alt="" coords="773,1369,842,1380,842,1386,772,1375"/>
+<area shape="poly" id="edge73_Node000042_Node000029" title=" " alt="" coords="703,1371,821,1421,851,1429,849,1434,819,1426,701,1376"/>
+<area shape="poly" id="edge74_Node000042_Node000030" title=" " alt="" coords="698,1331,771,1297,794,1284,819,1273,851,1263,852,1268,821,1278,797,1289,773,1302,700,1336"/>
+<area shape="poly" id="edge75_Node000042_Node000031" title=" " alt="" coords="758,1331,857,1312,858,1317,759,1336"/>
+<area shape="poly" id="edge76_Node000042_Node000032" title=" " alt="" coords="728,1372,752,1385,774,1403,787,1420,794,1438,797,1472,801,1504,808,1520,822,1535,829,1540,826,1544,818,1539,804,1522,796,1506,792,1473,788,1439,782,1423,770,1406,749,1389,726,1376"/>
+<area shape="poly" id="edge71_Node000042_Node000039" title=" " alt="" coords="720,1372,748,1385,774,1403,790,1421,798,1438,806,1455,822,1470,833,1477,830,1482,818,1475,802,1458,793,1441,785,1424,770,1407,745,1390,717,1376"/>
+<area shape="poly" id="edge79_Node000044_Node000025" title=" " alt="" coords="410,1058,479,1096,538,1122,616,1138,697,1146,773,1148,841,1147,841,1153,773,1154,696,1151,616,1143,537,1127,477,1101,407,1063"/>
+<area shape="poly" id="edge87_Node000045_Node000006" title=" " alt="" coords="693,827,734,798,753,780,770,759,783,731,789,705,787,654,786,629,789,604,799,580,818,555,832,544,835,548,822,558,803,582,794,606,792,629,793,654,794,705,788,733,774,762,757,784,737,802,696,832"/>
+<area shape="poly" id="edge88_Node000045_Node000007" title=" " alt="" coords="719,827,819,797,848,788,849,794,821,802,720,832"/>
+<area shape="poly" id="edge90_Node000045_Node000008" title=" " alt="" coords="664,828,770,608,780,577,787,551,797,527,818,504,834,494,837,498,822,508,801,530,792,553,786,578,774,610,668,830"/>
+<area shape="poly" id="edge94_Node000045_Node000009" title=" " alt="" coords="739,866,773,880,797,896,821,912,842,919,840,924,819,916,794,900,771,884,737,871"/>
+<area shape="poly" id="edge95_Node000045_Node000011" title=" " alt="" coords="739,858,757,867,774,880,791,903,798,926,798,973,796,995,798,1018,805,1039,822,1060,837,1071,854,1078,852,1083,834,1075,818,1064,801,1042,793,1019,791,995,793,973,793,927,786,905,770,884,755,872,736,863"/>
+<area shape="poly" id="edge83_Node000045_Node000015" title=" " alt="" coords="659,829,685,747,724,635,770,526,795,483,818,455,829,446,832,451,822,459,799,486,775,528,729,637,690,749,664,830"/>
+<area shape="poly" id="edge85_Node000045_Node000017" title=" " alt="" coords="661,829,747,580,794,451,818,391,826,385,829,389,822,394,798,453,752,582,666,830"/>
+<area shape="poly" id="edge86_Node000045_Node000018" title=" " alt="" coords="686,828,728,797,770,759,784,738,792,719,801,701,818,683,827,677,830,681,822,687,805,704,796,722,789,741,774,762,732,801,690,832"/>
+<area shape="poly" id="edge92_Node000045_Node000019" title=" " alt="" coords="677,828,738,780,777,754,819,733,843,724,845,729,821,738,780,759,741,784,680,832"/>
+<area shape="poly" id="edge81_Node000045_Node000025" title=" " alt="" coords="739,858,758,867,774,880,794,909,802,939,802,968,799,997,795,1026,795,1054,803,1082,822,1109,844,1125,840,1130,818,1113,798,1084,790,1054,790,1025,793,996,797,968,797,939,789,912,770,884,755,871,737,863"/>
+<area shape="poly" id="edge89_Node000045_Node000035" title=" " alt="" coords="691,827,732,798,770,759,781,740,786,722,790,687,795,653,804,636,818,619,826,612,829,617,822,622,808,639,800,655,795,688,792,723,786,742,774,762,736,802,694,832"/>
+<area shape="poly" id="edge82_Node000045_Node000037" title=" " alt="" coords="738,859,831,871,831,877,737,864"/>
+<area shape="poly" id="edge84_Node000045_Node000038" title=" " alt="" coords="739,861,774,880,791,901,798,922,805,942,822,961,844,973,842,978,818,965,800,945,793,924,786,903,770,884,737,866"/>
+<area shape="poly" id="edge91_Node000045_Node000040" title=" " alt="" coords="739,859,757,868,774,880,787,897,795,914,798,948,802,980,809,996,822,1011,830,1017,827,1021,818,1015,804,999,797,982,793,948,790,915,783,899,770,884,755,873,737,864"/>
+<area shape="rect" id="Node000046" href="$d0/dd8/classcommon_1_1Order.html#a1c05461de1cf4e85559a86191f3d5f74" title="Gets the time in force of the order." alt="" coords="839,811,1037,851"/>
+<area shape="poly" id="edge93_Node000045_Node000046" title=" " alt="" coords="737,842,825,836,826,841,738,847"/>
+<area shape="poly" id="edge99_Node000047_Node000007" title=" " alt="" coords="695,1006,735,980,770,944,781,925,787,906,790,869,795,834,803,815,818,797,823,793,826,797,822,801,808,818,800,835,795,870,792,907,786,927,774,948,738,984,698,1011"/>
+<area shape="poly" id="edge101_Node000047_Node000011" title=" " alt="" coords="738,1043,862,1068,861,1073,737,1048"/>
+<area shape="poly" id="edge97_Node000047_Node000025" title=" " alt="" coords="739,1043,773,1058,789,1071,798,1084,807,1097,821,1109,843,1120,841,1124,819,1113,803,1101,794,1087,785,1075,771,1063,736,1047"/>
+<area shape="poly" id="edge98_Node000047_Node000038" title=" " alt="" coords="737,1014,842,998,843,1004,738,1019"/>
+<area shape="poly" id="edge100_Node000047_Node000040" title=" " alt="" coords="738,1028,828,1031,827,1036,737,1034"/>
+</map>

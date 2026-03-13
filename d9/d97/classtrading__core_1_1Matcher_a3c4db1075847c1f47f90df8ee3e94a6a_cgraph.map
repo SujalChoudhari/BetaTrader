@@ -1,0 +1,23 @@
+<map id="trading_core::Matcher::matchTable" name="trading_core::Matcher::matchTable">
+<area shape="rect" id="Node000001" title="A template function to match an incoming order against a map of resting orders." alt="" coords="5,264,169,304"/>
+<area shape="rect" id="Node000002" href="$d0/dd8/classcommon_1_1Order.html#aa7197842cb7210174bfa2f27d44f5f99" title="Gets the order&#39;s client&#45;provided identifier." alt="" coords="235,5,425,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,263,107,220,132,164,168,105,190,79,216,55,223,50,226,54,219,59,194,82,172,109,137,166,112,222,97,265"/>
+<area shape="rect" id="Node000003" href="$d0/dd8/classcommon_1_1Order.html#a3f3222cd2aa1e09a961504944264520a" title="Gets the order type (Limit/Market)." alt="" coords="221,70,439,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="95,263,113,228,139,186,173,142,216,106,229,98,232,103,219,110,177,146,143,189,117,231,100,265"/>
+<area shape="rect" id="Node000004" href="$d0/dd8/classcommon_1_1Order.html#a08fd36130533b29882fae06c9473674a" title="Gets the original quantity of the order." alt="" coords="229,120,431,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="105,262,152,216,183,191,216,170,230,163,232,168,219,174,186,195,156,220,109,266"/>
+<area shape="rect" id="Node000005" href="$d0/dd8/classcommon_1_1Order.html#a660801c23f1df830689f5b375f43e78e" title="Gets the order price." alt="" coords="238,185,422,210"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="124,261,168,240,216,220,247,211,249,216,218,225,170,245,127,266"/>
+<area shape="rect" id="Node000006" href="$d0/dd8/classcommon_1_1Order.html#a454866e05c7ff8020e109ac7879c5e64" title="Gets the remaining quantity of the order." alt="" coords="219,235,441,275"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="169,271,204,267,205,272,170,277"/>
+<area shape="rect" id="Node000007" href="$d0/dd8/classcommon_1_1Order.html#a348ad40c66accf1d2a2157b37272c790" title="Gets the order side (Buy/Sell)." alt="" coords="240,299,420,325"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="170,291,227,297,226,303,169,296"/>
+<area shape="rect" id="Node000008" href="$d0/dd8/classcommon_1_1Order.html#af44223adcd59d4295fac2282ef90ff2d" title="Gets the financial instrument symbol." alt="" coords="229,349,431,374"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="134,302,218,333,252,343,251,348,217,339,132,307"/>
+<area shape="rect" id="Node000009" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html#a250c8fefd157d6c06253681f4329dde1" title="Gets the next available trade ID." alt="" coords="217,399,443,439"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="111,302,158,343,219,383,236,391,234,396,216,388,155,347,107,306"/>
+<area shape="rect" id="Node000010" href="$d0/dd8/classcommon_1_1Order.html#a854c4d0fb6b3e8113340776ccbb63f3d" title="Sets the remaining quantity of the order." alt="" coords="219,463,441,503"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="101,303,146,375,179,414,219,449,228,454,225,459,216,453,175,418,141,378,96,306"/>
+<area shape="rect" id="Node000011" href="$d0/dd8/classcommon_1_1Order.html#a2ab8c89cfdb364152c87d8e895bcff5c" title="Sets the status of the order." alt="" coords="234,527,426,553"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="96,303,111,347,135,404,171,463,193,490,219,513,229,519,226,524,216,517,190,494,167,466,130,407,106,349,91,305"/>
+</map>

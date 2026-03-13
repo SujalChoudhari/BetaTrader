@@ -1,0 +1,7 @@
+<map id="data::TradeIDRepository::setCurrentTradeID" name="data::TradeIDRepository::setCurrentTradeID">
+<area shape="rect" id="Node000001" title=" " alt="" coords="552,5,731,45"/>
+<area shape="rect" id="Node000002" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html#a821654f99c7ca9a40dea8686967a480c" title=" " alt="" coords="279,5,504,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="538,28,504,28,504,23,538,23"/>
+<area shape="rect" id="Node000003" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html#ac12e8d15d52cc60d160dcf603a7a02fc" title=" " alt="" coords="5,5,231,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="265,28,231,28,231,23,265,23"/>
+</map>

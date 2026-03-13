@@ -1,0 +1,98 @@
+<map id="core/data/include/data/DatabaseWorker.h" name="core/data/include/data/DatabaseWorker.h">
+<area shape="rect" id="Node000001" title="Asynchronous database worker abstraction." alt="" coords="1079,5,1246,45"/>
+<area shape="rect" id="Node000002" href="$df/d05/AuthRepository_8h.html" title=" " alt="" coords="284,93,451,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1065,38,811,63,504,96,451,103,451,97,503,91,811,57,1065,33"/>
+<area shape="rect" id="Node000004" href="$d6/d5d/TradingCore_8h.html" title="Top&#45;level entry point for the trading core service." alt="" coords="716,533,916,573"/>
+<area shape="poly" id="edge60_Node000001_Node000004" title=" " alt="" coords="1065,35,905,52,815,65,727,83,648,105,583,131,559,147,540,163,529,181,525,200,525,378,530,410,543,438,563,461,589,482,618,499,651,513,716,533,715,538,649,518,616,503,586,486,559,465,538,441,525,412,520,379,520,200,524,179,536,160,556,142,581,127,646,99,726,77,814,60,904,47,1065,30"/>
+<area shape="rect" id="Node000013" href="$d7/dd2/OrderRepository_8h.html" title="Repository interface for persisting and loading orders." alt="" coords="1660,269,1827,309"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="1218,49,1703,267,1701,272,1215,53"/>
+<area shape="rect" id="Node000019" href="$d0/d83/SequenceRepository_8h.html" title=" " alt="" coords="6,445,175,485"/>
+<area shape="poly" id="edge25_Node000001_Node000019" title=" " alt="" coords="1065,30,877,34,648,44,428,64,339,78,273,96,218,113,172,129,154,140,141,155,132,174,129,200,129,291,126,335,118,378,100,446,94,444,113,377,121,334,124,291,124,200,127,173,136,152,151,136,170,125,217,108,271,91,338,73,428,58,647,39,877,28,1065,25"/>
+<area shape="rect" id="Node000024" href="$db/d97/TradeIDRepository_8h.html" title="Repository to persist and retrieve the current trade ID." alt="" coords="779,93,946,133"/>
+<area shape="poly" id="edge35_Node000001_Node000024" title=" " alt="" coords="1084,52,929,96,927,91,1083,47"/>
+<area shape="rect" id="Node000027" href="$d6/d0e/Matcher_8h.html" title=" " alt="" coords="904,269,1090,309"/>
+<area shape="poly" id="edge55_Node000001_Node000027" title=" " alt="" coords="1170,59,1172,95,1169,138,1160,182,1139,223,1108,252,1071,272,1068,267,1105,248,1135,220,1155,181,1164,137,1166,95,1164,59"/>
+<area shape="rect" id="Node000030" href="$dc/dde/TradeRepository_8h.html" title="Repository interface for persisting trades." alt="" coords="1200,181,1367,221"/>
+<area shape="poly" id="edge46_Node000001_Node000030" title=" " alt="" coords="1186,55,1273,180,1268,183,1181,58"/>
+<area shape="rect" id="Node000034" href="$da/dbe/DatabaseWorker_8cpp.html" title=" " alt="" coords="1442,101,1685,126"/>
+<area shape="poly" id="edge54_Node000001_Node000034" title=" " alt="" coords="1260,45,1511,98,1510,103,1259,50"/>
+<area shape="rect" id="Node000035" href="$d7/d8e/OrderIDGenerator_8h.html" title=" " alt="" coords="1674,445,1912,485"/>
+<area shape="poly" id="edge56_Node000001_Node000035" title=" " alt="" coords="1260,33,1481,57,1744,93,1864,116,1963,141,2002,154,2031,169,2050,184,2057,199,2057,291,2057,349,2050,374,2031,399,2005,421,1976,437,1945,449,1913,458,1911,452,1943,444,1974,432,2002,416,2027,396,2045,371,2052,349,2052,291,2052,201,2046,187,2028,173,2000,159,1962,146,1863,121,1743,99,1481,62,1259,38"/>
+<area shape="rect" id="Node000003" href="$d5/de1/AuthRepository_8cpp.html" title=" " alt="" coords="250,189,485,214"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,147,370,188,365,188,365,147"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="296,141,266,159,240,183,224,208,217,231,216,288,216,378,219,387,229,397,269,418,328,439,401,461,565,500,716,531,715,536,564,505,399,466,326,444,266,422,226,401,215,390,210,379,210,288,212,230,219,206,236,180,263,155,293,137"/>
+<area shape="rect" id="Node000005" href="$d9/dc2/FixServer_8h.html" title=" " alt="" coords="632,709,773,749"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="768,583,746,601,727,623,717,644,710,667,705,709,700,709,705,666,712,642,723,620,742,597,765,579"/>
+<area shape="rect" id="Node000008" href="$d2/dcd/fix_2src_2Main_8cpp.html" title=" " alt="" coords="516,797,672,823"/>
+<area shape="poly" id="edge12_Node000004_Node000008" title=" " alt="" coords="766,582,728,605,689,634,652,670,622,711,605,757,598,797,593,796,600,756,617,708,648,666,685,630,725,600,763,578"/>
+<area shape="rect" id="Node000009" href="$da/de1/FixSession_8h.html" title=" " alt="" coords="1102,621,1244,661"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="908,574,1103,620,1102,626,907,579"/>
+<area shape="rect" id="Node000010" href="$d9/d33/ExecutionPublisher_8cpp.html" title=" " alt="" coords="1268,621,1443,661"/>
+<area shape="poly" id="edge13_Node000004_Node000010" title=" " alt="" coords="930,568,1256,619,1268,621,1268,626,1255,624,929,573"/>
+<area shape="rect" id="Node000011" href="$d7/daa/trading__core_2src_2Main_8cpp.html" title=" " alt="" coords="736,621,895,661"/>
+<area shape="poly" id="edge14_Node000004_Node000011" title=" " alt="" coords="818,587,818,621,813,621,813,587"/>
+<area shape="rect" id="Node000012" href="$d7/d3f/TradingCore_8cpp.html" title=" " alt="" coords="919,621,1078,661"/>
+<area shape="poly" id="edge15_Node000004_Node000012" title=" " alt="" coords="869,577,960,619,957,624,867,582"/>
+<area shape="rect" id="Node000006" href="$d8/d81/FixServer_8cpp.html" title=" " alt="" coords="784,797,968,823"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="758,753,851,795,849,800,755,757"/>
+<area shape="rect" id="Node000007" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="1076,797,1270,823"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="787,742,1105,795,1104,800,787,747"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="667,760,612,799,609,795,664,755"/>
+<area shape="poly" id="edge9_Node000009_Node000005" title=" " alt="" coords="1090,664,774,720,773,714,1089,659"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="1129,670,898,800,895,795,1126,666"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="1176,675,1176,797,1170,797,1170,675"/>
+<area shape="rect" id="Node000014" href="$d7/d38/OrderRepository_8cpp.html" title=" " alt="" coords="1775,365,2016,390"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="1790,314,1877,362,1874,367,1788,318"/>
+<area shape="rect" id="Node000015" href="$d2/d15/Partition_8h.html" title="Represents a partition (shard) of the trading engine for a single symbol." alt="" coords="1268,445,1454,485"/>
+<area shape="poly" id="edge18_Node000013_Node000015" title=" " alt="" coords="1745,324,1737,363,1727,383,1713,400,1682,409,1618,423,1455,451,1454,446,1617,417,1681,404,1710,395,1723,380,1732,361,1740,322"/>
+<area shape="rect" id="Node000017" href="$d4/db6/WorkerThread_8h.html" title="Worker thread that consumes command queue and executes trading logic." alt="" coords="1486,357,1700,397"/>
+<area shape="poly" id="edge22_Node000013_Node000017" title=" " alt="" coords="1700,318,1627,360,1625,355,1698,314"/>
+<area shape="poly" id="edge19_Node000015_Node000004" title=" " alt="" coords="1254,486,917,539,916,534,1253,481"/>
+<area shape="poly" id="edge20_Node000015_Node000010" title=" " alt="" coords="1363,499,1359,621,1354,621,1357,499"/>
+<area shape="rect" id="Node000016" href="$da/d5c/Partition_8cpp.html" title=" " alt="" coords="1394,533,1552,573"/>
+<area shape="poly" id="edge21_Node000015_Node000016" title=" " alt="" coords="1399,492,1450,531,1447,535,1395,496"/>
+<area shape="poly" id="edge23_Node000017_Node000015" title=" " alt="" coords="1530,405,1413,448,1411,443,1529,400"/>
+<area shape="rect" id="Node000018" href="$d7/d8a/WorkerThread_8cpp.html" title=" " alt="" coords="1491,445,1650,485"/>
+<area shape="poly" id="edge24_Node000017_Node000018" title=" " alt="" coords="1587,411,1578,446,1573,444,1582,410"/>
+<area shape="poly" id="edge31_Node000019_Node000005" title=" " alt="" coords="190,482,195,483,291,488,415,490,479,494,537,501,587,513,624,531,644,550,661,572,684,622,697,671,704,709,698,710,692,672,679,624,656,575,640,554,621,536,585,518,536,506,478,499,415,496,290,493,194,488,189,487"/>
+<area shape="poly" id="edge34_Node000019_Node000008" title=" " alt="" coords="72,498,42,552,16,618,9,653,9,687,17,719,35,747,58,759,102,770,232,786,383,797,516,803,516,809,383,802,231,791,101,775,56,764,31,751,12,721,4,688,4,653,11,617,37,549,67,496"/>
+<area shape="rect" id="Node000020" href="$d4/db4/SessionState_8h.html" title=" " alt="" coords="127,533,318,573"/>
+<area shape="poly" id="edge26_Node000019_Node000020" title=" " alt="" coords="133,491,195,531,192,535,130,495"/>
+<area shape="rect" id="Node000021" href="$d5/dab/FixSessionManager_8h.html" title=" " alt="" coords="109,621,272,661"/>
+<area shape="poly" id="edge32_Node000019_Node000021" title=" " alt="" coords="95,499,102,535,117,572,138,598,163,619,159,623,134,602,112,575,97,537,90,500"/>
+<area shape="rect" id="Node000022" href="$d8/d05/FixSessionManager_8cpp.html" title=" " alt="" coords="46,717,295,742"/>
+<area shape="poly" id="edge33_Node000019_Node000022" title=" " alt="" coords="87,499,83,534,82,575,87,619,100,660,110,677,123,692,152,714,149,719,120,696,106,680,95,662,81,620,77,575,78,534,82,499"/>
+<area shape="rect" id="Node000023" href="$d0/da1/SequenceRepository_8cpp.html" title=" " alt="" coords="342,541,610,566"/>
+<area shape="poly" id="edge30_Node000019_Node000023" title=" " alt="" coords="189,486,425,538,424,543,188,491"/>
+<area shape="poly" id="edge27_Node000020_Node000021" title=" " alt="" coords="213,587,200,622,195,620,208,585"/>
+<area shape="poly" id="edge28_Node000021_Node000005" title=" " alt="" coords="286,656,632,714,631,719,285,661"/>
+<area shape="poly" id="edge29_Node000021_Node000022" title=" " alt="" coords="186,675,176,717,171,716,180,674"/>
+<area shape="poly" id="edge45_Node000024_Node000004" title=" " alt="" coords="766,131,667,153,626,167,600,183,582,207,576,230,576,288,576,378,580,408,592,434,610,457,632,477,687,509,743,531,741,536,685,513,629,481,606,460,587,436,575,409,570,379,570,288,570,229,578,205,597,179,624,162,666,148,765,126"/>
+<area shape="rect" id="Node000025" href="$db/db0/TradeIDRepository_8cpp.html" title=" " alt="" coords="870,189,1124,214"/>
+<area shape="poly" id="edge36_Node000024_Node000025" title=" " alt="" coords="905,139,980,186,977,191,902,143"/>
+<area shape="rect" id="Node000026" href="$d0/d71/TradeIDGenerator_8h.html" title=" " alt="" coords="610,181,846,221"/>
+<area shape="poly" id="edge37_Node000024_Node000026" title=" " alt="" coords="822,143,759,183,756,179,820,139"/>
+<area shape="poly" id="edge42_Node000026_Node000004" title=" " alt="" coords="764,229,780,247,793,268,806,304,815,342,824,418,824,485,821,533,816,533,819,485,819,418,810,343,801,306,788,270,776,250,760,233"/>
+<area shape="poly" id="edge38_Node000026_Node000027" title=" " alt="" coords="801,223,939,267,937,272,799,228"/>
+<area shape="rect" id="Node000028" href="$d6/d68/Matcher_8cpp.html" title=" " alt="" coords="886,357,1044,397"/>
+<area shape="poly" id="edge43_Node000026_Node000028" title=" " alt="" coords="773,226,836,267,896,314,945,355,942,359,893,318,833,272,770,231"/>
+<area shape="rect" id="Node000029" href="$d5/d95/TradeIDGenerator_8cpp.html" title=" " alt="" coords="611,269,778,309"/>
+<area shape="poly" id="edge44_Node000026_Node000029" title=" " alt="" coords="718,235,704,270,699,268,713,233"/>
+<area shape="poly" id="edge39_Node000027_Node000015" title=" " alt="" coords="1043,314,1114,353,1197,395,1312,443,1310,448,1195,400,1112,358,1040,319"/>
+<area shape="poly" id="edge40_Node000027_Node000017" title=" " alt="" coords="1105,307,1487,360,1486,365,1104,312"/>
+<area shape="poly" id="edge41_Node000027_Node000028" title=" " alt="" coords="988,323,975,358,970,356,983,321"/>
+<area shape="poly" id="edge49_Node000030_Node000015" title=" " alt="" coords="1329,227,1350,245,1367,265,1375,288,1374,299,1369,311,1354,326,1338,333,1304,336,1271,339,1256,345,1243,359,1237,377,1243,396,1255,411,1269,424,1302,443,1299,447,1265,428,1251,415,1239,399,1231,377,1239,356,1253,341,1270,333,1304,331,1337,328,1351,321,1364,308,1369,298,1370,288,1363,268,1346,248,1325,231"/>
+<area shape="poly" id="edge48_Node000030_Node000027" title=" " alt="" coords="1208,228,1061,272,1059,267,1207,223"/>
+<area shape="rect" id="Node000031" href="$d2/db2/TradeRepository_8cpp.html" title=" " alt="" coords="1114,277,1354,302"/>
+<area shape="poly" id="edge47_Node000030_Node000031" title=" " alt="" coords="1268,235,1244,278,1239,275,1264,232"/>
+<area shape="rect" id="Node000032" href="$d7/dfd/RiskManager_8h.html" title="Risk management hooks for pre&#45;checks and post&#45;trade updates." alt="" coords="1430,269,1636,309"/>
+<area shape="poly" id="edge50_Node000030_Node000032" title=" " alt="" coords="1352,223,1479,267,1478,272,1351,228"/>
+<area shape="poly" id="edge51_Node000032_Node000015" title=" " alt="" coords="1507,321,1382,447,1378,443,1503,317"/>
+<area shape="poly" id="edge52_Node000032_Node000017" title=" " alt="" coords="1556,319,1582,356,1578,359,1552,322"/>
+<area shape="rect" id="Node000033" href="$d9/d0a/RiskManager_8cpp.html" title=" " alt="" coords="1252,357,1411,397"/>
+<area shape="poly" id="edge53_Node000032_Node000033" title=" " alt="" coords="1477,317,1377,360,1375,355,1475,312"/>
+<area shape="poly" id="edge58_Node000035_Node000004" title=" " alt="" coords="1661,488,1243,526,917,549,916,543,1243,521,1660,483"/>
+<area shape="poly" id="edge57_Node000035_Node000007" title=" " alt="" coords="1752,495,1457,664,1197,800,1195,795,1454,659,1749,490"/>
+<area shape="rect" id="Node000036" href="$d9/da3/OrderIDGenerator_8cpp.html" title=" " alt="" coords="1710,533,1876,573"/>
+<area shape="poly" id="edge59_Node000035_Node000036" title=" " alt="" coords="1796,499,1796,533,1790,533,1790,499"/>
+</map>

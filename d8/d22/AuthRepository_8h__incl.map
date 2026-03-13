@@ -1,0 +1,19 @@
+<map id="core/data/include/data/AuthRepository.h" name="core/data/include/data/AuthRepository.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="480,5,647,45"/>
+<area shape="rect" id="Node000002" href="$d6/d84/DatabaseWorker_8h.html" title="Asynchronous database worker abstraction." alt="" coords="327,93,501,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="529,48,450,89,447,84,526,43"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="471,167,557,192"/>
+<area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="560,47,525,154,519,153,555,45"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="582,167,641,192"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="572,45,606,153,601,154,567,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="627,93,689,119"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="588,43,635,82,631,86,585,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,161,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="361,121,151,166,149,161,360,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="185,167,357,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="392,121,308,163,306,158,390,116"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="432,117,488,156,485,161,429,121"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="447,116,570,160,568,165,445,121"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="382,167,446,192"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="417,119,417,153,411,153,411,119"/>
+</map>

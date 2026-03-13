@@ -1,0 +1,37 @@
+<map id="core/trading_core/include/trading_core/TradeIDGenerator.h" name="core/trading_core/include/trading_core/TradeIDGenerator.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="364,5,600,45"/>
+<area shape="rect" id="Node000002" href="$d4/da8/common_2Types_8h.html" title=" " alt="" coords="251,167,383,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="447,48,413,69,380,95,353,126,332,156,328,153,349,122,376,91,410,65,444,43"/>
+<area shape="rect" id="Node000009" href="$db/d97/TradeIDRepository_8h.html" title="Repository to persist and retrieve the current trade ID." alt="" coords="390,93,574,119"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="485,46,485,79,479,79,479,46"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="598,93,665,119"/>
+<area shape="poly" id="edge20_Node000001_Node000015" title=" " alt="" coords="519,43,598,84,596,89,517,48"/>
+<area shape="rect" id="Node000003" href="$d5/d0a/Instrument_8h.html" title=" " alt="" coords="123,240,228,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="295,194,212,236,209,231,293,190"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="238,313,294,339"/>
+<area shape="poly" id="edge7_Node000002_Node000004" title=" " alt="" coords="315,193,277,301,272,300,310,192"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="318,313,385,339"/>
+<area shape="poly" id="edge8_Node000002_Node000005" title=" " alt="" coords="322,192,348,299,343,301,317,193"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,313,92,339"/>
+<area shape="poly" id="edge9_Node000002_Node000006" title=" " alt="" coords="251,191,180,209,145,223,112,242,83,271,62,302,58,300,79,267,108,238,142,218,179,204,250,186"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="354,240,413,265"/>
+<area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="330,191,365,228,361,232,326,194"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="192,263,242,302,239,307,188,267"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="205,263,311,306,309,310,203,268"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="156,268,83,309,80,304,154,263"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="116,313,213,339"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="176,266,171,300,166,299,171,265"/>
+<area shape="poly" id="edge12_Node000009_Node000002" title=" " alt="" coords="456,121,357,164,355,159,454,116"/>
+<area shape="rect" id="Node000010" href="$d6/d84/DatabaseWorker_8h.html" title="Asynchronous database worker abstraction." alt="" coords="462,167,635,192"/>
+<area shape="poly" id="edge13_Node000009_Node000010" title=" " alt="" coords="495,117,530,155,527,158,491,121"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="901,240,988,265"/>
+<area shape="poly" id="edge19_Node000009_Node000013" title=" " alt="" coords="519,116,896,233,894,238,518,121"/>
+<area shape="poly" id="edge17_Node000010_Node000008" title=" " alt="" coords="523,194,424,237,422,232,521,190"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="525,240,681,265"/>
+<area shape="poly" id="edge14_Node000010_Node000011" title=" " alt="" coords="560,191,588,228,584,231,556,194"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="705,240,877,265"/>
+<area shape="poly" id="edge15_Node000010_Node000012" title=" " alt="" coords="588,189,740,234,738,239,587,195"/>
+<area shape="poly" id="edge16_Node000010_Node000013" title=" " alt="" coords="619,189,888,237,887,242,618,195"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="437,240,501,265"/>
+<area shape="poly" id="edge18_Node000010_Node000014" title=" " alt="" coords="538,194,494,233,490,229,534,190"/>
+</map>

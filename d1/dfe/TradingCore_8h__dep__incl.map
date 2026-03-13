@@ -1,0 +1,23 @@
+<map id="core/trading_core/include/trading_core/TradingCore.h" name="core/trading_core/include/trading_core/TradingCore.h">
+<area shape="rect" id="Node000001" title="Top&#45;level entry point for the trading core service." alt="" coords="427,5,627,45"/>
+<area shape="rect" id="Node000002" href="$d9/dc2/FixServer_8h.html" title=" " alt="" coords="285,181,427,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="493,56,447,95,405,141,372,183,368,179,401,138,443,91,489,52"/>
+<area shape="rect" id="Node000005" href="$d2/dcd/fix_2src_2Main_8cpp.html" title=" " alt="" coords="431,269,587,295"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="508,58,492,94,486,144,490,194,499,238,508,268,503,270,494,239,485,195,481,144,487,93,503,56"/>
+<area shape="rect" id="Node000006" href="$da/de1/FixSession_8h.html" title=" " alt="" coords="205,93,347,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="460,52,332,96,330,91,458,47"/>
+<area shape="rect" id="Node000007" href="$d9/d33/ExecutionPublisher_8cpp.html" title=" " alt="" coords="502,93,677,133"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="551,55,578,92,573,95,547,58"/>
+<area shape="rect" id="Node000008" href="$d7/daa/trading__core_2src_2Main_8cpp.html" title=" " alt="" coords="701,93,859,133"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="596,47,725,91,724,96,594,52"/>
+<area shape="rect" id="Node000009" href="$d7/d3f/TradingCore_8cpp.html" title=" " alt="" coords="883,93,1042,133"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="639,45,873,91,884,93,883,98,871,96,638,51"/>
+<area shape="rect" id="Node000003" href="$d8/d81/FixServer_8cpp.html" title=" " alt="" coords="5,269,189,295"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="282,228,136,272,134,267,280,223"/>
+<area shape="rect" id="Node000004" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="214,269,407,295"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="340,235,320,270,315,268,336,232"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="406,225,488,267,485,272,404,230"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="305,142,340,179,336,183,301,145"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="248,145,112,271,108,267,244,141"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="273,147,271,183,276,221,288,246,303,267,298,270,283,249,271,222,265,183,268,147"/>
+</map>

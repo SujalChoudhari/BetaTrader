@@ -1,0 +1,16 @@
+<map id="trading_core::TradingCore::getPartition" name="trading_core::TradingCore::getPartition">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1157,37,1345,77"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html#a9346824f344cf5deed47e86ba7ebf7f6" title=" " alt="" coords="921,5,1109,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1143,45,1109,41,1110,35,1144,40"/>
+<area shape="rect" id="Node000003" href="$d3/d30/classtrading__core_1_1TradingCore.html#a6d705f552de1442ff7da2a3ab28e1948" title=" " alt="" coords="921,69,1109,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1144,75,1110,79,1109,74,1143,69"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#ac457b1d016a6c70c8380cce072510970" title=" " alt="" coords="661,69,873,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="908,92,873,92,873,87,908,87"/>
+<area shape="rect" id="Node000005" href="$d6/d41/classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="427,69,613,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="648,92,614,92,614,87,648,87"/>
+<area shape="rect" id="Node000006" href="$d6/d41/classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="207,77,379,102"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="413,92,379,92,379,87,413,87"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="330,67,320,59,293,55,270,57,258,62,256,68,262,75,258,78,251,68,255,58,269,52,293,50,322,54,334,63"/>
+<area shape="rect" id="Node000007" href="$d6/d41/classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="5,77,159,102"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="193,92,159,92,159,87,193,87"/>
+</map>

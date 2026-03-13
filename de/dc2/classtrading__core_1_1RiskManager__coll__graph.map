@@ -1,0 +1,7 @@
+<map id="trading_core::RiskManager" name="trading_core::RiskManager">
+<area shape="rect" id="Node000001" title="Performs risk validation and updates after trade execution." alt="" coords="5,501,193,647"/>
+<area shape="rect" id="Node000002" href="$d0/d5a/classdata_1_1TradeRepository.html" title="Persists common::Trade objects to storage." alt="" coords="21,313,177,439"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,439,102,485,97,485,97,439"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="20,5,179,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="102,251,102,297,97,297,97,251"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="fix::BinaryToModifyOrderRequestConverter::convert" name="fix::BinaryToModifyOrderRequestConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a raw FIX message string into a ModifyOrderRequest object." alt="" coords="920,22,1116,62"/>
+<area shape="rect" id="Node000002" href="$d6/d41/classfix_1_1FixSession.html#ad3b562443287f3b43cfa5093708d7da5" title=" " alt="" coords="661,22,872,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="906,45,872,45,872,39,906,39"/>
+<area shape="rect" id="Node000003" href="$d6/d41/classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="427,22,613,62"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="648,45,614,45,614,39,648,39"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="207,29,379,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="413,45,379,45,379,39,413,39"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="330,20,320,11,293,8,270,10,258,15,256,20,262,28,258,31,251,21,255,11,269,5,293,3,322,6,334,15"/>
+<area shape="rect" id="Node000005" href="$d6/d41/classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="5,29,159,55"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="193,45,159,45,159,39,193,39"/>
+</map>

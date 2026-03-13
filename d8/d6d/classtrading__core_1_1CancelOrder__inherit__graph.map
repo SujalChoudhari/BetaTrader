@@ -1,0 +1,5 @@
+<map id="trading_core::CancelOrder" name="trading_core::CancelOrder">
+<area shape="rect" id="Node000001" title="A command to cancel an existing order in the trading engine." alt="" coords="5,239,188,324"/>
+<area shape="rect" id="Node000002" href="$dc/dac/classtrading__core_1_1Command.html" title="An internal representation of a request, converted from an FIX message into this object for faster pr..." alt="" coords="11,5,182,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,204,99,239,94,239,94,204"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="fix::BusinessMessageReject" name="fix::BusinessMessageReject">
+<area shape="rect" id="Node000001" title="Represents the data required to build a FIX Business Message Reject (35=j) message." alt="" coords="5,5,200,131"/>
+</map>

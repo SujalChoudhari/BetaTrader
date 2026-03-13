@@ -1,0 +1,11 @@
+<map id="fix::BinaryToCancelOrderRequestConverter::convert" name="fix::BinaryToCancelOrderRequestConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a raw FIX message string into a CancelOrderRequest object." alt="" coords="5,73,201,113"/>
+<area shape="rect" id="Node000002" href="$dc/d18/namespacefix.html#ad8a258a1bda5edecc3a0483327b9c94d" title="Converts a character representation of an order side to the common::OrderSide enum." alt="" coords="255,5,407,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,70,249,39,272,32,273,37,250,45,161,75"/>
+<area shape="rect" id="Node000003" href="$d9/d0c/namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="249,55,412,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,79,235,75,236,81,202,84"/>
+<area shape="rect" id="Node000004" href="$dc/d18/namespacefix.html#ae10f9de43f35a89bd9187a1c002a9522" title="Parses a FIX TransactTime (Tag 60) string into a common::Timestamp. Expected format: YYYYMMDD&#45;HH:MM:S..." alt="" coords="253,104,409,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="202,100,239,104,239,110,202,106"/>
+<area shape="rect" id="Node000005" href="$dc/d18/namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="273,153,389,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="165,110,250,138,277,147,275,152,249,143,164,115"/>
+</map>

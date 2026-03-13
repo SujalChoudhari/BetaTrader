@@ -1,0 +1,28 @@
+<map id="core/trading_core/include/trading_core/Partition.h" name="core/trading_core/include/trading_core/Partition.h">
+<area shape="rect" id="Node000001" title="Represents a partition (shard) of the trading engine for a single symbol." alt="" coords="613,5,799,45"/>
+<area shape="rect" id="Node000002" href="$d6/d5d/TradingCore_8h.html" title="Top&#45;level entry point for the trading core service." alt="" coords="450,93,650,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="661,54,585,96,583,91,658,50"/>
+<area shape="rect" id="Node000008" href="$d9/d33/ExecutionPublisher_8cpp.html" title=" " alt="" coords="639,181,813,221"/>
+<area shape="poly" id="edge14_Node000001_Node000008" title=" " alt="" coords="712,59,726,181,721,181,707,59"/>
+<area shape="rect" id="Node000011" href="$da/d5c/Partition_8cpp.html" title=" " alt="" coords="744,93,903,133"/>
+<area shape="poly" id="edge15_Node000001_Node000011" title=" " alt="" coords="745,52,799,91,796,95,742,56"/>
+<area shape="rect" id="Node000003" href="$d9/dc2/FixServer_8h.html" title=" " alt="" coords="422,269,563,309"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="547,148,527,222,505,270,501,268,522,220,542,146"/>
+<area shape="rect" id="Node000006" href="$d2/dcd/fix_2src_2Main_8cpp.html" title=" " alt="" coords="568,357,724,383"/>
+<area shape="poly" id="edge10_Node000002_Node000006" title=" " alt="" coords="564,145,644,356,639,358,559,147"/>
+<area shape="rect" id="Node000007" href="$da/de1/FixSession_8h.html" title=" " alt="" coords="371,181,513,221"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="517,144,468,183,464,179,514,140"/>
+<area shape="poly" id="edge11_Node000002_Node000008" title=" " alt="" coords="602,137,689,179,686,184,600,142"/>
+<area shape="rect" id="Node000009" href="$d7/daa/trading__core_2src_2Main_8cpp.html" title=" " alt="" coords="5,181,164,221"/>
+<area shape="poly" id="edge12_Node000002_Node000009" title=" " alt="" coords="437,137,176,184,165,186,164,181,175,179,436,131"/>
+<area shape="rect" id="Node000010" href="$d7/d3f/TradingCore_8cpp.html" title=" " alt="" coords="188,181,347,221"/>
+<area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="476,140,330,184,328,179,474,135"/>
+<area shape="rect" id="Node000004" href="$d8/d81/FixServer_8cpp.html" title=" " alt="" coords="142,357,326,383"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="418,316,273,360,271,355,417,311"/>
+<area shape="rect" id="Node000005" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="351,357,544,383"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="477,323,456,358,452,356,472,320"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="543,313,625,355,622,360,540,318"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="463,232,484,268,479,270,458,235"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="409,232,250,359,247,355,406,228"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="426,235,412,271,410,290,413,309,424,334,439,355,435,358,420,337,407,310,405,290,407,269,421,233"/>
+</map>

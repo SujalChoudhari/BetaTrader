@@ -1,0 +1,5 @@
+<map id="fix::MarketDataSnapshotFullRefreshToBinaryConverter::convert" name="fix::MarketDataSnapshotFullRefreshToBinaryConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a MarketDataSnapshotFullRefresh object into a raw FIX message string." alt="" coords="5,5,211,60"/>
+<area shape="rect" id="Node000002" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="259,20,403,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,30,245,30,245,35,211,35"/>
+</map>

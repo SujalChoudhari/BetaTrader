@@ -1,0 +1,5 @@
+<map id="trading_core::MarketDataPublisher::publishSnapshot" name="trading_core::MarketDataPublisher::publishSnapshot">
+<area shape="rect" id="Node000001" title=" " alt="" coords="233,5,431,45"/>
+<area shape="rect" id="Node000002" href="$da/de6/classtrading__core_1_1OrderBook.html#a6b7b91b0ab6dcce5b6b47edea38aff87" title="Publishes a full snapshot of the current order book for a specific session." alt="" coords="5,5,185,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,28,185,28,185,23,220,23"/>
+</map>

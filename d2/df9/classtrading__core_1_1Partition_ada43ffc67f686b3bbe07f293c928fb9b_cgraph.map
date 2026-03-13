@@ -1,0 +1,8 @@
+<map id="trading_core::Partition::~Partition" name="trading_core::Partition::~Partition">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,171,75"/>
+<area shape="rect" id="Node000002" href="$d2/df9/classtrading__core_1_1Partition.html#aa59521b795a46b07fbd9c904d9703fb1" title=" " alt="" coords="219,5,384,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,41,205,36,205,41,171,46"/>
+<area shape="rect" id="Node000003" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="432,42,576,67"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="171,54,219,55,384,55,418,54,418,59,384,60,219,60,171,59"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="384,35,419,40,418,45,384,40"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="trading_core::TradingCore" name="trading_core::TradingCore">
+<area shape="rect" id="Node000001" title="High&#45;level manager for partitions and command dispatch." alt="" coords="75,313,297,739"/>
+<area shape="rect" id="Node000002" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="5,5,164,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,251,130,297,125,298,113,252"/>
+<area shape="rect" id="Node000003" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title=" " alt="" coords="189,8,389,248"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="270,249,261,290,259,298,253,297,255,289,265,247"/>
+</map>

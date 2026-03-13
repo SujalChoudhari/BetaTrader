@@ -1,0 +1,9 @@
+<map id="fix::FixServer::unregisterSession" name="fix::FixServer::unregisterSession">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,187,45"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html#a738e81f8c180993a89595bb2ce846d9c" title=" " alt="" coords="235,5,452,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,23,221,23,221,28,187,28"/>
+<area shape="rect" id="Node000003" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#a3ed9b045addf52d0fb706993b7d652a5" title=" " alt="" coords="500,5,720,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="452,23,486,23,486,28,452,28"/>
+<area shape="rect" id="Node000004" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="768,13,912,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="720,23,755,23,755,28,720,28"/>
+</map>

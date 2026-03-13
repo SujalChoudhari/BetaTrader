@@ -1,0 +1,23 @@
+<map id="trading_core::RiskManager::postTradeUpdate" name="trading_core::RiskManager::postTradeUpdate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,211,201,251"/>
+<area shape="rect" id="Node000002" href="$d0/d5a/classdata_1_1TradeRepository.html#aab1fa2c333cb266ec42dd051ed3d1f0d" title=" " alt="" coords="249,211,413,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,228,236,228,236,233,202,233"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html#a5c99f0ef4800a689e9e73df9f700f905" title=" " alt="" coords="496,5,663,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="340,209,357,176,384,134,418,91,460,55,482,43,485,48,463,60,422,95,388,137,362,178,344,212"/>
+<area shape="rect" id="Node000004" href="$d4/dc4/classcommon_1_1Trade.html#af1c437490b95971f5e7e99bc7ebbc12e" title="Gets the buy order&#39;s unique identifier." alt="" coords="467,70,691,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="346,209,392,156,424,128,460,104,475,98,477,102,463,109,428,132,396,160,350,212"/>
+<area shape="rect" id="Node000005" href="$d4/dc4/classcommon_1_1Trade.html#a475c64fc9f3f5004a6d7efff9577f5cb" title="Gets the financial instrument symbol." alt="" coords="461,119,697,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="360,208,406,180,460,154,485,146,486,151,462,158,408,185,362,213"/>
+<area shape="rect" id="Node000006" href="$d4/dc4/classcommon_1_1Trade.html#abd9069ce2f9e808e8f2cc12137905a64" title="Gets the trade price." alt="" coords="488,169,671,194"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="413,212,501,194,502,199,414,217"/>
+<area shape="rect" id="Node000007" href="$d4/dc4/classcommon_1_1Trade.html#a2490a12cd80c36913032743b801c4d93" title="Gets the trade quantity." alt="" coords="476,218,683,243"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="413,228,462,228,462,233,413,233"/>
+<area shape="rect" id="Node000008" href="$d4/dc4/classcommon_1_1Trade.html#a562b2f50e887a3221548897045354d7a" title="Gets the sell order&#39;s unique identifier." alt="" coords="468,267,691,293"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="414,244,502,262,501,267,413,250"/>
+<area shape="rect" id="Node000009" href="$d4/dc4/classcommon_1_1Trade.html#a02371b2158b70110a7621a010723639c" title="Gets the trade timestamp." alt="" coords="467,317,692,342"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="363,249,409,276,462,302,491,311,489,316,460,306,406,281,361,253"/>
+<area shape="rect" id="Node000010" href="$d4/dc4/classcommon_1_1Trade.html#aa7fd3ee9999bf268a41427391bb12b86" title="Gets the trade&#39;s unique identifier." alt="" coords="480,366,679,391"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="350,249,396,301,428,328,463,351,481,359,478,364,460,356,425,332,393,305,346,253"/>
+<area shape="rect" id="Node000011" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="507,415,651,441"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="344,250,362,283,388,324,422,366,463,400,495,415,493,420,460,405,418,370,383,328,357,286,339,252"/>
+</map>

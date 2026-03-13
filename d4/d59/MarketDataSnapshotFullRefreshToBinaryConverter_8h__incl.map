@@ -1,0 +1,37 @@
+<map id="core/fix/include/fix/MarketDataSnapshotFullRefreshToBinaryConverter.h" name="core/fix/include/fix/MarketDataSnapshotFullRefreshToBinaryConverter.h">
+<area shape="rect" id="Node000001" title="Declares the MarketDataSnapshotFullRefreshToBinaryConverter class for converting MarketDataSnapshotFu..." alt="" coords="441,5,676,60"/>
+<area shape="rect" id="Node000002" href="$d0/d27/MarketDataSnapshotFullRefresh_8h.html" title=" " alt="" coords="311,108,553,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="525,62,471,102,467,97,521,58"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="640,343,699,368"/>
+<area shape="poly" id="edge21_Node000001_Node000011" title=" " alt="" coords="584,58,614,97,648,147,677,206,688,237,695,269,695,295,683,331,678,329,689,294,689,270,682,238,672,208,643,150,610,100,580,62"/>
+<area shape="rect" id="Node000003" href="$d2/d33/Time_8h.html" title=" " alt="" coords="504,196,632,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="466,146,537,187,535,191,463,150"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="484,269,551,295"/>
+<area shape="poly" id="edge18_Node000002_Node000004" title=" " alt="" coords="445,147,506,256,502,259,440,150"/>
+<area shape="rect" id="Node000005" href="$d4/da8/common_2Types_8h.html" title=" " alt="" coords="201,269,333,295"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="311,149,228,169,196,183,177,198,172,206,172,215,182,232,201,248,226,261,223,266,198,252,177,235,167,216,167,205,173,194,194,178,227,164,310,144"/>
+<area shape="poly" id="edge19_Node000002_Node000011" title=" " alt="" coords="555,141,604,161,627,176,646,194,665,227,674,263,677,299,675,329,670,329,671,299,669,264,660,229,642,198,623,180,602,166,553,146"/>
+<area shape="rect" id="Node000012" href="$dc/dda/Protocol_8h.html" title="Defines constants and enumerations for the FIX protocol." alt="" coords="5,269,176,295"/>
+<area shape="poly" id="edge14_Node000002_Node000012" title=" " alt="" coords="311,146,236,166,200,180,165,198,132,227,107,259,103,256,128,223,163,194,198,175,235,161,310,141"/>
+<area shape="rect" id="Node000013" href="$d1/d63/common__fix_2Types_8h.html" title="Defines type aliases for FIX protocol fields." alt="" coords="187,196,341,221"/>
+<area shape="poly" id="edge16_Node000002_Node000013" title=" " alt="" coords="393,150,302,193,300,188,391,146"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="366,196,429,221"/>
+<area shape="poly" id="edge20_Node000002_Node000014" title=" " alt="" coords="426,149,411,184,406,182,421,147"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="562,223,536,260,531,257,557,220"/>
+<area shape="rect" id="Node000006" href="$d5/d0a/Instrument_8h.html" title=" " alt="" coords="194,343,299,368"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="266,296,256,330,251,329,261,294"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="275,416,331,441"/>
+<area shape="poly" id="edge10_Node000005_Node000007" title=" " alt="" coords="281,293,299,314,313,342,317,373,313,403,308,402,312,373,308,343,294,317,277,296"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="355,416,421,441"/>
+<area shape="poly" id="edge11_Node000005_Node000008" title=" " alt="" coords="283,293,334,341,377,402,372,405,330,344,279,297"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="163,416,250,441"/>
+<area shape="poly" id="edge12_Node000005_Node000009" title=" " alt="" coords="239,297,208,316,194,329,184,344,180,358,181,374,193,403,188,405,176,375,174,358,179,342,190,325,205,312,236,293"/>
+<area shape="poly" id="edge13_Node000005_Node000011" title=" " alt="" coords="332,292,627,344,626,349,331,297"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="258,367,287,404,283,407,254,370"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="271,366,354,407,352,412,268,370"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="242,370,222,405,218,403,238,367"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="42,416,139,441"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="223,370,130,413,128,408,221,366"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="93,295,93,402,88,402,88,295"/>
+<area shape="poly" id="edge17_Node000013_Node000005" title=" " alt="" coords="267,222,268,256,263,256,262,222"/>
+</map>

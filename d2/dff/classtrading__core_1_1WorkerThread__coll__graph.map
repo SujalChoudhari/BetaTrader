@@ -1,0 +1,27 @@
+<map id="trading_core::WorkerThread" name="trading_core::WorkerThread">
+<area shape="rect" id="Node000001" title="Background worker which processes batched commands." alt="" coords="403,1413,596,1719"/>
+<area shape="rect" id="Node000002" href="$de/db5/classtrading__core_1_1OrderManager.html" title="Manages all the orders in the system." alt="" coords="5,1125,204,1351"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,1349,204,1387,247,1424,294,1458,389,1512,387,1517,291,1462,244,1429,200,1391,167,1353"/>
+<area shape="rect" id="Node000003" href="$da/de6/classtrading__core_1_1OrderBook.html" title="Represents the order book for a single financial instrument." alt="" coords="228,1125,400,1351"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="318,1350,330,1388,357,1434,393,1476,389,1479,353,1437,325,1390,313,1352"/>
+<area shape="rect" id="Node000004" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title=" " alt="" coords="190,692,390,932"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="299,932,309,1109,304,1109,294,933"/>
+<area shape="rect" id="Node000005" href="$d9/d97/classtrading__core_1_1Matcher.html" title="The matching engine that pairs buy and sell orders." alt="" coords="661,1175,817,1301"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="696,1302,608,1422,603,1419,692,1299"/>
+<area shape="rect" id="Node000006" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html" title="A thread&#45;safe, database&#45;aware generator for unique trade IDs." alt="" coords="592,739,809,885"/>
+<area shape="poly" id="edge13_Node000001_Node000006" title=" " alt="" coords="644,887,609,937,572,995,539,1059,514,1126,498,1193,490,1263,486,1332,487,1397,481,1397,481,1331,484,1262,493,1192,509,1125,534,1057,567,993,604,934,640,883"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="678,885,665,934,657,988,655,1045,663,1101,674,1131,689,1160,684,1162,669,1133,658,1102,650,1045,651,988,660,933,673,884"/>
+<area shape="rect" id="Node000007" href="$d3/d80/classdata_1_1TradeIDRepository.html" title="Persistent storage for trade id value." alt="" coords="605,313,775,459"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="694,459,701,723,696,723,689,459"/>
+<area shape="rect" id="Node000008" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="728,5,887,251"/>
+<area shape="poly" id="edge14_Node000001_Node000008" title=" " alt="" coords="728,149,638,179,589,200,544,226,503,258,470,294,448,336,443,360,441,385,441,1239,446,1318,458,1397,453,1397,440,1319,435,1239,435,385,437,359,443,335,466,291,499,254,541,222,587,196,636,174,727,144"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="754,252,732,299,727,297,749,250"/>
+<area shape="rect" id="Node000010" href="$d0/d5a/classdata_1_1TradeRepository.html" title="Persists common::Trade objects to storage." alt="" coords="800,323,956,449"/>
+<area shape="poly" id="edge10_Node000010_Node000008" title=" " alt="" coords="844,250,859,307,854,308,838,252"/>
+<area shape="rect" id="Node000011" href="$de/dbb/classdata_1_1OrderRepository.html" title="Persists and retrieves common::Order objects." alt="" coords="1003,483,1204,668"/>
+<area shape="poly" id="edge12_Node000011_Node000008" title=" " alt="" coords="889,210,931,259,971,312,1018,389,1058,466,1053,469,1013,392,966,315,927,262,885,213"/>
+<area shape="rect" id="Node000009" href="$d9/d4f/classtrading__core_1_1RiskManager.html" title="Performs risk validation and updates after trade execution." alt="" coords="808,956,996,1101"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="903,1102,898,1160,885,1225,864,1291,831,1352,784,1406,728,1453,669,1491,612,1522,610,1517,667,1486,725,1448,780,1403,826,1349,859,1289,880,1224,892,1159,898,1102"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="870,449,866,483,862,607,868,731,878,846,891,940,885,940,873,846,862,732,857,607,861,482,864,448"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1123,668,1137,813,1139,900,1135,992,1123,1087,1100,1181,1065,1271,1042,1313,1015,1352,975,1397,928,1435,877,1467,822,1493,767,1514,712,1531,613,1553,612,1548,711,1526,765,1509,820,1488,874,1462,925,1430,971,1393,1011,1349,1037,1310,1060,1268,1095,1180,1117,1086,1130,992,1134,900,1132,813,1117,669"/>
+</map>

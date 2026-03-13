@@ -1,0 +1,3 @@
+<map id="trading_core::Command" name="trading_core::Command">
+<area shape="rect" id="Node000001" title="An internal representation of a request, converted from an FIX message into this object for faster pr..." alt="" coords="5,5,176,191"/>
+</map>

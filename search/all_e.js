@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['i_20standard_20header_20fields_20mandatory_20structure_0',['I. Standard Header Fields (Mandatory Structure)',['../d5/d7d/md_core_2fix_2FIX.html#autotoc_md30',1,'']]],
+  ['idempotency_20fields_1',['Sequence Recovery and Idempotency Fields',['../d5/d7d/md_core_2fix_2FIX.html#autotoc_md32',1,'']]],
+  ['iii_20core_20application_20messages_20trade_20flow_2',['III. Core Application Messages (Trade Flow)',['../d5/d7d/md_core_2fix_2FIX.html#autotoc_md33',1,'']]],
+  ['imgui_20trader_20terminal_3',['Client | ImGui Trader Terminal',['../da/d44/md_client_2client__ui_2README.html',1,'']]],
+  ['implementation_4',['4. Advanced Risk Management Implementation',['../index.html#autotoc_md16',1,'']]],
+  ['in_20progress_5',['in progress',['../index.html#autotoc_md13',1,'1. Build a FIX Client App / Simulator (In Progress)'],['../index.html#autotoc_md9',1,'Client Application (In Progress)']]],
+  ['incrementalcallback_6',['IncrementalCallback',['../d5/d81/classtrading__core_1_1MarketDataPublisher.html#a0ac9e715a06d3c4c2f53f1a4b432f1e5',1,'trading_core::MarketDataPublisher']]],
+  ['init_7',['init',['../d2/df9/classtrading__core_1_1Partition.html#af2f790b3bd7257865ebe544e8744039e',1,'trading_core::Partition::init()'],['../d4/de5/classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a',1,'logging::Logger::Init()']]],
+  ['initdatabase_8',['initdatabase',['../d6/d4f/classdata_1_1AuthRepository.html#ae3d4e87ae988bfd64718c349f2dd5f08',1,'data::AuthRepository::initDatabase()'],['../de/dbb/classdata_1_1OrderRepository.html#a5e67d3b0c5903d2c379e21a4c0c53ffe',1,'data::OrderRepository::initDatabase()'],['../d4/df8/classdata_1_1SequenceRepository.html#a236d6868dd48e555b574630fd4aa7802',1,'data::SequenceRepository::initDatabase()'],['../d3/d80/classdata_1_1TradeIDRepository.html#a6881e514f0c5bb33502748212995d821',1,'data::TradeIDRepository::initDatabase()'],['../d0/d5a/classdata_1_1TradeRepository.html#a55ebba97497c21b1d7bf6255979285a2',1,'data::TradeRepository::initDatabase()']]],
+  ['initiatesystem_9',['initiateSystem',['../d2/dcd/fix_2src_2Main_8cpp.html#ae6acac0df1d5f6c48b70e408d63916c0',1,'Main.cpp']]],
+  ['initpartitions_10',['initPartitions',['../d3/d30/classtrading__core_1_1TradingCore.html#af2be57fc22e8fabfebd3df64526b8aab',1,'trading_core::TradingCore']]],
+  ['inseqnum_11',['inSeqNum',['../d9/d00/structfix_1_1SessionState.html#a81e918e4f77060232b0b7fe36b55046f',1,'fix::SessionState']]],
+  ['insertclientquery_12',['insertClientQuery',['../dd/d28/namespacedata_1_1query.html#a5f4345a3682c6f1c4d12857439a56e1a',1,'data::query']]],
+  ['insertintoordertablequery_13',['insertIntoOrderTableQuery',['../dd/d28/namespacedata_1_1query.html#aa73ff6aecba303edd0c9ecdba8a81f7c',1,'data::query']]],
+  ['insertintotradetablequery_14',['insertIntoTradeTableQuery',['../dd/d28/namespacedata_1_1query.html#a356fbffbc4c58e21356cff7f2a6fd757',1,'data::query']]],
+  ['insertnewclient_15',['insertNewClient',['../d6/d4f/classdata_1_1AuthRepository.html#afe3b8a7090bca2c4cf9d62ab5595665b',1,'data::AuthRepository']]],
+  ['insertorder_16',['insertOrder',['../da/de6/classtrading__core_1_1OrderBook.html#ad79dcffe3bb27e23018e605c0fb880c4',1,'trading_core::OrderBook']]],
+  ['instrument_17',['Instrument',['../d9/d0c/namespacecommon.html#a48951c531c5e570fb0e210ace5f39143',1,'common']]],
+  ['instrument_2eh_18',['Instrument.h',['../d5/d0a/Instrument_8h.html',1,'']]],
+  ['interaction_20flows_19',['Interaction Flows',['../d1/db4/md_client_2README.html#autotoc_md92',1,'']]],
+  ['ioc_20',['IOC',['../d9/d0c/namespacecommon.html#aaa511e8b60d88c810cfedfaf1681f6f7a7245a636843f38ae56d5862d502a4303',1,'common']]],
+  ['isloggedon_21',['isLoggedOn',['../d9/d00/structfix_1_1SessionState.html#a77d59cc8067664eb7ccf7d5277b09474',1,'fix::SessionState']]]
+];

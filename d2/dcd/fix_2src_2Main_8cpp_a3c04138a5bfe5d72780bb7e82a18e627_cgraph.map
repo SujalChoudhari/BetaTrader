@@ -1,0 +1,19 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,95,60,121"/>
+<area shape="rect" id="Node000002" href="$d2/dcd/fix_2src_2Main_8cpp.html#a0e75a7ef5c8ad1ce274b9de62d3689d3" title=" " alt="" coords="132,70,201,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,100,118,89,119,94,61,105"/>
+<area shape="rect" id="Node000003" href="$d2/dcd/fix_2src_2Main_8cpp.html#ae6acac0df1d5f6c48b70e408d63916c0" title=" " alt="" coords="108,119,225,145"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="61,110,95,116,94,122,60,115"/>
+<area shape="rect" id="Node000004" href="$d3/d30/classtrading__core_1_1TradingCore.html#aee264b340de51797de9e0ff2904bed28" title=" " alt="" coords="277,5,465,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="201,117,224,104,238,92,247,80,257,68,272,55,283,49,285,54,275,60,260,71,251,83,242,96,227,109,204,122"/>
+<area shape="rect" id="Node000005" href="$d4/de5/classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="295,70,446,95"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="219,117,304,96,305,101,220,122"/>
+<area shape="rect" id="Node000007" href="$d2/d74/classfix_1_1FixServer.html#a765375e5d9de4cf519ec68efbd868603" title=" " alt="" coords="303,119,439,145"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="226,129,289,129,289,135,226,135"/>
+<area shape="rect" id="Node000008" href="$d4/de5/classlogging_1_1Logger.html#a9749e79759e151a05063689c595ded4c" title=" " alt="" coords="273,169,468,194"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="220,142,305,163,304,168,219,147"/>
+<area shape="rect" id="Node000009" href="$d3/d30/classtrading__core_1_1TradingCore.html#ab77a474daa3dfb0d38c190fcc9cd1b77" title=" " alt="" coords="277,219,465,259"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="185,143,225,172,275,203,292,211,290,216,272,208,222,177,182,147"/>
+<area shape="rect" id="Node000006" href="$d4/de5/classlogging_1_1Logger.html#ac3bd8c392e36698198387083fd1f59f8" title="Generates a timestamped filename." alt="" coords="516,63,707,103"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="446,80,502,80,502,85,446,85"/>
+</map>

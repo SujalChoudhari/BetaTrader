@@ -1,0 +1,17 @@
+<map id="trading_core::ExecutionPublisher::publishTrade" name="trading_core::ExecutionPublisher::publishTrade">
+<area shape="rect" id="Node000001" title="Publishes a trade execution." alt="" coords="5,162,240,202"/>
+<area shape="rect" id="Node000002" href="$d4/dc4/classcommon_1_1Trade.html#af1c437490b95971f5e7e99bc7ebbc12e" title="Gets the buy order&#39;s unique identifier." alt="" coords="289,5,513,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,160,201,100,242,68,287,41,307,32,309,37,289,46,245,72,204,104,144,163"/>
+<area shape="rect" id="Node000003" href="$d3/d30/classtrading__core_1_1TradingCore.html#ac2aa2135c84113ff6c0ef71188757027" title=" " alt="" coords="307,55,495,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,159,221,132,287,105,310,97,312,102,289,110,223,137,165,164"/>
+<area shape="rect" id="Node000004" href="$d4/dc4/classcommon_1_1Trade.html#abd9069ce2f9e808e8f2cc12137905a64" title="Gets the trade price." alt="" coords="309,120,492,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="236,159,315,145,316,150,236,165"/>
+<area shape="rect" id="Node000005" href="$d4/dc4/classcommon_1_1Trade.html#a2490a12cd80c36913032743b801c4d93" title="Gets the trade quantity." alt="" coords="297,169,504,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="240,179,283,179,283,185,240,185"/>
+<area shape="rect" id="Node000006" href="$d4/dc4/classcommon_1_1Trade.html#a562b2f50e887a3221548897045354d7a" title="Gets the sell order&#39;s unique identifier." alt="" coords="289,219,512,244"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="236,199,316,214,315,219,236,205"/>
+<area shape="rect" id="Node000007" href="$d4/dc4/classcommon_1_1Trade.html#a02371b2158b70110a7621a010723639c" title="Gets the trade timestamp." alt="" coords="288,268,513,293"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="164,200,222,227,289,253,321,262,319,267,287,258,220,232,162,204"/>
+<area shape="rect" id="Node000008" href="$d4/dc4/classcommon_1_1Trade.html#aa7fd3ee9999bf268a41427391bb12b86" title="Gets the trade&#39;s unique identifier." alt="" coords="301,317,500,343"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="147,200,208,252,247,279,289,302,311,311,310,316,287,307,244,284,204,256,143,204"/>
+</map>

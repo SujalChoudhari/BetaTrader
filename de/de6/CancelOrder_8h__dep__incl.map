@@ -1,0 +1,36 @@
+<map id="core/trading_core/include/trading_core/CancelOrder.h" name="core/trading_core/include/trading_core/CancelOrder.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="649,5,851,45"/>
+<area shape="rect" id="Node000002" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="545,533,739,559"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="786,53,814,80,841,115,862,156,868,177,870,200,870,379,865,411,851,439,830,463,804,484,745,516,688,536,687,531,742,511,801,480,826,459,846,436,860,409,865,378,865,200,863,178,857,158,837,118,810,84,783,57"/>
+<area shape="rect" id="Node000003" href="$d4/db6/WorkerThread_8h.html" title="Worker thread that consumes command queue and executes trading logic." alt="" coords="458,93,671,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="698,54,606,96,604,91,696,49"/>
+<area shape="rect" id="Node000012" href="$d7/d3f/TradingCore_8cpp.html" title=" " alt="" coords="671,357,829,397"/>
+<area shape="poly" id="edge20_Node000001_Node000012" title=" " alt="" coords="753,59,753,357,747,357,747,59"/>
+<area shape="rect" id="Node000004" href="$d2/d15/Partition_8h.html" title="Represents a partition (shard) of the trading engine for a single symbol." alt="" coords="178,181,365,221"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="488,140,336,184,335,179,487,135"/>
+<area shape="rect" id="Node000014" href="$d7/d8a/WorkerThread_8cpp.html" title=" " alt="" coords="485,181,644,221"/>
+<area shape="poly" id="edge19_Node000003_Node000014" title=" " alt="" coords="567,147,567,181,562,181,562,147"/>
+<area shape="rect" id="Node000005" href="$d6/d5d/TradingCore_8h.html" title="Top&#45;level entry point for the trading core service." alt="" coords="239,269,439,309"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="297,231,326,267,322,271,293,234"/>
+<area shape="rect" id="Node000010" href="$d9/d33/ExecutionPublisher_8cpp.html" title=" " alt="" coords="21,357,196,397"/>
+<area shape="poly" id="edge17_Node000004_Node000010" title=" " alt="" coords="248,234,177,311,130,359,126,355,173,307,244,230"/>
+<area shape="rect" id="Node000013" href="$da/d5c/Partition_8cpp.html" title=" " alt="" coords="5,269,164,309"/>
+<area shape="poly" id="edge18_Node000004_Node000013" title=" " alt="" coords="219,229,127,272,124,267,217,225"/>
+<area shape="rect" id="Node000006" href="$d9/dc2/FixServer_8h.html" title=" " alt="" coords="271,445,413,485"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="325,323,313,358,310,377,313,397,321,422,332,444,328,446,316,424,307,398,304,377,307,357,320,321"/>
+<area shape="rect" id="Node000008" href="$d2/dcd/fix_2src_2Main_8cpp.html" title=" " alt="" coords="156,533,312,559"/>
+<area shape="poly" id="edge13_Node000005_Node000008" title=" " alt="" coords="324,323,304,359,281,402,262,446,248,494,239,533,234,532,242,493,257,444,276,399,300,356,319,320"/>
+<area shape="rect" id="Node000009" href="$da/de1/FixSession_8h.html" title=" " alt="" coords="322,357,463,397"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="361,320,383,356,379,359,356,322"/>
+<area shape="poly" id="edge14_Node000005_Node000010" title=" " alt="" coords="277,317,160,360,158,355,275,312"/>
+<area shape="rect" id="Node000011" href="$d7/daa/trading__core_2src_2Main_8cpp.html" title=" " alt="" coords="488,357,647,397"/>
+<area shape="poly" id="edge15_Node000005_Node000011" title=" " alt="" coords="403,312,518,355,516,360,401,317"/>
+<area shape="poly" id="edge16_Node000005_Node000012" title=" " alt="" coords="443,310,671,357,670,362,442,315"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="427,486,599,531,598,536,425,491"/>
+<area shape="rect" id="Node000007" href="$d8/d81/FixServer_8cpp.html" title=" " alt="" coords="337,533,521,559"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="375,493,417,531,414,535,371,497"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="306,496,252,535,249,531,303,491"/>
+<area shape="poly" id="edge12_Node000009_Node000002" title=" " alt="" coords="434,403,626,531,623,535,431,407"/>
+<area shape="poly" id="edge10_Node000009_Node000006" title=" " alt="" coords="377,411,356,446,351,444,372,408"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="413,409,427,445,433,493,432,533,427,533,428,494,422,446,408,411"/>
+</map>

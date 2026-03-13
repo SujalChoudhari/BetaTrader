@@ -1,0 +1,37 @@
+<map id="fix::ExecutionReportToBinaryConverter::convert" name="fix::ExecutionReportToBinaryConverter::convert">
+<area shape="rect" id="Node000001" title="Converts an ExecutionReport object into a raw FIX message." alt="" coords="5,517,213,557"/>
+<area shape="rect" id="Node000002" href="$d5/d5c/classfix_1_1ExecutionReport.html#ab36b7aff6b79278eb97d47242fefab8d" title="Gets the client&#45;assigned order ID (Tag 11)." alt="" coords="297,5,449,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,517,113,433,120,374,133,309,152,241,178,174,214,111,260,55,283,39,286,44,263,59,218,114,183,176,157,243,138,310,126,375,118,433,113,517"/>
+<area shape="rect" id="Node000003" href="$d5/d5c/classfix_1_1ExecutionReport.html#a97b9964f9e8970ce4edc377a0cf1bb38" title="Gets the cumulative filled quantity (Tag 14)." alt="" coords="282,69,465,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="109,517,118,442,141,336,160,277,186,220,218,166,259,119,268,112,271,117,263,123,223,169,190,222,165,279,146,337,123,443,114,517"/>
+<area shape="rect" id="Node000004" href="$d5/d5c/classfix_1_1ExecutionReport.html#a55b126a6cc96a9cb7b8fbc11abdc69bd" title="Gets the exchange&#45;assigned order ID (Tag 37)." alt="" coords="292,133,455,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="111,517,123,452,149,363,168,314,193,267,223,222,260,183,278,171,281,175,263,187,227,225,197,269,173,316,154,364,128,454,116,518"/>
+<area shape="rect" id="Node000005" href="$d5/d5c/classfix_1_1ExecutionReport.html#a6502eb3a2ea918a5c3693e8c77b6d239" title="Gets the execution ID (Tag 17)." alt="" coords="297,197,449,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="113,516,129,463,157,390,177,351,200,313,228,278,260,247,283,233,286,237,263,251,232,282,205,316,181,354,162,392,134,464,118,518"/>
+<area shape="rect" id="Node000006" href="$d5/d5c/classfix_1_1ExecutionReport.html#a34466222a2382616f4f256fedeb062d2" title="Gets the price of the last fill (Tag 31)." alt="" coords="297,261,449,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="116,516,136,473,166,418,208,360,232,334,260,311,283,298,286,303,263,316,236,338,212,364,171,421,140,476,121,518"/>
+<area shape="rect" id="Node000007" href="$d5/d5c/classfix_1_1ExecutionReport.html#a9d7df97689b876f51019870c1ce86a12" title="Gets the quantity of the last fill (Tag 32)." alt="" coords="297,325,449,365"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="122,515,177,446,216,408,260,375,283,363,286,368,263,380,219,412,181,450,126,518"/>
+<area shape="rect" id="Node000008" href="$d5/d5c/classfix_1_1ExecutionReport.html#a0869b8641f20f34b23797ddfff3a8de5" title="Gets the remaining quantity (Tag 151)." alt="" coords="297,389,450,429"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="136,515,191,477,260,439,283,430,285,435,262,444,194,481,139,519"/>
+<area shape="rect" id="Node000009" href="$d5/d5c/classfix_1_1ExecutionReport.html#a0253543134131855c3be1a4329088ed8" title="Gets the message sequence number (Tag 34)." alt="" coords="261,453,485,493"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="192,515,277,494,278,499,193,520"/>
+<area shape="rect" id="Node000010" href="$d5/d5c/classfix_1_1ExecutionReport.html#ada5e9ed13135f76d28826f9a9e92b44f" title="Gets the total order quantity (Tag 38)." alt="" coords="297,517,449,557"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="214,535,283,535,283,540,214,540"/>
+<area shape="rect" id="Node000011" href="$d5/d5c/classfix_1_1ExecutionReport.html#a83a57a17490bebaba438355303a754a4" title="Gets the sender&#39;s component ID (Tag 49)." alt="" coords="297,581,449,621"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="193,555,284,577,283,582,192,560"/>
+<area shape="rect" id="Node000012" href="$d5/d5c/classfix_1_1ExecutionReport.html#a7451c43f432ab590ff853e449e3b42b8" title="Gets the side of the order (Buy/Sell) (Tag 54)." alt="" coords="297,645,449,685"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="139,555,194,593,262,631,285,640,283,645,260,636,191,598,136,560"/>
+<area shape="rect" id="Node000013" href="$d5/d5c/classfix_1_1ExecutionReport.html#aad3bdca7f6ba3f2db0088e8792d597a0" title="Gets the order status (Tag 39)." alt="" coords="297,709,449,749"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="126,556,181,625,219,663,263,695,286,706,283,711,260,700,216,667,177,628,122,559"/>
+<area shape="rect" id="Node000014" href="$d5/d5c/classfix_1_1ExecutionReport.html#ac2ca63eb8dad40a6aef6524cab692317" title="Gets the financial instrument symbol (Tag 55)." alt="" coords="297,773,449,813"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="121,556,140,599,171,654,212,711,236,737,263,759,286,772,283,777,260,764,232,741,208,714,166,657,136,601,116,559"/>
+<area shape="rect" id="Node000015" href="$d5/d5c/classfix_1_1ExecutionReport.html#a59ba4ce317e72cad7e323a873751552f" title="Gets the target&#39;s component ID (Tag 56)." alt="" coords="297,837,449,877"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="118,557,134,610,162,682,181,721,205,758,232,793,263,823,286,837,283,842,260,827,228,797,200,761,177,723,157,685,129,612,113,558"/>
+<area shape="rect" id="Node000016" href="$d5/d5c/classfix_1_1ExecutionReport.html#a193b57c88fef1428773b72a1976adb34" title="Gets the text message (Tag 58)." alt="" coords="297,901,449,941"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="116,557,128,621,154,710,173,758,197,805,227,849,263,887,286,902,283,907,260,891,223,853,193,808,168,760,149,712,123,622,111,558"/>
+<area shape="rect" id="Node000017" href="$d5/d5c/classfix_1_1ExecutionReport.html#ae1f35e602a7e6c27f4da4d5293404153" title="Gets the time of the transaction (Tag 60)." alt="" coords="294,965,453,1005"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="114,557,123,632,146,738,165,795,190,852,223,905,263,951,283,965,280,969,260,955,218,908,186,855,160,797,141,739,118,632,109,558"/>
+<area shape="rect" id="Node000018" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="301,1030,445,1055"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="113,557,117,642,124,701,136,766,155,834,181,900,217,962,263,1015,290,1031,287,1036,260,1019,213,965,176,902,150,835,131,767,119,702,112,642,108,558"/>
+</map>

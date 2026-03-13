@@ -1,0 +1,22 @@
+<map id="common::Order::setStatus" name="common::Order::setStatus">
+<area shape="rect" id="Node000001" title="Sets the status of the order." alt="" coords="1704,45,1896,70"/>
+<area shape="rect" id="Node000002" href="$de/dbb/classdata_1_1OrderRepository.html#a4498a03c727fa16f796a3fa4aae5858d" title=" " alt="" coords="1464,5,1656,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1691,45,1656,41,1656,35,1691,40"/>
+<area shape="rect" id="Node000003" href="$d9/d97/classtrading__core_1_1Matcher.html#a3c4db1075847c1f47f90df8ee3e94a6a" title="A template function to match an incoming order against a map of resting orders." alt="" coords="1478,69,1642,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1691,75,1643,81,1642,76,1691,69"/>
+<area shape="rect" id="Node000004" href="$d9/d97/classtrading__core_1_1Matcher.html#adba3a4f7c07ca8e9b27e3ac2869a0f12" title="Matches an incoming order against the order book." alt="" coords="1252,69,1416,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1464,92,1416,92,1416,87,1464,87"/>
+<area shape="rect" id="Node000005" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a398d133d315255f57ada12746b0c0bba" title=" " alt="" coords="1003,37,1204,77"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1238,79,1204,74,1205,69,1239,73"/>
+<area shape="rect" id="Node000010" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0e2190f7181478ba9102c6c51a98dcf2" title=" " alt="" coords="1003,101,1204,141"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="1239,105,1205,110,1204,105,1238,100"/>
+<area shape="rect" id="Node000006" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#aab07c99f0aa6a87008aeef44f7f9e843" title=" " alt="" coords="753,69,955,109"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="989,75,955,79,955,74,989,69"/>
+<area shape="rect" id="Node000007" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a53a245b261d8859df49766ca47c41c6e" title=" " alt="" coords="504,69,705,109"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="739,92,706,92,706,87,739,87"/>
+<area shape="rect" id="Node000008" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0772a047b0fb303c53674d5dec9129bd" title=" " alt="" coords="255,69,456,109"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="490,92,456,92,456,87,490,87"/>
+<area shape="rect" id="Node000009" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a396a89449c28db9a19caf95ca1108695" title=" " alt="" coords="5,69,207,109"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="241,92,207,92,207,87,241,87"/>
+<area shape="poly" id="edge10_Node000010_Node000006" title=" " alt="" coords="989,109,955,105,955,100,989,104"/>
+</map>

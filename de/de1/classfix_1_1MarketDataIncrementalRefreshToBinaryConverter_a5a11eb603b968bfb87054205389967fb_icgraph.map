@@ -1,0 +1,5 @@
+<map id="fix::MarketDataIncrementalRefreshToBinaryConverter::convert" name="fix::MarketDataIncrementalRefreshToBinaryConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a MarketDataIncrementalRefresh object into a raw FIX message string." alt="" coords="252,5,452,60"/>
+<area shape="rect" id="Node000002" href="$d6/d41/classfix_1_1FixSession.html#ac2c671527e9c4461990c7c2b35064314" title=" " alt="" coords="5,13,204,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,35,204,35,204,30,238,30"/>
+</map>

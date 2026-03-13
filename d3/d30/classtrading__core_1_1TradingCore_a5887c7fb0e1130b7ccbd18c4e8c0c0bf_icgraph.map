@@ -1,0 +1,20 @@
+<map id="trading_core::TradingCore::findPartitionForOrder" name="trading_core::TradingCore::findPartitionForOrder">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1156,37,1344,77"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html#a9346824f344cf5deed47e86ba7ebf7f6" title=" " alt="" coords="920,5,1108,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1142,45,1108,41,1109,35,1143,40"/>
+<area shape="rect" id="Node000003" href="$d3/d30/classtrading__core_1_1TradingCore.html#aaad204809584253d84be7e52f09e8d9d" title=" " alt="" coords="920,69,1108,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1143,75,1109,79,1108,74,1142,69"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#a86628b5f4fb1f5494b9b8954e23822b5" title=" " alt="" coords="661,12,872,52"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="913,69,853,55,854,49,915,64"/>
+<area shape="rect" id="Node000005" href="$d6/d41/classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="427,69,613,109"/>
+<area shape="poly" id="edge8_Node000003_Node000005" title=" " alt="" coords="906,92,614,92,614,87,906,87"/>
+<area shape="rect" id="Node000008" href="$d6/d41/classfix_1_1FixSession.html#ad3b562443287f3b43cfa5093708d7da5" title=" " alt="" coords="661,127,872,167"/>
+<area shape="poly" id="edge9_Node000003_Node000008" title=" " alt="" coords="915,115,854,129,853,124,913,110"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="668,58,607,72,606,67,666,53"/>
+<area shape="rect" id="Node000006" href="$d6/d41/classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="207,77,379,102"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="413,92,379,92,379,87,413,87"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="330,67,320,59,293,55,270,57,258,62,256,68,262,75,258,78,251,68,255,58,269,52,293,50,322,54,334,63"/>
+<area shape="rect" id="Node000007" href="$d6/d41/classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="5,77,159,102"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="193,92,159,92,159,87,193,87"/>
+<area shape="poly" id="edge10_Node000008_Node000005" title=" " alt="" coords="666,126,606,112,607,107,668,121"/>
+</map>

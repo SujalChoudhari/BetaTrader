@@ -1,0 +1,7 @@
+<map id="trading_core::TradeIDGenerator" name="trading_core::TradeIDGenerator">
+<area shape="rect" id="Node000001" title="A thread&#45;safe, database&#45;aware generator for unique trade IDs." alt="" coords="5,521,223,667"/>
+<area shape="rect" id="Node000002" href="$d3/d80/classdata_1_1TradeIDRepository.html" title="Persistent storage for trade id value." alt="" coords="29,313,199,459"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,459,117,505,111,505,111,459"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="35,5,193,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,251,117,297,111,297,111,251"/>
+</map>
