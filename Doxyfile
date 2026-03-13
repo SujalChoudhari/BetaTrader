@@ -39,9 +39,9 @@ WARN_LOGFILE           = doxygen_warnings.log
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = common \
-                         core \
-                         .
+INPUT                  = README.md \
+                         common \
+                         core
 
 FILE_PATTERNS          = *.h \
                          *.cpp \
@@ -55,7 +55,7 @@ EXCLUDE                = core/trading_core/tests \
 EXCLUDE_PATTERNS       = */tests/* \
                          */mocks/*
 
-USE_MDFILE_AS_MAINPAGE = README.md
+USE_MDFILE_AS_MAINPAGE =
 IMPLICIT_DIR_DOCS      = YES
 
 #---------------------------------------------------------------------------

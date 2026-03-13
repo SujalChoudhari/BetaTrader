@@ -9,7 +9,7 @@
 using namespace trading_core;
 using namespace common;
 
-bool getPort(int argc, char** argv)
+short getPort(int argc, char** argv)
 {
     short port = 8088;
 

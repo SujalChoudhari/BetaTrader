@@ -1,12 +1,12 @@
-# BetaTrader C++ FX Trading Engine Blueprint
+# BetaTrader C++ FX Trading Engine Blueprint {#mainpage}
 
-Welcome to BetaTrader, a hands-on learning project and a C++ blueprint that explores how a small, exchange-like FX trading engine is put together.
+Welcome to BetaTrader, a project and a C++ blueprint that explores how a small, exchange-like FX trading engine is put together.
 
 This repository is a deliberate, step-by-step engineering exercise. It contains an in-memory matching core, a compact persistence layer, shared types, logging utilities, and a comprehensive suite of unit tests. The goal is to learn by building: the system is being constructed incrementally, one piece at a time.
 
 This project is for developers, engineers, and curious traders who want a readable, runnable codebase to study matching semantics, order lifecycle, risk checks, and modern C++ development practices.
 
-**Status**: The `common`, `core/trading_core`, and `core/data` modules are implemented and covered by unit tests. Other layers (gateway adapters, venue simulators, business services) are intentionally left as integration points for future work and experiments.
+**Status**: The `common`, `core/trading_core`, `core/data`, and `core/fix` modules are all implemented and rigorously covered by unit tests. The system now features a robust lock-free matching core, a decoupled asynchronous SQLite persistence layer, and a functional FIX gateway handling Logon, Heartbeats, sequence recovery, and order routing.
 
 ## Project Goals
 
@@ -103,16 +103,23 @@ To experiment with trading logic, you can:
 2.  Create `common::Order` objects and wrap them in `NewOrder` commands.
 3.  Push the commands into a `Partition` and use the mock `ExecutionPublisher` to inspect the resulting trades and order statuses.
 
-## Contributing and Roadmap
+## Roadmap & Future Scope
 
-This project is open for contributions. Some potential areas for future work include:
+This project is a continuous engineering exercise. With the solid foundation of a functional matching core, asynchronous persistence, and a robust FIX gateway now established, here are the most logical next steps for future expansion:
 
-*   **Gateways**: Implement a simple FIX or REST gateway to submit orders from external clients.
-*   **Market Data**: Build a simulator to feed market data into the system for more realistic testing.
-*   **CLI Tool**: Create a command-line interface to interact with the trading core manually.
-*   **Advanced Persistence**: Add support for a more robust database like PostgreSQL or a time-series database.
+### 1. Build a FIX Client App / CLI
+Develop a standalone client application (`core/client` or similar) that uses standard networking to connect to the `FixServer`, logs in, and provides a command-line interface (CLI) or Text UI (TUI). This would allow manual sending of commands (e.g., `buy EURUSD 100 1.10`) and display incoming `ExecutionReports` and Market Data in the console.
 
-If you plan to contribute, please ensure all unit tests pass and consider updating the relevant documentation.
+### 2. A REST / WebSocket API Gateway
+While FIX is ideal for high-performance institutional trading, REST and WebSockets are the standard for retail platforms and web UIs. Building a secondary HTTP/WS gateway alongside the `FixServer` that translates JSON requests into `trading_core::Command` objects would instantly open the door to building a frontend interface (like React).
+
+### 3. Market Data Simulator (Feed Handler)
+An exchange is more dynamic with an active order book. Building a background service or a mock liquidity provider that connects to the engine and continuously publishes random or historically-replayed limit orders and market data updates would populate the books and simulate a live market environment.
+
+### 4. Advanced Risk Management Implementation
+Currently, the `RiskManager` is a foundation awaiting extension. Implementing real pre-trade risk checks such as tracking a client's net open positions, calculating available margin, or implementing "fat finger" checks (e.g., rejecting orders drastically away from the last traded price) would significantly mature the system.
+
+If you plan to contribute to any of these areas, please ensure all unit tests pass and consider updating the relevant `.md` documentation files.
 
 ## License
 
