@@ -53,6 +53,8 @@ namespace trading_core {
         
         data::AuthRepository* getAuthRepository() const;
 
+        data::DatabaseWorker* getDatabaseWorker() const;
+
         virtual void subscribeToExecutions(ExecutionReportCallback callback);
 
         virtual void subscribeToMarketData(common::Symbol symbol, common::SessionID sessionId);

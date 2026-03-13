@@ -163,6 +163,11 @@ namespace trading_core {
         return mAuthRepo.get();
     }
 
+    data::DatabaseWorker* TradingCore::getDatabaseWorker() const
+    {
+        return mDatabaseWorker;
+    }
+
     void TradingCore::subscribeToExecutions(ExecutionReportCallback callback)
     {
         mExecutionReportCallback = callback;
