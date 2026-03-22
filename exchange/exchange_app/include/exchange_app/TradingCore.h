@@ -7,11 +7,11 @@
  */
 
 #pragma once
-#include "Command.h"
-#include "OrderIDGenerator.h"
-#include "Partition.h"
-#include "TradeIDGenerator.h"
-#include "MarketDataPublisher.h"
+#include <exchange_routing/Command.h>
+#include <exchange_state/OrderIDGenerator.h>
+#include <exchange_routing/Partition.h>
+#include <exchange_state/TradeIDGenerator.h>
+#include <exchange_publishers/MarketDataPublisher.h>
 #include "common/Order.h"
 #include "common_fix/ExecutionReport.h"
 #include "data/DatabaseWorker.h"
@@ -34,6 +34,13 @@ namespace trading_core {
 
         explicit TradingCore(data::DatabaseWorker* dbWorker,
                              bool autoInitPartitions = true);
+
+        TradingCore(std::unique_ptr<data::DatabaseWorker> dbWorker,
+                    std::unique_ptr<data::AuthRepository> authRepo,
+                    std::unique_ptr<data::TradeIDRepository> tradeIDRepo,
+                    std::unique_ptr<TradeIDGenerator> tradeIDGen,
+                    std::unique_ptr<OrderIDGenerator> orderIDGen,
+                    bool autoInitPartitions = true);
 
         virtual ~TradingCore();
 
