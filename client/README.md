@@ -1,103 +1,90 @@
 # Client | Unified Trading Application
 
-The Client Application (`client`) is the primary interface for interacting with the BetaTrader ecosystem. It serves a dual purpose: providing a high-performance **Trader Terminal** for manual trading and a **Load Simulator** for stress-testing the matching core.
+The Client suite is the primary interface for interacting with the BetaTrader ecosystem. It has been strictly engineered using a **Micro-Module Architecture**, ensuring that every logical component of the trading platform is isolated, independently testable, and reusable.
 
-## Overview
+## Architecture & Data Flow
 
-The client suite is designed to bridge the gap between human traders and automated systems. It connects to the `fix_server` via the standard FIX 4.2 protocol, enabling secure authentication, real-time market data visualization, and sub-millisecond order routing.
-
-Whether you are looking to trade manually via a modern GUI or simulate thousands of concurrent users to test system limits, the `client` module provides the necessary infrastructure.
-
-## Key Responsibilities
-
--   **Secure Authentication**: Handles client registration and encrypted login flows to the FIX server.
--   **FIX Session Management**: Robust handling of sequence numbers, heartbeats, and automatic reconnection.
--   **Real-time Visualization**:
-    -   **Interactive Graphs**: Live price action using high-performance charting.
-    -   **Dynamic Orderbook**: Level 2 visualization showing market depth.
--   **Order Lifecycle Management**: intuitive order entry (Limit/Market) and a real-time order blotter to track fills and rejections.
--   **Stress Testing**: A dedicated simulation engine capable of spawning thousands of headless FIX clients to benchmark core throughput and latency.
-
-## Getting Started
-
-To build and run the client applications, follow these steps:
-
-### Build
-```bash
-# From the project root
-mkdir -p build && cd build
-cmake ..
-cmake --build . --target client_app client_simulator
-```
-
-### Run Trader Terminal
-```bash
-./client/client_app
-```
-
-### Run Load Simulator
-```bash
-./client/client_simulator --clients 1000 --rate 50
-```
-
-## Architecture
-
-The BetaTrader Client suite follows a modular "FIX-First" principle, where both the graphical UI and the headless simulator share a common protocol engine.
+Instead of a monolithic GUI, the `client_app` executable serves merely as a visual orchestrator. It instantiates individual C++ modules (like the Orderbook, Blotter, and HTTP Gateway) and mounts their state to the screen.
 
 ```mermaid
 graph TD
-    subgraph "Client Side"
-        UI[client_app - Trader UI]
-        SIM[client_simulator - Load Gen]
-        FIX[client_fix - FIX Engine]
-        
-        UI --> FIX
-        SIM --> FIX
+    classDef ui fill:#2b303a,stroke:#4caf50,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+
+    subgraph "client_app (UI Orchestrator)"
+        APP[ImGui Render Loop]:::ui
     end
 
-    subgraph "Core Side"
-        SRV[fix_server]
-        TC[trading_core]
-        DB[(SQLite DB)]
-        
-        SRV <--> TC
-        TC <--> DB
+    subgraph "Micro-Modules (Logic & State)"
+        AUTH{client_auth}:::logic
+        OB[client_orderbook]:::logic
+        BLOT[client_blotter]:::logic
+        PORT[client_portfolio]:::logic
+        OHLC[client_ohlc]:::logic
+        SIM[client_simulator]:::logic
     end
 
-    FIX <-->|FIX 4.4 over TCP| SRV
+    subgraph "Networking Layer"
+        HTTP((client_http)):::net
+        FIX((client_fix)):::net
+    end
+
+    subgraph "Exchange Server"
+        EX_HTTP[exchange_api]:::net
+        EX_FIX[fix_server]:::net
+    end
+
+    %% Networking Links
+    HTTP <-->|REST / JSON| EX_HTTP
+    FIX <-->|FIX 4.4 / TCP| EX_FIX
+
+    %% Module Interconnectivity
+    AUTH -->|Registers| HTTP
+    AUTH -->|Logons| FIX
+
+    FIX -->|W/X Msgs| OB
+    FIX -->|8 Msgs| BLOT
+    
+    BLOT -->|Executions| PORT
+    FIX -->|Trades| OHLC
+
+    %% User Interface Mounting
+    OB -->|Renders L2| APP
+    BLOT -->|Renders Grid| APP
+    PORT -->|Renders PnL| APP
+    AUTH -->|Renders Login| APP
+    OHLC -->|Renders Charts| APP
+
+    %% Simulator bypassing UI
+    SIM -->|High-Throughput Orders| FIX
 ```
 
-## Interaction Flows
+## The Modules
 
-### Secure Auth & Subscription
-```mermaid
-sequenceDiagram
-    participant UI as client_ui
-    participant FIX as client_fix
-    participant SRV as fix_server
+Explore the individual `README.md` files for deeper architecture and class diagrams on how each module is engineered:
 
-    FIX->>SRV: Logon (35=A)
-    SRV-->>FIX: Logon (35=A)
-    UI->>FIX: authenticate(user, pass)
-    FIX->>SRV: UserRequest (35=BE)
-    SRV-->>FIX: UserResponse (35=BF, Status=LoggedOn)
-    FIX-->>UI: notifyAuthSuccess()
-    UI->>FIX: subscribe(EURUSD)
-    FIX->>SRV: MarketDataRequest (35=V)
-    SRV-->>FIX: MarketDataSnapshot (35=W)
-    FIX-->>UI: updateOrderbook()
+1.  **[`client_fix`](./client_fix/README.md)**: TCP Session, Protocol Parser, and Heartbeat Engine.
+2.  **[`client_http`](./client_http/README.md)**: Lightweight REST API wrapper for out-of-band requests.
+3.  **[`client_auth`](./client_auth/README.md)**: Session unification (HTTP Registration + FIX Logon).
+4.  **[`client_orderbook`](./client_orderbook/README.md)**: Lock-free L2 Market Depth state containers.
+5.  **[`client_blotter`](./client_blotter/README.md)**: Execution tracking and order history grids.
+6.  **[`client_portfolio`](./client_portfolio/README.md)**: Real-time PnL and metric aggregation.
+7.  **[`client_ohlc`](./client_ohlc/README.md)**: Candlestick and volume aggregation for charting.
+8.  **[`client_simulator`](./client_simulator/README.md)**: Headless multi-agent load generator.
+9.  **[`client_app`](./client_app/README.md)**: The Dear ImGui aggregator and window manager.
+
+## Building the Client
+
+Thanks to the modular CMake configuration, you can build the entire suite or just the test harness for a specific module:
+
+```bash
+mkdir -p build && cd build
+
+# Build everything
+cmake .. && cmake --build . --target client_app client_simulator -j$(nproc)
+
+# Build tests for a specific micro-module
+cmake --build . --target client_orderbook_tests
+ctest -R client_orderbook_tests
 ```
-
-## Design Conventions
-
--   **Lock-Free UI Core**: Communication between the FIX thread and the UI thread is handled via an SPSC `UIEventQueue` to prevent GUI stutters.
--   **Reconnect Backoff**: Exponential backoff policy for session re-establishment to avoid thundering herd on server restarts.
--   **Zero-Allocation Paths**: Hot-paths in the simulator are heap-allocation-free to ensure accurate benchmarking.
-
-## Further Reading
-
-For a detailed technical breakdown of the individual modules, please refer to:
-
--   **[`client_fix` Details](./client_fix/README.md)**: Protocol engine, session management, and auth specs.
--   **[`client_ui` Details](./client_ui/README.md)**: ImGui architecture, Orderbook model, and subscription logic.
--   **[`client_simulator` Details](./client_simulator/README.md)**: Performance benchmarking and rate control.

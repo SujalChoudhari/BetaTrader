@@ -1,73 +1,87 @@
-# Client | High-Concurrency Stress Tester
+# Client | HFT Simulator
 
-The `client_simulator` is a headless, high-concurrency tool designed to benchmark the BetaTrader matching engine under heavy load.
+The `client_simulator` module provides a headless background engine designed to stress-test the `trading_core` Exchange by generating massive amounts of synthetic, quasi-realistic order traffic over FIX.
 
-## Architecture
+## Overview
 
-```mermaid
-classDiagram
-    class RateController {
-        +wait()
-        -m_bucket: TokenBucket
-    }
-    class MetricsCollector {
-        +record(latency)
-        +report()
-        -m_histogram: HDRHistogram
-    }
-    class WorkloadProfile {
-        <<Interface>>
-        +getNextAction(): Action
-    }
-    class MakerProfile
-    class TakerProfile
-    WorkloadProfile <|-- MakerProfile
-    WorkloadProfile <|-- TakerProfile
-    RateController <-- client_simulator
-    MetricsCollector <-- client_simulator
-```
+The simulator bridges the gap between functional logic and extreme performance testing. Because it uses the exact same `FixClientSession` mechanisms as the standard Trader UI, it accurately validates the entire path of latency, from socket serialization to core execution and back.
 
-## Performance Components
+## Key Responsibilities
 
-### 1. `RateController`
-Accurate traffic shaping is critical for valid benchmarking.
--   **Strategy**: Implements an **Async Token Bucket** algorithm.
--   **Implementation**: Uses `asio::steady_timer` to schedule the next message transmission based on the target TPS (Transactions Per Second). This prevents blocking the I/O threads and ensures realistic latency measurement.
-
-### 2. `MetricsCollector`
-Statistical analysis of system performance.
--   **HDR Histogram**: Uses the high-dynamic-range histogram library to record latencies with microsecond precision.
--   **Coordinated Omission**: Designed to account for delays in message sending, ensuring that the p99.99 results are accurate even when the system is saturated.
--   **Outputs**: Generates a final summary report to `stdout` and an optional CSV for time-series analysis of latency.
-
-### 3. Workload Profiles
-Simulates different market participant behaviors.
--   **Aggressive Taker**: continuously fires `Market` or aggressive `Limit` orders to cross the book and trigger trades.
--   **Passive Maker**: Places orders at the best bid/offer and cancels/re-prices them as the market moves, simulating liquidity provision.
--   **Spammer**: Extreme-rate order bursts to test the matching engine's queue handling and backpressure.
+*   Spawn thread pools independently from the UI loops.
+*   Generate deterministic market scenarios and agent profiles parameters.
+*   Dispatch high-throughput order bursts (`NewOrderSingle 35=D`).
+*   Measure round-trip latency and aggregate global throughput metrics (Orders Per Second).
 
 ## Architecture
-
-The simulator scales by running multiple virtual clients within a shared Boost.ASIO `thread_pool`.
 
 ```mermaid
 graph TD
-    subgraph "Simulator Orchestrator"
-        TP[ASIO Thread Pool]
-        RC[RateController]
-        MC[MetricsCollector]
+    subgraph "client_simulator Module"
+        UI[Simulator Control UI] --> MGR[SimulationManager]
+        MGR --> POOL(Background ThreadPool)
+        
+        POOL --> A1(Agent: Aggressive)
+        POOL --> A2(Agent: Volatility)
+        POOL --> A3(Agent: Market Maker)
     end
-    TP --> VC1[Virtual Client 1]
-    TP --> VC2[Virtual Client 2]
-    TP --> VCn[Virtual Client N]
-    VC1 --> |35=D| SERVER[Fix Server]
-    SERVER --> |35=8| MC
+
+    subgraph "Network Layer"
+        FIX[FixClientSession] 
+    end
+
+    A1 -->|FIX Messages| FIX
+    A2 -->|FIX Messages| FIX
+    A3 -->|FIX Messages| FIX
 ```
 
-## Running a Benchmark
-```bash
-./client_simulator --clients 500 --tps 2000 --profile taker --duration 60s
+## Class Diagram
+
+```mermaid
+classDiagram
+    class SimulationManager {
+        +start(AgentCount, RatePerSec)
+        +stop()
+        +getStats() : SimMetrics
+        -m_agents: vector~TradingAgent~
+        -m_workerPool: ThreadPool
+    }
+    
+    class TradingAgent {
+        +tick()
+        -m_profile: AgentProfile
+        -generateOrder()
+        -m_fixSession: FixClientSession&
+    }
+    
+    class AgentProfile {
+        <<enumeration>>
+        AggressiveTaker
+        PassiveMaker
+        NoiseTrader
+    }
+    
+    class SimMetrics {
+        +totalOrdersSent: uint64_t
+        +ordersPerSecond: double
+        +avgLatencyUs: double
+    }
+
+    SimulationManager *--> TradingAgent : Orchestrates
+    TradingAgent --> AgentProfile : Behaves As
+    SimulationManager ..> SimMetrics : Tracks
 ```
--   `--clients`: Number of concurrent FIX sessions.
--   `--tps`: Global target transactions per second.
--   `--profile`: The behavior script to use.
+
+## Component Responsibilities
+
+| Component | Description |
+| :--- | :--- |
+| **`SimulationManager`** | Top-level controller. Absorbs user inputs (e.g. 5000 clients, 100/sec) and handles the threading allocations. |
+| **`TradingAgent`** | A synthetic user running in a `while(running)` loop inside the ThreadPool. Constructs and submits FIX orders. |
+| **`AgentProfile`** | Defines the behavior tree: `AggressiveTaker` eats into the orderbook, `PassiveMaker` sits on limits, `NoiseTrader` randomly shifts around VWAP. |
+| **`SimMetrics`** | An atomic counter struct that enables the `client_app` to chart simulator performance dynamically. |
+
+## Critical Design Conventions
+
+-   **Protocol Reuse**: Uses the standard `client_fix` stack. The exchange matching engine (`trading_core`) has zero awareness of whether it is communicating with a human or a high-frequency agent.
+-   **Zero-Allocation Paths**: Generating random orders avoids `std::string` heap allocations and object recreation, prioritizing pure memory pools to ensure the simulation doesn't bottleneck before the target server does.
