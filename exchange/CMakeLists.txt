@@ -1,0 +1,8 @@
+add_subdirectory(exchange_state)
+add_subdirectory(exchange_matching)
+add_subdirectory(exchange_risk)
+add_subdirectory(exchange_publishers)
+add_subdirectory(exchange_routing)
+add_subdirectory(exchange_persistence)
+add_subdirectory(exchange_fix)
+add_subdirectory(exchange_app)

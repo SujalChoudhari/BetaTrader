@@ -1,0 +1,12 @@
+add_executable(exchange_state_tests
+    src/OrderIDGeneratorTests.cpp
+    src/TradeIDGeneratorTests.cpp
+)
+target_link_libraries(exchange_state_tests
+    PRIVATE
+    exchange_state_lib
+    common
+    gtest_main
+    gmock
+)
+gtest_discover_tests(exchange_state_tests)

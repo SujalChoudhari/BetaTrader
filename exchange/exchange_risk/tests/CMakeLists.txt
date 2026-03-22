@@ -1,0 +1,11 @@
+add_executable(exchange_risk_tests
+    src/RiskManagerTests.cpp
+)
+target_link_libraries(exchange_risk_tests
+    PRIVATE
+    exchange_risk_lib
+    common
+    gtest_main
+    gmock
+)
+gtest_discover_tests(exchange_risk_tests)

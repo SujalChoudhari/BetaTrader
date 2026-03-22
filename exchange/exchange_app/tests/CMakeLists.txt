@@ -1,0 +1,13 @@
+add_executable(exchange_app_tests
+    src/TradingCoreTests.cpp
+    src/TradingSystemTests.cpp
+)
+target_link_libraries(exchange_app_tests
+    PRIVATE
+    exchange_app_lib
+    common
+    gmock
+    gtest
+    gtest_main
+)
+gtest_discover_tests(exchange_app_tests)

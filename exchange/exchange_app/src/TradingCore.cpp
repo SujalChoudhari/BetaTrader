@@ -1,0 +1,293 @@
+//
+// Created by sujal on 30-10-2025.
+//
+
+#include <exchange_app/TradingCore.h>
+#include "common_data/Constant.h"
+#include <exchange_routing/CancelOrder.h>
+#include <exchange_routing/ModifyOrder.h>
+#include <exchange_routing/NewOrder.h>
+#include <exchange_publishers/ExecutionPublisher.h>
+#include "common_trading/TradingCoreRunbookDefinations.h"
+
+namespace {
+    trading_core::TradingCore* g_instance = nullptr;
+}
+
+namespace trading_core {
+    TradingCore::TradingCore()
+    {
+        mOwnedDatabaseWorker
+                = std::make_unique<data::DatabaseWorker>(data::databasePath);
+        mDatabaseWorker = mOwnedDatabaseWorker.get();
+        mAuthRepo = std::make_unique<data::AuthRepository>(mDatabaseWorker);
+        mTradeIDRepo = std::make_unique<data::TradeIDRepository>(mDatabaseWorker);
+        mTradeIDGenerator = std::make_unique<TradeIDGenerator>(mTradeIDRepo.get());
+        mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
+        initPartitions();
+        ExecutionPublisher::SetCallback([this](const fix::ExecutionReport& report) {
+            if (this->mExecutionReportCallback) {
+                this->mExecutionReportCallback(report);
+            }
+        });
+        g_instance = this;
+    }
+
+    TradingCore::TradingCore(data::DatabaseWorker* dbWorker,
+                             const bool autoInitPartitions)
+        : mDatabaseWorker(dbWorker)
+    {
+        if (mDatabaseWorker) {
+            mAuthRepo = std::make_unique<data::AuthRepository>(mDatabaseWorker);
+            mTradeIDRepo = std::make_unique<data::TradeIDRepository>(mDatabaseWorker);
+            mTradeIDGenerator
+                    = std::make_unique<TradeIDGenerator>(mTradeIDRepo.get());
+            mOrderIDGenerator
+                    = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
+        }
+        if (autoInitPartitions) { initPartitions(); }
+        ExecutionPublisher::SetCallback([this](const fix::ExecutionReport& report) {
+            if (this->mExecutionReportCallback) {
+                this->mExecutionReportCallback(report);
+            }
+        });
+        g_instance = this;
+    }
+
+    TradingCore::TradingCore(std::unique_ptr<data::DatabaseWorker> dbWorker,
+                            std::unique_ptr<data::AuthRepository> authRepo,
+                            std::unique_ptr<data::TradeIDRepository> tradeIDRepo,
+                            std::unique_ptr<TradeIDGenerator> tradeIDGen,
+                            std::unique_ptr<OrderIDGenerator> orderIDGen,
+                            bool autoInitPartitions)
+        : mDatabaseWorker(dbWorker.get()),
+          mOwnedDatabaseWorker(std::move(dbWorker)),
+          mAuthRepo(std::move(authRepo)),
+          mTradeIDRepo(std::move(tradeIDRepo)),
+          mTradeIDGenerator(std::move(tradeIDGen)),
+          mOrderIDGenerator(std::move(orderIDGen))
+    {
+        if (autoInitPartitions) { initPartitions(); }
+        ExecutionPublisher::SetCallback([this](const fix::ExecutionReport& report) {
+            if (this->mExecutionReportCallback) {
+                this->mExecutionReportCallback(report);
+            }
+        });
+        g_instance = this;
+    }
+
+    TradingCore::~TradingCore()
+    {
+        stop();
+        g_instance = nullptr;
+    };
+
+    void TradingCore::start()
+    {
+        for (const auto& mPartition: mPartitions) {
+            if (mPartition) {
+                mPartition->waitReady();
+                mPartition->start();
+            }
+        }
+    }
+
+    void TradingCore::stop()
+    {
+        for (const auto& mPartition: mPartitions) {
+            if (mPartition) { mPartition->stop(); }
+        }
+    }
+
+    void TradingCore::stopAcceptingCommands()
+    {
+        for (const auto& partition: mPartitions) {
+            if (partition) { partition->stopAcceptingCommands(); }
+        }
+    }
+
+    void TradingCore::waitAllQueuesIdle() const
+    {
+        while (true) {
+            size_t total_queue_size = 0;
+            for (const auto& partition: mPartitions) {
+                if (partition) total_queue_size += partition->getQueueSize();
+            }
+            if (mDatabaseWorker)
+                total_queue_size += mDatabaseWorker->getQueueSize();
+
+            if (total_queue_size == 0) { break; }
+
+            std::this_thread::yield();
+        }
+    }
+
+    void TradingCore::submitCommand(std::unique_ptr<Command> command) const
+    {
+        if (command->getType() == CommandType::NewOrder) {
+            const auto newOrder = dynamic_cast<NewOrder*>(command.get());
+            if (!newOrder) {
+                LOG_ERROR(errors::ETRADE3, "Invalid NewOrder cast");
+                return;
+            }
+            auto instrument = newOrder->getOrder()->getSymbol();
+            mPartitions[static_cast<int>(instrument)]->enqueue(
+                    std::move(command));
+            return;
+        }
+
+        if (command->getType() == CommandType::ModifyOrder) {
+            const auto order = dynamic_cast<ModifyOrder*>(command.get());
+            if (!order) {
+                LOG_ERROR(errors::ETRADE3, "Invalid ModifyOrder cast");
+                return;
+            }
+            auto instrumentOpt = findPartitionForOrder(order->getOrderId());
+            if (!instrumentOpt) {
+                LOG_ERROR(errors::ETRADE2, "Modify Order ID not found");
+                return;
+            }
+            mPartitions[static_cast<int>(*instrumentOpt)]->enqueue(
+                    std::move(command));
+            return;
+        }
+
+        if (command->getType() == CommandType::CancelOrder) {
+            const auto order = dynamic_cast<CancelOrder*>(command.get());
+            if (!order) {
+                LOG_ERROR(errors::ETRADE3, "Invalid CancelOrder cast");
+                return;
+            }
+            auto instrumentOpt = findPartitionForOrder(order->getOrderId());
+            if (!instrumentOpt) {
+                LOG_ERROR(errors::ETRADE2, "Cancel Order ID not found");
+                return;
+            }
+            mPartitions[static_cast<int>(*instrumentOpt)]->enqueue(
+                    std::move(command));
+            return;
+        }
+
+        LOG_ERROR(errors::ETRADE3, "Unknown command type");
+    }
+
+    void TradingCore::initPartitions()
+    {
+        for (int i = 0; i < static_cast<int>(common::Instrument::COUNT); ++i) {
+            auto instrument = static_cast<common::Instrument>(i);
+            mPartitions[i] = std::make_unique<Partition>(
+                    instrument, mDatabaseWorker, mTradeIDGenerator.get(),
+                    mMarketDataPublisher);
+        }
+    }
+
+    Partition* TradingCore::getPartition(common::Instrument instrument) const
+    {
+        return mPartitions[static_cast<int>(instrument)].get();
+    }
+
+    OrderIDGenerator* TradingCore::getOrderIDGenerator()
+    {
+        return mOrderIDGenerator.get();
+    }
+    
+    data::AuthRepository* TradingCore::getAuthRepository() const
+    {
+        return mAuthRepo.get();
+    }
+
+    data::DatabaseWorker* TradingCore::getDatabaseWorker() const
+    {
+        return mDatabaseWorker;
+    }
+
+    void TradingCore::subscribeToExecutions(ExecutionReportCallback callback)
+    {
+        mExecutionReportCallback = callback;
+    }
+
+    void TradingCore::subscribeToMarketData(common::Symbol symbol,
+                                            common::SessionID sessionId)
+    {
+        mMarketDataPublisher.addSubscription(symbol, sessionId);
+        auto partition = getPartition(symbol);
+        if (partition) {
+            partition->getOrderBook()->publishSnapshot(sessionId);
+        }
+    }
+
+    void TradingCore::unsubscribeFromMarketData(common::Symbol symbol,
+                                                common::SessionID sessionId)
+    {
+        mMarketDataPublisher.removeSubscription(symbol, sessionId);
+    }
+
+    void TradingCore::unsubscribeFromMarketData(common::SessionID sessionId)
+    {
+        mMarketDataPublisher.removeSubscription(sessionId);
+    }
+
+    const TradingCore::ExecutionReportCallback&
+    TradingCore::getExecutionReportCallback() const
+    {
+        return mExecutionReportCallback;
+    }
+
+    MarketDataPublisher& TradingCore::getMarketDataPublisher()
+    {
+        return mMarketDataPublisher;
+    }
+
+    TradingCore& TradingCore::getInstance()
+    {
+        return *g_instance;
+    }
+
+    std::optional<common::Instrument>
+    TradingCore::findPartitionForOrder(common::OrderID orderId) const
+    {
+        for (const auto& partition: mPartitions) {
+            if (partition
+                && partition->getOrderManager()->containsOrderById(orderId)) {
+                return partition->getSymbol();
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::optional<common::Order> TradingCore::getOrder(common::OrderID orderId) const
+    {
+        auto instrumentOpt = this->findPartitionForOrder(orderId);
+        if (instrumentOpt) {
+            auto partition = this->getPartition(*instrumentOpt);
+            if (partition) {
+                auto orderOpt = partition->getOrderManager()->getOrderById(orderId);
+                if (orderOpt) {
+                    return **orderOpt;
+                }
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::optional<common::Order> TradingCore::getOrderByClientOrderId(const std::string& clientOrderId) const
+    {
+        for (const auto& partition : mPartitions) {
+            if (partition) {
+                auto orderOpt = partition->getOrderManager()->getOrderByClientOrderId(clientOrderId);
+                if (orderOpt) {
+                    return **orderOpt;
+                }
+            }
+        }
+        return std::nullopt;
+    }
+
+#ifndef NDEBUG
+    void TradingCore::setPartition(common::Instrument instrument,
+                                   std::unique_ptr<Partition> partition)
+    {
+        mPartitions[static_cast<int>(instrument)] = std::move(partition);
+    }
+#endif
+} // namespace trading_core

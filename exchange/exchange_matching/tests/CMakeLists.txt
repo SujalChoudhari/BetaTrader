@@ -1,0 +1,11 @@
+add_executable(exchange_matching_tests
+    src/OrderBookTests.cpp
+)
+target_link_libraries(exchange_matching_tests
+    PRIVATE
+    exchange_matching_lib
+    common
+    gtest_main
+    gmock
+)
+gtest_discover_tests(exchange_matching_tests)
