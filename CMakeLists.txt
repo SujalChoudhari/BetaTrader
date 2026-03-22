@@ -63,6 +63,7 @@ add_subdirectory(common)
 add_subdirectory(core/data)
 add_subdirectory(core/fix)
 add_subdirectory(core/trading_core)
+add_subdirectory(client/client_fix)
 
 add_subdirectory(common/tests)
 add_subdirectory(core/data/tests)
