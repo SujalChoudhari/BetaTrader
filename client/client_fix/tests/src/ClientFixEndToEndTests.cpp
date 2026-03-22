@@ -6,7 +6,7 @@
 #include "fix_client/FixMessageParser.h"
 #include "fix/FixServer.h"
 #include "fix/FixSessionManager.h"
-#include "trading_core/TradingCore.h"
+#include <exchange_app/TradingCore.h>
 #include "common_fix/OrderRequest.h"
 #include "common_fix/ExecutionReport.h"
 #include "logging/Logger.h"

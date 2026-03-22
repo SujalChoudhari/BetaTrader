@@ -12,21 +12,34 @@
 #include "data/DatabaseWorker.h"
 #include "data/OrderRepository.h"
 #include "data/TradeRepository.h"
-#include "trading_core/Matcher.h"
-#include "trading_core/OrderBook.h"
-#include "trading_core/OrderManager.h"
-#include "trading_core/RiskManager.h"
-#include "trading_core/TradeIDGenerator.h"
-#include <gmock/gmock.h> // Include gmock for MOCK_METHOD
+#include <exchange_matching/Matcher.h>
+#include <exchange_matching/OrderBook.h>
+#include <exchange_state/OrderManager.h>
+#include <exchange_risk/RiskManager.h>
+#include <exchange_state/TradeIDGenerator.h>
+#include <exchange_state/OrderIDGenerator.h>
+#include <exchange_publishers/MarketDataPublisher.h>
+#include "data/AuthRepository.h"
+#include <gmock/gmock.h>
+
+class MockMarketDataPublisher : public trading_core::MarketDataPublisher {
+public:
+    MockMarketDataPublisher() : trading_core::MarketDataPublisher() {}
+    MOCK_METHOD(void, publishSnapshot, (const fix::MarketDataSnapshotFullRefresh&), (override));
+    MOCK_METHOD(void, publishIncremental, (const fix::MarketDataIncrementalRefresh&), (override));
+};
 
 class MockDatabaseWorker : public data::DatabaseWorker {
 public:
-    MockDatabaseWorker(): data::DatabaseWorker() {}
+    MockDatabaseWorker(): data::DatabaseWorker(), mDb(":memory:", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE) {}
 
     void enqueue(const std::function<void(SQLite::Database&)> task) override
     {
-        task(*static_cast<SQLite::Database*>(nullptr));
+        task(mDb);
     }
+
+private:
+    SQLite::Database mDb;
 };
 
 // Mock for OrderRepository
@@ -70,18 +83,42 @@ public:
     void initDatabase() override {}
 };
 
+// Mock for AuthRepository
+class MockAuthRepository : public data::AuthRepository {
+public:
+    explicit MockAuthRepository(data::DatabaseWorker* dbWorker)
+        : data::AuthRepository(dbWorker)
+    {}
+    MOCK_METHOD(void, initDatabase, (), (override));
+    MOCK_METHOD(void, loadValidClients, (std::function<void(std::vector<std::string>)>), (override));
+    MOCK_METHOD(void, insertNewClient, (std::string, bool), (override));
+    MOCK_METHOD(void, removeAllClients, (), (override));
+};
+
 // Mock for TradeIDRepository
 class MockTradeIDRepository : public data::TradeIDRepository {
 public:
     explicit MockTradeIDRepository(data::DatabaseWorker* dbWorker)
         : data::TradeIDRepository(dbWorker)
-    {}
-    void initDatabase() {}
-    void getCurrentTradeID(std::function<void(common::TradeID)> callback) {
-        callback(0);
+    {
+        ON_CALL(*this, getCurrentTradeID(::testing::_))
+            .WillByDefault([](std::function<void(common::TradeID)> callback) {
+                callback(0);
+            });
     }
-    void setCurrentTradeID(common::TradeID id) {}
-    void truncateTradeID() {}
+    MOCK_METHOD(void, initDatabase, (), (override));
+    MOCK_METHOD(void, getCurrentTradeID, (std::function<void(common::TradeID)>), (override));
+    MOCK_METHOD(void, setCurrentTradeID, (common::TradeID), (override));
+    MOCK_METHOD(void, truncateTradeID, (), (override));
+};
+
+// Mock for OrderIDGenerator
+class MockOrderIDGenerator : public trading_core::OrderIDGenerator {
+public:
+    explicit MockOrderIDGenerator(data::DatabaseWorker* dbWorker)
+        : trading_core::OrderIDGenerator(dbWorker)
+    {}
+    MOCK_METHOD(common::OrderID, nextId, (), (override));
 };
 
 // Mock for OrderManager
@@ -133,6 +170,8 @@ public:
 // Mock for OrderBook
 class MockOrderBook : public trading_core::OrderBook {
 public:
+    MockOrderBook(common::Symbol symbol, trading_core::MarketDataPublisher& publisher)
+        : trading_core::OrderBook(symbol, publisher) {}
     mutable int insertOrderCallCount = 0;
     mutable int cancelOrderCallCount = 0;
     bool cancelOrderResult = true;
