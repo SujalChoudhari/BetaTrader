@@ -18,19 +18,23 @@ This application bridges the gap between raw trading data (maintained by pure C+
 
 ```mermaid
 graph TD
+    classDef ui fill:#2b303a,stroke:#4caf50,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+
     subgraph "client_app Process"
         MAIN(Main Thread - 60FPS Render Loop)
-        UI[ImGui Context]
+        UI[ImGui Context]:::ui
         
         subgraph "Owned State Modules"
-            OB[client_orderbook]
-            BLOT[client_blotter]
-            AUTH[client_auth]
+            OB[client_orderbook]:::logic
+            BLOT[client_blotter]:::logic
+            AUTH[client_auth]:::logic
         end
         
         subgraph "Background Threads"
-            FIX(client_fix: ASIO Thread)
-            HTTP(client_http: Async Thread)
+            FIX(client_fix: ASIO Thread):::net
+            HTTP(client_http: Async Thread):::net
         end
     end
 

@@ -17,16 +17,19 @@ Identity management in trading systems usually spans multiple protocols. You reg
 
 ```mermaid
 graph TD
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+
     subgraph "client_auth"
-        COORD[AuthCoordinator]
-        SM((State Machine))
+        COORD[AuthCoordinator]:::logic
+        SM((State Machine)):::logic
     end
 
     COORD --> SM
     
     subgraph "Inter-Module Routing"
-        HTTP[client_http]
-        FIX[client_fix]
+        HTTP[client_http]:::net
+        FIX[client_fix]:::net
     end
 
     SM -->|If Registering| HTTP

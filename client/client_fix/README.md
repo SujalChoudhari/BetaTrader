@@ -6,7 +6,10 @@ The `client_fix` module provides the core connectivity, message parsing, and ses
 
 ```mermaid
 classDiagram
-    class FixClientSession {
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+
+    class FixClientSession:::net {
         +connect(host, port)
         +logon()
         +logout()
@@ -19,7 +22,7 @@ classDiagram
         -mSeqStore: SeqNumStore
     }
     
-    class SeqNumStore {
+    class SeqNumStore:::logic {
         +getInSeq() : SequenceNumber
         +getOutSeq() : SequenceNumber
         +setInSeq(seq)
@@ -29,13 +32,13 @@ classDiagram
         -persist()
     }
     
-    class AuthManager {
+    class AuthManager:::logic {
         +authenticate(username, password)
         +handleUserResponse(status, text)
         +setAuthCallback()
     }
     
-    class FixMessageParser {
+    class FixMessageParser:::logic {
         +parse(fixMessage) : ParsedFixMessage
     }
     

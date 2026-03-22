@@ -17,9 +17,12 @@ While the bulk of low-latency trading traffic routes over FIX, operations like U
 
 ```mermaid
 graph LR
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+    classDef data fill:#2d142c,stroke:#ee4540,stroke-width:2px,color:white;
+
     subgraph "client_http Module"
-        API[ApiClient] --> |POST /api/register| HTTP[httplib::Client]
-        JSON[JSON Serializer] --> API
+        API[ApiClient]:::net --> |POST /api/register| HTTP[httplib::Client]:::net
+        JSON[JSON Serializer]:::data --> API
     end
 
     subgraph "Exchange Server"

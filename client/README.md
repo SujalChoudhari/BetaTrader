@@ -4,7 +4,7 @@ The Client suite is the primary interface for interacting with the BetaTrader ec
 
 ## Architecture & Data Flow
 
-Instead of a monolithic GUI, the `client_app` executable serves merely as a visual orchestrator. It instantiates individual C++ modules (like the Orderbook, Blotter, and HTTP Gateway) and mounts their state to the screen.
+Instead of a monolithic GUI, the `client_app` executable serves merely as a visual orchestrator. It instantiates individual C++ modules (like the Orderbook, Blotter, and HTTP Gateway) and mounts their state to the screen using Dear ImGui.
 
 ```mermaid
 graph TD
@@ -23,6 +23,7 @@ graph TD
         PORT[client_portfolio]:::logic
         OHLC[client_ohlc]:::logic
         SIM[client_simulator]:::logic
+        UI_L[client_ui]:::ui
     end
 
     subgraph "Networking Layer"
@@ -55,12 +56,13 @@ graph TD
     PORT -->|Renders PnL| APP
     AUTH -->|Renders Login| APP
     OHLC -->|Renders Charts| APP
+    UI_L -->|Widgets| APP
 
     %% Simulator bypassing UI
     SIM -->|High-Throughput Orders| FIX
 ```
 
-## The Modules
+## The Micro-Modules
 
 Explore the individual `README.md` files for deeper architecture and class diagrams on how each module is engineered:
 
@@ -72,7 +74,15 @@ Explore the individual `README.md` files for deeper architecture and class diagr
 6.  **[`client_portfolio`](./client_portfolio/README.md)**: Real-time PnL and metric aggregation.
 7.  **[`client_ohlc`](./client_ohlc/README.md)**: Candlestick and volume aggregation for charting.
 8.  **[`client_simulator`](./client_simulator/README.md)**: Headless multi-agent load generator.
-9.  **[`client_app`](./client_app/README.md)**: The Dear ImGui aggregator and window manager.
+9.  **[`client_ui`](./client_ui/README.md)**: Dear ImGui components and technical charting (ImPlot).
+10. **[`client_app`](./client_app/README.md)**: The central aggregator and window manager.
+
+## Design Philosophy
+
+-   **State Isolation**: UI components never "own" the data. They only render snapshots from the underlying lock-free micro-modules.
+-   **Thread-Safety via SPSC**: Data moves from background networking threads to the UI thread via Single-Producer Single-Consumer (SPSC) queues.
+-   **Immediate Mode Rendering**: Uses Dear ImGui for 60 FPS ultra-low latency visualization of market depth.
+-   **Dependency Injection**: The `client_app` injects dependencies into components, facilitating isolated mocks for unit testing.
 
 ## Building the Client
 

@@ -17,18 +17,22 @@ The blotter is the trader's interface into their own activity. By storing the tr
 
 ```mermaid
 graph TD
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+    classDef ui fill:#2b303a,stroke:#4caf50,stroke-width:2px,color:white;
+
     subgraph "client_fix"
-        RECEIVER[FixMessageParser]
+        RECEIVER[FixMessageParser]:::net
     end
 
     subgraph "client_blotter Module"
-        ROUTER[ExecutionRouter]
-        MODEL[BlotterModel]
+        ROUTER[ExecutionRouter]:::logic
+        MODEL[BlotterModel]:::logic
     end
 
     RECEIVER -->|ExecutionReport (35=8)| ROUTER
     ROUTER -->|Update/Insert| MODEL
-    MODEL -.->|getHistory()| UI(client_app UI Table)
+    MODEL -.->|getHistory()| UI(client_app UI Table):::ui
 ```
 
 ## Class Diagram

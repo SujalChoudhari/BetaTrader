@@ -17,20 +17,24 @@ The orderbook bridges the gap between raw, asynchronous FIX messages and a stabl
 
 ```mermaid
 graph TD
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+    classDef ui fill:#2b303a,stroke:#4caf50,stroke-width:2px,color:white;
+
     subgraph "client_fix"
-        PARSER[FixMessageParser]
+        PARSER[FixMessageParser]:::net
     end
 
     subgraph "client_orderbook"
-        ROUTER[MessageRouter] -->|35=W| SNAP(SnapshotHandler)
-        ROUTER -->|35=X| INC(IncrementalHandler)
+        ROUTER[MessageRouter]:::logic -->|35=W| SNAP(SnapshotHandler):::logic
+        ROUTER -->|35=X| INC(IncrementalHandler):::logic
         
-        SNAP --> BOOK[OrderBookState]
+        SNAP --> BOOK[OrderBookState]:::logic
         INC --> BOOK
     end
 
     PARSER -->|Variant Event| ROUTER
-    BOOK -->|getBids() / getAsks()| UI(client_app UI)
+    BOOK -->|getBids() / getAsks()| UI(client_app UI):::ui
 ```
 
 ## Class Diagram

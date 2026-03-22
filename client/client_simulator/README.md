@@ -17,17 +17,20 @@ The simulator bridges the gap between functional logic and extreme performance t
 
 ```mermaid
 graph TD
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+
     subgraph "client_simulator Module"
-        UI[Simulator Control UI] --> MGR[SimulationManager]
-        MGR --> POOL(Background ThreadPool)
+        UI[Simulator Control UI]:::logic --> MGR[SimulationManager]:::logic
+        MGR --> POOL(Background ThreadPool):::logic
         
-        POOL --> A1(Agent: Aggressive)
-        POOL --> A2(Agent: Volatility)
-        POOL --> A3(Agent: Market Maker)
+        POOL --> A1(Agent: Aggressive):::logic
+        POOL --> A2(Agent: Volatility):::logic
+        POOL --> A3(Agent: Market Maker):::logic
     end
 
     subgraph "Network Layer"
-        FIX[FixClientSession] 
+        FIX[FixClientSession]:::net
     end
 
     A1 -->|FIX Messages| FIX

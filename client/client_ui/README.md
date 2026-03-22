@@ -6,19 +6,23 @@ The `client_ui` module provides the interactive interface for BetaTrader. Built 
 
 ```mermaid
 classDiagram
-    class OrderbookModel {
+    classDef ui fill:#2b303a,stroke:#4caf50,stroke-width:2px,color:white;
+    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
+    classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
+
+    class OrderbookModel:::logic {
         +update(MDEntries)
         +getBids()
         +getAsks()
         -applyIncremental(entry)
         -m_depthMap: map~Price, Quantity~
     }
-    class MDSubscriptionManager {
+    class MDSubscriptionManager:::logic {
         +subscribe(symbol)
         +unsubscribe(symbol)
         +reIssueSubscriptions()
     }
-    class UIEventQueue {
+    class UIEventQueue:::logic {
         +push(Event)
         +pop(): Event
     }
