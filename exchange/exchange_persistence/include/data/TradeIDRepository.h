@@ -22,10 +22,11 @@ namespace data {
     public:
         explicit TradeIDRepository(DatabaseWorker* dbWorker);
 
-        void initDatabase();
-        void getCurrentTradeID(std::function<void(common::TradeID)> callback);
-        void setCurrentTradeID(common::TradeID tradeID);
-        void truncateTradeID();
+        virtual ~TradeIDRepository() = default;
+        virtual void initDatabase();
+        virtual void getCurrentTradeID(std::function<void(common::TradeID)> callback);
+        virtual void setCurrentTradeID(common::TradeID tradeID);
+        virtual void truncateTradeID();
 
     private:
         DatabaseWorker* mDb;

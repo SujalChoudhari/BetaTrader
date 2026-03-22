@@ -19,9 +19,8 @@ namespace data {
         virtual void loadValidClients(
                 std::function<void(std::vector<std::string>)> callback);
 
-        void insertNewClient(std::string senderCompId, bool isActive);
-
-        void removeAllClients();
+        virtual void insertNewClient(std::string senderCompId, bool isActive);
+        virtual void removeAllClients();
 
     private:
         DatabaseWorker* mDb;
