@@ -18,24 +18,22 @@ A trader needs to know their current risk exposure instantly. This module connec
 ```mermaid
 graph TD
     classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
-    classDef net fill:#1f2833,stroke:#66fcf1,stroke-width:2px,color:white;
     classDef ui fill:#2b303a,stroke:#4caf50,stroke-width:2px,color:white;
 
-    subgraph "FIX Data Feed"
-        FEED(client_fix: Market Data):::net
+    subgraph "Data Sources"
+        BLOTTER[client_blotter]:::logic
+        OB[client_orderbook]:::logic
     end
 
-    subgraph "client_ohlc Module"
-        ROUTER[TickRouter]:::logic
-        1M[1M Aggregator]:::logic
-        H1[1 Hour Aggregator]:::logic
+    subgraph "client_portfolio Module"
+        RISK[PortfolioModel]:::logic
+        MATH(PnL Calculator):::logic
     end
 
-    FEED --> ROUTER
-    ROUTER -->|Tick Price/Qty| 1M
-    ROUTER -->|Tick Price/Qty| H1
-    
-    1M -.->|Candle Vector| UI(client_app Charts):::ui
+    BLOTTER -->|Fills/Executions| RISK
+    OB -->|Pricing Updates| MATH
+    RISK -->|Avg Entry| MATH
+    MATH -.->|Unrealized PnL| UI(client_app UI):::ui
 ```
 
 ## Class Diagram

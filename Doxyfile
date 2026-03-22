@@ -41,16 +41,14 @@ WARN_LOGFILE           = doxygen_warnings.log
 
 INPUT                  = README.md \
                          common \
-                         core \
+                         exchange \
                          client
 
 FILE_PATTERNS          = *.h \
                          *.cpp \
                          *.md
 RECURSIVE              = YES
-EXCLUDE                = core/trading_core/tests \
-                         core/data/tests \
-                         docs \
+EXCLUDE                = docs \
                          vendor
 
 EXCLUDE_PATTERNS       = */tests/* \
