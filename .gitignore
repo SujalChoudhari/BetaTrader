@@ -8,3 +8,8 @@
 /.vscode
 Testing/
 build/
+
+# Runtime Sequence Stores
+*.seq
+session_test_store/
+seq_store/
