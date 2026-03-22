@@ -1,23 +1,13 @@
-cmake_minimum_required(VERSION 3.15)
+file(GLOB TEST_SOURCES "src/*.cpp")
 
-add_executable(fix_tests 
-    src/BinaryToOrderRequestConverterTests.cpp
-    src/ExecutionReportToBinaryConverterTests.cpp
-    src/FixServerSessionTests.cpp
-    src/FixSessionManagerTests.cpp
-    src/FixUtilsTests.cpp
-    src/FixEndToEndTests.cpp
-)
-
-# Link against required libraries
-target_link_libraries(fix_tests
-        PUBLIC
-        gtest
-        gmock
-        gtest_main
+if(TEST_SOURCES)
+    add_executable(exchange_fix_tests ${TEST_SOURCES})
+    target_link_libraries(exchange_fix_tests
+        PRIVATE
         fix_lib
-        trading_core_lib # The mock core needs this
-)
-
-include(GoogleTest)
-gtest_discover_tests(fix_tests)
+        common
+        gtest_main
+        gmock
+    )
+    gtest_discover_tests(exchange_fix_tests)
+endif()

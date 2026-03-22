@@ -21,9 +21,8 @@ target_link_libraries(client_fix_tests
         gtest_main
         client_fix_lib
         fix_lib           # To stand up the server
-        trading_core_lib  # Server depends on core
+        exchange_app_lib  # Server depends on app lib
         common
 )
 
-include(GoogleTest)
 gtest_discover_tests(client_fix_tests)

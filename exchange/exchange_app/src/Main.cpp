@@ -1,7 +1,7 @@
 #include "common/Order.h"
 #include "logging/Logger.h"
-#include "trading_core/NewOrder.h"
-#include "trading_core/TradingCore.h"
+#include <exchange_routing/NewOrder.h>
+#include <exchange_app/TradingCore.h>
 #include <chrono>
 #include <iomanip>
 #include <iostream>

@@ -1,10 +1,10 @@
-# Core | FIX Gateway & Session Manager
+# Exchange | FIX Gateway & Session Manager
 
-The `@fix` component is a standalone server responsible for handling client connections over the Financial Information eXchange (FIX) protocol. It acts as the primary gateway for clients to submit orders to the BetaTrader trading engine.
+The `exchange_fix` component is a standalone server responsible for handling client connections over the Financial Information eXchange (FIX) protocol. It acts as the primary gateway for clients to submit orders to the BetaTrader trading engine.
 
 ## Overview
 
-This component implements a fully asynchronous, multi-client FIX server using the Asio networking library. It listens for incoming TCP connections, manages client sessions, and translates FIX messages into commands for the `@trading_core`.
+This component implements a fully asynchronous, multi-client FIX server using the Asio networking library. It listens for incoming TCP connections, manages client sessions, and translates FIX messages into commands for the `exchange_app`.
 
 ## Key Responsibilities
 
@@ -13,7 +13,7 @@ This component implements a fully asynchronous, multi-client FIX server using th
 *   **Message Processing**:
     *   Deserializes FIX messages into internal request objects.
     *   Uses `OutboundMessageBuilder` for consistent, protocol-compliant binary FIX serialization (BodyLength, Checksum).
-    *   Submits commands to the `@trading_core`.
+    *   Submits commands to the `exchange_app`.
 *   **Execution Reporting**:
     *   Subscribes to execution events and routes them to the correct session.
 

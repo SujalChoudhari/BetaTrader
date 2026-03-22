@@ -10,6 +10,5 @@ if(TEST_SOURCES)
             gmock_main
     )
 
-    include(GoogleTest)
     gtest_discover_tests(common_tests)
 endif()

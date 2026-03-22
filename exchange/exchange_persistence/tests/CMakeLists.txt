@@ -1,18 +1,13 @@
-file(GLOB TEST_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+file(GLOB TEST_SOURCES "*.cpp")
 
-
-add_executable(data_tests
-        ${TEST_SOURCES}
-)
-
-
-target_link_libraries(data_tests
+if(TEST_SOURCES)
+    add_executable(exchange_persistence_tests ${TEST_SOURCES})
+    target_link_libraries(exchange_persistence_tests
         PRIVATE
         data_lib
         common
         gtest_main
-        SQLiteCpp sqlite3
-)
-
-include(GoogleTest)
-gtest_discover_tests(data_tests)
+        gmock
+    )
+    gtest_discover_tests(exchange_persistence_tests)
+endif()
