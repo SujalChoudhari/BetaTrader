@@ -19,7 +19,7 @@ This component implements a fully asynchronous, multi-client FIX server using th
 
 ## Architecture
 
-The system is designed with a clear separation of concerns between the transport layer (`@fix`) and the business logic layer (`@trading_core`). Communication is achieved via an asynchronous publisher-subscriber pattern.
+The system is designed with a clear separation of concerns between the transport layer (`exchange_fix`) and the business logic layer (`exchange_app` / `exchange_matching`). Communication is achieved via an asynchronous publisher-subscriber pattern.
 
 ```mermaid
 graph TD
@@ -43,7 +43,7 @@ graph TD
         SERVER --"4. Dispatches to Session"--> S1
     end
 
-    subgraph "@trading_core"
+    subgraph "exchange_app / exchange_matching"
         TC[TradingCore Instance] --"2. Publishes fix::ExecutionReport"--> SUB
     end
 
@@ -67,7 +67,7 @@ graph TD
 
 ## Order Lifecycle
 
-The FIX Gateway translates client messages into internal commands and routes them to the `@trading_core`:
+The FIX Gateway translates client messages into internal commands and routes them to the `exchange_app`:
 -   **New Order Single (35=D)** -> `trading_core::NewOrder`
 -   **Order Cancel Request (35=F)** -> `trading_core::CancelOrder`
 -   **Order Cancel/Replace Request (35=G)** -> `trading_core::ModifyOrder`
@@ -82,7 +82,7 @@ The FIX server is built as a separate executable target named `fix_server`.
     ```
 2.  **Run the server**:
     ```bash
-    ./build/core/fix/fix_server
+    ./build/exchange/exchange_fix/fix
     ```
 
 ## Future Enhancements and TODOs

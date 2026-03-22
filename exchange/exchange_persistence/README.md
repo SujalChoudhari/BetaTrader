@@ -36,12 +36,20 @@ classDiagram
     }
 
     class AuthRepository {
+        <<virtual>>
         +validate(username, password)
         +register(username, password)
         -m_dbWorker: DatabaseWorker*
     }
 
+    class TradeIDRepository {
+        <<virtual>>
+        +getCurrentTradeID()
+        +setCurrentTradeID(id)
+    }
+
     AuthRepository --> DatabaseWorker : Uses
+    TradeIDRepository --> DatabaseWorker : Uses
 ```
 
 ## Component Responsibilities
@@ -56,3 +64,4 @@ classDiagram
 
 -   **Asynchronous Writes**: The main thread "fires and forgets" its query intentions.
 -   **Synchronous Reads (Cold Path)**: Only at server startup or during login are synchronous reads permitted, as these operations are not latency-critical for the trading path.
+-   **Test Mockability**: Repositories use `virtual` methods, allowing the `exchange_app_tests` suite to inject in-memory mocks that prevent physical disk access during unit testing.

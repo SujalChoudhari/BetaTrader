@@ -27,18 +27,14 @@ graph TD
 ```mermaid
 classDiagram
     class RiskManager {
-        +check(Order*) : bool
-        -validatePriceBands(Order*) : bool
-        -validateQuantity(Order*) : bool
-        -m_config: RiskConfig
+        <<virtual>>
+        +preCheck(Order, OrderBook) : bool
+        +postTradeUpdate(Trade)
+        +postTradeUpdate(vector~Trade~)
+        -m_tradeRepo: TradeRepository*
     }
 
-    class RiskConfig {
-        +maxPriceDeviation: double
-        +maxQtyPerOrder: uint64_t
-    }
-
-    RiskManager *--> RiskConfig : Uses
+    RiskManager --> TradeRepository : Uses
 ```
 
 ## Component Responsibilities

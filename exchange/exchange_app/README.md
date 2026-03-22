@@ -45,6 +45,8 @@ classDiagram
         +stop()
         +submitCommand(unique_ptr~Command~)
         +getPartition(Instrument) : Partition*
+        +TradingCore(dbWorker*, bool autoInit)
+        +TradingCore(dbWorkerUptr, authRepoUptr, tradeIDRepoUptr, tradeIDGenUptr, orderIDGenUptr, autoInit)
         -initPartitions()
         -m_partitions: unique_ptr~Partition~[]
         -m_dbWorker: DatabaseWorker*

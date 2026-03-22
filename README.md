@@ -18,9 +18,7 @@ This project is for developers, engineers, and curious traders who want a readab
 | Module | Description | Key Components |
 | :--- | :--- | :--- |
 | `common/` | Shared data structures, types, and utilities used across the project. | `Order`, `Trade`, `Instrument`, `Logger`, `Runbook` |
-| `core/trading_core/` | The heart of the system: an in-memory, partitioned matching engine. | `Partition`, `WorkerThread`, `OrderBook`, `Matcher`, `OrderManager`, `ExecutionPublisher` |
-| `core/data/` | A lightweight persistence layer for storing trades, orders, and sequences. | `DatabaseWorker`, `OrderRepository`, `TradeRepository`, `AuthRepository`, `SequenceRepository` |
-| `core/fix/` | FIX Gateway for client connectivity and session management. | `FixServer`, `FixSession`, `FixSessionManager`, `OutboundMessageBuilder` |
+| `exchange/` | The core trading engine suite (Modular). | `exchange_app`, `exchange_matching`, `exchange_fix`, `exchange_persistence` |
 | `client/` | Frontend suite including a Trader UI and a Load Simulator. | `client_fix`, `client_ui`, `client_app`, `client_simulator` |
 | `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
 
@@ -33,10 +31,12 @@ BetaTrader/
 ├── README.md
 ├── client/             # Frontend UI & Simulator
 ├── common/             # Shared types & logging
-├── core/
-│   ├── data/           # Persistence (SQLite, AuthRepository)
-│   ├── fix/            # FIX Gateway (Session Management, Converters)
-│   └── trading_core/   # Matching Engine, Partitioning
+├── exchange/           # Modular Exchange Backend
+│   ├── exchange_app/           # Orchestration
+│   ├── exchange_fix/           # FIX Gateway
+│   ├── exchange_matching/      # Matching Engine
+│   ├── exchange_persistence/   # Persistence layer
+│   └── ...
 ├── tools/              # Helper tools (coverage_reporter.py)
 └── vendor/             # Bundled third-party libs
 ```
@@ -77,18 +77,17 @@ python3 ../../tools/coverage_reporter.py
 
 BetaTrader is divided into several high-level components. Each component contains its own overview and technical specification:
 
-### Trading Core
-*   [Trading Core Overview](core/trading_core/README.md): Matching engine and order management details.
+### Exchange Infrastructure
+*   [Exchange Overview](./exchange/README.md): Central hub for the modular exchange backend.
+*   [Matching & Logic](./exchange/exchange_matching/README.md): High-performance orderbook and matcher details.
+*   [Data Persistence](./exchange/exchange_persistence/README.md): Asynchronous SQLite repository details.
 
-### FIX Gateway
-*   [FIX Gateway Overview](core/fix/README.md): Networking and session management details.
-*   [FIX Protocol Reference Guide](core/fix/FIX.md): Quick reference for tag-value pairs.
+### FIX Gateway & Connectivity
+*   [FIX Gateway Overview](./exchange/exchange_fix/README.md): Networking and session management details.
+*   [FIX Protocol Reference Guide](./exchange/exchange_fix/FIX.md): Quick reference for tag-value pairs.
 
-### Client Application (In Progress)
-*   [Client Overview](client/README.md): Trader terminal and simulator details.
-
-### Data Persistence
-*   [Data Persistence Overview](core/data/README.md): Repository and background worker details.
+### Client Application
+*   [Client Overview](./client/README.md): Trader terminal and simulator details.
 
 ## Forex Trading Domain Concepts
 

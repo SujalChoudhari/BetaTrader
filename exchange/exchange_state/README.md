@@ -37,11 +37,13 @@ classDiagram
     }
 
     class OrderIDGenerator {
+        <<virtual>>
         +nextId() : OrderID
         -m_lastId: atomic~uint64_t~
     }
 
     class TradeIDGenerator {
+        <<virtual>>
         +nextId() : TradeID
         -m_repo: TradeIDRepository*
     }

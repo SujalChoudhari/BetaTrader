@@ -29,8 +29,12 @@ graph LR
 ```mermaid
 classDiagram
     class ExecutionPublisher {
-        +publish(ExecutionReport)
-        -m_callbacks: vector~Callback~
+        <<static>>
+        +SetCallback(ExecutionReportCallback)
+        +publishExecution(Order, action)
+        +publishTrade(Trade, buyOrder, sellOrder)
+        +publishRejection(orderId, clientId, symbol, side, reason)
+        -s_callback: ExecutionReportCallback
     }
 
     class MarketDataPublisher {
