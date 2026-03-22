@@ -6,6 +6,7 @@
 #include "common/Order.h"
 #include "common/Trade.h"
 #include "common_fix/ExecutionReport.h" // Include the report type
+#include <functional>
 #include <string>
 
 namespace trading_core {
@@ -20,50 +21,23 @@ namespace trading_core {
      */
     class ExecutionPublisher {
     public:
-        /**
-         * @brief Default constructor is deleted to prevent instantiation.
-         */
-        ExecutionPublisher() = default;
+        using ExecutionReportCallback = std::function<void(const fix::ExecutionReport&)>;
 
-        /**
-         * @brief Default destructor.
-         */
-        ~ExecutionPublisher() = default;
+        static void SetCallback(ExecutionReportCallback callback);
 
-        /**
-         * @brief Copy constructor is deleted to prevent copying.
-         */
-        ExecutionPublisher(const ExecutionPublisher&) = delete;
-
-        /**
-         * @brief Copy assignment operator is deleted to prevent copying.
-         */
-        ExecutionPublisher& operator=(const ExecutionPublisher&) = delete;
-
-        /**
-         * @brief Publishes an execution report for an order.
-         * @param order The order for which the execution report is being
-         * published.
-         * @param action The action that was taken on the order (e.g., "NEW",
-         * "CANCELED").
-         */
         static void publishExecution(const common::Order& order,
                                      const std::string& action);
 
-        /**
-         * @brief Publishes a trade execution.
-         * @param trade The trade that was executed.
-         */
-        static void publishTrade(const common::Trade& trade);
+        static void publishTrade(const common::Trade& trade,
+                                 const common::Order& buyOrder,
+                                 const common::Order& sellOrder);
 
-        /**
-         * @brief Publishes a rejection for an order.
-         * @param orderId The ID of the order that was rejected.
-         * @param clientId The ID of the client who submitted the order.
-         * @param reason The reason for the rejection.
-         */
         static void publishRejection(const common::OrderID& orderId,
                                      const common::ClientID& clientId,
+                                     const common::Symbol& symbol,
+                                     const common::OrderSide& side,
                                      const std::string_view& reason);
+    private:
+        static ExecutionReportCallback s_callback;
     };
 } // namespace trading_core

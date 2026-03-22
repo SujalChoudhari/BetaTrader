@@ -9,16 +9,16 @@
  */
 
 #pragma once
-#include "Command.h"
-#include "Matcher.h"
-#include "OrderBook.h"
-#include "OrderManager.h"
-#include "RiskManager.h"
-#include "WorkerThread.h"
+#include <exchange_routing/Command.h>
+#include <exchange_matching/Matcher.h>
+#include <exchange_matching/OrderBook.h>
+#include <exchange_state/OrderManager.h>
+#include <exchange_risk/RiskManager.h>
+#include <exchange_routing/WorkerThread.h>
 #include "data/OrderRepository.h"
 #include "data/TradeRepository.h"
 #include "rigtorp/SPSCQueue.h"
-#include "MarketDataPublisher.h"
+#include <exchange_publishers/MarketDataPublisher.h>
 #include <atomic>
 #include <future>
 #include <memory>

@@ -11,7 +11,7 @@
 #include "common/Order.h"
 #include "common/Trade.h"
 #include "data/TradeRepository.h"
-#include "trading_core/OrderBook.h"
+#include <exchange_matching/OrderBook.h>
 
 namespace trading_core {
     /**

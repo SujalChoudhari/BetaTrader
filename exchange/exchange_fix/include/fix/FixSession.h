@@ -6,7 +6,7 @@
 #include "common_fix/MarketDataIncrementalRefresh.h"
 #include "common_fix/MarketDataSnapshotFullRefresh.h"
 #include "common_fix/Reject.h"
-#include "trading_core/TradingCore.h"
+#include <exchange_app/TradingCore.h>
 #include <asio.hpp>
 #include <cstdint>
 #include <deque>

@@ -18,8 +18,8 @@ namespace trading_core {
         void removeSubscription(common::Symbol symbol, common::SessionID sessionId);
         void removeSubscription(common::SessionID sessionId);
 
-        void publishSnapshot(const fix::MarketDataSnapshotFullRefresh& snapshot);
-        void publishIncremental(const fix::MarketDataIncrementalRefresh& refresh);
+        virtual void publishSnapshot(const fix::MarketDataSnapshotFullRefresh& snapshot);
+        virtual void publishIncremental(const fix::MarketDataIncrementalRefresh& refresh);
 
         void subscribeToSnapshots(SnapshotCallback callback);
         void subscribeToIncrementals(IncrementalCallback callback);

@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#include "OrderBook.h"
-#include "TradeIDGenerator.h"
+#include <exchange_matching/OrderBook.h>
+#include <exchange_state/TradeIDGenerator.h>
 #include "common/Trade.h"
 #include "data/DatabaseWorker.h"
 #include "data/TradeRepository.h"

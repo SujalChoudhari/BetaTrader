@@ -6,7 +6,7 @@
 #include "data/SequenceRepository.h"
 #include "fix/FixSession.h"
 #include "fix/FixSessionManager.h"
-#include "trading_core/TradingCore.h"
+#include <exchange_app/TradingCore.h>
 #include <asio.hpp>
 #include <map>
 #include <memory>
