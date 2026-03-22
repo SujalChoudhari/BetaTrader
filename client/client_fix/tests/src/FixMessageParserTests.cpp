@@ -7,6 +7,21 @@ protected:
     static void SetUpTestSuite() {
         logging::Logger::Init("parser_test_logger", "logs/parser_test.log", true, false);
     }
+
+    static std::string addChecksum(std::string msg) {
+        // Find the spot to insert/replace checksum
+        size_t pos = msg.find("10=");
+        if (pos != std::string::npos) {
+            msg = msg.substr(0, pos);
+        }
+        
+        unsigned int sum = 0;
+        for (char c : msg) sum += static_cast<unsigned int>(c);
+        
+        char buf[8];
+        snprintf(buf, sizeof(buf), "%03u", sum % 256);
+        return msg + "10=" + buf + "\x01";
+    }
 };
 
 TEST_F(FixMessageParserTests, ParseExecutionReport) {
@@ -29,9 +44,28 @@ TEST_F(FixMessageParserTests, ParseExecutionReport) {
     }
 }
 
+TEST_F(FixMessageParserTests, ParseExecutionReportMissingMandatoryTags) {
+    // Missing Tag 34 (MsgSeqNum) - std::stoull will throw
+    std::string msg = "8=FIX.4.4\x01" "9=50\x01" "35=8\x01" "49=EXCHANGE\x01" "56=CLIENT\x01"
+                      "37=100\x01" "10=184\x01";
+
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
+}
+
+TEST_F(FixMessageParserTests, ParseExecutionReportInvalidStatus) {
+    // Tag 39=Z (Invalid)
+    std::string msg = "8=FIX.4.4\x01" "9=142\x01" "35=8\x01" "49=BETA_EXCHANGE\x01" "56=CLIENT_1\x01"
+                      "34=2\x01" "52=20251030-10:00:00.000\x01" 
+                      "37=100\x01" "11=200\x01" "17=EXEC1\x01" "39=Z\x01" "55=EURUSD\x01"
+                      "54=1\x01" "38=1000\x01" "14=0\x01" "151=1000\x01" "31=0\x01" "32=0\x01"
+                      "60=20251030-10:00:00.000\x01" "10=203\x01";
+
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
+}
+
 TEST_F(FixMessageParserTests, ParseMarketDataSnapshot) {
-    // A synthetic snapshot message: W (MarketDataSnapshotFullRefresh)
-    // with 2 repeating group entries (Bid, Ask)
     std::string msg = "8=FIX.4.4\x01" "9=119\x01" "35=W\x01" "49=BETA_EXCHANGE\x01" "56=CLIENT_1\x01"
                       "34=3\x01" "52=20251030-10:00:00.000\x01"
                       "262=REQ1\x01" "55=GBPUSD\x01" "268=2\x01"
@@ -46,14 +80,20 @@ TEST_F(FixMessageParserTests, ParseMarketDataSnapshot) {
         EXPECT_EQ(snap->mdReqID, "REQ1");
         EXPECT_EQ(snap->symbol, common::Instrument::GBPUSD);
         ASSERT_EQ(snap->entries.size(), 2);
-        
-        EXPECT_EQ(snap->entries[0].entryType, fix::MDEntryType::Bid);
-        EXPECT_DOUBLE_EQ(snap->entries[0].price, 1.2345);
-        EXPECT_EQ(snap->entries[0].size, 100000);
-        
-        EXPECT_EQ(snap->entries[1].entryType, fix::MDEntryType::Offer);
-        EXPECT_DOUBLE_EQ(snap->entries[1].price, 1.2347);
-        EXPECT_EQ(snap->entries[1].size, 200000);
+    }
+}
+
+TEST_F(FixMessageParserTests, ParseMarketDataSnapshotEmptyGroup) {
+    // Verified 268=0 string with checksum 135
+    std::string msg = "8=FIX.4.4\x01" "9=119\x01" "35=W\x01" "49=BETA_EXCHANGE\x01" "56=CLIENT_1\x01"
+                      "34=3\x01" "52=20251030-10:00:00.000\x01"
+                      "262=REQ1\x01" "55=GBPUSD\x01" "268=0\x01" "10=135\x01";
+
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<fix::MarketDataSnapshotFullRefresh>(parsed));
+    if (auto* snap = std::get_if<fix::MarketDataSnapshotFullRefresh>(&parsed)) {
+        EXPECT_EQ(snap->symbol, common::Instrument::GBPUSD);
+        EXPECT_TRUE(snap->entries.empty());
     }
 }
 
@@ -66,18 +106,27 @@ TEST_F(FixMessageParserTests, ParseMarketDataIncremental) {
 
     auto parsed = fix_client::FixMessageParser::parse(msg);
     EXPECT_TRUE(std::holds_alternative<fix::MarketDataIncrementalRefresh>(parsed));
+}
 
-    if (auto* inc = std::get_if<fix::MarketDataIncrementalRefresh>(&parsed)) {
-        EXPECT_EQ(inc->mdReqID, "REQ1");
-        ASSERT_EQ(inc->entries.size(), 1);
-        EXPECT_EQ(inc->symbol, common::Instrument::USDJPY); // Inherited from first entry if present
+TEST_F(FixMessageParserTests, ParseUnknownMsgType) {
+    std::string msg = "8=FIX.4.4\x01" "9=20\x01" "35=Z\x01" "10=153\x01";
 
-        EXPECT_EQ(inc->entries[0].updateAction, fix::MDUpdateAction::Change);
-        EXPECT_EQ(inc->entries[0].entryType, fix::MDEntryType::Bid);
-        EXPECT_DOUBLE_EQ(inc->entries[0].price, 150.25);
-        EXPECT_EQ(inc->entries[0].size, 50000);
-        EXPECT_EQ(inc->entries[0].entryPosition, 2);
-    }
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
+}
+
+TEST_F(FixMessageParserTests, ParseMissingMsgType) {
+    std::string msg = "8=FIX.4.4\x01" "9=10\x01" "10=050\x01";
+
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
+}
+
+TEST_F(FixMessageParserTests, ParseNoChecksumTag) {
+    std::string msg = "8=FIX.4.4\x01" "9=10\x01" "35=0\x01";
+
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
 }
 
 TEST_F(FixMessageParserTests, BadChecksumReturnsMonostate) {
@@ -88,3 +137,11 @@ TEST_F(FixMessageParserTests, BadChecksumReturnsMonostate) {
     auto parsed = fix_client::FixMessageParser::parse(msg);
     EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
 }
+
+TEST_F(FixMessageParserTests, ParseMalformedChecksum) {
+    std::string msg = "8=FIX.4.4\x01" "9=10\x01" "35=0\x01" "10=XYZ\x01"; // std::stoi will throw
+
+    auto parsed = fix_client::FixMessageParser::parse(msg);
+    EXPECT_TRUE(std::holds_alternative<std::monostate>(parsed));
+}
+

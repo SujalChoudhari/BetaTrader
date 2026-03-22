@@ -7,6 +7,7 @@ add_executable(client_fix_tests
     src/SeqNumStoreTests.cpp
     src/FixMessageParserTests.cpp
     src/AuthManagerTests.cpp
+    src/FixClientSessionTests.cpp
 )
 
 target_include_directories(client_fix_tests PUBLIC

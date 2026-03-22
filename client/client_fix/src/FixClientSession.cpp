@@ -10,7 +10,8 @@ namespace fix_client {
 
     FixClientSession::FixClientSession(asio::io_context& ioContext, 
                                        const std::string& senderCompId,
-                                       const std::string& targetCompId)
+                                       const std::string& targetCompId,
+                                       const std::string& seqStoreDir)
         : mIoContext(ioContext),
           mSocket(ioContext),
           mResolver(ioContext),
@@ -18,7 +19,7 @@ namespace fix_client {
           mTestReqTimer(ioContext),
           mSenderCompId(senderCompId),
           mTargetCompId(targetCompId),
-          mSeqStore(senderCompId),
+          mSeqStore(senderCompId, seqStoreDir),
           mReadChunk(ChunkSize)
     {
     }

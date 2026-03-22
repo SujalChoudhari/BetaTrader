@@ -52,7 +52,8 @@ namespace fix_client {
          */
         FixClientSession(asio::io_context& ioContext, 
                          const std::string& senderCompId,
-                         const std::string& targetCompId);
+                         const std::string& targetCompId,
+                         const std::string& seqStoreDir = "seq_store");
 
         ~FixClientSession();
 
@@ -139,6 +140,8 @@ namespace fix_client {
         // Callbacks
         MessageCallback mMessageCb;
         StateChangeCallback mStateChangeCb;
+
+        friend class FixClientSessionTests;
     };
 
 } // namespace fix_client

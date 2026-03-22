@@ -24,28 +24,26 @@ protected:
     std::unique_ptr<fix_client::AuthManager> authManager;
 };
 
-TEST_F(AuthManagerTests, HandlesSuccessfulAuthResponse) {
+TEST_F(AuthManagerTests, FailsIfSessionNotActive) {
     bool callbackFired = false;
-    bool authSuccess = false;
     
-    // We mock Active state implicitly or just capture the callback.
-    // AuthManager checks Active state, but for a unit test, we might bypass sending (it warns) 
-    // or just simulate the incoming response.
-    // AuthManager only fails authenticate() actively if State != Active, but handleMessage() works statelessly.
+    // Default state is Disconnected
+    authManager->authenticate("user", "pass", [&](bool success, const std::string& msg) {
+        callbackFired = true;
+        EXPECT_FALSE(success);
+        EXPECT_EQ(msg, "Session not active");
+    });
     
-    // We emulate a successful authenticate request by calling it, then simulate the server's response.
-    // Since Session isn't active, authenticate() will log error and immediately callback with false.
-    // Let's test `handleMessage` directly first because `authenticate` checks socket state.
+    EXPECT_TRUE(callbackFired);
+}
 
+TEST_F(AuthManagerTests, HandlesSuccessfulAuthResponse) {
     // A raw 35=BF message where 926=1
-    std::string rawFix = "8=FIX.4.4\x01" "9=50\x01" "35=BF\x01" "923=REQ1\x01" "926=1\x01" "927=Welcome\x01" "10=111\x01";
+    std::string rawFix = "8=FIX.4.4\x01" "9=50\x01" "35=BF\x01" "923=UNKNOWN\x01" "926=1\x01" "927=Welcome\x01" "10=111\x01";
     
-    // AuthManager shouldn't process it correctly unless we requested it and REQ IDs match, but we can't easily 
-    // intercept the dynamic ID. Let's just verify it returns true meaning "I consumed this" or "This is a BF message".
     bool handled = authManager->handleMessage(std::monostate{}, rawFix);
     
-    // It will return false because the REQ ID does not match any pending requests, 
-    // which proves we successfully routed the message to AuthManager but it rejected the mismatch.
+    // It will return false because the REQ ID does not match any pending requests (which is "")
     EXPECT_FALSE(handled);
 }
 
@@ -55,3 +53,12 @@ TEST_F(AuthManagerTests, IgnoresNonAuthMessages) {
     bool handled = authManager->handleMessage(std::monostate{}, rawFix);
     EXPECT_FALSE(handled);
 }
+
+TEST_F(AuthManagerTests, HandlesFailedUserStatus) {
+    // 926=0 (Failed)
+    std::string rawFix = "8=FIX.4.4\x01" "9=50\x01" "35=BF\x01" "923=UNKNOWN\x01" "926=0\x01" "927=Denied\x01" "10=111\x01";
+    
+    bool handled = authManager->handleMessage(std::monostate{}, rawFix);
+    EXPECT_FALSE(handled);
+}
+

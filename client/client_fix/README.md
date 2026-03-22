@@ -1,6 +1,6 @@
 # Client | FIX Protocol Engine
 
-The `client_fix` module is the backbone of the BetaTrader client suite. It provides a robust, asynchronous implementation of the FIX protocol, ensuring reliable session management and high-performance message handling.
+The `client_fix` module provides the core connectivity, message parsing, and session management required for the BetaTrader client to interact with the FIX matching engine. It handles asynchronous networking, authenticates users, normalizes sequence numbers, and exposes structured domain objects to the rest of the application.
 
 ## Architecture
 
@@ -9,54 +9,64 @@ classDiagram
     class FixClientSession {
         +connect(host, port)
         +logon()
+        +logout()
         +send(message)
-        -onMessage(message)
-        -m_seqNumStore: SeqNumStore
+        +setSessionCallback()
+        -handleRead()
+        -handleHeartbeatTimeout()
+        -handleTestRequestTimeout()
+        -mAuthManager: std::shared_ptr~AuthManager~
+        -mSeqStore: SeqNumStore
     }
+    
     class SeqNumStore {
-        +getNextSenderSeqNum()
-        +getNextTargetSeqNum()
-        +incrementSender()
-        +incrementTarget()
-        +persist()
+        +getInSeq() : SequenceNumber
+        +getOutSeq() : SequenceNumber
+        +setInSeq(seq)
+        +setOutSeq(seq)
+        +incrementInSeq()
+        +incrementOutSeq()
+        -persist()
     }
+    
     class AuthManager {
         +authenticate(username, password)
-        -m_session: FixClientSession
+        +handleUserResponse(status, text)
+        +setAuthCallback()
     }
+    
     class FixMessageParser {
-        +parse(buffer): FixMessage
+        +parse(fixMessage) : ParsedFixMessage
     }
-    FixClientSession *--> SeqNumStore
-    FixClientSession o--> FixMessageParser
-    AuthManager --> FixClientSession : Uses 35=BE/BF
+    
+    FixClientSession *--> SeqNumStore : Composition
+    FixClientSession --> AuthManager : Shared
+    FixClientSession ..> FixMessageParser : Uses
 ```
 
 ## Key Components
 
 ### 1. `FixClientSession`
-The central state machine managing the TCP connection and FIX session lifecycle.
--   **Asynchronous I/O**: Leverages Boost.ASIO for non-blocking network operations.
--   **State Management**: Handles transitions between `Disconnected`, `Connecting`, `LogonSent`, `Synchronizing`, and `Active`.
--   **Heartbeat Logic**: Automatic generation of `Heartbeat (35=0)` messages and monitoring of peer heartbeats.
+The central state machine managing the asynchronous TCP connection and FIX session lifecycle using Boost.Asio.
+-   **Session State**: Actively manages transitions connecting, authenticating (Logon 35=A), synchronizing sequence numbers, and maintaining an active session.
+-   **Keep-Alive**: Periodically sends `Heartbeat (35=0)` messages. If peer is unresponsive, sends `TestRequest (35=1)` and eventually disconnects if no response is received.
+-   **Sequence Management**: Automatically detects server sequence gaps and processes `SequenceReset (35=4)` and `ResendRequest (35=2)`. Client explicitly relies on `SequenceReset-GapFill` behavior when caching outbound messages is not required.
 
 ### 2. `SeqNumStore`
-A persistence layer for tracking sequence numbers (`34=MsgSeqNum`) across application restarts.
--   **Storage**: Persists to a local flat file or SQLite table.
--   **Recovery**: Automatically restores sequence numbers on startup to prevent session resets or `ResendRequest` (35=2) loops.
+A persistence layer ensuring message continuity across client restarts and dropped connections.
+-   **Storage**: Writes strictly to isolated `.seq` flat files based on Target and Sender IDs or configurable directory paths (beneficial for test isolation).
+-   **Synchronization**: Automatically updates inward/outward sequences when reading/writing valid FIX messages.
 
 ### 3. `AuthManager`
-Implements the security handshake using FIX 4.4 standards.
--   **Standard Implementation**: Uses `UserRequest (35=BE)` with `UserRequestType=1` (Logon) and `Username`/`Password` fields.
--   **Callback-driven**: Notifies the application of authentication success or failure via `UserResponse (35=BF)`.
+Handles user identification securely over the FIX connection.
+-   **Security**: Initiates the handshake by queueing a `UserRequest (35=BE)` with the credentials. 
+-   **Flow**: Validates `UserResponse (35=BF)` messages to finalize the login handshake successfully, or triggers failure alerts via callbacks.
 
 ### 4. `FixMessageParser`
-A high-performance parser designed for low-latency environments.
--   **Zero-Copy Design**: Extracts tag-value pairs using `std::string_view` into a flat map or specialized struct, minimizing heap allocations.
--   **Validation**: Basic checksum and structure verification before passing messages to the session logic.
+A high-performance tag-value dictionary extractor and domain object builder.
+-   **Validation**: Strictly enforces standard message structures, SOH delimiter checking, missing mandatory tags, and exact matching of calculated versus expected checksums (10=).
+-   **Strict Typing**: Converts parsed structures containing strings/string_views directly into typed domain classes (e.g., `ExecutionReport`, `MarketDataSnapshotFullRefresh` via `std::variant`), abstracting protocol intricacies away from business logic.
 
-## Design Decisions
-
--   **Thread Safety**: The engine is designed to run on a dedicated ASIO `io_context` thread. All outbound message sends from the UI thread are posted to this context to avoid locking.
--   **Resilience**: Implements a configurable exponential backoff strategy for reconnection attempts.
--   **FIX 4.4 Focus**: Although the core matching engine is minimal, the client uses FIX 4.4 semantics for authentication to ensure forward compatibility with modern trading standards.
+## Usage and Extensions
+-   **Threading**: Run the `FixClientSession` event loop from a dedicated worker thread `io_context.run()` to perform non-blocking I/O.
+-   **Testing**: Test cases implement 100% path coverage for the entire module by utilizing friend class overrides and custom sequence directories (`session_test_store/`).

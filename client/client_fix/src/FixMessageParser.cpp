@@ -142,7 +142,8 @@ namespace fix_client {
 
             fix::MarketDataSnapshotFullRefresh msg;
             msg.mdReqID = getStr(fix::Tag::MDReqID);
-            msg.symbol = common::from_string(getStr(fix::Tag::Symbol));
+            std::string sym = getStr(fix::Tag::Symbol);
+            msg.symbol = common::from_string(sym);
             msg.targetSessionID = 0; // Not explicitly serialized in FIX, tracked internally
 
             std::string noMdEntriesStr = getStr(fix::Tag::NoMDEntries);
