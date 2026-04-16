@@ -79,4 +79,16 @@ namespace data::query {
               "ON CONFLICT(compId) DO UPDATE SET "
               "inSeqNum=excluded.inSeqNum, "
               "outSeqNum=excluded.outSeqNum;";
+
+    // Candle Table
+    constexpr auto createCandleTableQuery
+            = "CREATE TABLE IF NOT EXISTS candles (symbol TEXT, interval INTEGER, "
+              "timestamp INTEGER, open REAL, high REAL, low REAL, close REAL, volume INTEGER, "
+              "PRIMARY KEY(symbol, interval, timestamp));";
+    constexpr auto insertCandleQuery
+            = "INSERT OR REPLACE INTO candles (symbol, interval, timestamp, open, high, "
+              "low, close, volume) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    constexpr auto loadHistoryQuery
+            = "SELECT symbol, interval, timestamp, open, high, low, close, volume "
+              "FROM candles WHERE symbol = ? AND interval = ? ORDER BY timestamp DESC LIMIT ?;";
 } // namespace data::query
