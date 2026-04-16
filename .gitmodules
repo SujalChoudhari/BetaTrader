@@ -14,3 +14,13 @@
 [submodule "vendor/lib/asio"]
 	path = vendor/lib/asio
 	url = https://github.com/chriskohlhoff/asio
+[submodule "vendor/lib/imgui"]
+	path = vendor/lib/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "vendor/lib/implot"]
+	path = vendor/lib/implot
+	url = https://github.com/epezent/implot.git
+[submodule "vendor/lib/glfw"]
+	path = vendor/lib/glfw
+	url = https://github.com/glfw/glfw.git
