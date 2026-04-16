@@ -38,6 +38,8 @@ namespace fix {
         FixSessionManager& getManager() { return mSessionManager; }
 
         const std::map<uint32_t, std::shared_ptr<FixSession>>& getSessions() const { return mSessions; }
+        
+        trading_core::TradingCore& getTradingCore() { return mTradingCore; }
 
 
     private:

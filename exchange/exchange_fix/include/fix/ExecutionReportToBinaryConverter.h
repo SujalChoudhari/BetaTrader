@@ -19,7 +19,7 @@ namespace fix {
          * @param executionReport The report object to serialize.
          * @return A string containing the complete, valid FIX message.
          */
-        static std::string convert(const ExecutionReport& executionReport); // Changed return type
+        static std::string convert(const ExecutionReport& executionReport, uint32_t msgSeqNum); 
     };
 
 } // namespace fix

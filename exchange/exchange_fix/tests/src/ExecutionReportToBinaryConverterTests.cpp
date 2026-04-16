@@ -39,7 +39,7 @@ TEST(ExecutionReportToBinaryConverterTests, BasicConversion)
             std::chrono::system_clock::now()
     );
 
-    std::string message = fix::ExecutionReportToBinaryConverter::convert(report); // Changed to std::string
+    std::string message = fix::ExecutionReportToBinaryConverter::convert(report, 1); // Changed to std::string
 
     // Basic assertions
     ASSERT_NE(message.find("35=8"), std::string::npos); // MsgType = ExecutionReport
@@ -63,7 +63,7 @@ TEST(ExecutionReportToBinaryConverterTests, AllStatuses)
 
     for (int i = 0; i < 4; ++i) {
         fix::ExecutionReport report(1, 2, 3, 4, 5, "E", statuses[i], "", common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0, 0, std::chrono::system_clock::now());
-        std::string msg = fix::ExecutionReportToBinaryConverter::convert(report);
+        std::string msg = fix::ExecutionReportToBinaryConverter::convert(report, 1);
         EXPECT_EQ(get_tag_value(msg, 39), expected[i]);
     }
 }
@@ -71,19 +71,19 @@ TEST(ExecutionReportToBinaryConverterTests, AllStatuses)
 TEST(ExecutionReportToBinaryConverterTests, EmptyText)
 {
     fix::ExecutionReport report(1, 2, 3, 4, 5, "E", common::OrderStatus::New, "", common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0, 0, std::chrono::system_clock::now());
-    std::string msg = fix::ExecutionReportToBinaryConverter::convert(report);
+    std::string msg = fix::ExecutionReportToBinaryConverter::convert(report, 1);
     EXPECT_EQ(get_tag_value(msg, 58), ""); // Tag 58 (Text) should be missing
 }
 
 TEST(ExecutionReportToBinaryConverterTests, InvalidStatusThrows)
 {
     fix::ExecutionReport report(1, 2, 3, 4, 5, "E", static_cast<common::OrderStatus>(99), "", common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0, 0, std::chrono::system_clock::now());
-    EXPECT_THROW(fix::ExecutionReportToBinaryConverter::convert(report), std::invalid_argument);
+    EXPECT_THROW(fix::ExecutionReportToBinaryConverter::convert(report, 1), std::invalid_argument);
 }
 
 TEST(ExecutionReportToBinaryConverterTests, InvalidSideThrows)
 {
     fix::ExecutionReport report(1, 2, 3, 4, 5, "E", common::OrderStatus::New, "", common::Instrument::USDINR, static_cast<common::OrderSide>(99), 100, 0, 100, 0, 0, std::chrono::system_clock::now());
-    EXPECT_THROW(fix::ExecutionReportToBinaryConverter::convert(report), std::invalid_argument);
+    EXPECT_THROW(fix::ExecutionReportToBinaryConverter::convert(report, 1), std::invalid_argument);
 }
 

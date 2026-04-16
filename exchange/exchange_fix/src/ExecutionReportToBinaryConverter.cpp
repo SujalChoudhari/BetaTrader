@@ -43,7 +43,7 @@ namespace fix {
         }
     }
 
-    std::string ExecutionReportToBinaryConverter::convert(const ExecutionReport& report)
+    std::string ExecutionReportToBinaryConverter::convert(const ExecutionReport& report, uint32_t msgSeqNum)
     {
         LOG_INFO("Starting conversion for ExecutionReport, OrderID: {}", report.getExchangeOrderId());
 
@@ -60,7 +60,7 @@ namespace fix {
         bodyStream << static_cast<int>(Tag::OrderQty) << "=" << report.getOrderQuantity() << SOH;
         bodyStream << static_cast<int>(Tag::CumQty) << "=" << report.getCumulativeQuantity() << SOH;
         bodyStream << static_cast<int>(Tag::LeavesQty) << "=" << report.getLeavesQuantity() << SOH;
-        bodyStream << static_cast<int>(Tag::LastPx) << "=" << std::fixed << std::setprecision(5) << report.getLastPrice() << SOH;
+        bodyStream << static_cast<int>(Tag::LastPx) << "=" << std::fixed << std::setprecision(4) << report.getLastPrice() << SOH;
         bodyStream << static_cast<int>(Tag::LastQty) << "=" << report.getLastQuantity() << SOH;
         bodyStream << static_cast<int>(Tag::TransactTime) << "=" << timestampToString(report.getTransactionTime()) << SOH;
         
@@ -71,7 +71,7 @@ namespace fix {
         headerStream << static_cast<int>(Tag::MsgType) << "=" << MSG_TYPE_EXECUTION_REPORT << SOH;
         headerStream << static_cast<int>(Tag::SenderCompID) << "=" << report.getSenderCompId() << SOH;
         headerStream << static_cast<int>(Tag::TargetCompID) << "=" << report.getTargetCompId() << SOH;
-        headerStream << static_cast<int>(Tag::MsgSeqNum) << "=" << report.getMessageSequenceNumber() << SOH;
+        headerStream << static_cast<int>(Tag::MsgSeqNum) << "=" << msgSeqNum << SOH;
         headerStream << static_cast<int>(Tag::SendingTime) << "=" << timestampToString(std::chrono::system_clock::now()) << SOH;
 
         std::string headerString = headerStream.str();

@@ -10,7 +10,7 @@
 namespace fix
 {
 
-std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketDataIncrementalRefresh& refresh)
+std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketDataIncrementalRefresh& refresh, uint32_t msgSeqNum)
 {
     LOG_INFO("Starting conversion for MarketDataIncrementalRefresh, MDReqID: {}", refresh.mdReqID);
 
@@ -28,7 +28,7 @@ std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketD
         bodyStream << static_cast<int>(fix::Tag::MDUpdateAction) << "=" << static_cast<char>(entry.updateAction) << fix::SOH;
         bodyStream << static_cast<int>(fix::Tag::MDEntryType) << "=" << static_cast<char>(entry.entryType) << fix::SOH;
         bodyStream << static_cast<int>(fix::Tag::Symbol) << "=" << common::to_string(refresh.symbol) << fix::SOH;
-        bodyStream << static_cast<int>(fix::Tag::MDEntryPx) << "=" << std::fixed << std::setprecision(5) << entry.price << fix::SOH;
+        bodyStream << static_cast<int>(fix::Tag::MDEntryPx) << "=" << std::fixed << std::setprecision(4) << entry.price << fix::SOH;
         bodyStream << static_cast<int>(fix::Tag::MDEntrySize) << "=" << entry.size << fix::SOH;
         
         auto now = std::chrono::system_clock::now();
@@ -51,7 +51,7 @@ std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketD
     headerStream << static_cast<int>(fix::Tag::MsgType) << "=" << fix::MSG_TYPE_MARKET_DATA_INCREMENTAL_REFRESH << fix::SOH;
     headerStream << static_cast<int>(fix::Tag::SenderCompID) << "=" << "TRADING_CORE" << fix::SOH;
     headerStream << static_cast<int>(fix::Tag::TargetCompID) << "=" << refresh.targetSessionID << fix::SOH;
-    headerStream << static_cast<int>(fix::Tag::MsgSeqNum) << "=" << "0" << fix::SOH;
+    headerStream << static_cast<int>(fix::Tag::MsgSeqNum) << "=" << msgSeqNum << fix::SOH;
     
     auto now = std::chrono::system_clock::now();
     auto time_t_now = std::chrono::system_clock::to_time_t(now);

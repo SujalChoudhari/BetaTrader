@@ -10,7 +10,7 @@
 namespace fix
 {
 
-std::string MarketDataSnapshotFullRefreshToBinaryConverter::convert(const MarketDataSnapshotFullRefresh& snapshot)
+std::string MarketDataSnapshotFullRefreshToBinaryConverter::convert(const MarketDataSnapshotFullRefresh& snapshot, uint32_t msgSeqNum)
 {
     LOG_INFO("Starting conversion for MarketDataSnapshotFullRefresh, MDReqID: {}", snapshot.mdReqID);
 
@@ -29,7 +29,7 @@ std::string MarketDataSnapshotFullRefreshToBinaryConverter::convert(const Market
     for (const auto& entry : snapshot.entries)
     {
         bodyStream << static_cast<int>(fix::Tag::MDEntryType) << "=" << static_cast<char>(entry.entryType) << fix::SOH;
-        bodyStream << static_cast<int>(fix::Tag::MDEntryPx) << "=" << std::fixed << std::setprecision(5) << entry.price << fix::SOH;
+        bodyStream << static_cast<int>(fix::Tag::MDEntryPx) << "=" << std::fixed << std::setprecision(4) << entry.price << fix::SOH;
         bodyStream << static_cast<int>(fix::Tag::MDEntrySize) << "=" << entry.size << fix::SOH;
         if (entry.entryPosition > 0) {
             bodyStream << static_cast<int>(fix::Tag::MDEntryPositionNo) << "=" << entry.entryPosition << fix::SOH;
@@ -44,7 +44,7 @@ std::string MarketDataSnapshotFullRefreshToBinaryConverter::convert(const Market
     headerStream << static_cast<int>(fix::Tag::MsgType) << "=" << fix::MSG_TYPE_MARKET_DATA_SNAPSHOT_FULL_REFRESH << fix::SOH;
     headerStream << static_cast<int>(fix::Tag::SenderCompID) << "=" << "TRADING_CORE" << fix::SOH;
     headerStream << static_cast<int>(fix::Tag::TargetCompID) << "=" << snapshot.targetSessionID << fix::SOH;
-    headerStream << static_cast<int>(fix::Tag::MsgSeqNum) << "=" << "0" << fix::SOH;
+    headerStream << static_cast<int>(fix::Tag::MsgSeqNum) << "=" << msgSeqNum << fix::SOH;
 
     auto now = std::chrono::system_clock::now();
     auto time_t_now = std::chrono::system_clock::to_time_t(now);

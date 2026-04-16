@@ -62,6 +62,7 @@ namespace fix {
     void FixServer::onExecutionReport(const ExecutionReport& report)
     {
         uint32_t sessionId = report.getTargetCompId();
+        if (sessionId == 0) return; // Simulator or internal
         if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
             it->second->sendExecutionReport(report);
         } else {
@@ -73,6 +74,7 @@ namespace fix {
     void FixServer::onMarketDataSnapshotFullRefresh(const MarketDataSnapshotFullRefresh& snapshot)
     {
         uint32_t sessionId = snapshot.targetSessionID;
+        if (sessionId == 0) return;
         if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
             it->second->sendMarketDataSnapshotFullRefresh(snapshot);
         } else {
@@ -84,6 +86,7 @@ namespace fix {
     void FixServer::onMarketDataIncrementalRefresh(const MarketDataIncrementalRefresh& refresh)
     {
         uint32_t sessionId = refresh.targetSessionID;
+        if (sessionId == 0) return;
         if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
             it->second->sendMarketDataIncrementalRefresh(refresh);
         } else {

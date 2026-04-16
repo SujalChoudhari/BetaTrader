@@ -29,7 +29,7 @@ public:
      * @param snapshot The `MarketDataSnapshotFullRefresh` object to serialize.
      * @return A string containing the complete, valid FIX message.
      */
-    static std::string convert(const MarketDataSnapshotFullRefresh& snapshot);
+    static std::string convert(const MarketDataSnapshotFullRefresh& snapshot, uint32_t msgSeqNum);
 };
 
 } // namespace fix
