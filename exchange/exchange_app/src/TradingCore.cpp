@@ -26,8 +26,13 @@ namespace trading_core {
         mOrderIDGenerator = std::make_unique<OrderIDGenerator>(mDatabaseWorker);
         initPartitions();
         ExecutionPublisher::SetCallback([this](const fix::ExecutionReport& report) {
-            if (this->mExecutionReportCallback) {
-                this->mExecutionReportCallback(report);
+            ExecutionReportCallback cb;
+            {
+                std::lock_guard<std::mutex> lock(this->mExecutionCallbackMutex);
+                cb = this->mExecutionReportCallback;
+            }
+            if (cb) {
+                cb(report);
             }
         });
         g_instance = this;
@@ -47,8 +52,13 @@ namespace trading_core {
         }
         if (autoInitPartitions) { initPartitions(); }
         ExecutionPublisher::SetCallback([this](const fix::ExecutionReport& report) {
-            if (this->mExecutionReportCallback) {
-                this->mExecutionReportCallback(report);
+            ExecutionReportCallback cb;
+            {
+                std::lock_guard<std::mutex> lock(this->mExecutionCallbackMutex);
+                cb = this->mExecutionReportCallback;
+            }
+            if (cb) {
+                cb(report);
             }
         });
         g_instance = this;
@@ -69,8 +79,13 @@ namespace trading_core {
     {
         if (autoInitPartitions) { initPartitions(); }
         ExecutionPublisher::SetCallback([this](const fix::ExecutionReport& report) {
-            if (this->mExecutionReportCallback) {
-                this->mExecutionReportCallback(report);
+            ExecutionReportCallback cb;
+            {
+                std::lock_guard<std::mutex> lock(this->mExecutionCallbackMutex);
+                cb = this->mExecutionReportCallback;
+            }
+            if (cb) {
+                cb(report);
             }
         });
         g_instance = this;
@@ -203,7 +218,8 @@ namespace trading_core {
 
     void TradingCore::subscribeToExecutions(ExecutionReportCallback callback)
     {
-        mExecutionReportCallback = callback;
+        std::lock_guard<std::mutex> lock(mExecutionCallbackMutex);
+        mExecutionReportCallback = std::move(callback);
     }
 
     void TradingCore::subscribeToMarketData(common::Symbol symbol,
