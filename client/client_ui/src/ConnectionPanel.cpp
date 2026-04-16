@@ -1,16 +1,16 @@
-#include "fix_client/ConnectionPanel.h"
+#include "client_ui/ConnectionPanel.h"
 #include <imgui.h>
 #include <chrono>
 #include <iomanip>
 #include <sstream>
 
-namespace fix_client {
+namespace client_ui {
 
 ConnectionPanel::ConnectionPanel() {}
 
 ConnectionPanel::~ConnectionPanel() {}
 
-void ConnectionPanel::render(std::shared_ptr<FixClientSession>& session, asio::io_context& ioContext) {
+void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& session, asio::io_context& ioContext) {
     ImGui::Begin("FIX Connection Control");
 
     // --- Connection Settings ---
@@ -27,14 +27,14 @@ void ConnectionPanel::render(std::shared_ptr<FixClientSession>& session, asio::i
     ImGui::Spacing();
 
     // --- Lifecycle Buttons ---
-    bool isDisconnected = !session || session->getState() == FixClientState::Disconnected;
-    bool isConnected = session && session->getState() == FixClientState::Connected;
-    bool isActive = session && session->getState() == FixClientState::Active;
+    bool isDisconnected = !session || session->getState() == fix_client::FixClientState::Disconnected;
+    bool isConnected = session && session->getState() == fix_client::FixClientState::Connected;
+    bool isActive = session && session->getState() == fix_client::FixClientState::Active;
 
     if (isDisconnected) {
         if (ImGui::Button("Connect", ImVec2(-1, 0))) {
             // Always create a fresh session; old sockets can't be reused
-            session = std::make_shared<FixClientSession>(ioContext, mSenderCompId, mTargetCompId);
+            session = std::make_shared<fix_client::FixClientSession>(ioContext, mSenderCompId, mTargetCompId);
             session->connect(mHost, static_cast<short>(mPort));
         }
 
@@ -71,17 +71,17 @@ void ConnectionPanel::render(std::shared_ptr<FixClientSession>& session, asio::i
     ImGui::Separator();
 
     // --- Status Indicator ---
-    FixClientState state = isDisconnected ? FixClientState::Disconnected : session->getState();
+    fix_client::FixClientState state = isDisconnected ? fix_client::FixClientState::Disconnected : session->getState();
     ImVec4 statusColor;
     std::string stateStr;
 
     switch (state) {
-        case FixClientState::Disconnected: statusColor = ImVec4(1, 0, 0, 1); stateStr = "DISCONNECTED"; break;
-        case FixClientState::Connecting:   statusColor = ImVec4(1, 1, 0, 1); stateStr = "CONNECTING"; break;
-        case FixClientState::Connected:    statusColor = ImVec4(0, 1, 1, 1); stateStr = "CONNECTED (TCP UP)"; break;
-        case FixClientState::LogonSent:    statusColor = ImVec4(1, 0.5f, 0, 1); stateStr = "LOGON SENT"; break;
-        case FixClientState::Active:       statusColor = ImVec4(0, 1, 0, 1); stateStr = "ACTIVE (LOGGED IN)"; break;
-        case FixClientState::LoggingOut:   statusColor = ImVec4(1, 0.5f, 0, 1); stateStr = "LOGGING OUT"; break;
+        case fix_client::FixClientState::Disconnected: statusColor = ImVec4(1, 0, 0, 1); stateStr = "DISCONNECTED"; break;
+        case fix_client::FixClientState::Connecting:   statusColor = ImVec4(1, 1, 0, 1); stateStr = "CONNECTING"; break;
+        case fix_client::FixClientState::Connected:    statusColor = ImVec4(0, 1, 1, 1); stateStr = "CONNECTED (TCP UP)"; break;
+        case fix_client::FixClientState::LogonSent:    statusColor = ImVec4(1, 0.5f, 0, 1); stateStr = "LOGON SENT"; break;
+        case fix_client::FixClientState::Active:       statusColor = ImVec4(0, 1, 0, 1); stateStr = "ACTIVE (LOGGED IN)"; break;
+        case fix_client::FixClientState::LoggingOut:   statusColor = ImVec4(1, 0.5f, 0, 1); stateStr = "LOGGING OUT"; break;
     }
 
     ImGui::Text("Session State: ");
@@ -126,4 +126,4 @@ void ConnectionPanel::addLog(const std::string& direction, const std::string& ms
     if (mLogs.size() > 500) mLogs.erase(mLogs.begin());
 }
 
-} // namespace fix_client
+} // namespace client_ui

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "client_ui/UIManager.h"
-#include "fix_client/ConnectionPanel.h"
+#include "client_ui/ConnectionPanel.h"
 #include "admin/ExchangeManager.h"
 #include "admin/ExchangePanel.h"
 #include <asio.hpp>
@@ -27,7 +27,7 @@ public:
 
 private:
     client_ui::UIManager mUI;
-    fix_client::ConnectionPanel mConnPanel;
+    client_ui::ConnectionPanel mConnPanel;
     
     admin::ExchangeManager mExchMgr;
     admin::ExchangePanel mExchPanel;

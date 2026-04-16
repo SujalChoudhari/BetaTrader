@@ -6,11 +6,14 @@
 #include <vector>
 #include <string>
 
-namespace fix_client {
+namespace client_ui {
 
 /**
  * @class ConnectionPanel
  * @brief Provides a Dear ImGui interface for managing the FIX connection.
+ *
+ * This panel lives in client_ui (not client_fix) to keep the protocol
+ * library free of GUI dependencies.
  */
 class ConnectionPanel {
 public:
@@ -22,7 +25,7 @@ public:
      * @param session Shared pointer to the FIX session.
      * @param ioContext Reference to the ASIO io_context (for starting connections).
      */
-    void render(std::shared_ptr<FixClientSession>& session, asio::io_context& ioContext);
+    void render(std::shared_ptr<fix_client::FixClientSession>& session, asio::io_context& ioContext);
 
 private:
     char mHost[128] = "127.0.0.1";
@@ -43,4 +46,4 @@ private:
     void addLog(const std::string& direction, const std::string& msg);
 };
 
-} // namespace fix_client
+} // namespace client_ui
