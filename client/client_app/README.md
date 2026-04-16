@@ -1,18 +1,18 @@
 # Client | App Orchestrator
 
-The `client_app` is the central executable and UI layer for the BetaTrader client suite. Unlike a monolithic GUI, `client_app` contains virtually no business logic. Instead, it acts purely as an ImGui-based visualizer that mounts and displays the state of independently compiled, rigorously tested micro-modules.
+The `client_app` is the central executable for the BetaTrader client suite. It acts as the composition root: owning the ASIO networking context, instantiating UI and exchange modules, and driving the 60 FPS ImGui render loop.
 
 ## Overview
 
-This application bridges the gap between raw trading data (maintained by pure C++ micro-modules) and a human-readable interface. It orchestrates the lifecycle of all network connections, handles user inputs (like clicks and text entry), and drives a 60 FPS rendering loop.
+This application bridges the gap between raw trading data (maintained by pure C++ micro-modules) and a human-readable interface. It coordinates the lifecycle of the embedded local exchange, the FIX client session, and the Dear ImGui rendering context.
 
 ## Key Responsibilities
 
-*   Initialize the OpenGL3 and SDL2 contexts.
-*   Instantiate and own the core trading micro-modules (e.g., `OrderbookModel`, `FixClientSession`).
-*   Map the underlying lock-free data structures directly to Dear ImGui rendering calls.
-*   Route UI interactions (button clicks) down into network command queues.
-*   Manage dockspace layouts and UI theming.
+*   Initialize the GLFW/OpenGL3 window and ImGui context (via `client_ui::UIManager`).
+*   Own the `asio::io_context` and run it on a dedicated network thread.
+*   Instantiate and wire the `ExchangeManager` (local exchange), `ConnectionPanel` (FIX session UI), and `ExchangePanel` (exchange monitor).
+*   Drive the main render loop until window close.
+*   Handle graceful shutdown (stop io_context → join network thread → destroy UI).
 
 ## Architecture
 
@@ -23,75 +23,73 @@ graph TD
     classDef logic fill:#0b0c10,stroke:#c5c6c7,stroke-width:2px,color:white;
 
     subgraph "client_app Process"
-        MAIN(Main Thread - 60FPS Render Loop)
-        UI[ImGui Context]:::ui
+        MAIN(Main Thread<br/>ImGui Render Loop):::ui
+        UI[UIManager + Dockspace]:::ui
         
-        subgraph "Owned State Modules"
-            OB[client_orderbook]:::logic
-            BLOT[client_blotter]:::logic
-            AUTH[client_auth]:::logic
+        subgraph "Panels"
+            CONN[ConnectionPanel]:::ui
+            EXCH[ExchangePanel]:::ui
         end
         
-        subgraph "Background Threads"
-            FIX(client_fix: ASIO Thread):::net
-            HTTP(client_http: Async Thread):::net
+        subgraph "Network Thread"
+            IO_CTX(asio::io_context):::net
+        end
+        
+        subgraph "Embedded Exchange"
+            ADMIN[ExchangeManager]:::logic
+            CORE[TradingCore]:::logic
+            FIX_SRV[FixServer]:::net
         end
     end
 
     MAIN --> UI
-    UI -.->|Reads state| OB
-    UI -.->|Reads state| BLOT
-    UI -->|Triggers| AUTH
-    
-    OB -.->|Updated by| FIX
-    BLOT -.->|Updated by| FIX
-    AUTH -.->|Uses| HTTP
+    UI --> CONN
+    UI --> EXCH
+    CONN -->|Manages| FIX_SESSION[FixClientSession]
+    FIX_SESSION -.->|Runs on| IO_CTX
+    EXCH -->|Controls| ADMIN
+    ADMIN -->|Owns| CORE
+    ADMIN -->|Owns| FIX_SRV
+    FIX_SRV -.->|Runs on| IO_CTX
 ```
 
 ## Class Diagram
 
 ```mermaid
 classDiagram
-    class Application {
-        +run()
-        -initUIContext()
-        -renderDockspace()
-        -pollEvents()
-        -m_window: SDL_Window*
-        -m_context: ImGuiContext*
+    class App {
+        +App()
+        +~App()
+        +run() : int
+        -mUI: UIManager
+        -mConnPanel: ConnectionPanel
+        -mExchMgr: ExchangeManager
+        -mExchPanel: ExchangePanel
+        -mIoCtx: asio::io_context
+        -mWork: executor_work_guard
+        -mNetworkThread: std::thread
+        -mFixSession: shared_ptr~FixClientSession~
     }
 
-    class ModuleOrchestrator {
-        +initModules()
-        +getFixSession() : FixClientSession&
-        +getOrderbook() : OrderbookModel&
-        +getBlotter() : BlotterModel&
-        -m_fixSession: FixClientSession
-        -m_orderbook: OrderbookModel
-        -m_blotter: BlotterModel
-    }
-
-    class UserInterface {
-        +renderLoginWindow(AuthCoordinator&)
-        +renderOrderbookWindow(OrderbookModel&)
-        +renderBlotterWindow(BlotterModel&)
-        +renderTradeTicket(FixClientSession&)
-    }
-
-    Application *--> ModuleOrchestrator : Owns
-    Application *--> UserInterface : Owns
-    UserInterface o--> ModuleOrchestrator : Reads From
+    App *--> UIManager : Owns
+    App *--> ConnectionPanel : Owns
+    App *--> ExchangeManager : Owns
+    App *--> ExchangePanel : Owns
 ```
 
 ## Component Responsibilities
 
 | Component | Description |
 | :--- | :--- |
-| **`Application`** | The main execution wrapper. Handles OS-level windowing, input polling, and the master `while(running)` loop. |
-| **`ModuleOrchestrator`** | The dependency injection container. Instantiates the FIX session, HTTP wrapper, and underlying data models, wiring their callbacks together. |
-| **`UserInterface`** | Contains all the internal ImGui layout code. Broken down internally into separate functions per dockable window panel. |
+| **`App`** | The composition root. Constructs all modules, starts the network thread in the constructor, and enters the render loop in `run()`. |
+| **`UIManager`** | Manages GLFW window and ImGui context lifecycle (from `client_ui`). |
+| **`ConnectionPanel`** | ImGui panel for FIX session management — connect, logon, logout, message log (from `client_ui`). |
+| **`ExchangeManager`** | Manages the lifecycle of an embedded local TradingCore + FixServer (from `client_admin`). |
+| **`ExchangePanel`** | ImGui panel for monitoring and controlling the local exchange (from `client_admin`). |
 
 ## Critical Design Conventions
 
--   **Zero Business Logic in UI**: The `UserInterface` class must not calculate PnL, validate orders, or parse network strings. It solely loops over arrays and renders text/rectangles.
--   **Lock-Free Reading**: The renderer reads from state modules (`client_orderbook`) that use atomic snapshots or SPSC queues to avoid halting the background FIX network threads.
+-   **Composition Root**: `App` is the only class that wires dependencies together. Panels receive references, not owned pointers.
+-   **Two-Thread Model**: The main thread runs the ImGui render loop; a dedicated background thread runs `io_context::run()` for all async networking.
+-   **Work Guard**: `asio::make_work_guard` keeps the network thread alive even when no async operations are pending.
+-   **Shutdown Order**: Stop work guard → stop io_context → join network thread → destroy UI context.

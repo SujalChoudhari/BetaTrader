@@ -54,16 +54,17 @@ graph TD
 
 -   **`FixServer`**: Top-level server class that owns the Asio acceptor and session map.
 -   **`FixSession`**: Represents a single connected client, managing the async read/write loop.
--   **`FixSessionManager`**: Manages session state (Logon, sequence numbers) and authentication.
+-   **`FixSessionManager`**: Thread-safe manager of session state, keyed by `SenderCompID` (not connection ID). Maintains a two-map indirection (`connectionId → compId → SessionState`) so that sequence numbers persist across client reconnections. All public methods are mutex-protected for safe cross-thread access.
 -   **`OutboundMessageBuilder`**: Centralized utility for constructing binary FIX strings including Checksum and BodyLength.
 -   **`FixUtils`**: Shared parsing and formatting helpers.
 
 ## Session Lifecycle
 
 1.  **Connection**: TCP connection is accepted and a `FixSession` is created.
-2.  **Logon (35=A)**: `FixSessionManager` authenticates the `SenderCompID`.
-3.  **Authentication & Recovery**: Queries `SequenceRepository` to recover last known sequence numbers for seamless resumption.
-4.  **Sequencing**: Every subsequent message must have a valid `MsgSeqNum` (34). Gaps trigger a `ResendRequest`.
+2.  **Logon (35=A)**: `FixSessionManager` authenticates the `SenderCompID` against the database and links the connection ID to the CompID.
+3.  **Authentication & Recovery**: Retrieves or initializes persistent sequence numbers for the CompID via `SequenceRepository`. Existing state survives across reconnections.
+4.  **Sequencing**: Every subsequent message must have a valid `MsgSeqNum` (34). Gaps trigger a `ResendRequest`. Outbound sequences are incremented and persisted atomically via `useNextOutboundSequence()`.
+5.  **Logout (35=5)**: Outbound sequence is captured first, then the session is marked offline. Connection mapping is cleaned up after the logout acknowledgment is sent.
 
 ## Order Lifecycle
 
@@ -88,5 +89,6 @@ The FIX server is built as a separate executable target named `fix_server`.
 ## Future Enhancements and TODOs
 
 *   **Heartbeat Management**: Automatically send TestRequests and track latency.
-*   **Sequence Number Persistence**: Load/Save session sequence numbers to `core/data`.
+*   ~~**Sequence Number Persistence**~~: ✅ Implemented — sequence numbers are persisted via `SequenceRepository` and survive server restarts.
 *   **Market Data Integration**: Connect `MarketDataRequest` handlers to the actual engine snapshots.
+*   **ResendRequest Handling**: Implement outbound message caching to support proper gap-fill responses.

@@ -6,7 +6,7 @@ This repository is a deliberate, step-by-step engineering exercise. It contains 
 
 This project is for developers, engineers, and curious traders who want a readable, runnable codebase to study matching semantics, order lifecycle, risk checks, and modern C++ development practices.
 
-**Status**: The `common`, `core/trading_core`, `core/data`, and `core/fix` modules are all implemented and rigorously covered by unit tests. The system now features a robust lock-free matching core, a decoupled asynchronous SQLite persistence layer, and a functional FIX gateway handling Logon, Heartbeats, sequence recovery, and order routing.
+**Status**: The `common`, `exchange` suite (matching, persistence, fix gateway), and `client_fix` modules are all implemented and rigorously covered by unit tests. The system features a robust lock-free matching core, a decoupled asynchronous SQLite persistence layer, a functional FIX gateway with thread-safe CompID-based session management and persistent sequence numbers, and a working Dear ImGui client application with an embedded local exchange.
 
 ## Project Goals
 
@@ -19,8 +19,8 @@ This project is for developers, engineers, and curious traders who want a readab
 | :--- | :--- | :--- |
 | `common/` | Shared data structures, types, and utilities used across the project. | `Order`, `Trade`, `Instrument`, `Logger`, `Runbook` |
 | `exchange/` | The core trading engine suite (Modular). | `exchange_app`, `exchange_matching`, `exchange_fix`, `exchange_persistence` |
-| `client/` | Frontend suite including a Trader UI and a Load Simulator. | `client_fix`, `client_ui`, `client_app`, `client_simulator` |
-| `vendor/` | Third-party libraries used for testing, logging, and data storage. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp` |
+| `client/` | Frontend suite including a Trader UI and a Load Simulator. | `client_fix`, `client_ui`, `client_admin`, `client_app`, `client_simulator` |
+| `vendor/` | Third-party libraries used for testing, logging, data storage, and UI. | `googletest`, `spdlog`, `SPSCQueue`, `SQLiteCpp`, `GLFW`, `ImGui`, `ImPlot` |
 
 ## Repository Layout
 
@@ -109,7 +109,7 @@ To experiment with trading logic, you can:
 This project is a continuous engineering exercise. With the solid foundation of a functional matching core, asynchronous persistence, and a robust FIX gateway now established, here are the most logical next steps for future expansion:
 
 ### 1. Build a FIX Client App / Simulator (In Progress)
-Develop a standalone client application (`client`) that provides a high-performance Trader UI (using ImGui) and a headless Load Simulator. This allows for both manual trading and system benchmarking at scale.
+Develop a standalone client application (`client`) that provides a high-performance Trader UI (using ImGui) and a headless Load Simulator. The **Dear ImGui client application** (`client_app`) with embedded local exchange control (`client_admin`) and FIX session management (`ConnectionPanel`) is now functional. Remaining work includes the orderbook visualization, trade blotter, portfolio tracker, and the headless load simulator.
 
 ### 2. A REST / WebSocket API Gateway
 While FIX is ideal for high-performance institutional trading, REST and WebSockets are the standard for retail platforms and web UIs. Building a secondary HTTP/WS gateway alongside the `FixServer` that translates JSON requests into `trading_core::Command` objects would instantly open the door to building a frontend interface (like React).

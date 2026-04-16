@@ -24,6 +24,7 @@ graph TD
         OHLC[client_ohlc]:::logic
         SIM[client_simulator]:::logic
         UI_L[client_ui]:::ui
+        ADM[client_admin]:::logic
     end
 
     subgraph "Networking Layer"
@@ -50,6 +51,9 @@ graph TD
     BLOT -->|Executions| PORT
     FIX -->|Trades| OHLC
 
+    %% Admin manages local exchange
+    ADM -->|Manages| EX_FIX
+
     %% User Interface Mounting
     OB -->|Renders L2| APP
     BLOT -->|Renders Grid| APP
@@ -57,6 +61,7 @@ graph TD
     AUTH -->|Renders Login| APP
     OHLC -->|Renders Charts| APP
     UI_L -->|Widgets| APP
+    ADM -->|Renders Console| APP
 
     %% Simulator bypassing UI
     SIM -->|High-Throughput Orders| FIX
@@ -74,8 +79,9 @@ Explore the individual `README.md` files for deeper architecture and class diagr
 6.  **[`client_portfolio`](./client_portfolio/README.md)**: Real-time PnL and metric aggregation.
 7.  **[`client_ohlc`](./client_ohlc/README.md)**: Candlestick and volume aggregation for charting.
 8.  **[`client_simulator`](./client_simulator/README.md)**: Headless multi-agent load generator.
-9.  **[`client_ui`](./client_ui/README.md)**: Dear ImGui components and technical charting (ImPlot).
-10. **[`client_app`](./client_app/README.md)**: The central aggregator and window manager.
+9.  **[`client_ui`](./client_ui/README.md)**: Dear ImGui components, theming, and technical charting (ImPlot).
+10. **[`client_admin`](./client_admin/README.md)**: Embedded local exchange lifecycle manager and monitoring panel.
+11. **[`client_app`](./client_app/README.md)**: The central aggregator and window manager.
 
 ## Design Philosophy
 

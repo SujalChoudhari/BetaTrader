@@ -1,6 +1,6 @@
 # Client | FIX Protocol Engine
 
-The `client_fix` module provides the core connectivity, message parsing, and session management required for the BetaTrader client to interact with the FIX matching engine. It handles asynchronous networking, authenticates users, normalizes sequence numbers, and exposes structured domain objects to the rest of the application.
+The `client_fix` module provides the core connectivity, message parsing, and session management required for the BetaTrader client to interact with the FIX matching engine. It handles asynchronous networking, authenticates users, normalizes sequence numbers, and exposes structured domain objects to the rest of the application. This is a **pure protocol library** with no GUI dependencies — the `ConnectionPanel` (ImGui UI for session management) has been moved to `client_ui`.
 
 ## Architecture
 
