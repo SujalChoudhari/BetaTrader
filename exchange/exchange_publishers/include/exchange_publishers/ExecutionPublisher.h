@@ -8,6 +8,7 @@
 #include "common_fix/ExecutionReport.h" // Include the report type
 #include <functional>
 #include <string>
+#include <mutex>
 
 namespace trading_core {
     /**
@@ -39,5 +40,6 @@ namespace trading_core {
                                      const std::string_view& reason);
     private:
         static ExecutionReportCallback s_callback;
+        static std::mutex s_mutex;
     };
 } // namespace trading_core
