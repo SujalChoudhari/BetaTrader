@@ -20,6 +20,7 @@
 #include <functional>
 #include <memory>
 #include <optional>
+#include <mutex>
 
 namespace trading_core {
     /**
@@ -102,6 +103,7 @@ namespace trading_core {
         std::unique_ptr<Partition>
                 mPartitions[static_cast<int>(common::Instrument::COUNT)];
         ExecutionReportCallback mExecutionReportCallback;
+        mutable std::mutex mExecutionCallbackMutex;
         MarketDataPublisher mMarketDataPublisher;
     };
 } // namespace trading_core
