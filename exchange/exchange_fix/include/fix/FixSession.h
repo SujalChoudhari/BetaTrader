@@ -23,6 +23,7 @@ namespace fix {
                    trading_core::TradingCore& tradingCore, uint32_t sessionId);
 
         void start();
+        void stop();
 
         void sendExecutionReport(const ExecutionReport& report);
         void sendMarketDataSnapshotFullRefresh(

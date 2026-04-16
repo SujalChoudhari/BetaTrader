@@ -35,6 +35,14 @@ namespace fix {
         doRead();
     }
 
+    void FixSession::stop()
+    {
+        if (mSocket.is_open()) {
+            std::error_code ec;
+            mSocket.close(ec);
+        }
+    }
+
     void FixSession::sendExecutionReport(const ExecutionReport& report)
     {
         auto binaryReport = std::make_shared<std::string>(
@@ -201,13 +209,10 @@ namespace fix {
                     LOG_ERROR(errors::EFIX3,
                               "FixSession {}: Logon failed for {}", mSessionId,
                               senderCompId);
-                    // Send a Logout stating the reason before dropping
-                    SessionState* state
-                            = sessionManager.getSessionState(mSessionId);
-                    uint32_t outSeq = sessionManager.useNextOutboundSequence(mSessionId);
+                    // No authenticated session exists, so use seq 1 for the reject
                     auto logoutMsg = std::make_shared<std::string>(
                             OutboundMessageBuilder::buildLogout(
-                                    "BETA_EXCHANGE", senderCompId, outSeq,
+                                    "BETA_EXCHANGE", senderCompId, 1,
                                     "Invalid SenderCompID"));
 
                     doWrite(logoutMsg);
@@ -229,16 +234,18 @@ namespace fix {
                 doWrite(logonAck);
             }
             else if (msgType == '5') { // Logout
-                sessionManager.handleLogout(mSessionId);
-                SessionState* state
-                        = sessionManager.getSessionState(mSessionId);
+                // Capture the outbound sequence BEFORE marking the session logged out,
+                // because handleLogout sets isLoggedOn = false.
                 uint32_t outSeq = sessionManager.useNextOutboundSequence(mSessionId);
+                sessionManager.handleLogout(mSessionId);
+
                 auto logoutAck = std::make_shared<std::string>(
                         OutboundMessageBuilder::buildLogout(
                                 "BETA_EXCHANGE", senderCompId, outSeq,
                                 "Logout Acknowledged"));
 
                 doWrite(logoutAck);
+                sessionManager.cleanupConnection(mSessionId);
                 mSocket.close();
                 return;
             }
