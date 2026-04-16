@@ -12,6 +12,10 @@ target_link_libraries(client_app
     client_ui_lib
     client_fix_lib
     client_admin_lib
+    client_orderbook_lib
+    client_ohlc_lib
+    client_simulator_lib
+    data_lib
     common
     spdlog
 )
