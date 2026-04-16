@@ -1,0 +1,12 @@
+<map id="trading_core::Partition" name="trading_core::Partition">
+<area shape="rect" id="Node000001" title="Encapsulates all components needed to process commands for a symbol." alt="" coords="127,944,307,1429"/>
+<area shape="rect" id="Node000002" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="5,5,164,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,251,66,382,63,541,72,712,83,797,98,881,124,970,119,972,93,882,77,798,67,712,58,541,60,382,69,251"/>
+<area shape="rect" id="Node000004" href="$d3/d80/classdata_1_1TradeIDRepository.html" title="Persistent storage for trade id value." alt="" coords="119,313,290,479"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="142,250,164,297,159,300,137,252"/>
+<area shape="rect" id="Node000003" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html" title="A thread&#45;safe, database&#45;aware generator for unique trade IDs." alt="" coords="108,639,325,784"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="219,784,219,928,214,928,214,784"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="210,479,216,622,211,622,205,479"/>
+<area shape="rect" id="Node000005" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title="Manages market data subscriptions and broadcasts updates." alt="" coords="349,541,609,881"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="388,883,317,1011,312,1008,383,880"/>
+</map>

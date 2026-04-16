@@ -1,0 +1,5 @@
+<map id="data::MarketHistoryRepository" name="data::MarketHistoryRepository">
+<area shape="rect" id="Node000001" title="Persists OHLC candle data to the database." alt="" coords="5,313,219,459"/>
+<area shape="rect" id="Node000002" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="33,5,191,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,251,115,297,109,297,109,251"/>
+</map>

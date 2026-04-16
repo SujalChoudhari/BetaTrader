@@ -1,0 +1,3 @@
+<map id="client_ui::ConnectionPanel" name="client_ui::ConnectionPanel">
+<area shape="rect" id="Node000001" title="Provides a Dear ImGui interface for managing the FIX connection." alt="" coords="5,5,191,271"/>
+</map>

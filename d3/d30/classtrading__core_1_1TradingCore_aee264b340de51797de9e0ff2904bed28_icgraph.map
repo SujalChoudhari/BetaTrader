@@ -1,0 +1,13 @@
+<map id="trading_core::TradingCore::getDatabaseWorker" name="trading_core::TradingCore::getDatabaseWorker">
+<area shape="rect" id="Node000001" title=" " alt="" coords="540,23,728,63"/>
+<area shape="rect" id="Node000002" href="$d7/d28/exchange_2exchange__fix_2src_2Main_8cpp.html#ae6acac0df1d5f6c48b70e408d63916c0" title=" " alt="" coords="341,5,458,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="526,34,458,27,458,22,527,29"/>
+<area shape="rect" id="Node000004" href="$d8/d5b/classclient__app_1_1App.html#a08481caa40e27c8624449565db6b8e38" title=" " alt="" coords="307,55,492,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="527,57,492,61,492,55,526,52"/>
+<area shape="rect" id="Node000003" href="$d7/d28/exchange_2exchange__fix_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="156,5,211,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="327,21,211,21,211,15,327,15"/>
+<area shape="rect" id="Node000005" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,55,259,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="293,70,259,70,259,65,293,65"/>
+<area shape="rect" id="Node000006" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="94,70,60,70,60,65,94,65"/>
+</map>

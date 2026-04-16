@@ -1,0 +1,7 @@
+<map id="exchange/exchange_fix/include/fix/BinaryToMarketDataRequestConverter.h" name="exchange/exchange_fix/include/fix/BinaryToMarketDataRequestConverter.h">
+<area shape="rect" id="Node000001" title="Declares the BinaryToMarketDataRequestConverter class for converting FIX messages to MarketDataReques..." alt="" coords="138,5,337,60"/>
+<area shape="rect" id="Node000002" href="$d6/dfb/BinaryToMarketDataRequestConverter_8cpp.html" title=" " alt="" coords="5,108,240,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,71,154,110,151,106,195,67"/>
+<area shape="rect" id="Node000003" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="265,115,439,155"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="279,67,332,113,329,117,276,71"/>
+</map>

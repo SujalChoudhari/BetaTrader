@@ -1,0 +1,13 @@
+<map id="trading_core::ModifyOrder::getOrderId" name="trading_core::ModifyOrder::getOrderId">
+<area shape="rect" id="Node000001" title="Gets the ID of the order to be modified." alt="" coords="1252,5,1443,45"/>
+<area shape="rect" id="Node000002" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a398d133d315255f57ada12746b0c0bba" title=" " alt="" coords="1003,5,1204,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1238,28,1204,28,1204,23,1238,23"/>
+<area shape="rect" id="Node000003" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#aab07c99f0aa6a87008aeef44f7f9e843" title=" " alt="" coords="753,5,955,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="989,28,955,28,955,23,989,23"/>
+<area shape="rect" id="Node000004" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a53a245b261d8859df49766ca47c41c6e" title=" " alt="" coords="504,5,705,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="739,28,706,28,706,23,739,23"/>
+<area shape="rect" id="Node000005" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a0772a047b0fb303c53674d5dec9129bd" title=" " alt="" coords="255,5,456,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="490,28,456,28,456,23,490,23"/>
+<area shape="rect" id="Node000006" href="$d3/d7f/classtrading__core_1_1WorkerThread.html#a396a89449c28db9a19caf95ca1108695" title=" " alt="" coords="5,5,207,45"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="241,28,207,28,207,23,241,23"/>
+</map>

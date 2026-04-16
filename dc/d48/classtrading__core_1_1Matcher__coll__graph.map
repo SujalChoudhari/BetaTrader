@@ -1,0 +1,9 @@
+<map id="trading_core::Matcher" name="trading_core::Matcher">
+<area shape="rect" id="Node000001" title="The matching engine that pairs buy and sell orders." alt="" coords="36,749,192,875"/>
+<area shape="rect" id="Node000002" href="$d6/dd9/classtrading__core_1_1TradeIDGenerator.html" title="A thread&#45;safe, database&#45;aware generator for unique trade IDs." alt="" coords="5,541,223,687"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,687,117,733,111,733,111,687"/>
+<area shape="rect" id="Node000003" href="$d3/d80/classdata_1_1TradeIDRepository.html" title="Persistent storage for trade id value." alt="" coords="29,313,199,479"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="117,479,117,525,111,525,111,479"/>
+<area shape="rect" id="Node000004" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="35,5,193,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="117,251,117,297,111,297,111,251"/>
+</map>

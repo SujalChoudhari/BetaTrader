@@ -1,0 +1,7 @@
+<map id="client_ui::UIManager::stop" name="client_ui::UIManager::stop">
+<area shape="rect" id="Node000001" title="Shuts down ImGui and GLFW, destroying the window." alt="" coords="220,27,376,67"/>
+<area shape="rect" id="Node000002" href="$d8/d5b/classclient__app_1_1App.html#a267939fa95997be073a5ae82bfdd2206" title=" " alt="" coords="5,5,172,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,37,172,32,173,27,207,32"/>
+<area shape="rect" id="Node000003" href="$da/d63/classclient__ui_1_1UIManager.html#ab4d082ea327fff2066836458f0691d6e" title=" " alt="" coords="11,55,167,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="206,62,167,68,166,62,206,57"/>
+</map>

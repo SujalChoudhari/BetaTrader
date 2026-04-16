@@ -1,0 +1,9 @@
+<map id="trading_core::TradingCore::initPartitions" name="trading_core::TradingCore::initPartitions">
+<area shape="rect" id="Node000001" title=" " alt="" coords="241,69,429,109"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html#a945ec1a6386410c77da6a3150f8990c1" title=" " alt="" coords="5,5,193,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,68,173,48,174,43,249,63"/>
+<area shape="rect" id="Node000003" href="$d3/d30/classtrading__core_1_1TradingCore.html#abf3fec0e2a912b59c9479d2276d50a40" title=" " alt="" coords="5,69,193,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,92,194,92,194,87,227,87"/>
+<area shape="rect" id="Node000004" href="$d3/d30/classtrading__core_1_1TradingCore.html#a3aeb0af97e67983f9bedac7487f9ef77" title=" " alt="" coords="5,133,193,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="249,116,174,136,173,131,247,110"/>
+</map>

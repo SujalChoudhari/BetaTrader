@@ -1,0 +1,5 @@
+<map id="fix_client::SeqNumStore::reset" name="fix_client::SeqNumStore::reset">
+<area shape="rect" id="Node000001" title="Resets the sequence numbers to 1 (e.g., on a new day or clean Logon)." alt="" coords="249,5,428,45"/>
+<area shape="rect" id="Node000002" href="$d5/d87/classfix__client_1_1FixClientSession.html#a5f28ef7e684db3dae6306f33ffd42baf" title="Sends a Logon (35=A) request. Must be called after connect() is successful." alt="" coords="5,5,201,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,28,202,28,202,23,235,23"/>
+</map>

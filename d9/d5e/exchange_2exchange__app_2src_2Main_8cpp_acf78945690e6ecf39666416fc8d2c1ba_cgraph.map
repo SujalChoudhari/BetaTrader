@@ -1,0 +1,5 @@
+<map id="create_order" name="create_order">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,109,38"/>
+<area shape="rect" id="Node000002" href="$dc/dd3/classtrading__core_1_1OrderIDGenerator.html#a1f01ef2cefba6a90ad9963154fa9bc4f" title="Gets the next available order ID." alt="" coords="157,5,384,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,23,144,23,144,28,110,28"/>
+</map>

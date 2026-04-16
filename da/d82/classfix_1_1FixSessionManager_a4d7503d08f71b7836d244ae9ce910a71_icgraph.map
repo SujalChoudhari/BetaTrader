@@ -1,0 +1,5 @@
+<map id="fix::FixSessionManager::getMutex" name="fix::FixSessionManager::getMutex">
+<area shape="rect" id="Node000001" title="Returns a reference to the internal mutex for external synchronization." alt="" coords="196,5,368,45"/>
+<area shape="rect" id="Node000002" href="$d2/d74/classfix_1_1FixServer.html#abae90f2cfa9073371b2bfcd7b7740535" title=" " alt="" coords="5,13,148,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,28,148,28,148,23,182,23"/>
+</map>

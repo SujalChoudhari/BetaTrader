@@ -1,0 +1,7 @@
+<map id="fix::FixSessionManager::validateSequence" name="fix::FixSessionManager::validateSequence">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,177,45"/>
+<area shape="rect" id="Node000002" href="$d4/df8/classdata_1_1SequenceRepository.html#ac7af76ed56c59aed9592fc89597d6aad" title=" " alt="" coords="225,5,423,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,23,212,23,212,28,178,28"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html#a5c99f0ef4800a689e9e73df9f700f905" title=" " alt="" coords="471,5,637,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="423,23,457,23,457,28,423,28"/>
+</map>

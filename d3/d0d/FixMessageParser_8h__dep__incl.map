@@ -1,0 +1,28 @@
+<map id="client/client_fix/include/fix_client/FixMessageParser.h" name="client/client_fix/include/fix_client/FixMessageParser.h">
+<area shape="rect" id="Node000001" title="Declares the FixMessageParser class for parsing incoming FIX messages for the client." alt="" coords="397,5,614,45"/>
+<area shape="rect" id="Node000002" href="$db/d19/FixClientSession_8h.html" title="Manages the FIX client&#45;side TCP connection and protocol state machine." alt="" coords="295,93,503,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="473,56,424,95,421,91,469,52"/>
+<area shape="rect" id="Node000013" href="$d8/de9/FixMessageParser_8cpp.html" title=" " alt="" coords="527,93,697,133"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="541,52,590,91,587,95,538,56"/>
+<area shape="rect" id="Node000003" href="$de/d8e/AuthManager_8h.html" title="Manages FIX 4.4 UserRequest based authentication." alt="" coords="5,181,192,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="320,140,165,184,164,179,319,135"/>
+<area shape="rect" id="Node000005" href="$da/d80/FixClientSession_8cpp.html" title=" " alt="" coords="216,181,376,221"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="367,144,320,183,317,179,364,140"/>
+<area shape="rect" id="Node000006" href="$d3/d34/ConnectionPanel_8h.html" title=" " alt="" coords="400,181,605,221"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="434,140,481,179,478,183,431,144"/>
+<area shape="rect" id="Node000011" href="$d7/ddd/TradingPanel_8h.html" title=" " alt="" coords="629,181,808,221"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="483,134,649,179,648,184,482,140"/>
+<area shape="rect" id="Node000004" href="$db/d9a/AuthManager_8cpp.html" title=" " alt="" coords="27,269,171,309"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,235,101,269,96,269,96,235"/>
+<area shape="rect" id="Node000007" href="$de/d8b/App_8h.html" title=" " alt="" coords="540,269,692,309"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="540,228,593,267,589,271,537,232"/>
+<area shape="rect" id="Node000010" href="$d2/d92/ConnectionPanel_8cpp.html" title=" " alt="" coords="354,269,515,309"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="481,234,452,271,448,267,477,231"/>
+<area shape="rect" id="Node000008" href="$db/d4d/App_8cpp.html" title=" " alt="" coords="452,357,604,397"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="588,321,549,359,546,355,585,317"/>
+<area shape="rect" id="Node000009" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html" title=" " alt="" coords="628,357,780,397"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="647,317,686,355,683,359,644,321"/>
+<area shape="poly" id="edge11_Node000011_Node000007" title=" " alt="" coords="687,232,640,271,637,267,684,228"/>
+<area shape="rect" id="Node000012" href="$d0/dc2/TradingPanel_8cpp.html" title=" " alt="" coords="717,269,857,309"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="744,231,774,267,770,271,740,234"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="fix::BinaryToMarketDataRequestConverter::convert" name="fix::BinaryToMarketDataRequestConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a raw FIX message string into a MarketDataRequest object." alt="" coords="5,5,236,45"/>
+<area shape="rect" id="Node000002" href="$d9/d0c/namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="284,13,447,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,23,270,23,270,28,236,28"/>
+</map>

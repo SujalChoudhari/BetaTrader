@@ -1,0 +1,13 @@
+<map id="client_app::App::initLogic" name="client_app::App::initLogic">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,156,191,181"/>
+<area shape="rect" id="Node000002" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#a8e9b27910acd4849d5a4b8473cd9d391" title=" " alt="" coords="239,5,481,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,154,166,114,237,70,253,63,256,68,240,75,169,118,116,158"/>
+<area shape="rect" id="Node000003" href="$d3/d30/classtrading__core_1_1TradingCore.html#aee264b340de51797de9e0ff2904bed28" title=" " alt="" coords="266,85,454,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,153,263,125,265,131,152,158"/>
+<area shape="rect" id="Node000004" href="$d3/d30/classtrading__core_1_1TradingCore.html#a96f7ef657156aa6765ad2a407ce07ee2" title=" " alt="" coords="266,149,454,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="191,166,252,166,252,171,191,171"/>
+<area shape="rect" id="Node000005" href="$d4/d7b/classclient__ui_1_1ChartPanel.html#abd01eb5593b247056c205bb74de93af8" title=" " alt="" coords="283,213,437,253"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="152,179,270,208,269,213,151,184"/>
+<area shape="rect" id="Node000006" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="288,277,432,303"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="115,179,168,221,203,243,240,262,275,274,273,279,238,267,200,248,165,225,112,184"/>
+</map>

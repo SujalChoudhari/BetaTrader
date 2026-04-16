@@ -1,0 +1,7 @@
+<map id="fix::FixSessionManager::useNextOutboundSequence" name="fix::FixSessionManager::useNextOutboundSequence">
+<area shape="rect" id="Node000001" title="Increments and persists the outbound sequence number." alt="" coords="5,5,216,45"/>
+<area shape="rect" id="Node000002" href="$d4/df8/classdata_1_1SequenceRepository.html#ac7af76ed56c59aed9592fc89597d6aad" title=" " alt="" coords="264,5,461,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,250,23,250,28,216,28"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html#a5c99f0ef4800a689e9e73df9f700f905" title=" " alt="" coords="509,5,676,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="462,23,496,23,496,28,462,28"/>
+</map>

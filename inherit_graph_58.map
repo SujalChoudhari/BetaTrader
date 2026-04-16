@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,23,151,63"/>
+<area shape="rect" id="Node000001" href="$d6/d41/classfix_1_1FixSession.html" title=" " alt="" coords="239,5,354,31"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="164,31,239,22,239,27,165,36"/>
+<area shape="rect" id="Node000002" href="$d5/d87/classfix__client_1_1FixClientSession.html" title="High&#45;performance asynchronous FIX client using ASIO." alt="" coords="199,55,395,80"/>
+<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="165,50,199,54,198,59,164,55"/>
+</map>

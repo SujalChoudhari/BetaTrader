@@ -1,0 +1,5 @@
+<map id="trading_core::OrderBook" name="trading_core::OrderBook">
+<area shape="rect" id="Node000001" title="Represents the order book for a single financial instrument." alt="" coords="49,408,221,633"/>
+<area shape="rect" id="Node000002" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title="Manages market data subscriptions and broadcasts updates." alt="" coords="5,5,265,345"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,345,138,392,133,392,133,345"/>
+</map>

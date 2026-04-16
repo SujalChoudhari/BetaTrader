@@ -1,0 +1,18 @@
+var searchData=
+[
+  ['s_5fcallback_0',['s_callback',['../d8/dae/classtrading__core_1_1ExecutionPublisher.html#aed85ce91eb8a971de0e78228a63cbdbd',1,'trading_core::ExecutionPublisher']]],
+  ['s_5fmutex_1',['s_mutex',['../d8/dae/classtrading__core_1_1ExecutionPublisher.html#a60fb2f2133291d7f8620e1f737d43c1a',1,'trading_core::ExecutionPublisher']]],
+  ['sendercompid_2',['sendercompid',['../d9/d00/structfix_1_1SessionState.html#aff5ed6531d74abb77c3597b307bb9a6e',1,'fix::SessionState::senderCompId'],['../d4/d61/structfix_1_1LogonRequest.html#a141aed1e813f3f3234b5c3902a198efc',1,'fix::LogonRequest::senderCompID'],['../d6/dce/classfix_1_1OrderRequest.html#a7bb3288ffdebb5d9b5ac4bc13fa6853d',1,'fix::OrderRequest::senderCompID']]],
+  ['settradeidquery_3',['setTradeIdQuery',['../dd/d28/namespacedata_1_1query.html#af0023762f7e7efb5bb8d28a947d10013',1,'data::query']]],
+  ['side_4',['side',['../d7/de3/structfix_1_1ModifyOrderRequest.html#a314f267f0f79c0a69c2bd1915b8158f5',1,'fix::ModifyOrderRequest::side'],['../d6/dce/classfix_1_1OrderRequest.html#a3990cadca365c6bbca6c1b285fac11cf',1,'fix::OrderRequest::side'],['../d4/d84/structfix_1_1CancelOrderRequest.html#a9c2ad73dcb101605c972647c7da40078',1,'fix::CancelOrderRequest::side']]],
+  ['size_5',['size',['../d9/d48/structfix_1_1MarketDataIncrementalEntry.html#a294fdf403119cea36c6d16d724f3ba8f',1,'fix::MarketDataIncrementalEntry::size'],['../de/d72/structfix_1_1MarketDataEntry.html#ac73d9fa6220f70639dd2f5b86fd8b2c0',1,'fix::MarketDataEntry::size']]],
+  ['soh_6',['SOH',['../dc/d18/namespacefix.html#a312556a1a3618462742a5b143101a773',1,'fix']]],
+  ['spread_7',['spread',['../d5/da8/structorderbook_1_1OrderBook_1_1Snapshot.html#afbfeb12eb15c0fe4be1fbc7ff77332ad',1,'orderbook::OrderBook::Snapshot']]],
+  ['subscription_5frequest_5ftype_5fsnapshot_8',['SUBSCRIPTION_REQUEST_TYPE_SNAPSHOT',['../dc/d18/namespacefix.html#a8dbba9ed07810df3cd4c8115cf42e771',1,'fix']]],
+  ['subscription_5frequest_5ftype_5fsnapshot_5fand_5fupdates_9',['SUBSCRIPTION_REQUEST_TYPE_SNAPSHOT_AND_UPDATES',['../dc/d18/namespacefix.html#a5a2414d17e551f5e63b70c5dd22f88cf',1,'fix']]],
+  ['subscription_5frequest_5ftype_5funsubscribe_10',['SUBSCRIPTION_REQUEST_TYPE_UNSUBSCRIBE',['../dc/d18/namespacefix.html#ad89369ebdae873a715406f84959c84de',1,'fix']]],
+  ['subscriptionrequesttype_11',['subscriptionRequestType',['../d7/d45/structfix_1_1MarketDataRequest.html#ad02dc3c2016e84c74a8988117f8e730e',1,'fix::MarketDataRequest']]],
+  ['symbol_12',['symbol',['../df/df5/structfix_1_1MarketDataIncrementalRefresh.html#a86f30f5c9334bf846cc4b040271884ad',1,'fix::MarketDataIncrementalRefresh::symbol'],['../d5/da8/structorderbook_1_1OrderBook_1_1Snapshot.html#a86e38191b186edbf87d8a8c3acb20384',1,'orderbook::OrderBook::Snapshot::symbol'],['../d7/d31/structdata_1_1Candle.html#a3eb5f343649b32c157651e1dffdd4036',1,'data::Candle::symbol'],['../d6/dce/classfix_1_1OrderRequest.html#afae4d82655b810529a382eefce755b0f',1,'fix::OrderRequest::symbol'],['../d7/de3/structfix_1_1ModifyOrderRequest.html#a3805de604c8ebb4a2e35aa818ec738f3',1,'fix::ModifyOrderRequest::symbol'],['../dd/dc1/structfix_1_1MarketDataSnapshotFullRefresh.html#a827c68c00058d731789cecdac8915422',1,'fix::MarketDataSnapshotFullRefresh::symbol'],['../d4/d84/structfix_1_1CancelOrderRequest.html#a3e3e365e05d1c20baa402ff0464e2af4',1,'fix::CancelOrderRequest::symbol']]],
+  ['symbol_5fnames_13',['symbol_names',['../d9/d0c/namespacecommon.html#ab602598c1576b0c6e10cdeca220653bf',1,'common']]],
+  ['symbols_14',['symbols',['../d7/d45/structfix_1_1MarketDataRequest.html#a2c6f10a5e96d67c6592d3710be124f54',1,'fix::MarketDataRequest']]]
+];

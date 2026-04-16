@@ -1,0 +1,5 @@
+<map id="client_ui::OrderBookPanel::render" name="client_ui::OrderBookPanel::render">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,195,45"/>
+<area shape="rect" id="Node000002" href="$df/d35/classorderbook_1_1OrderBook.html#af1b8e7d06e54ad19500a746742e0b75a" title=" " alt="" coords="243,5,408,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,23,229,23,229,28,195,28"/>
+</map>

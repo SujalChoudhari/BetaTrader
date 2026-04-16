@@ -1,0 +1,5 @@
+<map id="fix::FixServer::stop" name="fix::FixServer::stop">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,148,38"/>
+<area shape="rect" id="Node000002" href="$da/d82/classfix_1_1FixSessionManager.html#a4d7503d08f71b7836d244ae9ce910a71" title="Returns a reference to the internal mutex for external synchronization." alt="" coords="196,5,368,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,23,182,23,182,28,148,28"/>
+</map>

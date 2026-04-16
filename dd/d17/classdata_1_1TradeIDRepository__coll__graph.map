@@ -1,0 +1,5 @@
+<map id="data::TradeIDRepository" name="data::TradeIDRepository">
+<area shape="rect" id="Node000001" title="Persistent storage for trade id value." alt="" coords="5,313,176,479"/>
+<area shape="rect" id="Node000002" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="11,5,170,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,251,93,297,88,297,88,251"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="fix_client::FixClientSession::handleResendRequest" name="fix_client::FixClientSession::handleResendRequest">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,101,201,141"/>
+<area shape="rect" id="Node000002" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#aa7365a335457a5cfce2b7c0ddd74fb11" title=" " alt="" coords="249,5,463,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,99,248,55,270,47,272,52,250,60,148,104"/>
+<area shape="rect" id="Node000004" href="$d5/d87/classfix__client_1_1FixClientSession.html#a0bf63e25960f53568356055f36e16964" title=" " alt="" coords="258,69,454,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="201,106,244,101,245,106,202,112"/>
+<area shape="rect" id="Node000007" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#af3850fa0c9cd3f22f20250ad3d0570c2" title="Gets the next expected outgoing sequence number." alt="" coords="265,133,447,173"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="202,131,251,137,251,143,201,136"/>
+<area shape="rect" id="Node000008" href="$dc/d18/namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="298,198,414,223"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="146,139,195,162,250,183,285,193,284,198,248,188,193,166,144,144"/>
+<area shape="rect" id="Node000003" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#a524ef6c13d867b0477f9772d0f180453" title=" " alt="" coords="511,5,724,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="463,23,497,23,497,28,463,28"/>
+<area shape="rect" id="Node000005" href="$d5/d87/classfix__client_1_1FixClientSession.html#a566125965b834a0d18c2ab99f2c297c1" title="Closes the socket and stops reading." alt="" coords="519,69,715,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="454,87,505,87,505,92,454,92"/>
+<area shape="rect" id="Node000006" href="$d5/d87/classfix__client_1_1FixClientSession.html#a2b002227c40ecc4589bf4030d51e0c15" title=" " alt="" coords="772,69,968,109"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="716,87,758,87,758,92,716,92"/>
+</map>

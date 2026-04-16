@@ -1,0 +1,7 @@
+<map id="fix_client::FixClientSession::sendMessage" name="fix_client::FixClientSession::sendMessage">
+<area shape="rect" id="Node000001" title="Queues a raw FIX message body to be properly headed, trailed, sequenced, and sent." alt="" coords="249,37,445,77"/>
+<area shape="rect" id="Node000002" href="$d5/d87/classfix__client_1_1FixClientSession.html#af295ba82a139cec884bb87ad19035843" title=" " alt="" coords="5,5,201,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,45,201,41,202,36,236,40"/>
+<area shape="rect" id="Node000003" href="$d5/d87/classfix__client_1_1FixClientSession.html#aa6f08614c459a58a4acd4246fb3ee0b9" title=" " alt="" coords="5,69,201,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,75,202,79,201,74,235,69"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="fix_client::FixMessageParser::parseMarketDataSnapshot" name="fix_client::FixMessageParser::parseMarketDataSnapshot">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,212,63"/>
+<area shape="rect" id="Node000002" href="$d9/d0c/namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="260,5,423,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,29,246,26,247,31,213,35"/>
+<area shape="rect" id="Node000003" href="$dc/d18/namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="283,55,399,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,51,270,57,269,63,212,57"/>
+</map>

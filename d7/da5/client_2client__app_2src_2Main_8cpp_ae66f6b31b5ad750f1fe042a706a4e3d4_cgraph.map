@@ -1,0 +1,76 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,674,60,699"/>
+<area shape="rect" id="Node000002" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,674,259,699"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,684,94,684,94,689,60,689"/>
+<area shape="rect" id="Node000003" href="$da/d63/classclient__ui_1_1UIManager.html#a11d3e686d968a6f53d2bb861fdb68018" title="Prepares for a new frame (polls events, starts ImGui frame)." alt="" coords="325,5,481,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="183,673,192,556,213,371,230,273,250,182,275,107,289,78,305,56,312,49,315,53,309,59,294,81,280,109,255,184,235,274,219,372,197,557,188,674"/>
+<area shape="rect" id="Node000004" href="$da/d63/classclient__ui_1_1UIManager.html#abeb6003414f7e5829ded4a94ea7fe9ff" title="Finalizes the frame (renders ImGui, swaps buffers)." alt="" coords="325,69,481,109"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="183,673,195,569,219,405,235,319,255,239,278,172,305,126,317,115,320,119,309,130,283,175,260,240,241,320,224,406,200,569,189,674"/>
+<area shape="rect" id="Node000005" href="$d8/d43/classadmin_1_1ExchangeManager.html#a0139678898f63795f21023fd12d0ce5c" title=" " alt="" coords="840,316,1031,356"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="182,674,186,605,202,499,217,439,238,379,267,322,305,272,360,216,415,173,470,143,528,125,588,118,652,124,719,141,792,170,834,196,870,231,898,269,919,302,915,305,894,272,866,235,831,200,789,174,718,146,651,129,588,124,529,130,473,148,417,178,363,220,309,275,272,325,243,381,222,441,207,500,191,605,187,674"/>
+<area shape="rect" id="Node000006" href="$d4/de5/classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="328,286,479,311"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="187,673,230,565,264,491,304,417,342,364,379,320,383,323,346,367,309,420,269,493,235,567,192,675"/>
+<area shape="rect" id="Node000008" href="$d8/d5b/classclient__app_1_1App.html#a08481caa40e27c8624449565db6b8e38" title=" " alt="" coords="311,431,496,457"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="194,672,379,466,383,469,198,675"/>
+<area shape="rect" id="Node000014" href="$d7/d24/classadmin_1_1ExchangePanel.html#abca1f835c62546e4c2d218d985ca6a51" title="Renders the exchange control dashboard." alt="" coords="319,571,488,611"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="205,671,251,646,306,620,324,613,326,618,308,625,253,651,208,676"/>
+<area shape="rect" id="Node000024" href="$d4/d7b/classclient__ui_1_1ChartPanel.html#a6bf9dce984ec96f813b55b6e1dcc2d0c" title=" " alt="" coords="326,635,481,675"/>
+<area shape="poly" id="edge26_Node000002_Node000024" title=" " alt="" coords="258,673,312,665,313,670,259,678"/>
+<area shape="rect" id="Node000027" href="$da/d08/classclient__ui_1_1OrderBookPanel.html#a4431697b9c48df631a6c946d71041f54" title=" " alt="" coords="309,699,498,739"/>
+<area shape="poly" id="edge29_Node000002_Node000027" title=" " alt="" coords="259,695,296,700,295,706,258,700"/>
+<area shape="rect" id="Node000029" href="$db/d4d/classclient__ui_1_1SimulatorPanel.html#a76ec351a4ea1c41173f7e0215453501b" title=" " alt="" coords="312,763,495,803"/>
+<area shape="poly" id="edge31_Node000002_Node000029" title=" " alt="" coords="208,697,253,722,308,748,326,755,324,760,306,753,251,727,205,702"/>
+<area shape="rect" id="Node000030" href="$dc/dcb/classclient__ui_1_1TradingPanel.html#a2a58fa5fed4fa4cd159901b844b7fd2d" title=" " alt="" coords="320,827,487,867"/>
+<area shape="poly" id="edge32_Node000002_Node000030" title=" " alt="" coords="196,698,240,753,272,785,308,812,319,819,316,823,305,817,268,789,236,756,191,701"/>
+<area shape="rect" id="Node000031" href="$d7/d62/classclient__ui_1_1ConnectionPanel.html#a3858a6530c973a3c32b3563101ac46f9" title="Renders the connection panel UI." alt="" coords="307,891,500,931"/>
+<area shape="poly" id="edge33_Node000002_Node000031" title=" " alt="" coords="192,699,206,734,231,782,265,833,308,877,316,882,312,886,305,881,261,836,226,784,202,736,187,701"/>
+<area shape="rect" id="Node000032" href="$da/d63/classclient__ui_1_1UIManager.html#aabcb9db377f7a7c5b4ea6d4d91ddf793" title="Renders the master dockspace that fills the entire window." alt="" coords="325,955,481,995"/>
+<area shape="poly" id="edge34_Node000002_Node000032" title=" " alt="" coords="190,699,201,744,223,809,258,880,281,912,308,941,315,946,311,950,305,945,277,916,254,882,218,811,196,746,184,700"/>
+<area shape="rect" id="Node000033" href="$da/d63/classclient__ui_1_1UIManager.html#a30e0b8a29a34665f27469157cbdae229" title="Checks if the window should close (e.g., user clicked X)." alt="" coords="325,1019,481,1059"/>
+<area shape="poly" id="edge35_Node000002_Node000033" title=" " alt="" coords="188,699,196,755,215,837,231,882,251,926,277,968,309,1005,315,1011,312,1015,305,1009,273,971,247,929,226,884,210,838,191,756,183,700"/>
+<area shape="rect" id="Node000034" href="$da/d63/classclient__ui_1_1UIManager.html#a96170d0d096ad2a408d1c5dfb7b4b0ba" title="Initializes GLFW, creates the window, and sets up ImGui." alt="" coords="325,1083,481,1123"/>
+<area shape="poly" id="edge36_Node000002_Node000034" title=" " alt="" coords="187,700,192,764,208,863,223,918,244,973,272,1024,309,1069,315,1075,312,1079,305,1073,268,1027,240,975,218,920,203,864,186,765,182,700"/>
+<area shape="rect" id="Node000007" href="$d4/de5/classlogging_1_1Logger.html#ac3bd8c392e36698198387083fd1f59f8" title="Generates a timestamped filename." alt="" coords="574,184,765,224"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="429,283,483,259,547,233,572,225,574,230,549,239,485,264,432,288"/>
+<area shape="rect" id="Node000009" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#a8e9b27910acd4849d5a4b8473cd9d391" title=" " alt="" coords="548,249,791,303"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="414,429,467,374,505,342,547,314,560,307,562,311,549,318,508,346,471,378,418,433"/>
+<area shape="rect" id="Node000010" href="$d3/d30/classtrading__core_1_1TradingCore.html#aee264b340de51797de9e0ff2904bed28" title=" " alt="" coords="575,328,763,368"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="429,429,483,404,547,377,572,369,573,375,549,383,485,408,431,434"/>
+<area shape="rect" id="Node000011" href="$d3/d30/classtrading__core_1_1TradingCore.html#a96f7ef657156aa6765ad2a407ce07ee2" title=" " alt="" coords="575,392,763,432"/>
+<area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="496,430,561,422,562,428,496,436"/>
+<area shape="rect" id="Node000012" href="$d4/d7b/classclient__ui_1_1ChartPanel.html#abd01eb5593b247056c205bb74de93af8" title=" " alt="" coords="592,456,747,496"/>
+<area shape="poly" id="edge11_Node000008_Node000012" title=" " alt="" coords="496,452,578,462,578,468,496,458"/>
+<area shape="rect" id="Node000013" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="597,521,741,546"/>
+<area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="430,454,484,480,549,505,585,515,583,521,547,511,482,485,428,459"/>
+<area shape="rect" id="Node000015" href="$d8/d43/classadmin_1_1ExchangeManager.html#af3ec81d98d24ca6e7684289c8f3bced7" title=" " alt="" coords="840,567,1031,607"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="480,608,548,620,669,629,722,627,790,620,855,608,856,613,791,625,723,633,669,635,548,625,480,613"/>
+<area shape="rect" id="Node000016" href="$d7/d24/classadmin_1_1ExchangePanel.html#ae5fb552bfbda082d11d5d32ecb11fe59" title=" " alt="" coords="585,685,754,725"/>
+<area shape="poly" id="edge15_Node000014_Node000016" title=" " alt="" coords="477,608,501,620,516,632,526,643,535,654,549,664,578,678,575,683,547,669,532,658,522,646,513,636,499,625,475,613"/>
+<area shape="rect" id="Node000019" href="$d7/d24/classadmin_1_1ExchangePanel.html#a1d58dc351747a758d84ab9a1a99db4b3" title=" " alt="" coords="585,571,754,611"/>
+<area shape="poly" id="edge20_Node000014_Node000019" title=" " alt="" coords="488,588,571,588,571,593,488,593"/>
+<area shape="rect" id="Node000020" href="$d7/d24/classadmin_1_1ExchangePanel.html#ab53f4aba7c54b755ab49a34c7b19646e" title=" " alt="" coords="584,749,755,789"/>
+<area shape="poly" id="edge22_Node000014_Node000020" title=" " alt="" coords="485,609,502,621,514,635,521,651,526,680,531,709,538,722,550,735,573,750,570,754,546,739,533,725,526,710,521,681,516,652,510,638,498,625,482,613"/>
+<area shape="poly" id="edge16_Node000016_Node000015" title=" " alt="" coords="750,683,789,664,804,653,813,641,822,629,837,616,848,610,851,615,840,621,826,633,817,644,807,657,792,669,752,688"/>
+<area shape="rect" id="Node000017" href="$d8/d43/classadmin_1_1ExchangeManager.html#aad10f2b0566d387c379408ec9f934fce" title="Starts the exchange services." alt="" coords="840,631,1031,671"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="754,685,826,670,827,676,755,691"/>
+<area shape="rect" id="Node000018" href="$d8/d43/classadmin_1_1ExchangeManager.html#aa6e1020f6a55c5f397def3e31dc49f46" title="Stops all exchange services." alt="" coords="1080,660,1271,700"/>
+<area shape="poly" id="edge19_Node000016_Node000018" title=" " alt="" coords="754,698,1066,683,1066,688,754,704"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="1031,660,1067,664,1066,669,1030,665"/>
+<area shape="poly" id="edge21_Node000019_Node000005" title=" " alt="" coords="753,574,789,555,835,512,872,461,900,410,919,367,924,370,905,413,876,464,839,516,792,560,756,578"/>
+<area shape="rect" id="Node000021" href="$da/d82/classfix_1_1FixSessionManager.html#adb3388e96b6548f79c99bb2fd9755eab" title="Returns a thread&#45;safe snapshot of all session states." alt="" coords="849,745,1021,785"/>
+<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="755,765,835,764,835,769,755,771"/>
+<area shape="rect" id="Node000022" href="$d2/d74/classfix_1_1FixServer.html#af04076dbe25abd232d2049c58c46800d" title=" " alt="" coords="839,810,1032,835"/>
+<area shape="poly" id="edge24_Node000020_Node000022" title=" " alt="" coords="755,784,858,805,857,810,754,789"/>
+<area shape="rect" id="Node000023" href="$d8/d43/classadmin_1_1ExchangeManager.html#ad8096d3ad838725a57272e65296e4572" title=" " alt="" coords="840,860,1031,900"/>
+<area shape="poly" id="edge25_Node000020_Node000023" title=" " alt="" coords="756,784,792,799,807,810,817,822,826,833,840,844,854,852,852,857,837,849,822,837,813,825,804,814,789,804,754,788"/>
+<area shape="rect" id="Node000025" href="$d4/d7b/classclient__ui_1_1ChartPanel.html#a621a9dd80a52048177e4b501b3672d10" title=" " alt="" coords="592,813,747,853"/>
+<area shape="poly" id="edge27_Node000024_Node000025" title=" " alt="" coords="482,671,502,685,514,699,521,715,526,744,531,773,538,786,550,799,580,817,578,822,546,803,533,789,526,774,521,745,516,716,510,702,498,689,479,676"/>
+<area shape="rect" id="Node000026" href="$d1/dea/namespaceclient__ui.html#a5eb7221aad4233aa57a94b5895e4c2ab" title=" " alt="" coords="842,925,1029,950"/>
+<area shape="poly" id="edge28_Node000025_Node000026" title=" " alt="" coords="748,845,792,863,807,875,817,887,826,899,840,910,856,918,854,922,837,914,822,902,813,890,804,879,789,868,746,850"/>
+<area shape="rect" id="Node000028" href="$df/d35/classorderbook_1_1OrderBook.html#af1b8e7d06e54ad19500a746742e0b75a" title=" " alt="" coords="587,877,752,917"/>
+<area shape="poly" id="edge30_Node000027_Node000028" title=" " alt="" coords="485,737,502,749,514,763,521,779,526,808,531,837,538,850,550,863,575,879,572,884,546,867,533,853,526,838,521,809,516,780,510,766,498,753,482,741"/>
+<area shape="rect" id="Node000035" href="$d7/d4c/namespaceclient__ui_1_1theme.html#ad6e153930f36941ad685a7ed0a339a10" title="Applies a modern, Bloomberg&#45;inspired dark theme to the current ImGui context." alt="" coords="548,1051,791,1091"/>
+<area shape="poly" id="edge37_Node000034_Node000035" title=" " alt="" coords="481,1091,534,1084,535,1090,482,1096"/>
+<area shape="rect" id="Node000036" href="$d1/dea/namespaceclient__ui.html#a9199d6951c5964c72c55dca2ce388d62" title=" " alt="" coords="594,1115,745,1155"/>
+<area shape="poly" id="edge38_Node000034_Node000036" title=" " alt="" coords="482,1109,581,1121,580,1127,481,1115"/>
+</map>

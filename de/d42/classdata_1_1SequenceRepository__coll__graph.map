@@ -1,0 +1,5 @@
+<map id="data::SequenceRepository" name="data::SequenceRepository">
+<area shape="rect" id="Node000001" title="Repository for managing sequence numbers." alt="" coords="5,313,211,479"/>
+<area shape="rect" id="Node000002" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="29,5,187,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,251,111,297,105,297,105,251"/>
+</map>

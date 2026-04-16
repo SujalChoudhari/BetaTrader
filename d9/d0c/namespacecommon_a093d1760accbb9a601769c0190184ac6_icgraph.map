@@ -1,0 +1,46 @@
+<map id="common::from_string" name="common::from_string">
+<area shape="rect" id="Node000001" title="Converts a string to its corresponding Instrument enum." alt="" coords="1276,227,1439,253"/>
+<area shape="rect" id="Node000002" href="$d9/d13/classfix_1_1BinaryToCancelOrderRequestConverter.html#a2579d62ca0160e34aa31e8a9c76703bb" title="Converts a raw FIX message string into a CancelOrderRequest object." alt="" coords="1015,5,1211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1343,216,1325,181,1299,138,1266,96,1226,59,1205,48,1208,43,1230,55,1270,92,1304,135,1330,178,1348,214"/>
+<area shape="rect" id="Node000007" href="$de/d5d/classfix_1_1BinaryToMarketDataRequestConverter.html#ab0ea3f594af37f5ffc60a3ed6787e7f8" title="Converts a raw FIX message string into a MarketDataRequest object." alt="" coords="997,69,1228,109"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="1335,219,1289,170,1259,145,1227,124,1201,112,1203,107,1229,119,1262,141,1292,166,1339,215"/>
+<area shape="rect" id="Node000009" href="$de/deb/classfix_1_1BinaryToModifyOrderRequestConverter.html#a5f69adce40f15fe94b173ff47b900b95" title="Converts a raw FIX message string into a ModifyOrderRequest object." alt="" coords="1015,133,1211,173"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="1310,225,1227,195,1174,176,1175,171,1229,189,1311,220"/>
+<area shape="rect" id="Node000011" href="$d3/daf/classfix_1_1BinaryToOrderRequestConverter.html#ae46537742b9c67bb5200ad44ec35c7d8" title="Converts a raw FIX message string into an OrderRequest object." alt="" coords="748,197,939,237"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="1262,238,939,224,939,219,1262,233"/>
+<area shape="rect" id="Node000012" href="$de/dbb/classdata_1_1OrderRepository.html#a4498a03c727fa16f796a3fa4aae5858d" title=" " alt="" coords="1017,248,1209,288"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="1263,253,1209,260,1208,254,1262,248"/>
+<area shape="rect" id="Node000013" href="$d3/d11/classfix__client_1_1FixMessageParser.html#ae2affd5c2d5f2acb4d1433b88a01fac7" title=" " alt="" coords="1009,312,1216,352"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="1321,261,1229,302,1193,314,1192,309,1227,298,1319,256"/>
+<area shape="rect" id="Node000018" href="$d3/d11/classfix__client_1_1FixMessageParser.html#a8716cf8f3be42111677b8fe39bab6d19" title=" " alt="" coords="1003,376,1223,416"/>
+<area shape="poly" id="edge22_Node000001_Node000018" title=" " alt="" coords="1340,266,1293,317,1263,343,1229,366,1204,378,1202,373,1227,362,1260,339,1290,313,1336,262"/>
+<area shape="rect" id="Node000019" href="$d3/d11/classfix__client_1_1FixMessageParser.html#a27888361484774e20b31bfa33e61b89e" title=" " alt="" coords="1009,440,1216,480"/>
+<area shape="poly" id="edge24_Node000001_Node000019" title=" " alt="" coords="1348,267,1330,303,1305,347,1271,392,1230,430,1209,442,1206,438,1226,426,1267,389,1300,344,1326,301,1343,264"/>
+<area shape="rect" id="Node000003" href="$d6/d41/classfix_1_1FixSession.html#a86628b5f4fb1f5494b9b8954e23822b5" title=" " alt="" coords="738,5,949,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1001,28,949,28,949,23,1001,23"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="498,101,685,141"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="760,52,738,60,636,104,633,99,736,55,759,47"/>
+<area shape="rect" id="Node000005" href="$d6/d41/classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="261,109,433,134"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="484,124,433,124,433,119,484,119"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="391,99,388,95,380,91,347,87,321,89,307,94,305,100,312,107,308,110,299,100,304,90,320,84,347,82,382,86,391,91,395,96"/>
+<area shape="rect" id="Node000006" href="$d6/d41/classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="27,109,180,134"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="247,124,180,124,180,119,247,119"/>
+<area shape="rect" id="Node000008" href="$d6/d41/classfix_1_1FixSession.html#ac457b1d016a6c70c8380cce072510970" title=" " alt="" coords="737,69,949,109"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="984,92,949,92,949,87,984,87"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="724,107,685,112,685,107,723,102"/>
+<area shape="rect" id="Node000010" href="$d6/d41/classfix_1_1FixSession.html#ad3b562443287f3b43cfa5093708d7da5" title=" " alt="" coords="738,133,949,173"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1001,156,949,156,949,151,1001,151"/>
+<area shape="poly" id="edge12_Node000010_Node000004" title=" " alt="" coords="724,141,685,136,685,131,724,136"/>
+<area shape="poly" id="edge14_Node000011_Node000004" title=" " alt="" coords="759,196,736,188,633,144,636,139,738,183,760,191"/>
+<area shape="rect" id="Node000014" href="$d3/d11/classfix__client_1_1FixMessageParser.html#ab70d5ef8d9b11e50c66ff6ce0b963e65" title="Parses a raw FIX message string." alt="" coords="740,376,947,416"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="1015,358,929,379,927,373,1014,353"/>
+<area shape="rect" id="Node000015" href="$d5/d87/classfix__client_1_1FixClientSession.html#aff9311a491062e2555b636a8886e8813" title=" " alt="" coords="493,376,689,416"/>
+<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="726,399,689,399,689,393,726,393"/>
+<area shape="rect" id="Node000016" href="$d5/d87/classfix__client_1_1FixClientSession.html#a8ee829a7f39b1843f979fcc8bae84f5d" title=" " alt="" coords="249,376,445,416"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="480,399,445,399,445,393,480,393"/>
+<area shape="poly" id="edge21_Node000016_Node000016" title=" " alt="" coords="389,364,374,357,347,355,324,357,310,361,305,367,307,375,302,376,299,366,307,357,323,351,347,349,376,352,391,359"/>
+<area shape="rect" id="Node000017" href="$d5/d87/classfix__client_1_1FixClientSession.html#adb46956504055b3372af9950d87629a3" title="Connects to the remote FIX server asynchronously." alt="" coords="5,376,201,416"/>
+<area shape="poly" id="edge20_Node000016_Node000017" title=" " alt="" coords="236,399,201,399,201,393,236,393"/>
+<area shape="poly" id="edge23_Node000018_Node000014" title=" " alt="" coords="989,399,947,399,947,393,989,393"/>
+<area shape="poly" id="edge25_Node000019_Node000014" title=" " alt="" coords="1014,439,927,419,929,413,1015,434"/>
+</map>

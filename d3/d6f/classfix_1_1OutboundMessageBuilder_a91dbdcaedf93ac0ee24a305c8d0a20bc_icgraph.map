@@ -1,0 +1,12 @@
+<map id="fix::OutboundMessageBuilder::buildLogout" name="fix::OutboundMessageBuilder::buildLogout">
+<area shape="rect" id="Node000001" title=" " alt="" coords="671,54,884,94"/>
+<area shape="rect" id="Node000002" href="$d6/d41/classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="431,22,618,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="657,61,618,56,619,51,657,56"/>
+<area shape="rect" id="Node000005" href="$d5/d87/classfix__client_1_1FixClientSession.html#a5b832fbd593eaef29a638c7c5566892e" title="Sends a Logout (35=5) request." alt="" coords="427,86,623,126"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="657,92,623,96,623,91,657,87"/>
+<area shape="rect" id="Node000003" href="$d6/d41/classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="207,29,379,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="417,45,379,45,379,39,417,39"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="330,20,320,11,293,8,270,10,258,15,256,20,262,28,258,31,251,21,255,11,269,5,293,3,322,6,334,15"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="5,29,159,55"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="193,45,159,45,159,39,193,39"/>
+</map>

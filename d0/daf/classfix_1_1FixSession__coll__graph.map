@@ -1,0 +1,19 @@
+<map id="fix::FixSession" name="fix::FixSession">
+<area shape="rect" id="Node000001" title=" " alt="" coords="234,1687,461,2161"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="116,1384,299,1464"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="225,1477,283,1685,278,1687,220,1478"/>
+<area shape="rect" id="Node000003" href="$d2/d74/classfix_1_1FixServer.html" title=" " alt="" coords="471,1224,730,1624"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="502,1625,470,1687,466,1685,497,1623"/>
+<area shape="rect" id="Node000004" href="$d3/d30/classtrading__core_1_1TradingCore.html" title="High&#45;level manager for partitions and command dispatch." alt="" coords="237,716,458,1161"/>
+<area shape="poly" id="edge9_Node000001_Node000004" title=" " alt="" coords="350,1162,350,1670,345,1670,345,1162"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="460,1150,491,1208,486,1210,456,1152"/>
+<area shape="rect" id="Node000005" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="5,5,164,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="60,252,47,342,43,445,45,498,52,551,63,603,79,652,107,707,143,757,184,803,226,844,222,848,180,807,139,761,102,710,74,654,58,604,46,552,40,498,38,445,42,342,54,251"/>
+<area shape="rect" id="Node000008" href="$d4/df8/classdata_1_1SequenceRepository.html" title="Repository for managing sequence numbers." alt="" coords="502,401,707,566"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="165,149,239,174,324,209,411,255,453,282,492,311,526,346,555,385,551,389,522,350,488,315,450,286,409,259,322,214,237,179,163,154"/>
+<area shape="rect" id="Node000006" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title="Manages market data subscriptions and broadcasts updates." alt="" coords="217,313,477,653"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="350,654,350,700,345,700,345,654"/>
+<area shape="rect" id="Node000007" href="$da/d82/classfix_1_1FixSessionManager.html" title=" " alt="" coords="488,776,719,1101"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="605,1101,605,1207,599,1207,600,1101"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="607,566,607,760,601,759,602,566"/>
+</map>

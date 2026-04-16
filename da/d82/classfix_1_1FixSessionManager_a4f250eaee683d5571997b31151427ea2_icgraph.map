@@ -1,0 +1,11 @@
+<map id="fix::FixSessionManager::useNextOutboundSequence" name="fix::FixSessionManager::useNextOutboundSequence">
+<area shape="rect" id="Node000001" title="Increments and persists the outbound sequence number." alt="" coords="276,101,487,141"/>
+<area shape="rect" id="Node000002" href="$da/d82/classfix_1_1FixSessionManager.html#a3b017276d9e26bcadfe9c9dc57a3767a" title="Increments the outbound sequence number without returning it." alt="" coords="5,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="322,98,227,60,191,48,193,43,229,55,324,93"/>
+<area shape="rect" id="Node000003" href="$d6/d41/classfix_1_1FixSession.html#ace82583d36bffe511b6dbabbd809df27" title=" " alt="" coords="8,69,225,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="262,110,225,105,226,100,263,104"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#ac2c671527e9c4461990c7c2b35064314" title=" " alt="" coords="17,133,216,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="263,138,217,144,216,139,262,133"/>
+<area shape="rect" id="Node000005" href="$d6/d41/classfix_1_1FixSession.html#a70c4e4dd0874e4d7bfdbe239faacb92e" title=" " alt="" coords="17,197,216,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="324,149,229,188,193,200,191,195,227,183,322,145"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="fix::FixServer" name="fix::FixServer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="125,1304,384,1704"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html" title="High&#45;level manager for partitions and command dispatch." alt="" coords="235,408,456,853"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="351,853,343,1061,334,1172,320,1280,319,1288,313,1287,315,1280,329,1171,338,1061,346,853"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="31,53,190,298"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,297,213,383,229,414,225,416,208,385,166,300"/>
+<area shape="rect" id="Node000006" href="$d4/df8/classdata_1_1SequenceRepository.html" title="Repository for managing sequence numbers." alt="" coords="5,548,211,713"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="113,299,111,532,106,532,107,299"/>
+<area shape="rect" id="Node000004" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title="Manages market data subscriptions and broadcasts updates." alt="" coords="215,5,475,345"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="348,346,348,392,343,392,343,346"/>
+<area shape="rect" id="Node000005" href="$da/d82/classfix_1_1FixSessionManager.html" title=" " alt="" coords="47,916,278,1241"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="183,1241,191,1279,192,1288,187,1289,185,1281,178,1242"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="121,713,144,899,138,900,115,714"/>
+</map>

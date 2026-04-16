@@ -1,0 +1,8 @@
+<map id="fix::FixServer::registerSession" name="fix::FixServer::registerSession">
+<area shape="rect" id="Node000001" title=" " alt="" coords="452,22,617,62"/>
+<area shape="rect" id="Node000002" href="$d2/d74/classfix_1_1FixServer.html#aca2a6e0786d1860918ad4ceca64aad84" title=" " alt="" coords="229,29,404,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="438,45,404,45,404,39,438,39"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="355,20,345,11,317,8,294,10,281,15,279,20,285,28,281,31,274,21,278,11,292,5,317,3,347,6,359,15"/>
+<area shape="rect" id="Node000003" href="$d2/d74/classfix_1_1FixServer.html#a5857a16bc721047f238ef718a360949e" title=" " alt="" coords="5,29,181,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="215,45,181,45,181,39,215,39"/>
+</map>

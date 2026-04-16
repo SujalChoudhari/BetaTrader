@@ -1,0 +1,7 @@
+<map id="data::DatabaseWorker::getQueueSize" name="data::DatabaseWorker::getQueueSize">
+<area shape="rect" id="Node000001" title=" " alt="" coords="241,37,408,77"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html#a5b7b36a28bc77760b034ec0bc435201d" title=" " alt="" coords="5,5,193,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,46,193,41,194,36,228,41"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html#af965317802ce01d23ef4ac4d550e6919" title=" " alt="" coords="16,69,183,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,74,183,80,183,75,227,68"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="common/include/common_fix/CancelOrderRequest.h" name="common/include/common_fix/CancelOrderRequest.h">
+<area shape="rect" id="Node000001" title="Defines the structure for a FIX Order Cancel Request." alt="" coords="95,5,290,45"/>
+<area shape="rect" id="Node000002" href="$d6/d5b/BinaryToCancelOrderRequestConverter_8h.html" title="Declares the BinaryToCancelOrderRequestConverter class for converting FIX messages to CancelOrderRequ..." alt="" coords="162,93,359,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,55,244,92,239,95,212,58"/>
+<area shape="rect" id="Node000003" href="$d3/dae/BinaryToCancelOrderRequestConverter_8cpp.html" title=" " alt="" coords="5,196,244,251"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="172,58,152,94,137,148,130,196,124,195,132,147,148,92,168,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="216,158,162,198,159,194,213,154"/>
+<area shape="rect" id="Node000004" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="268,203,443,243"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="297,157,339,201,335,205,293,160"/>
+</map>

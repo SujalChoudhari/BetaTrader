@@ -1,0 +1,7 @@
+<map id="trading_core::TradeIDGenerator::saveState" name="trading_core::TradeIDGenerator::saveState">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,231,45"/>
+<area shape="rect" id="Node000002" href="$d3/d80/classdata_1_1TradeIDRepository.html#a52c9b3993b71a05b58abe52e9d45a6fd" title=" " alt="" coords="279,5,457,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,23,265,23,265,28,231,28"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html#a5c99f0ef4800a689e9e73df9f700f905" title=" " alt="" coords="505,5,672,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="457,23,492,23,492,28,457,28"/>
+</map>

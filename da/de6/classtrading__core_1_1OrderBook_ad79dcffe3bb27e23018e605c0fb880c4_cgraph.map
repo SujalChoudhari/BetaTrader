@@ -1,0 +1,13 @@
+<map id="trading_core::OrderBook::insertOrder" name="trading_core::OrderBook::insertOrder">
+<area shape="rect" id="Node000001" title="Inserts an order into the order book." alt="" coords="5,113,185,153"/>
+<area shape="rect" id="Node000002" href="$d0/dd8/classcommon_1_1Order.html#a660801c23f1df830689f5b375f43e78e" title="Gets the order price." alt="" coords="255,5,439,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,110,170,75,232,41,258,32,260,37,234,46,173,79,123,115"/>
+<area shape="rect" id="Node000003" href="$d0/dd8/classcommon_1_1Order.html#a454866e05c7ff8020e109ac7879c5e64" title="Gets the remaining quantity of the order." alt="" coords="235,55,458,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,110,245,96,246,101,184,115"/>
+<area shape="rect" id="Node000004" href="$d0/dd8/classcommon_1_1Order.html#a348ad40c66accf1d2a2157b37272c790" title="Gets the order side (Buy/Sell)." alt="" coords="257,120,437,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="185,130,243,130,243,135,185,135"/>
+<area shape="rect" id="Node000005" href="$d0/dd8/classcommon_1_1Order.html#a743f41f3a7752dc477a7d2a113ef1d78" title="Gets the order creation timestamp." alt="" coords="233,169,460,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="186,148,268,164,267,169,185,153"/>
+<area shape="rect" id="Node000006" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#a32ec3cd6649eab71c3383273436daefb" title=" " alt="" coords="239,219,454,259"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="131,150,179,177,234,204,258,212,256,217,232,208,177,182,128,155"/>
+</map>

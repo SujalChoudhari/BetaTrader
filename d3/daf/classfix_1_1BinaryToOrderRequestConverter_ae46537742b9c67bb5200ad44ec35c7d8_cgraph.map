@@ -1,0 +1,9 @@
+<map id="fix::BinaryToOrderRequestConverter::convert" name="fix::BinaryToOrderRequestConverter::convert">
+<area shape="rect" id="Node000001" title="Converts a raw FIX message string into an OrderRequest object." alt="" coords="5,47,196,87"/>
+<area shape="rect" id="Node000002" href="$dc/d18/namespacefix.html#ad8a258a1bda5edecc3a0483327b9c94d" title="Converts a character representation of an order side to the common::OrderSide enum." alt="" coords="249,5,401,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,45,253,31,254,36,193,50"/>
+<area shape="rect" id="Node000003" href="$d9/d0c/namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="244,55,407,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,65,230,65,230,70,196,70"/>
+<area shape="rect" id="Node000004" href="$dc/d18/namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="267,104,383,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="193,85,254,98,253,104,192,90"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="data::MarketHistoryRepository::addCandle" name="data::MarketHistoryRepository::addCandle">
+<area shape="rect" id="Node000001" title=" " alt="" coords="451,5,672,45"/>
+<area shape="rect" id="Node000002" href="$d6/d4d/classohlc_1_1CandleAggregator.html#af4441ac17b1901483a9e3d4b8f4ef64d" title=" " alt="" coords="228,5,403,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="437,28,403,28,403,23,437,23"/>
+<area shape="rect" id="Node000003" href="$d6/d4d/classohlc_1_1CandleAggregator.html#ac17898787794bd459132a4dcd75387ff" title=" " alt="" coords="5,5,180,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="214,28,180,28,180,23,214,23"/>
+</map>

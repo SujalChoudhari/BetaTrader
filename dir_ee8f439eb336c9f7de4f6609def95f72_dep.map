@@ -1,0 +1,14 @@
+<map id="exchange/exchange_risk/include" name="exchange/exchange_risk/include">
+<area shape="rect" id="node2" href="dir_d4e2c724db8257b6d9f5ba008e0a2796.html" title="exchange_risk" alt="" coords="208,63,324,88"/>
+<area shape="rect" id="node3" href="dir_44f1c1eaaa5c18eb214b011842b8ed6a.html" title="exchange_matching" alt="" coords="5,136,159,161"/>
+<area shape="poly" id="edge1" href="dir_000031_000025.html" alt="" coords="237,91,126,133,124,128,235,86"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000031_000025.html" title="1" alt="" coords="127,130,137,144"/>
+<area shape="rect" id="node4" href="dir_83861ae5f3f823e747dcdf71d319ec22.html" title="exchange_persistence" alt="" coords="183,136,349,161"/>
+<area shape="poly" id="edge2" href="dir_000031_000027.html" alt="" coords="269,88,269,122,263,122,263,88"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000031_000027.html" title="1" alt="" coords="270,110,279,125"/>
+<area shape="rect" id="node5" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html" title="common" alt="" coords="373,136,452,161"/>
+<area shape="poly" id="edge3" href="dir_000031_000014.html" alt="" coords="291,86,378,128,375,132,288,90"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000031_000014.html" title="2" alt="" coords="371,113,381,128"/>
+<area shape="rect" id="clust2" href="dir_ee8f439eb336c9f7de4f6609def95f72.html" alt="" coords="197,52,429,99"/>
+<area shape="rect" id="clust1" href="dir_ec09bb86f10ccb6473524bdc98d29d78.html" title="exchange_risk" alt="" coords="186,16,439,109"/>
+</map>

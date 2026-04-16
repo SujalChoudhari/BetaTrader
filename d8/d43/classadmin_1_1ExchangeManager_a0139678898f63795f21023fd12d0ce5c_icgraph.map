@@ -1,0 +1,12 @@
+<map id="admin::ExchangeManager::getCore" name="admin::ExchangeManager::getCore">
+<area shape="rect" id="Node000001" title=" " alt="" coords="741,35,932,75"/>
+<area shape="rect" id="Node000002" href="$d7/d24/classadmin_1_1ExchangePanel.html#a1d58dc351747a758d84ab9a1a99db4b3" title=" " alt="" coords="524,5,693,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="727,43,693,39,694,34,728,38"/>
+<area shape="rect" id="Node000004" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,42,259,67"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="728,60,693,60,307,60,259,59,259,54,307,55,693,55,727,54"/>
+<area shape="rect" id="Node000003" href="$d7/d24/classadmin_1_1ExchangePanel.html#abca1f835c62546e4c2d218d985ca6a51" title="Renders the exchange control dashboard." alt="" coords="307,5,476,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="510,28,476,28,476,23,510,23"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="293,42,259,47,258,41,293,37"/>
+<area shape="rect" id="Node000005" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,42,60,67"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,57,60,57,60,52,94,52"/>
+</map>

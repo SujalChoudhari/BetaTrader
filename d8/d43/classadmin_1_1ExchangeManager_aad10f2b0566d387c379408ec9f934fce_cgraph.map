@@ -1,0 +1,5 @@
+<map id="admin::ExchangeManager::start" name="admin::ExchangeManager::start">
+<area shape="rect" id="Node000001" title="Starts the exchange services." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$d8/d43/classadmin_1_1ExchangeManager.html#aa6e1020f6a55c5f397def3e31dc49f46" title="Stops all exchange services." alt="" coords="244,5,435,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

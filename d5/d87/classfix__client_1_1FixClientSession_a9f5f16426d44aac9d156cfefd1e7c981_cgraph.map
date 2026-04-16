@@ -1,0 +1,27 @@
+<map id="fix_client::FixClientSession::handleLogonResponse" name="fix_client::FixClientSession::handleLogonResponse">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,70,201,110"/>
+<area shape="rect" id="Node000002" href="$d5/d87/classfix__client_1_1FixClientSession.html#a2b002227c40ecc4589bf4030d51e0c15" title=" " alt="" coords="1025,38,1221,78"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,67,333,40,493,19,627,8,731,3,835,6,968,19,1039,32,1038,37,968,24,835,12,731,8,627,13,494,24,334,45,194,72"/>
+<area shape="rect" id="Node000003" href="$d5/d87/classfix__client_1_1FixClientSession.html#a7b263fc960469fcbfd1b719ff435343a" title=" " alt="" coords="249,130,445,170"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="186,107,253,124,251,129,185,112"/>
+<area shape="poly" id="edge13_Node000003_Node000003" title=" " alt="" coords="302,130,299,120,307,111,323,105,347,103,376,106,391,113,389,118,374,111,347,108,324,110,310,115,305,121,307,129"/>
+<area shape="rect" id="Node000004" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#ae4c13c312694111ba7434b26897cb839" title=" " alt="" coords="493,162,707,202"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="446,159,480,164,479,169,445,165"/>
+<area shape="rect" id="Node000007" href="$d5/d87/classfix__client_1_1FixClientSession.html#a0bf63e25960f53568356055f36e16964" title=" " alt="" coords="502,98,698,138"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="445,135,488,129,489,134,446,140"/>
+<area shape="rect" id="Node000009" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#af3850fa0c9cd3f22f20250ad3d0570c2" title="Gets the next expected outgoing sequence number." alt="" coords="509,226,691,266"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="392,167,494,211,516,219,514,224,492,216,389,172"/>
+<area shape="rect" id="Node000010" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#a87e27e02a01484af19725b56612312c3" title="Gets the next expected incoming sequence number." alt="" coords="511,290,689,330"/>
+<area shape="poly" id="edge10_Node000003_Node000010" title=" " alt="" coords="368,168,422,221,457,250,495,275,508,282,505,287,492,280,453,255,418,225,364,172"/>
+<area shape="rect" id="Node000011" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#a62dd4924f38a054afd546db88c7fe533" title="Sets both sequence numbers and persists them to disk." alt="" coords="511,34,689,74"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="389,127,492,83,514,76,516,81,494,88,392,132"/>
+<area shape="rect" id="Node000005" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#aa7365a335457a5cfce2b7c0ddd74fb11" title=" " alt="" coords="755,162,968,202"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="707,179,741,179,741,184,707,184"/>
+<area shape="rect" id="Node000006" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#a524ef6c13d867b0477f9772d0f180453" title=" " alt="" coords="1016,162,1229,202"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="968,179,1002,179,1002,184,968,184"/>
+<area shape="rect" id="Node000008" href="$d5/d87/classfix__client_1_1FixClientSession.html#a566125965b834a0d18c2ab99f2c297c1" title="Closes the socket and stops reading." alt="" coords="763,98,959,138"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="698,115,749,115,749,120,698,120"/>
+<area shape="poly" id="edge8_Node000008_Node000002" title=" " alt="" coords="949,95,1021,78,1022,83,950,100"/>
+<area shape="rect" id="Node000012" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#ae073afe0b3f86027d1bff5ba6a1c86e4" title=" " alt="" coords="772,34,951,74"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="690,51,758,51,758,56,690,56"/>
+</map>

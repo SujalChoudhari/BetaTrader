@@ -1,0 +1,5 @@
+<map id="data::OrderRepository" name="data::OrderRepository">
+<area shape="rect" id="Node000001" title="Persists and retrieves common::Order objects." alt="" coords="5,313,207,499"/>
+<area shape="rect" id="Node000002" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="27,5,185,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,251,109,297,103,297,103,251"/>
+</map>

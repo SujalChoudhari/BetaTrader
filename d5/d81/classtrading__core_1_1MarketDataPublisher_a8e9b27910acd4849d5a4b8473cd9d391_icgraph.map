@@ -1,0 +1,9 @@
+<map id="trading_core::MarketDataPublisher::addGeneralIncrementalSubscriber" name="trading_core::MarketDataPublisher::addGeneralIncrementalSubscriber">
+<area shape="rect" id="Node000001" title=" " alt="" coords="540,5,783,60"/>
+<area shape="rect" id="Node000002" href="$d8/d5b/classclient__app_1_1App.html#a08481caa40e27c8624449565db6b8e38" title=" " alt="" coords="307,20,492,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="526,35,492,35,492,30,526,30"/>
+<area shape="rect" id="Node000003" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,20,259,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="293,35,259,35,259,30,293,30"/>
+<area shape="rect" id="Node000004" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,20,60,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="94,35,60,35,60,30,94,30"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="client_ui::PlotCandlestick" name="client_ui::PlotCandlestick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="712,13,899,38"/>
+<area shape="rect" id="Node000002" href="$d4/d7b/classclient__ui_1_1ChartPanel.html#a621a9dd80a52048177e4b501b3672d10" title=" " alt="" coords="509,5,664,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="698,28,664,28,664,23,698,23"/>
+<area shape="rect" id="Node000003" href="$d4/d7b/classclient__ui_1_1ChartPanel.html#a6bf9dce984ec96f813b55b6e1dcc2d0c" title=" " alt="" coords="307,5,461,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="496,28,462,28,462,23,496,23"/>
+<area shape="rect" id="Node000004" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,13,259,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="293,28,259,28,259,23,293,23"/>
+<area shape="rect" id="Node000005" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>

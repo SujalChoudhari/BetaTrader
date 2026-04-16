@@ -1,0 +1,7 @@
+<map id="exchange/exchange_fix/include/fix/MarketDataSnapshotFullRefreshToBinaryConverter.h" name="exchange/exchange_fix/include/fix/MarketDataSnapshotFullRefreshToBinaryConverter.h">
+<area shape="rect" id="Node000001" title="Declares the MarketDataSnapshotFullRefreshToBinaryConverter class for converting MarketDataSnapshotFu..." alt="" coords="87,5,320,60"/>
+<area shape="rect" id="Node000002" href="$da/da9/FixSession_8cpp.html" title=" " alt="" coords="5,115,180,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,72,115,117,112,113,162,68"/>
+<area shape="rect" id="Node000003" href="$dd/d1e/MarketDataSnapshotFullRefreshToBinaryConverter_8cpp.html" title=" " alt="" coords="205,108,423,163"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="244,67,287,106,283,110,241,71"/>
+</map>

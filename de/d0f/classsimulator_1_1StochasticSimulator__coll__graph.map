@@ -1,0 +1,9 @@
+<map id="simulator::StochasticSimulator" name="simulator::StochasticSimulator">
+<area shape="rect" id="Node000001" title="Simulates thousands of bots trading realistically using a stochastic process." alt="" coords="93,916,308,1341"/>
+<area shape="rect" id="Node000002" href="$d3/d30/classtrading__core_1_1TradingCore.html" title="High&#45;level manager for partitions and command dispatch." alt="" coords="90,408,311,853"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,854,203,900,198,900,198,854"/>
+<area shape="rect" id="Node000003" href="$d9/d9e/classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="5,53,164,298"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,298,142,391,137,392,113,299"/>
+<area shape="rect" id="Node000004" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html" title="Manages market data subscriptions and broadcasts updates." alt="" coords="188,5,448,345"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="283,346,274,385,272,393,267,391,269,383,278,345"/>
+</map>

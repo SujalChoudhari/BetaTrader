@@ -1,0 +1,35 @@
+<map id="exchange/exchange_fix/include/fix/FixSessionManager.h" name="exchange/exchange_fix/include/fix/FixSessionManager.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="423,5,657,45"/>
+<area shape="rect" id="Node000002" href="$d0/d83/SequenceRepository_8h.html" title=" " alt="" coords="282,167,481,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="423,44,330,64,294,79,271,95,266,105,266,114,278,131,302,147,331,160,329,164,299,151,274,135,261,115,261,103,267,92,291,74,328,59,422,39"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="583,313,641,339"/>
+<area shape="poly" id="edge13_Node000001_Node000007" title=" " alt="" coords="658,37,757,58,797,73,822,92,832,108,837,125,838,141,835,158,817,190,790,220,756,247,719,272,651,310,648,305,716,268,753,243,786,216,813,186,830,156,833,141,832,126,827,110,818,95,794,78,755,63,657,43"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="181,240,248,265"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="423,45,325,66,285,80,259,95,238,125,225,161,219,196,217,227,211,226,213,196,220,159,233,123,256,91,283,75,323,61,422,39"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="508,93,572,119"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="543,46,543,79,537,79,537,46"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="597,93,721,119"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="570,43,631,84,628,88,567,48"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="745,93,807,119"/>
+<area shape="poly" id="edge15_Node000001_Node000013" title=" " alt="" coords="597,43,733,88,731,93,596,48"/>
+<area shape="rect" id="Node000014" href="$d4/db4/SessionState_8h.html" title=" " alt="" coords="281,93,484,119"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="503,48,419,89,417,85,501,43"/>
+<area shape="rect" id="Node000003" href="$d6/d84/DatabaseWorker_8h.html" title="Asynchronous database worker abstraction." alt="" coords="272,240,445,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,193,369,228,364,226,375,192"/>
+<area shape="poly" id="edge9_Node000002_Node000007" title=" " alt="" coords="400,190,511,263,581,304,578,309,508,268,397,194"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="356,194,255,237,253,232,354,190"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="521,240,575,265"/>
+<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="409,190,509,232,507,237,407,194"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="94,313,250,339"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="330,268,216,311,214,306,328,263"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="274,313,446,339"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="362,266,362,300,357,300,356,266"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="470,313,557,339"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="385,263,477,305,475,310,382,268"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="400,263,570,310,569,315,399,268"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="5,313,69,339"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="303,268,83,316,82,310,302,263"/>
+<area shape="poly" id="edge17_Node000014_Node000002" title=" " alt="" coords="385,119,384,153,379,153,380,119"/>
+<area shape="poly" id="edge19_Node000014_Node000007" title=" " alt="" coords="416,116,457,134,504,160,551,195,590,239,605,269,612,299,607,301,600,271,586,241,548,199,501,165,454,139,414,121"/>
+<area shape="poly" id="edge18_Node000014_Node000009" title=" " alt="" coords="353,121,312,141,272,169,247,198,228,229,224,226,243,195,269,165,310,136,350,116"/>
+</map>

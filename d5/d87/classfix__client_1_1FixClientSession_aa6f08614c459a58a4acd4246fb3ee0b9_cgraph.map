@@ -1,0 +1,24 @@
+<map id="fix_client::FixClientSession::sendNewOrder" name="fix_client::FixClientSession::sendNewOrder">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,201,109"/>
+<area shape="rect" id="Node000002" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#a524ef6c13d867b0477f9772d0f180453" title=" " alt="" coords="755,5,968,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,67,333,40,493,19,600,15,707,19,741,19,741,25,707,24,600,20,494,24,334,45,194,72"/>
+<area shape="rect" id="Node000003" href="$d5/d87/classfix__client_1_1FixClientSession.html#ab041cd974fe6102268fbe008ac0cb000" title="Queues a raw FIX message body to be properly headed, trailed, sequenced, and sent." alt="" coords="249,129,445,169"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="186,107,253,123,251,129,185,112"/>
+<area shape="rect" id="Node000004" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#aa7365a335457a5cfce2b7c0ddd74fb11" title=" " alt="" coords="493,33,707,73"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="389,127,492,83,514,75,516,80,494,88,392,132"/>
+<area shape="rect" id="Node000005" href="$d5/d87/classfix__client_1_1FixClientSession.html#a0bf63e25960f53568356055f36e16964" title=" " alt="" coords="502,97,698,137"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="445,134,488,129,489,134,446,140"/>
+<area shape="rect" id="Node000008" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#af3850fa0c9cd3f22f20250ad3d0570c2" title="Gets the next expected outgoing sequence number." alt="" coords="509,161,691,201"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="446,159,495,165,495,171,445,164"/>
+<area shape="rect" id="Node000009" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#a87e27e02a01484af19725b56612312c3" title="Gets the next expected incoming sequence number." alt="" coords="511,225,689,265"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="392,167,494,211,516,218,514,223,492,216,389,172"/>
+<area shape="rect" id="Node000010" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#a62dd4924f38a054afd546db88c7fe533" title="Sets both sequence numbers and persists them to disk." alt="" coords="511,289,689,329"/>
+<area shape="poly" id="edge10_Node000003_Node000010" title=" " alt="" coords="368,168,422,221,457,250,495,275,508,282,505,286,492,280,453,254,418,225,364,172"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="707,39,741,36,741,41,707,45"/>
+<area shape="rect" id="Node000006" href="$d5/d87/classfix__client_1_1FixClientSession.html#a566125965b834a0d18c2ab99f2c297c1" title="Closes the socket and stops reading." alt="" coords="763,97,959,137"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="698,115,749,115,749,120,698,120"/>
+<area shape="rect" id="Node000007" href="$d5/d87/classfix__client_1_1FixClientSession.html#a2b002227c40ecc4589bf4030d51e0c15" title=" " alt="" coords="1016,97,1212,137"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="960,115,1002,115,1002,120,960,120"/>
+<area shape="rect" id="Node000011" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#ae073afe0b3f86027d1bff5ba6a1c86e4" title=" " alt="" coords="772,289,951,329"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="690,307,758,307,758,312,690,312"/>
+</map>

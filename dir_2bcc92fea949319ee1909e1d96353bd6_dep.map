@@ -1,0 +1,25 @@
+<map id="client/client_app/src" name="client/client_app/src">
+<area shape="rect" id="node1" href="dir_2bcc92fea949319ee1909e1d96353bd6.html" title="src" alt="" coords="439,52,481,77"/>
+<area shape="rect" id="node2" href="dir_12e0745b17a31a24ad901d76949ad070.html" title="client_orderbook" alt="" coords="5,125,136,151"/>
+<area shape="poly" id="edge1" href="dir_000058_000009.html" alt="" coords="440,72,147,125,146,120,439,67"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000058_000009.html" title="1" alt="" coords="148,123,157,138"/>
+<area shape="rect" id="node3" href="dir_18c2db3339033395e94aff555c74038f.html" title="exchange" alt="" coords="160,125,245,151"/>
+<area shape="poly" id="edge2" href="dir_000058_000021.html" alt="" coords="440,74,258,124,256,119,438,69"/>
+<area shape="rect" id="edge2-headlabel" href="dir_000058_000021.html" title="1" alt="" coords="259,121,269,136"/>
+<area shape="rect" id="node4" href="dir_761d2e1b508a5bee83f0ddf35f781293.html" title="client_simulator" alt="" coords="270,125,397,151"/>
+<area shape="poly" id="edge3" href="dir_000058_000011.html" alt="" coords="441,80,367,121,365,116,438,75"/>
+<area shape="rect" id="edge3-headlabel" href="dir_000058_000011.html" title="1" alt="" coords="369,116,379,131"/>
+<area shape="rect" id="node5" href="dir_77308e3c60e8c27b26adc2f49ae5b3b2.html" title="client_ui" alt="" coords="421,125,499,151"/>
+<area shape="poly" id="edge4" href="dir_000058_000012.html" alt="" coords="463,78,463,112,457,112,457,78"/>
+<area shape="rect" id="edge4-headlabel" href="dir_000058_000012.html" title="6" alt="" coords="464,100,473,114"/>
+<area shape="rect" id="node6" href="dir_819bedaecf2cc276599158ca7a6cf0ad.html" title="client_admin" alt="" coords="523,125,629,151"/>
+<area shape="poly" id="edge5" href="dir_000058_000002.html" alt="" coords="480,75,547,116,544,120,477,80"/>
+<area shape="rect" id="edge5-headlabel" href="dir_000058_000002.html" title="2" alt="" coords="541,101,551,116"/>
+<area shape="rect" id="node7" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html" title="common" alt="" coords="654,125,733,151"/>
+<area shape="poly" id="edge6" href="dir_000058_000014.html" alt="" coords="481,70,643,119,642,124,480,75"/>
+<area shape="rect" id="edge6-headlabel" href="dir_000058_000014.html" title="1" alt="" coords="636,105,645,119"/>
+<area shape="rect" id="node8" href="dir_ed6d895caf9592543aba0007f5b96dbe.html" title="client_ohlc" alt="" coords="757,125,849,151"/>
+<area shape="poly" id="edge7" href="dir_000058_000008.html" alt="" coords="481,68,743,122,742,127,480,73"/>
+<area shape="rect" id="edge7-headlabel" href="dir_000058_000008.html" title="1" alt="" coords="736,108,745,123"/>
+<area shape="rect" id="clust1" href="dir_067b04b0118a075c7b0c332bd55385ff.html" title="client_app" alt="" coords="416,16,505,88"/>
+</map>

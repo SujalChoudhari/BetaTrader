@@ -1,0 +1,9 @@
+<map id="ohlc::CandleAggregator::onTrade" name="ohlc::CandleAggregator::onTrade">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,180,45"/>
+<area shape="rect" id="Node000002" href="$d6/d4d/classohlc_1_1CandleAggregator.html#af4441ac17b1901483a9e3d4b8f4ef64d" title=" " alt="" coords="228,5,403,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,23,214,23,214,28,180,28"/>
+<area shape="rect" id="Node000003" href="$d7/d37/classdata_1_1MarketHistoryRepository.html#a3d1b1f6d3ac56abd7a1c630c54962392" title=" " alt="" coords="451,5,672,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="403,23,437,23,437,28,403,28"/>
+<area shape="rect" id="Node000004" href="$d9/d9e/classdata_1_1DatabaseWorker.html#a5c99f0ef4800a689e9e73df9f700f905" title=" " alt="" coords="720,5,887,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="672,23,706,23,706,28,672,28"/>
+</map>

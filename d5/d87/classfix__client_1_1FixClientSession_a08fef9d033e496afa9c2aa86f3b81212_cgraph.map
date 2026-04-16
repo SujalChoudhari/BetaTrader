@@ -1,0 +1,11 @@
+<map id="fix_client::FixClientSession::handleSequenceReset" name="fix_client::FixClientSession::handleSequenceReset">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,201,109"/>
+<area shape="rect" id="Node000002" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#af3850fa0c9cd3f22f20250ad3d0570c2" title="Gets the next expected outgoing sequence number." alt="" coords="249,5,432,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,67,252,46,254,51,179,72"/>
+<area shape="rect" id="Node000003" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#a62dd4924f38a054afd546db88c7fe533" title="Sets both sequence numbers and persists them to disk." alt="" coords="251,69,430,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,87,238,87,238,92,201,92"/>
+<area shape="rect" id="Node000005" href="$dc/d18/namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="283,134,399,159"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="187,107,275,128,273,133,186,112"/>
+<area shape="rect" id="Node000004" href="$d7/dc0/classfix__client_1_1SeqNumStore.html#ae073afe0b3f86027d1bff5ba6a1c86e4" title=" " alt="" coords="480,69,659,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="430,87,466,87,466,92,430,92"/>
+</map>

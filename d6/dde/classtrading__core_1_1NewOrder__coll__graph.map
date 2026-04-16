@@ -1,0 +1,5 @@
+<map id="trading_core::NewOrder" name="trading_core::NewOrder">
+<area shape="rect" id="Node000001" title="A command to submit a new order to the trading engine." alt="" coords="7,239,175,344"/>
+<area shape="rect" id="Node000002" href="$dc/dac/classtrading__core_1_1Command.html" title="An internal representation of a request, converted from an FIX message into this object for faster pr..." alt="" coords="5,5,176,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,204,93,239,88,239,88,204"/>
+</map>

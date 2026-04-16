@@ -1,0 +1,25 @@
+var classclient__app_1_1App =
+[
+    [ "App", "d8/d5b/classclient__app_1_1App.html#a34cf9c5723b501c600b97e5afa60821c", null ],
+    [ "~App", "d8/d5b/classclient__app_1_1App.html#a267939fa95997be073a5ae82bfdd2206", null ],
+    [ "initLogic", "d8/d5b/classclient__app_1_1App.html#a08481caa40e27c8624449565db6b8e38", null ],
+    [ "run", "d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702", null ],
+    [ "mAggregator", "d8/d5b/classclient__app_1_1App.html#ab26053c24953e87ba92601eee1238cb8", null ],
+    [ "mBookPanel", "d8/d5b/classclient__app_1_1App.html#ab5741e590187ac73751dad6002928630", null ],
+    [ "mChartPanel", "d8/d5b/classclient__app_1_1App.html#ac5211064615645d97c8dcb7cea39bf24", null ],
+    [ "mConnPanel", "d8/d5b/classclient__app_1_1App.html#accdecc13f1a35d34e61b1095fd88b031", null ],
+    [ "mCurrentCore", "d8/d5b/classclient__app_1_1App.html#ad11ba9ae733e883a8bb6e126e6c94e96", null ],
+    [ "mExchMgr", "d8/d5b/classclient__app_1_1App.html#a677e56e2694c5d3dbce33eff3a6bf585", null ],
+    [ "mExchPanel", "d8/d5b/classclient__app_1_1App.html#ad3e34ba6525eec11197d06a632e27703", null ],
+    [ "mFixSession", "d8/d5b/classclient__app_1_1App.html#aa49655929128f3c9bbe103eb93ea81cd", null ],
+    [ "mHistoryRepo", "d8/d5b/classclient__app_1_1App.html#a7a3a263e37408a2509f0c2d193da8a47", null ],
+    [ "mIoCtx", "d8/d5b/classclient__app_1_1App.html#a20c8424f54c86d4fe5f0bbb54307ecac", null ],
+    [ "mLogicInitialized", "d8/d5b/classclient__app_1_1App.html#a2e4e8263b6c2a9a0eb4ba42333279cd9", null ],
+    [ "mNetworkThread", "d8/d5b/classclient__app_1_1App.html#a7c997f7de65fcd854afb6d3f2a4cdb7c", null ],
+    [ "mOrderBook", "d8/d5b/classclient__app_1_1App.html#ae4fc02038e5b7a0a10503db82cbfadfa", null ],
+    [ "mSimPanel", "d8/d5b/classclient__app_1_1App.html#ab47d60cacba34e4e279c689a0a954493", null ],
+    [ "mSimulator", "d8/d5b/classclient__app_1_1App.html#aec55dfdb3f4486b9ab6271d01bd763d2", null ],
+    [ "mTradingPanel", "d8/d5b/classclient__app_1_1App.html#af050b64874156a80fe96887d08f9ec7f", null ],
+    [ "mUI", "d8/d5b/classclient__app_1_1App.html#a41546178d5ab107f03401fed057eb4aa", null ],
+    [ "mWork", "d8/d5b/classclient__app_1_1App.html#a4a44f7404a8216d50b75ffb3824d0608", null ]
+];

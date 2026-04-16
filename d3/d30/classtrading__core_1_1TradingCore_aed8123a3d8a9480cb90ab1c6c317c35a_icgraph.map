@@ -1,0 +1,14 @@
+<map id="trading_core::TradingCore::getOrderIDGenerator" name="trading_core::TradingCore::getOrderIDGenerator">
+<area shape="rect" id="Node000001" title=" " alt="" coords="776,51,964,91"/>
+<area shape="rect" id="Node000002" href="$d6/d41/classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="509,22,696,62"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="762,62,696,55,697,50,763,57"/>
+<area shape="rect" id="Node000005" href="$da/dce/classsimulator_1_1StochasticSimulator.html#a6cd8fbcf12d527602b33595538e85796" title=" " alt="" coords="477,87,728,112"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="763,85,724,89,724,84,762,80"/>
+<area shape="rect" id="Node000003" href="$d6/d41/classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="232,29,404,55"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="495,45,404,45,404,39,495,39"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="360,20,349,11,318,8,293,10,279,15,277,20,284,27,280,31,272,21,276,11,292,5,318,3,351,7,364,16"/>
+<area shape="rect" id="Node000004" href="$d6/d41/classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="5,29,159,55"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="218,45,159,45,159,39,218,39"/>
+<area shape="rect" id="Node000006" href="$da/dce/classsimulator_1_1StochasticSimulator.html#a09258ccc9c0440614bc42263b08212b5" title=" " alt="" coords="207,79,429,119"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="464,102,430,102,430,97,464,97"/>
+</map>

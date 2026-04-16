@@ -1,0 +1,11 @@
+<map id="trading_core::TradingCore::getMarketDataPublisher" name="trading_core::TradingCore::getMarketDataPublisher">
+<area shape="rect" id="Node000001" title=" " alt="" coords="540,23,728,63"/>
+<area shape="rect" id="Node000002" href="$d2/d74/classfix_1_1FixServer.html#a5857a16bc721047f238ef718a360949e" title=" " alt="" coords="311,5,487,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="526,34,487,30,488,25,527,29"/>
+<area shape="rect" id="Node000003" href="$d8/d5b/classclient__app_1_1App.html#a08481caa40e27c8624449565db6b8e38" title=" " alt="" coords="307,55,492,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="527,57,492,61,492,55,526,52"/>
+<area shape="rect" id="Node000004" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,55,259,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="293,70,259,70,259,65,293,65"/>
+<area shape="rect" id="Node000005" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,55,60,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,70,60,70,60,65,94,65"/>
+</map>

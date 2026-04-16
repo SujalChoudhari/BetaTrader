@@ -1,0 +1,3 @@
+<map id="client_ui::ChartPanel" name="client_ui::ChartPanel">
+<area shape="rect" id="Node000001" title="Renders OHLC candlestick charts using ImPlot." alt="" coords="5,5,156,211"/>
+</map>

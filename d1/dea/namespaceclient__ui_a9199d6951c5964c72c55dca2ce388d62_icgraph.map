@@ -1,0 +1,9 @@
+<map id="client_ui::glfw_error_callback" name="client_ui::glfw_error_callback">
+<area shape="rect" id="Node000001" title=" " alt="" coords="511,5,661,45"/>
+<area shape="rect" id="Node000002" href="$da/d63/classclient__ui_1_1UIManager.html#a96170d0d096ad2a408d1c5dfb7b4b0ba" title="Initializes GLFW, creates the window, and sets up ImGui." alt="" coords="307,5,463,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="497,28,463,28,463,23,497,23"/>
+<area shape="rect" id="Node000003" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,13,259,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="293,28,259,28,259,23,293,23"/>
+<area shape="rect" id="Node000004" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="admin::ExchangeManager::stop" name="admin::ExchangeManager::stop">
+<area shape="rect" id="Node000001" title="Stops all exchange services." alt="" coords="980,63,1171,103"/>
+<area shape="rect" id="Node000002" href="$d8/d43/classadmin_1_1ExchangeManager.html#a8136312277294ac287a1c84ea9b46e92" title=" " alt="" coords="741,5,932,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="978,62,920,48,921,43,979,57"/>
+<area shape="rect" id="Node000003" href="$d7/d24/classadmin_1_1ExchangePanel.html#ae5fb552bfbda082d11d5d32ecb11fe59" title=" " alt="" coords="524,92,693,132"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="966,92,694,109,693,104,966,87"/>
+<area shape="rect" id="Node000007" href="$d8/d43/classadmin_1_1ExchangeManager.html#aad10f2b0566d387c379408ec9f934fce" title="Starts the exchange services." alt="" coords="741,120,932,160"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="979,108,921,123,920,117,978,103"/>
+<area shape="rect" id="Node000004" href="$d7/d24/classadmin_1_1ExchangePanel.html#abca1f835c62546e4c2d218d985ca6a51" title="Renders the exchange control dashboard." alt="" coords="307,92,476,132"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="510,115,476,115,476,109,510,109"/>
+<area shape="rect" id="Node000005" href="$d8/d5b/classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,99,259,125"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="293,115,259,115,259,109,293,109"/>
+<area shape="rect" id="Node000006" href="$d7/da5/client_2client__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,99,60,125"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="94,115,60,115,60,109,94,109"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="727,129,693,125,694,120,728,124"/>
+</map>

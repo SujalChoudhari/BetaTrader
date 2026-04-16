@@ -1,0 +1,25 @@
+<map id="admin::ExchangePanel::render" name="admin::ExchangePanel::render">
+<area shape="rect" id="Node000001" title="Renders the exchange control dashboard." alt="" coords="5,144,175,184"/>
+<area shape="rect" id="Node000002" href="$d8/d43/classadmin_1_1ExchangeManager.html#af3ec81d98d24ca6e7684289c8f3bced7" title=" " alt="" coords="443,5,633,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,142,161,105,190,87,222,72,273,55,327,42,429,28,429,33,328,48,275,60,224,77,193,92,164,110,116,146"/>
+<area shape="rect" id="Node000003" href="$d7/d24/classadmin_1_1ExchangePanel.html#ae5fb552bfbda082d11d5d32ecb11fe59" title=" " alt="" coords="223,87,393,127"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,141,218,128,219,133,167,147"/>
+<area shape="rect" id="Node000006" href="$d7/d24/classadmin_1_1ExchangePanel.html#a1d58dc351747a758d84ab9a1a99db4b3" title=" " alt="" coords="223,176,393,216"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="176,174,210,179,209,184,175,179"/>
+<area shape="rect" id="Node000008" href="$d7/d24/classadmin_1_1ExchangePanel.html#ab53f4aba7c54b755ab49a34c7b19646e" title=" " alt="" coords="223,276,393,316"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="125,182,264,267,261,271,123,186"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="361,84,440,55,462,47,464,52,442,60,363,89"/>
+<area shape="rect" id="Node000004" href="$d8/d43/classadmin_1_1ExchangeManager.html#aad10f2b0566d387c379408ec9f934fce" title="Starts the exchange services." alt="" coords="443,69,633,109"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="392,98,429,95,429,100,393,103"/>
+<area shape="rect" id="Node000005" href="$d8/d43/classadmin_1_1ExchangeManager.html#aa6e1020f6a55c5f397def3e31dc49f46" title="Stops all exchange services." alt="" coords="683,99,873,139"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="393,115,441,119,559,122,669,120,669,126,559,127,441,124,393,120"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="634,98,670,103,669,108,633,104"/>
+<area shape="rect" id="Node000007" href="$d8/d43/classadmin_1_1ExchangeManager.html#a0139678898f63795f21023fd12d0ce5c" title=" " alt="" coords="443,184,633,224"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="393,196,429,198,429,203,393,202"/>
+<area shape="rect" id="Node000009" href="$da/d82/classfix_1_1FixSessionManager.html#adb3388e96b6548f79c99bb2fd9755eab" title="Returns a thread&#45;safe snapshot of all session states." alt="" coords="452,248,624,288"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="393,283,438,277,439,283,394,288"/>
+<area shape="rect" id="Node000010" href="$d2/d74/classfix_1_1FixServer.html#af04076dbe25abd232d2049c58c46800d" title=" " alt="" coords="441,313,635,338"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="394,304,428,309,427,314,393,309"/>
+<area shape="rect" id="Node000011" href="$d8/d43/classadmin_1_1ExchangeManager.html#ad8096d3ad838725a57272e65296e4572" title=" " alt="" coords="443,363,633,403"/>
+<area shape="poly" id="edge12_Node000008_Node000011" title=" " alt="" coords="356,314,442,348,463,356,461,361,440,353,354,318"/>
+</map>

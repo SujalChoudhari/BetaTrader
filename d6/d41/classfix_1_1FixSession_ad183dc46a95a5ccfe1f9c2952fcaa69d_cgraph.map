@@ -1,0 +1,78 @@
+<map id="fix::FixSession::handleFixMessage" name="fix::FixSession::handleFixMessage">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,375,192,415"/>
+<area shape="rect" id="Node000002" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#ae4c13c312694111ba7434b26897cb839" title=" " alt="" coords="247,7,460,47"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="100,374,111,313,135,228,153,183,176,138,204,96,238,59,248,52,251,56,242,63,209,99,181,141,158,185,140,230,116,314,105,375"/>
+<area shape="rect" id="Node000005" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#a1cf48aaf6c2315886c85c79958adb629" title=" " alt="" coords="247,73,460,113"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,374,118,324,145,259,185,190,210,158,238,130,256,118,259,122,242,134,214,162,189,193,150,262,123,326,108,375"/>
+<area shape="rect" id="Node000006" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#a91dbdcaedf93ac0ee24a305c8d0a20bc" title=" " alt="" coords="247,144,460,184"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="107,373,126,335,155,288,192,239,238,197,252,188,255,192,242,201,196,242,159,291,130,338,111,375"/>
+<area shape="rect" id="Node000007" href="$d3/daf/classfix_1_1BinaryToOrderRequestConverter.html#ae46537742b9c67bb5200ad44ec35c7d8" title="Converts a raw FIX message string into an OrderRequest object." alt="" coords="535,348,725,388"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="171,412,235,425,309,435,388,436,428,432,466,424,490,412,513,398,534,390,536,395,516,402,492,417,468,429,428,437,389,441,309,440,234,430,170,417"/>
+<area shape="rect" id="Node000011" href="$d6/d41/classfix_1_1FixSession.html#a011637bb1c6c101e474cffd13a6c57c8" title=" " alt="" coords="266,275,441,301"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="127,372,178,340,239,310,262,302,264,307,241,314,180,344,130,377"/>
+<area shape="rect" id="Node000012" href="$d2/d74/classfix_1_1FixServer.html#af04076dbe25abd232d2049c58c46800d" title=" " alt="" coords="257,325,450,350"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="187,372,239,360,282,350,283,356,241,365,188,377"/>
+<area shape="rect" id="Node000013" href="$d3/d30/classtrading__core_1_1TradingCore.html#aed8123a3d8a9480cb90ab1c6c317c35a" title=" " alt="" coords="259,375,447,415"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="192,392,245,392,245,397,192,397"/>
+<area shape="rect" id="Node000014" href="$d6/d41/classfix_1_1FixSession.html#a86628b5f4fb1f5494b9b8954e23822b5" title=" " alt="" coords="248,489,459,529"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="134,412,184,440,241,468,276,482,274,487,239,473,182,445,132,417"/>
+<area shape="rect" id="Node000017" href="$d3/d30/classtrading__core_1_1TradingCore.html#aaad204809584253d84be7e52f09e8d9d" title=" " alt="" coords="536,611,724,651"/>
+<area shape="poly" id="edge45_Node000001_Node000017" title=" " alt="" coords="109,414,126,456,153,509,191,561,215,584,241,603,274,619,309,631,382,646,455,649,522,645,522,651,455,654,382,651,308,637,272,624,239,608,211,588,187,565,148,511,121,458,104,416"/>
+<area shape="rect" id="Node000019" href="$d9/d0c/namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="1061,409,1205,434"/>
+<area shape="poly" id="edge46_Node000001_Node000019" title=" " alt="" coords="107,414,121,464,147,531,165,566,186,599,212,630,242,655,277,677,309,690,339,697,369,699,434,696,515,697,592,708,660,723,778,751,833,758,888,754,947,736,1012,700,1041,676,1066,645,1085,611,1100,575,1119,504,1127,448,1133,449,1124,505,1105,576,1090,613,1070,648,1045,679,1015,705,949,741,889,759,833,763,777,757,659,728,591,713,514,703,434,702,369,704,338,702,307,695,274,682,238,659,208,633,182,602,160,568,142,533,116,466,102,416"/>
+<area shape="rect" id="Node000020" href="$d6/d41/classfix_1_1FixSession.html#ac457b1d016a6c70c8380cce072510970" title=" " alt="" coords="247,211,459,251"/>
+<area shape="poly" id="edge24_Node000001_Node000020" title=" " alt="" coords="114,373,165,317,200,287,239,260,251,254,254,259,241,265,204,291,169,321,118,376"/>
+<area shape="rect" id="Node000027" href="$d6/d41/classfix_1_1FixSession.html#ad3b562443287f3b43cfa5093708d7da5" title=" " alt="" coords="248,553,459,593"/>
+<area shape="poly" id="edge35_Node000001_Node000027" title=" " alt="" coords="116,413,167,476,202,510,241,539,253,545,251,550,239,544,198,514,163,479,112,417"/>
+<area shape="rect" id="Node000030" href="$dc/dd3/classtrading__core_1_1OrderIDGenerator.html#a1f01ef2cefba6a90ad9963154fa9bc4f" title="Gets the next available order ID." alt="" coords="240,776,467,816"/>
+<area shape="poly" id="edge44_Node000001_Node000030" title=" " alt="" coords="105,414,115,479,138,571,155,620,178,669,207,715,242,755,257,767,254,771,238,759,203,718,174,672,150,622,132,572,109,480,99,415"/>
+<area shape="rect" id="Node000003" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#aa7365a335457a5cfce2b7c0ddd74fb11" title=" " alt="" coords="523,5,737,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="460,23,509,23,510,29,460,29"/>
+<area shape="rect" id="Node000004" href="$d3/d6f/classfix_1_1OutboundMessageBuilder.html#a524ef6c13d867b0477f9772d0f180453" title=" " alt="" coords="797,5,1010,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="737,23,783,23,783,28,737,28"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="435,71,534,46,536,51,436,76"/>
+<area shape="poly" id="edge7_Node000006_Node000003" title=" " alt="" coords="431,141,465,123,480,108,488,93,497,78,513,62,536,49,538,53,516,66,501,81,493,96,484,112,468,127,434,146"/>
+<area shape="rect" id="Node000008" href="$dc/d18/namespacefix.html#ad8a258a1bda5edecc3a0483327b9c94d" title="Converts a character representation of an order side to the common::OrderSide enum." alt="" coords="827,411,979,437"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="726,385,828,406,827,411,725,390"/>
+<area shape="rect" id="Node000009" href="$d9/d0c/namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="822,313,985,338"/>
+<area shape="poly" id="edge10_Node000007_Node000009" title=" " alt="" coords="725,351,808,337,809,343,726,356"/>
+<area shape="rect" id="Node000010" href="$dc/d18/namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="845,362,961,387"/>
+<area shape="poly" id="edge11_Node000007_Node000010" title=" " alt="" coords="726,368,832,370,832,376,726,373"/>
+<area shape="rect" id="Node000015" href="$d9/d13/classfix_1_1BinaryToCancelOrderRequestConverter.html#a2579d62ca0160e34aa31e8a9c76703bb" title="Converts a raw FIX message string into a CancelOrderRequest object." alt="" coords="532,412,728,452"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="424,487,514,461,543,453,544,458,515,467,426,492"/>
+<area shape="poly" id="edge21_Node000014_Node000017" title=" " alt="" coords="444,527,468,539,484,552,493,565,502,577,516,590,541,603,538,608,513,594,498,581,489,568,480,556,465,544,442,532"/>
+<area shape="poly" id="edge23_Node000014_Node000019" title=" " alt="" coords="459,524,600,543,760,559,838,562,908,562,968,556,1012,544,1045,524,1074,498,1116,444,1120,447,1078,502,1049,529,1014,549,969,561,908,567,837,568,759,564,599,548,458,529"/>
+<area shape="poly" id="edge17_Node000015_Node000008" title=" " alt="" coords="728,426,813,424,813,429,728,432"/>
+<area shape="poly" id="edge18_Node000015_Node000009" title=" " alt="" coords="720,409,744,398,758,386,767,373,776,360,792,347,808,340,810,344,795,352,780,363,771,376,762,389,747,402,722,414"/>
+<area shape="poly" id="edge20_Node000015_Node000010" title=" " alt="" coords="725,409,831,387,832,392,727,415"/>
+<area shape="rect" id="Node000016" href="$dc/d18/namespacefix.html#ae10f9de43f35a89bd9187a1c002a9522" title="Parses a FIX TransactTime (Tag 60) string into a common::Timestamp. Expected format: YYYYMMDD&#45;HH:MM:S..." alt="" coords="825,461,981,486"/>
+<area shape="poly" id="edge19_Node000015_Node000016" title=" " alt="" coords="729,444,812,457,811,462,728,449"/>
+<area shape="rect" id="Node000018" href="$d3/d30/classtrading__core_1_1TradingCore.html#a5887c7fb0e1130b7ccbd18c4e8c0c0bf" title=" " alt="" coords="809,611,997,651"/>
+<area shape="poly" id="edge22_Node000017_Node000018" title=" " alt="" coords="724,628,795,628,795,633,724,633"/>
+<area shape="poly" id="edge31_Node000020_Node000019" title=" " alt="" coords="436,208,465,194,479,181,488,168,497,154,513,142,560,123,621,105,691,91,766,81,841,76,911,77,970,87,995,95,1015,106,1048,135,1075,171,1095,211,1110,252,1128,333,1134,395,1129,395,1123,334,1105,254,1090,213,1070,174,1044,139,1012,110,993,100,969,92,910,82,841,81,767,86,692,96,622,111,562,128,516,146,501,158,492,171,483,185,468,198,439,213"/>
+<area shape="rect" id="Node000021" href="$de/d5d/classfix_1_1BinaryToMarketDataRequestConverter.html#ab0ea3f594af37f5ffc60a3ed6787e7f8" title="Converts a raw FIX message string into a MarketDataRequest object." alt="" coords="515,284,745,324"/>
+<area shape="poly" id="edge25_Node000020_Node000021" title=" " alt="" coords="430,248,542,278,540,283,429,253"/>
+<area shape="rect" id="Node000022" href="$d3/d30/classtrading__core_1_1TradingCore.html#a6d705f552de1442ff7da2a3ab28e1948" title=" " alt="" coords="536,156,724,196"/>
+<area shape="poly" id="edge27_Node000020_Node000022" title=" " alt="" coords="455,208,522,195,523,200,456,213"/>
+<area shape="rect" id="Node000025" href="$d3/d30/classtrading__core_1_1TradingCore.html#a738e81f8c180993a89595bb2ce846d9c" title=" " alt="" coords="521,220,739,260"/>
+<area shape="poly" id="edge32_Node000020_Node000025" title=" " alt="" coords="460,232,508,233,508,239,459,237"/>
+<area shape="poly" id="edge26_Node000021_Node000009" title=" " alt="" coords="746,310,808,315,808,321,745,316"/>
+<area shape="rect" id="Node000023" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#aa8c67583487bf56f4cde4c89db997856" title=" " alt="" coords="806,120,1001,160"/>
+<area shape="poly" id="edge28_Node000022_Node000023" title=" " alt="" coords="724,161,791,152,792,157,724,166"/>
+<area shape="rect" id="Node000024" href="$d3/d30/classtrading__core_1_1TradingCore.html#a59ad714b9205bfed738199c3bbaf1f08" title=" " alt="" coords="809,184,997,224"/>
+<area shape="poly" id="edge30_Node000022_Node000024" title=" " alt="" coords="724,183,795,190,795,196,724,188"/>
+<area shape="poly" id="edge29_Node000023_Node000019" title=" " alt="" coords="997,158,1015,170,1040,195,1062,224,1095,286,1117,346,1129,394,1124,396,1112,348,1090,288,1057,227,1036,199,1012,174,994,162"/>
+<area shape="rect" id="Node000026" href="$d5/d81/classtrading__core_1_1MarketDataPublisher.html#a3ed9b045addf52d0fb706993b7d652a5" title=" " alt="" coords="793,248,1013,288"/>
+<area shape="poly" id="edge33_Node000025_Node000026" title=" " alt="" coords="739,248,780,253,779,258,738,254"/>
+<area shape="poly" id="edge34_Node000026_Node000019" title=" " alt="" coords="990,286,1015,298,1046,320,1074,346,1117,396,1113,399,1070,350,1043,324,1012,302,988,290"/>
+<area shape="poly" id="edge42_Node000027_Node000017" title=" " alt="" coords="451,591,523,606,521,611,450,596"/>
+<area shape="poly" id="edge43_Node000027_Node000019" title=" " alt="" coords="382,591,441,629,477,647,515,660,625,680,769,692,842,693,910,689,969,678,1012,660,1038,640,1060,615,1079,586,1094,556,1115,496,1126,447,1131,448,1120,497,1099,558,1083,589,1065,618,1042,644,1015,665,970,683,911,694,843,698,769,698,624,685,514,665,475,652,438,634,379,596"/>
+<area shape="rect" id="Node000028" href="$de/deb/classfix_1_1BinaryToModifyOrderRequestConverter.html#a5f69adce40f15fe94b173ff47b900b95" title="Converts a raw FIX message string into a ModifyOrderRequest object." alt="" coords="532,476,728,516"/>
+<area shape="poly" id="edge36_Node000027_Node000028" title=" " alt="" coords="425,551,544,517,545,522,426,556"/>
+<area shape="poly" id="edge37_Node000028_Node000008" title=" " alt="" coords="704,473,745,461,793,445,825,437,827,442,794,451,746,467,706,478"/>
+<area shape="poly" id="edge39_Node000028_Node000009" title=" " alt="" coords="727,474,744,462,755,449,762,435,766,406,771,376,779,361,792,347,808,337,811,341,795,351,783,364,776,378,772,407,767,436,760,451,747,466,730,478"/>
+<area shape="poly" id="edge41_Node000028_Node000010" title=" " alt="" coords="723,474,744,462,759,446,767,430,775,413,792,396,830,380,833,385,795,401,779,416,772,432,763,449,747,466,725,478"/>
+<area shape="poly" id="edge40_Node000028_Node000016" title=" " alt="" coords="728,485,812,478,812,484,729,491"/>
+<area shape="rect" id="Node000029" href="$dc/d18/namespacefix.html#aba0da15dfb563bc56a44b2e7691c24f0" title="Converts a character representation of an order type to the common::OrderType enum." alt="" coords="826,510,981,535"/>
+<area shape="poly" id="edge38_Node000028_Node000029" title=" " alt="" coords="729,503,813,511,812,516,728,508"/>
+</map>

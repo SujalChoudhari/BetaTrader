@@ -1,0 +1,7 @@
+<map id="client_ui::UIManager::start" name="client_ui::UIManager::start">
+<area shape="rect" id="Node000001" title="Initializes GLFW, creates the window, and sets up ImGui." alt="" coords="5,37,161,77"/>
+<area shape="rect" id="Node000002" href="$d7/d4c/namespaceclient__ui_1_1theme.html#ad6e153930f36941ad685a7ed0a339a10" title="Applies a modern, Bloomberg&#45;inspired dark theme to the current ImGui context." alt="" coords="209,5,452,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,45,195,40,196,45,162,50"/>
+<area shape="rect" id="Node000003" href="$d1/dea/namespaceclient__ui.html#a9199d6951c5964c72c55dca2ce388d62" title=" " alt="" coords="255,69,406,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,65,242,75,241,80,161,70"/>
+</map>

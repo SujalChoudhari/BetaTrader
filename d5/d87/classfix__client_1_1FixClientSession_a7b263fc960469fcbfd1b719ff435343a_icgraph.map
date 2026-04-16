@@ -1,0 +1,13 @@
+<map id="fix_client::FixClientSession::startHeartbeatTimer" name="fix_client::FixClientSession::startHeartbeatTimer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="981,29,1177,69"/>
+<area shape="poly" id="edge6_Node000001_Node000001" title=" " alt="" coords="1121,18,1106,11,1079,8,1056,10,1042,15,1037,21,1039,28,1034,30,1031,20,1039,10,1055,5,1079,3,1108,6,1123,13"/>
+<area shape="rect" id="Node000002" href="$d5/d87/classfix__client_1_1FixClientSession.html#a9f5f16426d44aac9d156cfefd1e7c981" title=" " alt="" coords="737,29,933,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="968,52,933,52,933,47,968,47"/>
+<area shape="rect" id="Node000003" href="$d5/d87/classfix__client_1_1FixClientSession.html#aff9311a491062e2555b636a8886e8813" title=" " alt="" coords="493,29,689,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="724,52,689,52,689,47,724,47"/>
+<area shape="rect" id="Node000004" href="$d5/d87/classfix__client_1_1FixClientSession.html#a8ee829a7f39b1843f979fcc8bae84f5d" title=" " alt="" coords="249,29,445,69"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="480,52,445,52,445,47,480,47"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="389,18,374,11,347,8,324,10,310,15,305,21,307,28,302,30,299,20,307,10,323,5,347,3,376,6,391,13"/>
+<area shape="rect" id="Node000005" href="$d5/d87/classfix__client_1_1FixClientSession.html#adb46956504055b3372af9950d87629a3" title="Connects to the remote FIX server asynchronously." alt="" coords="5,29,201,69"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="236,52,201,52,201,47,236,47"/>
+</map>

@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['open_0',['open',['../d7/d31/structdata_1_1Candle.html#a064d385e3c7a003b2a083252ea9ac181',1,'data::Candle']]],
+  ['order_5fside_5fbuy_1',['ORDER_SIDE_BUY',['../dc/d18/namespacefix.html#aad04dbb4dbb896e674073026bcceb427',1,'fix']]],
+  ['order_5fside_5fnames_2',['order_side_names',['../d9/d0c/namespacecommon.html#ae58491c8cfdbaf2fa5e94787365ca8f1',1,'common']]],
+  ['order_5fside_5fsell_3',['ORDER_SIDE_SELL',['../dc/d18/namespacefix.html#a09facbeb4ad06b088763136fad877d0c',1,'fix']]],
+  ['order_5fstatus_5fcanceled_4',['ORDER_STATUS_CANCELED',['../dc/d18/namespacefix.html#a2ab2774020c6bbdd1f3e48d836f938d1',1,'fix']]],
+  ['order_5fstatus_5ffilled_5',['ORDER_STATUS_FILLED',['../dc/d18/namespacefix.html#a7f79d109863b939a250e73aa6a3b76b4',1,'fix']]],
+  ['order_5fstatus_5fnames_6',['order_status_names',['../d9/d0c/namespacecommon.html#a231833f19fd3a816aa89b21f0e033279',1,'common']]],
+  ['order_5fstatus_5fnew_7',['ORDER_STATUS_NEW',['../dc/d18/namespacefix.html#af02bebd230832573db534cedc82fe687',1,'fix']]],
+  ['order_5fstatus_5fpartially_5ffilled_8',['ORDER_STATUS_PARTIALLY_FILLED',['../dc/d18/namespacefix.html#a4da6dbd3c85bb2bf81a95decf977df58',1,'fix']]],
+  ['order_5fstatus_5frejected_9',['ORDER_STATUS_REJECTED',['../dc/d18/namespacefix.html#a7b70dc6f67769ff9f1812c62cac978b3',1,'fix']]],
+  ['order_5ftype_5flimit_10',['ORDER_TYPE_LIMIT',['../dc/d18/namespacefix.html#a7ef9d9be8d4f02a066edda713534f6f4',1,'fix']]],
+  ['order_5ftype_5fmarket_11',['ORDER_TYPE_MARKET',['../dc/d18/namespacefix.html#adf3175e7670dcd748c44168860ea452d',1,'fix']]],
+  ['order_5ftype_5fnames_12',['order_type_names',['../d9/d0c/namespacecommon.html#afe7bf17bba7e8ee35ed228d567b32daf',1,'common']]],
+  ['orderid_13',['orderid',['../d7/de3/structfix_1_1ModifyOrderRequest.html#a74cd23d300ea9ca60be88275fda3ec03',1,'fix::ModifyOrderRequest::orderID'],['../d4/d84/structfix_1_1CancelOrderRequest.html#ac0debbf9f26363492cdbea02dc3d56ed',1,'fix::CancelOrderRequest::orderID']]],
+  ['orderqty_14',['orderQty',['../d7/de3/structfix_1_1ModifyOrderRequest.html#a27bf1c5806cc505d6d1d1c6c337831fd',1,'fix::ModifyOrderRequest']]],
+  ['ordtype_15',['ordType',['../d7/de3/structfix_1_1ModifyOrderRequest.html#a282591b2a0f84913077bf40817e67406',1,'fix::ModifyOrderRequest']]],
+  ['origclordid_16',['origClOrdID',['../d7/de3/structfix_1_1ModifyOrderRequest.html#a643b866131ffc91fca21a3a335c35c35',1,'fix::ModifyOrderRequest']]],
+  ['outseqnum_17',['outSeqNum',['../d9/d00/structfix_1_1SessionState.html#a743a3ab7f6606b4d846c4c3291161a8c',1,'fix::SessionState']]]
+];
