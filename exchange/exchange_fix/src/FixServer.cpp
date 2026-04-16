@@ -46,7 +46,17 @@ namespace fix {
 
     void FixServer::stop()
     {
-        mIoContext.stop();
+        if (mAcceptor.is_open()) {
+            std::error_code ec;
+            mAcceptor.close(ec);
+        }
+        for (auto& [id, session] : mSessions) {
+            session->stop();
+        }
+        mSessions.clear();
+        mSessionManager.getMutex().lock();
+        // Clear runtime state
+        mSessionManager.getMutex().unlock();
     }
 
     void FixServer::onExecutionReport(const ExecutionReport& report)
@@ -84,6 +94,8 @@ namespace fix {
 
     void FixServer::doAccept()
     {
+        if (!mAcceptor.is_open()) return;
+
         mAcceptor.async_accept(mSocket, [this](const std::error_code ec) {
             if (!ec) {
                 const auto session = std::make_shared<FixSession>(
@@ -91,7 +103,9 @@ namespace fix {
                 registerSession(session);
                 session->start();
             }
-            doAccept();
+            if (mAcceptor.is_open()) {
+                doAccept();
+            }
         });
     }
 
