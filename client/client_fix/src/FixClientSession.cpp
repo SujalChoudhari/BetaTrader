@@ -324,4 +324,45 @@ namespace fix_client {
         // Advanced: Unimplemented. Can be added to ping server if quiet.
     }
 
+    void FixClientSession::sendNewOrder(const std::string& symbol, char side, double price, int qty, char type, char tif) {
+        std::ostringstream body;
+        auto now = std::chrono::system_clock::now();
+        auto clOrdId = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
+
+        body << "11=" << clOrdId << "\x01"      // ClOrdID
+             << "55=" << symbol << "\x01"       // Symbol
+             << "54=" << side << "\x01"         // Side
+             << "60=" << fix::OutboundMessageBuilder::generateTimestamp() << "\x01" // TransactTime
+             << "38=" << qty << "\x01"          // OrderQty
+             << "40=" << type << "\x01";        // OrdType
+
+        if (type != '1') {                      // Not Market
+             body << "44=" << std::fixed << std::setprecision(5) << price << "\x01"; // Price
+        }
+        
+        if (tif != '0') {
+            body << "59=" << tif << "\x01";     // TimeInForce
+        }
+
+        sendMessage("D", body.str());
+        LOG_INFO("Sent NewOrderSingle (35=D) for {} Side={} Qty={} Price={}", symbol, side, qty, price);
+    }
+
+    void FixClientSession::sendMarketDataRequest(const std::string& symbol, char subscriptionRequestType) {
+        std::ostringstream body;
+        auto mdReqId = "req_" + symbol + "_" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
+
+        body << "262=" << mdReqId << "\x01"     // MDReqID
+             << "263=" << subscriptionRequestType << "\x01" // SubscriptionRequestType (1=Snapshot+Updates)
+             << "264=0\x01"                     // MarketDepth (0=Full)
+             << "267=2\x01"                     // NoMDEntryTypes (Bid, Offer)
+             << "269=0\x01"                     // MDEntryType (Bid)
+             << "269=1\x01"                     // MDEntryType (Offer)
+             << "146=1\x01"                     // NoRelatedSym
+             << "55=" << symbol << "\x01";      // Symbol
+
+        sendMessage("V", body.str());
+        LOG_INFO("Sent MarketDataRequest (35=V) for {} Type={}", symbol, subscriptionRequestType);
+    }
+
 } // namespace fix_client

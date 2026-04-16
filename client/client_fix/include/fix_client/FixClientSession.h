@@ -90,6 +90,9 @@ namespace fix_client {
          * @brief Helper to send an authenticated UserRequest (35=BE)
          */
         void sendAuthRequest(const std::string& username, const std::string& password);
+        
+        void sendNewOrder(const std::string& symbol, char side, double price, int qty, char type = '2', char tif = '0');
+        void sendMarketDataRequest(const std::string& symbol, char subscriptionRequestType = '1');
 
         // --- Configuration & Callbacks ---
 
