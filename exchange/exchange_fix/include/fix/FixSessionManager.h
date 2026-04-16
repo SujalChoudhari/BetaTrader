@@ -2,6 +2,7 @@
 
 #include "data/SequenceRepository.h"
 #include <cstdint>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -25,8 +26,11 @@ namespace fix {
         // Returns true if strictly next expected, false if gap or too low.
         bool validateSequence(uint32_t sessionId, uint32_t incomingSeqNum);
 
-        // Handle a Logout request.
+        // Handle a Logout request (marks session offline, preserves mapping for ack).
         void handleLogout(uint32_t sessionId);
+
+        // Cleans up the connection-to-CompID mapping after the logout ack has been sent.
+        void cleanupConnection(uint32_t sessionId);
 
         // Get current session state (returns nullptr if session not found)
         SessionState* getSessionState(uint32_t sessionId);
@@ -43,11 +47,15 @@ namespace fix {
         void incrementOutboundSequence(uint32_t sessionId);
 
 
-        const std::unordered_map<std::string, SessionState>& getAllSessionStates() const { return mSessionStates; }
+        /// Returns a thread-safe snapshot of all session states.
+        std::unordered_map<std::string, SessionState> getAllSessionStates() const;
 
+        /// Returns a reference to the internal mutex for external synchronization.
+        std::mutex& getMutex() { return mMutex; }
 
 
     private:
+        mutable std::mutex mMutex;
         std::unordered_map<std::string, bool> mValidClients;
         // States keyed by SenderCompID
         std::unordered_map<std::string, SessionState> mSessionStates;

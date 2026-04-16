@@ -8,6 +8,7 @@ namespace fix {
     }
 
     void FixSessionManager::loadConfig(const std::vector<std::string>& validClients) {
+        std::lock_guard<std::mutex> lock(mMutex);
         mValidClients.clear();
         for (const auto& client : validClients) {
             mValidClients[client] = true;
@@ -16,6 +17,7 @@ namespace fix {
     }
 
     bool FixSessionManager::authenticate(uint32_t sessionId, const std::string& senderCompId) {
+        std::lock_guard<std::mutex> lock(mMutex);
         if (mValidClients.find(senderCompId) == mValidClients.end()) {
             LOG_WARN("Session {} failed authentication: Unknown SenderCompID '{}'", sessionId, senderCompId);
             return false;
@@ -49,6 +51,7 @@ namespace fix {
     }
 
     bool FixSessionManager::validateSequence(uint32_t sessionId, uint32_t incomingSeqNum) {
+        std::lock_guard<std::mutex> lock(mMutex);
         auto connIt = mConnectionToCompId.find(sessionId);
         if (connIt == mConnectionToCompId.end()) {
             LOG_ERROR("Cannot validate sequence for unknown session ID {}", sessionId);
@@ -81,6 +84,7 @@ namespace fix {
     }
 
     void FixSessionManager::handleLogout(uint32_t sessionId) {
+        std::lock_guard<std::mutex> lock(mMutex);
         auto connIt = mConnectionToCompId.find(sessionId);
         if (connIt != mConnectionToCompId.end()) {
             const std::string& compId = connIt->second;
@@ -89,11 +93,20 @@ namespace fix {
                 stateIt->second.isLoggedOn = false;
                 LOG_INFO("Client {} logged out from session {}.", compId, sessionId);
             }
-            mConnectionToCompId.erase(connIt);
+            // NOTE: Do NOT erase mConnectionToCompId here.
+            // The mapping is still needed by useNextOutboundSequence() to
+            // build the logout acknowledgment. Call cleanupConnection()
+            // after the ack has been sent.
         }
     }
 
+    void FixSessionManager::cleanupConnection(uint32_t sessionId) {
+        std::lock_guard<std::mutex> lock(mMutex);
+        mConnectionToCompId.erase(sessionId);
+    }
+
     SessionState* FixSessionManager::getSessionState(uint32_t sessionId) {
+        std::lock_guard<std::mutex> lock(mMutex);
         auto connIt = mConnectionToCompId.find(sessionId);
         if (connIt != mConnectionToCompId.end()) {
             auto stateIt = mSessionStates.find(connIt->second);
@@ -105,8 +118,13 @@ namespace fix {
     }
 
     uint32_t FixSessionManager::useNextOutboundSequence(uint32_t sessionId) {
-        auto* state = getSessionState(sessionId);
-        if (!state) return 1;
+        std::lock_guard<std::mutex> lock(mMutex);
+        // Inline the lookup instead of calling getSessionState (which also locks)
+        auto connIt = mConnectionToCompId.find(sessionId);
+        if (connIt == mConnectionToCompId.end()) return 1;
+        auto stateIt = mSessionStates.find(connIt->second);
+        if (stateIt == mSessionStates.end()) return 1;
+        SessionState* state = &(stateIt->second);
 
         uint32_t current = state->outSeqNum;
         state->outSeqNum++;
@@ -122,4 +140,10 @@ namespace fix {
         useNextOutboundSequence(sessionId);
     }
 
+    std::unordered_map<std::string, SessionState> FixSessionManager::getAllSessionStates() const {
+        std::lock_guard<std::mutex> lock(mMutex);
+        return mSessionStates; // Returns a copy — safe for cross-thread use
+    }
+
 } // namespace fix
+
