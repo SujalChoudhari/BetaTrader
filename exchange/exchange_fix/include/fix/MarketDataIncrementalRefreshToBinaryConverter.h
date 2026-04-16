@@ -29,7 +29,7 @@ public:
      * @param refresh The `MarketDataIncrementalRefresh` object to serialize.
      * @return A string containing the complete, valid FIX message.
      */
-    static std::string convert(const MarketDataIncrementalRefresh& refresh);
+    static std::string convert(const MarketDataIncrementalRefresh& refresh, uint32_t msgSeqNum);
 };
 
 } // namespace fix

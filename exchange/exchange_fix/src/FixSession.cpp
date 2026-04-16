@@ -45,8 +45,9 @@ namespace fix {
 
     void FixSession::sendExecutionReport(const ExecutionReport& report)
     {
+        uint32_t outSeq = mServer.getManager().useNextOutboundSequence(mSessionId);
         auto binaryReport = std::make_shared<std::string>(
-                ExecutionReportToBinaryConverter::convert(report));
+                ExecutionReportToBinaryConverter::convert(report, outSeq));
         doWrite(binaryReport);
     }
 
@@ -59,9 +60,10 @@ namespace fix {
             finalSnapshot.mdReqID = it->second;
         }
 
+        uint32_t outSeq = mServer.getManager().useNextOutboundSequence(mSessionId);
         auto binarySnapshot = std::make_shared<std::string>(
                 MarketDataSnapshotFullRefreshToBinaryConverter::convert(
-                        finalSnapshot));
+                        finalSnapshot, outSeq));
         doWrite(binarySnapshot);
     }
 
@@ -74,9 +76,10 @@ namespace fix {
             finalRefresh.mdReqID = it->second;
         }
 
+        uint32_t outSeq = mServer.getManager().useNextOutboundSequence(mSessionId);
         auto binaryRefresh = std::make_shared<std::string>(
                 MarketDataIncrementalRefreshToBinaryConverter::convert(
-                        finalRefresh));
+                        finalRefresh, outSeq));
         doWrite(binaryRefresh);
     }
 
