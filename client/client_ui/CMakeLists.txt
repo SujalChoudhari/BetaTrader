@@ -49,12 +49,7 @@ target_link_libraries(client_ui_lib
 find_package(OpenGL REQUIRED)
 target_link_libraries(client_ui_lib PUBLIC OpenGL::GL)
 
-# We need to define the GL loader (ImGui default is fine for GL3.3 if we don't use another one)
-target_compile_definitions(client_ui_lib PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLAD)
-# Wait, if I don't have GLAD, I should use something else. 
-# Actually, GLFW + OpenGL usually works with a loader. 
-# I'll use the default ImGui one which might need a header.
-# For now let's assume the user has a loader or we'll add one.
-# ImGui's opengl3 backend can use its own loader if IMGUI_IMPL_OPENGL_LOADER_CUSTOM is not set.
+# ImGui's imgui_impl_opengl3.cpp includes a built-in GL loader when no
+# external loader (GLAD, GL3W, etc.) is defined. No extra definition needed.
 
 target_compile_definitions(client_ui_lib PUBLIC IMGUI_ENABLE_DOCKING)
