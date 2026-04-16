@@ -9,13 +9,15 @@
 namespace trading_core {
 
     ExecutionPublisher::ExecutionReportCallback ExecutionPublisher::s_callback = nullptr;
+    std::mutex ExecutionPublisher::s_mutex;
 
     void ExecutionPublisher::SetCallback(ExecutionReportCallback callback)
     {
-        s_callback = callback;
+        std::lock_guard<std::mutex> lock(s_mutex);
+        s_callback = std::move(callback);
     }
 
-    uint32_t stoul_safe(const std::string& s)
+    uint32_t stoul_safe_ep(const std::string& s)
     {
         try {
             if (s.empty()) return 0;
@@ -28,14 +30,9 @@ namespace trading_core {
 
     void ExecutionPublisher::publishExecution(const common::Order& order, const std::string& action)
     {
-        std::stringstream ss;
-        ss << "EXECUTION | Action=" << action << " | OrderID=" << order.getId()
-           << " | Symbol=" << common::to_string(order.getSymbol())
-           << " | Qty=" << order.getRemainingQuantity()
-           << " | Price=" << std::fixed << std::setprecision(6) << order.getPrice()
-           << " | Client=" << order.getClientId();
-        std::cout << "[ExecutionPublisher] " << ss.str() << std::endl;
-        LOG_INFO(ss.str());
+        LOG_INFO("EXECUTION | Action={} | OrderID={} | Symbol={} | Qty={} | Price={} | Client={}",
+                 action, order.getId(), common::to_string(order.getSymbol()),
+                 order.getRemainingQuantity(), order.getPrice(), order.getClientId());
 
         common::OrderStatus status = (action == "NEW") ? common::OrderStatus::New : order.getStatus();
         if (action == "CANCELED") {
@@ -44,7 +41,7 @@ namespace trading_core {
 
         fix::ExecutionReport report(
             static_cast<fix::CompID>(1),
-            static_cast<fix::CompID>(stoul_safe(order.getClientId())),
+            static_cast<fix::CompID>(stoul_safe_ep(order.getClientId())),
             static_cast<fix::SequenceNumber>(0),
             order.getId(),
             order.getClientOrderId(),
@@ -61,28 +58,25 @@ namespace trading_core {
             order.getTimestamp()
         );
 
-        if (s_callback) {
-            s_callback(report);
+        ExecutionReportCallback cb;
+        {
+            std::lock_guard<std::mutex> lock(s_mutex);
+            cb = s_callback;
+        }
+        if (cb) {
+            cb(report);
         }
     }
 
     void ExecutionPublisher::publishTrade(const common::Trade& trade, const common::Order& buyOrder, const common::Order& sellOrder)
     {
-        std::stringstream ss;
-        ss << "TRADE | TradeID=" << trade.getTradeId()
-           << " | BuyOrder=" << trade.getBuyOrderId()
-           << " | SellOrder=" << trade.getSellOrderId()
-           << " | Qty=" << trade.getQuantity()
-           << " | Price=" << std::fixed << std::setprecision(6) << trade.getPrice()
-           << " | Timestamp=" << std::chrono::duration_cast<std::chrono::microseconds>(trade.getTimestamp().time_since_epoch()).count() << "us";
-        std::cout << "[ExecutionPublisher] " << ss.str() << std::endl;
         LOG_INFO("TRADE | TradeID={} | BuyOrder={} | SellOrder={} | Qty={} | Price={}",
                  trade.getTradeId(), trade.getBuyOrderId(), trade.getSellOrderId(),
                  trade.getQuantity(), trade.getPrice());
 
         fix::ExecutionReport buyReport(
             static_cast<fix::CompID>(1),
-            static_cast<fix::CompID>(stoul_safe(buyOrder.getClientId())),
+            static_cast<fix::CompID>(stoul_safe_ep(buyOrder.getClientId())),
             0,
             buyOrder.getId(),
             buyOrder.getClientOrderId(),
@@ -101,7 +95,7 @@ namespace trading_core {
 
         fix::ExecutionReport sellReport(
             static_cast<fix::CompID>(1),
-            static_cast<fix::CompID>(stoul_safe(sellOrder.getClientId())),
+            static_cast<fix::CompID>(stoul_safe_ep(sellOrder.getClientId())),
             0,
             sellOrder.getId(),
             sellOrder.getClientOrderId(),
@@ -118,22 +112,24 @@ namespace trading_core {
             trade.getTimestamp()
         );
 
-        if (s_callback) {
-            s_callback(buyReport);
-            s_callback(sellReport);
+        ExecutionReportCallback cb;
+        {
+            std::lock_guard<std::mutex> lock(s_mutex);
+            cb = s_callback;
+        }
+        if (cb) {
+            cb(buyReport);
+            cb(sellReport);
         }
     }
 
     void ExecutionPublisher::publishRejection(const common::OrderID& orderId, const common::ClientID& clientId, const common::Symbol& symbol, const common::OrderSide& side, const std::string_view& reason)
     {
-        std::stringstream ss;
-        ss << "REJECT | OrderID=" << orderId << " | Client=" << clientId << " | Reason=" << reason;
-        std::cout << "[ExecutionPublisher] " << ss.str() << std::endl;
         LOG_INFO("REJECT | ClOrdID={} | Client={} | Reason={}", orderId, clientId, reason);
         
         fix::ExecutionReport report(
             static_cast<fix::CompID>(1),
-            static_cast<fix::CompID>(stoul_safe(std::string(clientId))),
+            static_cast<fix::CompID>(stoul_safe_ep(std::string(clientId))),
             0,
             orderId,
             static_cast<fix::ClientOrderID>(orderId), // Fallback to orderId as clientOrderId if unknown
@@ -150,8 +146,13 @@ namespace trading_core {
             std::chrono::system_clock::now()
         );
         
-        if (s_callback) {
-            s_callback(report);
+        ExecutionReportCallback cb;
+        {
+            std::lock_guard<std::mutex> lock(s_mutex);
+            cb = s_callback;
+        }
+        if (cb) {
+            cb(report);
         }
     }
 } // namespace trading_core
