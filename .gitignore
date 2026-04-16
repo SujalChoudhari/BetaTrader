@@ -13,3 +13,4 @@ build/
 *.seq
 session_test_store/
 seq_store/
+imgui.ini

@@ -58,14 +58,28 @@ add_subdirectory(vendor/lib/SQLiteCpp)
 add_subdirectory(vendor/lib/spdlog)
 add_subdirectory(vendor/lib/SPSCQueue)
 
+# GLFW for Client UI
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "")
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "")
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "")
+set(GLFW_INSTALL OFF CACHE BOOL "")
+set(GLFW_BUILD_WAYLAND OFF CACHE BOOL "")
+add_subdirectory(vendor/lib/glfw)
+
+
 include_directories(vendor/lib/SPSCQueue/include)
 include_directories(vendor/lib/asio/include)
 
 add_subdirectory(common)
 add_subdirectory(common/tests)
 add_subdirectory(client/client_fix)
+add_subdirectory(client/client_ui)
+add_subdirectory(client/client_admin)
+add_subdirectory(client/client_app)
+
 add_subdirectory(client/client_fix/tests)
 add_subdirectory(exchange)
+
 add_subdirectory(exchange/exchange_state/tests)
 add_subdirectory(exchange/exchange_matching/tests)
 add_subdirectory(exchange/exchange_risk/tests)

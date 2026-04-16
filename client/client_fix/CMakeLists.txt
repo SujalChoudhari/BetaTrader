@@ -11,6 +11,7 @@ target_include_directories(client_fix_lib PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/vendor/lib/asio/include
         ${CMAKE_SOURCE_DIR}/vendor/lib/SPSCQueue/include
+        ${CMAKE_SOURCE_DIR}/vendor/lib/imgui
 )
 
 target_link_libraries(client_fix_lib
