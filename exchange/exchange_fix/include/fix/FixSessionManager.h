@@ -31,10 +31,30 @@ namespace fix {
         // Get current session state (returns nullptr if session not found)
         SessionState* getSessionState(uint32_t sessionId);
 
+        /**
+         * @brief Increments and persists the outbound sequence number.
+         * @return The sequence number to use for the message.
+         */
+        uint32_t useNextOutboundSequence(uint32_t sessionId);
+
+        /**
+         * @brief Increments the outbound sequence number without returning it.
+         */
+        void incrementOutboundSequence(uint32_t sessionId);
+
+
+        const std::unordered_map<std::string, SessionState>& getAllSessionStates() const { return mSessionStates; }
+
+
+
     private:
         std::unordered_map<std::string, bool> mValidClients;
-        std::unordered_map<uint32_t, SessionState> mSessionStates;
+        // States keyed by SenderCompID
+        std::unordered_map<std::string, SessionState> mSessionStates;
+        // Mapping of active connection ID to its authenticated CompID
+        std::unordered_map<uint32_t, std::string> mConnectionToCompId;
         ::data::SequenceRepository* mSeqRepo;
     };
+
 
 } // namespace fix

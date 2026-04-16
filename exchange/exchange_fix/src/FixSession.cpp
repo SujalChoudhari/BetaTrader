@@ -204,11 +204,12 @@ namespace fix {
                     // Send a Logout stating the reason before dropping
                     SessionState* state
                             = sessionManager.getSessionState(mSessionId);
-                    uint32_t outSeq = state ? state->outSeqNum++ : 1;
+                    uint32_t outSeq = sessionManager.useNextOutboundSequence(mSessionId);
                     auto logoutMsg = std::make_shared<std::string>(
                             OutboundMessageBuilder::buildLogout(
                                     "BETA_EXCHANGE", senderCompId, outSeq,
                                     "Invalid SenderCompID"));
+
                     doWrite(logoutMsg);
                     mSocket.close();
                     return;
@@ -223,18 +224,20 @@ namespace fix {
                 auto logonAck = std::make_shared<std::string>(
                         OutboundMessageBuilder::buildLogon(
                                 "BETA_EXCHANGE", senderCompId,
-                                state->outSeqNum++, 30));
+                                sessionManager.useNextOutboundSequence(mSessionId), 30));
+
                 doWrite(logonAck);
             }
             else if (msgType == '5') { // Logout
                 sessionManager.handleLogout(mSessionId);
                 SessionState* state
                         = sessionManager.getSessionState(mSessionId);
-                uint32_t outSeq = state ? state->outSeqNum++ : 1;
+                uint32_t outSeq = sessionManager.useNextOutboundSequence(mSessionId);
                 auto logoutAck = std::make_shared<std::string>(
                         OutboundMessageBuilder::buildLogout(
                                 "BETA_EXCHANGE", senderCompId, outSeq,
                                 "Logout Acknowledged"));
+
                 doWrite(logoutAck);
                 mSocket.close();
                 return;
@@ -296,7 +299,8 @@ namespace fix {
                     auto heartbeatMsg = std::make_shared<std::string>(
                             OutboundMessageBuilder::buildHeartbeat(
                                     "BETA_EXCHANGE", senderCompId,
-                                    state->outSeqNum++, testReqId));
+                                    sessionManager.useNextOutboundSequence(mSessionId), testReqId));
+
                     doWrite(heartbeatMsg);
                 }
             } break;
