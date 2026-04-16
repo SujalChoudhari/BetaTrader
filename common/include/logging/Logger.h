@@ -78,11 +78,17 @@ namespace logging {
              const spdlog::level::level_enum globalLevel = spdlog::level::trace,
              const size_t queueSize = 8192, const size_t numThreads = 1,
              size_t maxFileSize = 1024 * 1024 * 300, size_t maxFiles = 5,
-             spdlog::sink_ptr customSink = nullptr) // Added customSink parameter
+             spdlog::sink_ptr customSink = nullptr)
         {
-            spdlog::drop_all();
-            spdlog::shutdown();
-            spdlog::init_thread_pool(queueSize, numThreads);
+            if (spdlog::get(loggerName)) {
+                return;
+            }
+
+            static bool threadPoolInitialized = false;
+            if (!threadPoolInitialized) {
+                spdlog::init_thread_pool(queueSize, numThreads);
+                threadPoolInitialized = true;
+            }
             std::vector<spdlog::sink_ptr> sinks;
 
             if (enableConsole) {

@@ -99,7 +99,12 @@ namespace simulator {
                         uint64_t qty = (std::abs(mDist(mGen)) * 10) + 1;
 
                         uint64_t cid = botOrderId++;
-                        common::OrderID coreId = mCore.getOrderIDGenerator()->nextId();
+                        auto* idGen = mCore.getOrderIDGenerator();
+                        if (!idGen) {
+                            LOG_ERROR("Simulator: TradingCore OrderIDGenerator is null! Skipping order injection.");
+                            continue;
+                        }
+                        common::OrderID coreId = idGen->nextId();
 
                         std::uniform_int_distribution<int> botDist(1, mNumBots);
                         std::string botId = "BOT_" + std::to_string(botDist(mGen));

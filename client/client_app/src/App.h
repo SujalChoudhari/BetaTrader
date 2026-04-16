@@ -57,6 +57,7 @@ private:
     std::shared_ptr<fix_client::FixClientSession> mFixSession;
 
     bool mLogicInitialized = false;
+    trading_core::TradingCore* mCurrentCore = nullptr;
     void initLogic(trading_core::TradingCore& core);
 };
 

@@ -41,9 +41,21 @@ int App::run() {
         mUI.renderDockspace();
 
         // Check for local exchange core to initialize advanced logic
-        auto core = mExchMgr.getServer() ? &mExchMgr.getServer()->getTradingCore() : nullptr;
-        if (core && !mLogicInitialized) {
-            initLogic(*core);
+        auto core = mExchMgr.getCore();
+        if (core != mCurrentCore) {
+            if (mLogicInitialized) {
+                LOG_INFO("Local exchange state changed, resetting dependent logic...");
+                if (mSimulator) mSimulator->stop();
+                mSimulator.reset();
+                mAggregator.reset();
+                mHistoryRepo.reset();
+                mLogicInitialized = false;
+            }
+            
+            mCurrentCore = core;
+            if (mCurrentCore) {
+                initLogic(*mCurrentCore);
+            }
         }
 
         // Render Panels
