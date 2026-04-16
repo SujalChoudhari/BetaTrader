@@ -22,7 +22,15 @@ set(IMPLOT_SOURCES
 )
 
 # client_ui Source Files
-file(GLOB_RECURSE UI_SOURCES "src/*.cpp")
+set(UI_SOURCES
+    src/ChartPanel.cpp
+    src/ConnectionPanel.cpp
+    src/OrderBookPanel.cpp
+    src/SimulatorPanel.cpp
+    src/Theme.cpp
+    src/TradingPanel.cpp
+    src/UIManager.cpp
+)
 
 add_library(client_ui_lib STATIC
     ${IMGUI_SOURCES}
@@ -43,6 +51,9 @@ target_link_libraries(client_ui_lib
     common
     glfw
     client_fix_lib
+    client_ohlc_lib
+    client_orderbook_lib
+    client_simulator_lib
 )
 
 # Setup OpenGL
