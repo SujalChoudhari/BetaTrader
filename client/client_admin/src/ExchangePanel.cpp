@@ -66,7 +66,7 @@ void ExchangePanel::renderSessionSection() {
     auto* server = mManager.getServer();
     if (!server) return;
 
-    const auto& sessionStates = server->getManager().getAllSessionStates();
+    const auto sessionStates = server->getManager().getAllSessionStates();
 
     if (ImGui::BeginTable("SessionTable", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
         ImGui::TableSetupColumn("SenderCompID");
