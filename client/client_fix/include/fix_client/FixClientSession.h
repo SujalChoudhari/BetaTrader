@@ -145,6 +145,7 @@ namespace fix_client {
         StateChangeCallback mStateChangeCb;
 
         friend class FixClientSessionTests;
+        friend class AuthManagerTests;
     };
 
 } // namespace fix_client
