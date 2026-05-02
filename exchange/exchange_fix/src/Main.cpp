@@ -41,6 +41,12 @@ short initiateSystem(short port)
         if (auto* dbWorker = tradingCore.getDatabaseWorker()) {
             seqRepo = std::make_shared<data::SequenceRepository>(dbWorker);
             seqRepo->initDatabase();
+            
+            // Seed default clients for Phase 1/2 demo
+            if (auto authRepo = tradingCore.getAuthRepository()) {
+                authRepo->insertNewClient("CLIENT1", true);
+                authRepo->insertNewClient("CLIENT_1", true);
+            }
         }
 
         fix::FixServer server(io_context, port, tradingCore, seqRepo.get());

@@ -11,6 +11,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <mutex>
 
 namespace fix {
 
@@ -50,7 +51,10 @@ namespace fix {
         asio::ip::tcp::socket mSocket;
         trading_core::TradingCore& mTradingCore;
         FixSessionManager mSessionManager;
+        
+        mutable std::mutex mSessionsMutex;
         std::map<uint32_t, std::shared_ptr<FixSession>> mSessions;
+        
         uint32_t mNextSessionId = 1;
         std::map<std::string, std::vector<std::weak_ptr<FixSession>>>
                 mMarketDataSubscriptions;

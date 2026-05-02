@@ -50,19 +50,20 @@ namespace fix {
             std::error_code ec;
             mAcceptor.close(ec);
         }
+        
+        std::lock_guard<std::mutex> lock(mSessionsMutex);
         for (auto& [id, session] : mSessions) {
             session->stop();
         }
         mSessions.clear();
-        mSessionManager.getMutex().lock();
-        // Clear runtime state
-        mSessionManager.getMutex().unlock();
     }
 
     void FixServer::onExecutionReport(const ExecutionReport& report)
     {
         uint32_t sessionId = report.getTargetCompId();
         if (sessionId == 0) return; // Simulator or internal
+        
+        std::lock_guard<std::mutex> lock(mSessionsMutex);
         if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
             it->second->sendExecutionReport(report);
         } else {
@@ -75,6 +76,8 @@ namespace fix {
     {
         uint32_t sessionId = snapshot.targetSessionID;
         if (sessionId == 0) return;
+        
+        std::lock_guard<std::mutex> lock(mSessionsMutex);
         if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
             it->second->sendMarketDataSnapshotFullRefresh(snapshot);
         } else {
@@ -87,6 +90,8 @@ namespace fix {
     {
         uint32_t sessionId = refresh.targetSessionID;
         if (sessionId == 0) return;
+        
+        std::lock_guard<std::mutex> lock(mSessionsMutex);
         if (const auto it = mSessions.find(sessionId); it != mSessions.end()) {
             it->second->sendMarketDataIncrementalRefresh(refresh);
         } else {
@@ -115,11 +120,13 @@ namespace fix {
     void FixServer::registerSession(
             const std::shared_ptr<FixSession>& session)
     {
+        std::lock_guard<std::mutex> lock(mSessionsMutex);
         mSessions[session->getSessionID()] = session;
     }
 
     void FixServer::unregisterSession(uint32_t sessionId)
     {
+        std::lock_guard<std::mutex> lock(mSessionsMutex);
         mSessions.erase(sessionId);
         mTradingCore.unsubscribeFromMarketData(sessionId);
     }
