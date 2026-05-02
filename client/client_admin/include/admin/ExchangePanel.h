@@ -1,36 +1,22 @@
 #pragma once
 
-#include "admin/ExchangeManager.h"
-#include <string>
-#include <vector>
+#include <admin/ExchangeManager.h>
 
 namespace admin {
 
 /**
  * @class ExchangePanel
- * @brief ImGui panel for controlling and monitoring the internal exchange state.
+ * @brief ImGui panel for controlling the backend processes.
  */
 class ExchangePanel {
 public:
-    explicit ExchangePanel(ExchangeManager& manager);
-    ~ExchangePanel();
+    ExchangePanel(ExchangeManager& manager);
 
-    /**
-     * @brief Renders the exchange control dashboard.
-     */
     void render();
 
 private:
     ExchangeManager& mManager;
-    int mPort = 8088;
-    
-    // UI persistent states
-    bool mAutoRefresh = true;
-    float mRefreshTimer = 0.0f;
-
-    void renderControlSection();
-    void renderSessionSection();
-    void renderEngineSection();
+    int mNumAgents = 10000;
 };
 
 } // namespace admin

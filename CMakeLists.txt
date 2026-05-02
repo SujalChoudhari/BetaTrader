@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Ensure all binaries go to a single bin folder for easy local testing
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 option(ENABLE_COVERAGE "Enable code coverage generation" OFF)
 
 if(ENABLE_COVERAGE)
@@ -73,9 +76,11 @@ include_directories(vendor/lib/asio/include)
 add_subdirectory(common)
 add_subdirectory(common/tests)
 add_subdirectory(client/client_fix)
+add_subdirectory(client/client_orderbook)
 add_subdirectory(client/client_ui)
 add_subdirectory(client/client_admin)
 add_subdirectory(client/client_app)
+add_subdirectory(client/client_simulator)
 
 add_subdirectory(client/client_fix/tests)
 add_subdirectory(exchange)

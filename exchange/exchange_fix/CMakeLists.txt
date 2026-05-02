@@ -21,12 +21,12 @@ target_link_libraries(fix_lib
 target_compile_definitions(fix_lib PRIVATE _WIN32_WINNT=0x0601)
 target_compile_definitions(fix_lib PUBLIC ASIO_STANDALONE)
 
-add_executable(fix src/Main.cpp)
+add_executable(exchange_app src/Main.cpp)
 
-target_link_libraries(fix
+target_link_libraries(exchange_app
         PUBLIC
         fix_lib
         common
         Threads::Threads
 )
-target_compile_definitions(fix PRIVATE _WIN32_WINNT=0x0601)
+target_compile_definitions(exchange_app PRIVATE _WIN32_WINNT=0x0601)

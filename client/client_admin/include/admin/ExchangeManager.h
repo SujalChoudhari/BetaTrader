@@ -1,48 +1,55 @@
 #pragma once
 
-#include <exchange_app/TradingCore.h>
-#include <fix/FixServer.h>
-#include <data/SequenceRepository.h>
-#include <asio.hpp>
-
+#include <string>
+#include <vector>
 #include <memory>
+#include <thread>
 #include <atomic>
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/wait.h>
 
 namespace admin {
 
 /**
  * @class ExchangeManager
- * @brief Manages the lifecycle of a local Exchange instance (TradingCore + FixServer).
+ * @brief Handles starting and stopping the exchange server and simulator.
  */
 class ExchangeManager {
 public:
-    explicit ExchangeManager(asio::io_context& ioCtx);
+    ExchangeManager();
     ~ExchangeManager();
 
     /**
-     * @brief Starts the exchange services.
-     * @param port TCP port for the FIX server.
-     * @return true if successfully started.
+     * @brief Starts the exchange server process.
      */
-    bool start(short port = 8088);
+    bool startExchange(const std::string& binaryPath);
 
     /**
-     * @brief Stops all exchange services.
+     * @brief Stops the exchange server process.
      */
-    void stop();
+    void stopExchange();
 
-    bool isRunning() const { return mIsRunning; }
-    
-    trading_core::TradingCore* getCore() { return mTradingCore.get(); }
-    fix::FixServer* getServer() { return mFixServer.get(); }
+    /**
+     * @brief Starts the simulator process with a specific number of agents.
+     */
+    bool startSimulator(const std::string& binaryPath, int numAgents);
+
+    /**
+     * @brief Stops the simulator process.
+     */
+    void stopSimulator();
+
+    bool isExchangeRunning() const { return mExchangeRunning; }
+    bool isSimulatorRunning() const { return mSimulatorRunning; }
 
 private:
-    asio::io_context& mIoCtx;
-    std::unique_ptr<trading_core::TradingCore> mTradingCore;
-    std::unique_ptr<fix::FixServer> mFixServer;
-    std::unique_ptr<data::SequenceRepository> mSeqRepo;
-    std::atomic<bool> mIsRunning{false};
-
+    std::atomic<bool> mExchangeRunning{false};
+    std::atomic<bool> mSimulatorRunning{false};
+    
+    pid_t mExchangePid{-1};
+    pid_t mSimulatorPid{-1};
 };
 
 } // namespace admin

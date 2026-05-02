@@ -4,7 +4,7 @@
 
 namespace client_app {
 
-App::App() : mWork(asio::make_work_guard(mIoCtx)), mExchMgr(mIoCtx), mExchPanel(mExchMgr) {
+App::App() : mWork(asio::make_work_guard(mIoCtx)), mExchMgr(), mExchPanel(mExchMgr) {
 
     mNetworkThread = std::thread([this]() {
         try {

@@ -1,74 +1,137 @@
-#include "admin/ExchangeManager.h"
-#include "logging/Logger.h"
+#include <admin/ExchangeManager.h>
+#include <iostream>
+#include <cstdlib>
 #include <filesystem>
+#include <vector>
+#include <cerrno>
 
 namespace admin {
 
-ExchangeManager::ExchangeManager(asio::io_context& ioCtx) : mIoCtx(ioCtx) {}
+ExchangeManager::ExchangeManager() {}
 
 ExchangeManager::~ExchangeManager() {
-    stop();
+    stopExchange();
+    stopSimulator();
 }
 
-bool ExchangeManager::start(short port) {
-    if (mIsRunning) return true;
-
+std::string findBinary(const std::string& name) {
+    namespace fs = std::filesystem;
+    
+    // 1. Try current directory
+    if (fs::exists("./" + name)) return "./" + name;
+    
+    // 2. Try relative paths in build tree
+    // If we are in build/client/client_app, the binary might be in ../../exchange/exchange_fix/
+    std::vector<std::string> searchPaths = {
+        "../../exchange/exchange_fix/",
+        "../../../exchange/exchange_fix/",
+        "../bin/",
+        "../../bin/",
+        "./exchange/exchange_fix/"
+    };
+    
+    for (const auto& path : searchPaths) {
+        if (fs::exists(path + name)) return path + name;
+    }
+    
+    // 3. Fallback: Search the entire project root build directory if possible
+    // This is expensive but better than failing
     try {
-        // Local exchange uses in-memory DB, so stale client seq files
-        // will cause fatal sequence mismatches. Clean them.
-        if (std::filesystem::exists("seq_store")) {
-            std::filesystem::remove_all("seq_store");
-            LOG_INFO("Admin: Cleaned stale client sequence store for fresh local exchange.");
+        // Assume we are somewhere inside 'build'
+        fs::path current = fs::current_path();
+        while (current.has_parent_path() && current.filename() != "BetaTrader") {
+            current = current.parent_path();
         }
-
-        LOG_INFO("Admin: Initializing local TradingCore...");
-        mTradingCore = std::make_unique<trading_core::TradingCore>();
         
-        // Seed default authorized client for local testing
-        if (auto* authRepo = mTradingCore->getAuthRepository()) {
-            authRepo->initDatabase();
-            authRepo->insertNewClient("CLIENT1", true);
-            LOG_INFO("Admin: Registered default client 'CLIENT1' in local exchange.");
+        if (current.filename() == "BetaTrader" && fs::exists(current / "build")) {
+            for (const auto& entry : fs::recursive_directory_iterator(current / "build")) {
+                if (entry.is_regular_file() && entry.path().filename() == name) {
+                    return entry.path().string();
+                }
+            }
         }
+    } catch (...) {}
 
-        mTradingCore->start();
+    return name; // Return original if not found, let execvp try PATH
+}
 
-        // Initialize Sequence Persistence
-        mSeqRepo = std::make_unique<data::SequenceRepository>(mTradingCore->getDatabaseWorker());
-        mSeqRepo->initDatabase();
+bool ExchangeManager::startExchange(const std::string& binaryPath) {
+    if (mExchangeRunning) return true;
 
-        LOG_INFO("Admin: Starting local FIX Server on port {}...", port);
-        mFixServer = std::make_unique<fix::FixServer>(mIoCtx, port, *mTradingCore, mSeqRepo.get());
+    std::string actualPath = findBinary("exchange_app");
+    std::cout << "[Admin] Resolved Exchange Path: " << actualPath << std::endl;
 
-
-        mIsRunning = true;
-
-        LOG_INFO("Admin: Local Exchange is ONLINE.");
+    pid_t pid = fork();
+    if (pid == 0) {
+        // Child process
+        char* args[] = { (char*)actualPath.c_str(), nullptr };
+        if (execvp(args[0], args) == -1) {
+            std::cerr << "[Admin] Failed to start Exchange: " << actualPath << " (Error: " << errno << ")" << std::endl;
+            exit(1);
+        }
+    } else if (pid > 0) {
+        // Parent process
+        mExchangePid = pid;
+        mExchangeRunning = true;
         return true;
-    } catch (const std::exception& e) {
-        LOG_ERROR("Admin: Failed to start local exchange: {}", e.what());
-        stop();
+    } else {
+        std::cerr << "[Admin] Failed to fork for Exchange." << std::endl;
         return false;
     }
+    return false;
 }
 
-void ExchangeManager::stop() {
-    if (!mIsRunning) return;
+void ExchangeManager::stopExchange() {
+    if (!mExchangeRunning || mExchangePid == -1) return;
 
-    LOG_INFO("Admin: Stopping local Exchange services...");
-    if (mFixServer) {
-        mFixServer->stop();
-        mFixServer.reset();
+    std::cout << "[Admin] Stopping Exchange (PID: " << mExchangePid << ")..." << std::endl;
+    kill(mExchangePid, SIGTERM);
+    
+    int status;
+    waitpid(mExchangePid, &status, WNOHANG);
+    
+    mExchangePid = -1;
+    mExchangeRunning = false;
+}
+
+bool ExchangeManager::startSimulator(const std::string& binaryPath, int numAgents) {
+    if (mSimulatorRunning) return true;
+
+    std::string actualPath = findBinary("client_simulator");
+    std::cout << "[Admin] Resolved Simulator Path: " << actualPath << std::endl;
+
+    pid_t pid = fork();
+    if (pid == 0) {
+        // Child process
+        std::string agentsStr = std::to_string(numAgents);
+        char* args[] = { (char*)actualPath.c_str(), (char*)"--agents", (char*)agentsStr.c_str(), nullptr };
+        if (execvp(args[0], args) == -1) {
+            std::cerr << "[Admin] Failed to start Simulator: " << actualPath << " (Error: " << errno << ")" << std::endl;
+            exit(1);
+        }
+    } else if (pid > 0) {
+        // Parent process
+        mSimulatorPid = pid;
+        mSimulatorRunning = true;
+        return true;
+    } else {
+        std::cerr << "[Admin] Failed to fork for Simulator." << std::endl;
+        return false;
     }
-    mSeqRepo.reset();
-    if (mTradingCore) {
+    return false;
+}
 
-        mTradingCore->stop();
-        mTradingCore.reset();
-    }
+void ExchangeManager::stopSimulator() {
+    if (!mSimulatorRunning || mSimulatorPid == -1) return;
 
-    mIsRunning = false;
-    LOG_INFO("Admin: Local Exchange is OFFLINE.");
+    std::cout << "[Admin] Stopping Simulator (PID: " << mSimulatorPid << ")..." << std::endl;
+    kill(mSimulatorPid, SIGTERM);
+    
+    int status;
+    waitpid(mSimulatorPid, &status, WNOHANG);
+    
+    mSimulatorPid = -1;
+    mSimulatorRunning = false;
 }
 
 } // namespace admin
