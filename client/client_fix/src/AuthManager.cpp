@@ -19,7 +19,12 @@ namespace fix_client {
         }
 
         mPendingCallback = callback;
-        mPendingReqId = "REQ_" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
+        if (!mNextReqId.empty()) {
+            mPendingReqId = mNextReqId;
+            mNextReqId = "";
+        } else {
+            mPendingReqId = "REQ_" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
+        }
 
         std::ostringstream body;
         body << "923=" << mPendingReqId << '\x01'      // UserRequestID
@@ -43,8 +48,8 @@ namespace fix_client {
         }
 
         auto reqIdIt = map.find(923); // UserRequestID
-        if (reqIdIt != map.end() && reqIdIt->second != mPendingReqId) {
-            LOG_WARN("AuthManager received 35=BF for unknown REQ_ID: {}", std::string(reqIdIt->second));
+        if (reqIdIt == map.end() || reqIdIt->second != mPendingReqId) {
+            LOG_WARN("AuthManager received 35=BF with missing or unknown REQ_ID");
             return false;
         }
 

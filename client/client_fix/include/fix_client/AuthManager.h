@@ -40,10 +40,13 @@ namespace fix_client {
          */
         bool handleMessage(const ParsedFixMessage& parsed, const std::string& rawFix);
 
+        void setNextRequestId(const std::string& reqId) { mNextReqId = reqId; }
+
     private:
         std::shared_ptr<FixClientSession> mSession;
         AuthCallback mPendingCallback;
         std::string mPendingReqId;
+        std::string mNextReqId;
     };
 
 } // namespace fix_client

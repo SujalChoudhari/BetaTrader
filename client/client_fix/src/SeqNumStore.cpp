@@ -29,14 +29,14 @@ namespace fix_client {
         std::lock_guard<std::mutex> lock(mMutex);
         mInSeqNum = inSeq;
         mOutSeqNum = outSeq;
-        save(); // Save while locked
+        saveInternal(); // Save while locked
     }
 
     void SeqNumStore::reset() {
         std::lock_guard<std::mutex> lock(mMutex);
         mInSeqNum = 1;
         mOutSeqNum = 1;
-        save();
+        saveInternal();
         LOG_INFO("SeqNumStore reset to 1/1 at {}", mFilePath);
     }
 
@@ -51,24 +51,39 @@ namespace fix_client {
                     if (iss >> mInSeqNum >> mOutSeqNum) {
                         LOG_INFO("SeqNumStore loaded from {}: InSeq={}, OutSeq={}", mFilePath, mInSeqNum, mOutSeqNum);
                         return;
+                    } else {
+                        LOG_ERROR("SeqNumStore found corrupted data in {}", mFilePath);
                     }
+                } else {
+                    LOG_ERROR("SeqNumStore found empty file at {}", mFilePath);
                 }
+            } else {
+                LOG_ERROR("SeqNumStore could not open existing file at {}", mFilePath);
             }
         }
         
         // If file doesn't exist or is corrupted, start fresh
         mInSeqNum = 1;
         mOutSeqNum = 1;
-        save();
-        LOG_INFO("SeqNumStore created fresh at {}: InSeq=1, OutSeq=1", mFilePath);
+        saveInternal(); // Internal helper to avoid double lock
+        LOG_INFO("SeqNumStore initialized at {}: InSeq=1, OutSeq=1", mFilePath);
     }
 
     void SeqNumStore::save() const {
+        std::lock_guard<std::mutex> lock(mMutex);
+        saveInternal();
+    }
+
+    void SeqNumStore::saveInternal() const {
         std::ofstream file(mFilePath, std::ios::trunc);
         if (file.is_open()) {
             file << mInSeqNum << " " << mOutSeqNum << "\n";
+            file.close();
+            if (file.fail()) {
+                LOG_ERROR("SeqNumStore failed to close or flush to {}", mFilePath);
+            }
         } else {
-            LOG_ERROR("SeqNumStore failed to save to {}", mFilePath);
+            LOG_ERROR("SeqNumStore failed to open for writing: {}", mFilePath);
         }
     }
 

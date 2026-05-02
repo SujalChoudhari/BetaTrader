@@ -52,6 +52,7 @@ namespace fix_client {
     private:
         void load();
         void save() const;
+        void saveInternal() const;
 
         std::string mFilePath;
         mutable std::mutex mMutex; // Mutable to lock during const getters
