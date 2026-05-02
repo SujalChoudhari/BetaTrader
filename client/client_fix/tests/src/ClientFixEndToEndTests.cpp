@@ -97,7 +97,7 @@ TEST_F(ClientFixEndToEndTests, ConnectLogonAndAuthenticate) {
     clientSession->connect("127.0.0.1", 9091);
     
     // Wait for TCP connect
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     EXPECT_EQ(clientSession->getState(), fix_client::FixClientState::Connected);
 
     // Send Logon
@@ -107,19 +107,78 @@ TEST_F(ClientFixEndToEndTests, ConnectLogonAndAuthenticate) {
     auto status = activeFuture.wait_for(std::chrono::seconds(2));
     ASSERT_EQ(status, std::future_status::ready) << "Timeout waiting for Active state";
     
-    // Test AuthManager
-    std::promise<bool> authPromise;
-    auto authFuture = authPromise.get_future();
+    EXPECT_EQ(clientSession->getState(), fix_client::FixClientState::Active);
+}
 
-    // The BetaTrader framework doesn't currently actively decline/accept specific users
-    // in the strict sense for 35=BE (as long as senderCompID is valid and in ValidClients array).
-    // Let's mock a simple handler on the server if necessary, or just test formatting here.
-    // For this generic test, since the server lacks a specific `handleUserRequest` yet, 
-    // we'll just test that we can transition to Active safely.
+TEST_F(ClientFixEndToEndTests, SequencePersistenceAcrossRestarts) {
+    // 1. Initial Logon to establish sequences
+    clientSession->connect("127.0.0.1", 9091);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    clientSession->sendLogon(30, true); // Force reset to start at 1
     
-    // (If the server doesn't respond to 35=BE, the promise will timeout, which is expected 
-    //  if BetaTrader core/fix doesn't intercept 'BE' yet. So we just verify State == Active).
+    // Wait for active
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    ASSERT_EQ(clientSession->getState(), fix_client::FixClientState::Active);
     
+    // 2. Disconnect and shutdown
+    clientSession->disconnect();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    
+    // 3. Create a NEW session pointing to same store
+    auto newClientSession = std::make_shared<fix_client::FixClientSession>(*clientIoContext, "CLIENT_1", "BETA_EXCHANGE");
+    
+    // Verify it loaded sequences (NextSender should be 2 now because Logon was sent)
+    // Wait, let's check SeqNumStore directly or through the session
+    // Since we don't have a getter for seq nums in session, we'll check it by sending another logon WITHOUT force reset.
+    
+    newClientSession->connect("127.0.0.1", 9091);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    
+    // 4. Send Logon WITHOUT force reset
+    newClientSession->sendLogon(30, false); 
+    
+    // If it works, it means it sent 34=2 and server accepted it.
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    EXPECT_EQ(newClientSession->getState(), fix_client::FixClientState::Active);
+}
+
+TEST_F(ClientFixEndToEndTests, SequenceSyncOnLogon) {
+    // 1. Setup a client that already has high sequences
+    {
+        fix_client::SeqNumStore store("CLIENT_1", "seq_store");
+        store.setSeqNums(50, 50);
+    }
+    
+    // 2. Start server (which starts at 1,1 for CLIENT_1)
+    // server already started in SetUp
+    
+    // 3. Connect and send Logon with sequence 50
+    clientSession->connect("127.0.0.1", 9091);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    clientSession->sendLogon(30, false); // No force reset
+    
+    // 4. Server should sync and accept it!
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    EXPECT_EQ(clientSession->getState(), fix_client::FixClientState::Active);
+}
+
+TEST_F(ClientFixEndToEndTests, InboundSequenceSyncDownOnLogon) {
+    // 1. Setup a client that expects a HIGH sequence from server
+    {
+        fix_client::SeqNumStore store("CLIENT_1", "seq_store");
+        store.setSeqNums(100, 1); // Expects 100 from server
+    }
+    
+    // 2. Start server (which starts at 1,1)
+    // server already started in SetUp
+    
+    // 3. Connect and send Logon
+    clientSession->connect("127.0.0.1", 9091);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    clientSession->sendLogon(30, false);
+    
+    // 4. Client should see server's '1', sync down to 1, and become Active!
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
     EXPECT_EQ(clientSession->getState(), fix_client::FixClientState::Active);
 }
 

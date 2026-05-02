@@ -24,7 +24,7 @@ namespace fix {
 
         // Validates an incoming sequence number.
         // Returns true if strictly next expected, false if gap or too low.
-        bool validateSequence(uint32_t sessionId, uint32_t incomingSeqNum);
+        bool validateSequence(uint32_t sessionId, uint32_t incomingSeqNum, bool isLogon = false);
 
         // Handle a Logout request (marks session offline, preserves mapping for ack).
         void handleLogout(uint32_t sessionId);

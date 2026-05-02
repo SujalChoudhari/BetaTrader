@@ -11,5 +11,5 @@
 #include <string>
 
 namespace data {
-    const std::string databasePath = ":memory:";
+    const std::string databasePath = "exchange.db";
 }

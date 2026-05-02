@@ -32,7 +32,8 @@ namespace fix_client {
         changeState(FixClientState::Connecting);
         
         auto self(shared_from_this());
-        mResolver.async_resolve(host, std::to_string(port),
+        std::string portStr = std::to_string(port);
+        mResolver.async_resolve(host, portStr, asio::ip::tcp::resolver::numeric_service,
             [this, self](const std::error_code& ec, asio::ip::tcp::resolver::results_type results) {
                 if (!ec) {
                     asio::async_connect(mSocket, results,
@@ -125,13 +126,19 @@ namespace fix_client {
     }
 
     void FixClientSession::doWrite(std::shared_ptr<std::string> message) {
+        if (!mSocket.is_open()) {
+            LOG_WARN("Attempted to write to a closed socket.");
+            return;
+        }
         auto self(shared_from_this());
         asio::async_write(mSocket, asio::buffer(*message),
             [this, self, message](const std::error_code& ec, std::size_t) {
                 if (!ec) {
                     LOG_TRACE("Sent raw size {}: {}", message->length(), message->substr(0, 50));
                 } else {
-                    LOG_ERROR("FixClientSession Write error: {}", ec.message());
+                    if (ec != asio::error::operation_aborted) {
+                        LOG_ERROR("FixClientSession Write error: {}", ec.message());
+                    }
                     disconnect();
                 }
             });
@@ -193,9 +200,15 @@ namespace fix_client {
                 // Real implementation would send ResendRequest. For BetaTrader client_fix, we will just sync up to avoid death loops.
                 mSeqStore.setSeqNums(seqNum + 1, mSeqStore.getNextSenderSeqNum());
             } else {
-                LOG_ERROR("Fatal: Sequence number from server too low. Expected: {}, Got: {}", expectedSeq, seqNum);
-                disconnect();
-                return;
+                if (msgType == 'A') {
+                    LOG_INFO("Server sequence ({}) is lower than expected ({}). Syncing inbound sequence down to server state.", seqNum, expectedSeq);
+                    mSeqStore.setSeqNums(seqNum + 1, mSeqStore.getNextSenderSeqNum());
+                } else {
+                    LOG_ERROR("Fatal: Sequence number from server too low. Expected: {}, Got: {}. "
+                              "This usually means the server was reset. Check 'Force Sequence Reset' in the Connection Panel.", expectedSeq, seqNum);
+                    disconnect();
+                    return;
+                }
             }
         }
 

@@ -56,13 +56,14 @@ namespace data {
         db.exec("PRAGMA synchronous = NORMAL;");
         db.setBusyTimeout(5000);
 
-        while (!stopToken.stop_requested()) {
+        while (true) {
             std::function<void(SQLite::Database&)>* task = mTasks.front();
             if (task) {
                 (*task)(db);
                 mTasks.pop();
             }
             else {
+                if (stopToken.stop_requested()) break;
                 std::this_thread::yield();
             }
         }

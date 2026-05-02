@@ -50,7 +50,7 @@ namespace fix {
         return true;
     }
 
-    bool FixSessionManager::validateSequence(uint32_t sessionId, uint32_t incomingSeqNum) {
+    bool FixSessionManager::validateSequence(uint32_t sessionId, uint32_t incomingSeqNum, bool isLogon) {
         std::lock_guard<std::mutex> lock(mMutex);
         auto connIt = mConnectionToCompId.find(sessionId);
         if (connIt == mConnectionToCompId.end()) {
@@ -75,6 +75,14 @@ namespace fix {
             }
             return true;
         } else if (incomingSeqNum > expectedSeqNum) {
+            if (isLogon) {
+                LOG_INFO("Sequence sync on Logon for {}: Synced from {} to {}", compId, expectedSeqNum, incomingSeqNum);
+                state.inSeqNum = incomingSeqNum;
+                if (mSeqRepo) {
+                    mSeqRepo->updateSequenceNumbers(compId, state.inSeqNum, state.outSeqNum);
+                }
+                return true;
+            }
             LOG_WARN("Sequence gap detected for {}. Expected {}, got {}", compId, expectedSeqNum, incomingSeqNum);
             return false;
         } else {

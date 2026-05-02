@@ -224,7 +224,7 @@ namespace fix {
                 }
 
                 // Validate sequence for Logon message
-                sessionManager.validateSequence(mSessionId, msgSeqNum);
+                sessionManager.validateSequence(mSessionId, msgSeqNum, true);
 
                 // Send Logon Ack
                 SessionState* state

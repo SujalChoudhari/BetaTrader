@@ -41,6 +41,8 @@ namespace fix {
         const std::map<uint32_t, std::shared_ptr<FixSession>>& getSessions() const { return mSessions; }
         
         trading_core::TradingCore& getTradingCore() { return mTradingCore; }
+        
+        uint16_t getPort() const { return mAcceptor.local_endpoint().port(); }
 
 
     private:
