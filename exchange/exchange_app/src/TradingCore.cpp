@@ -263,9 +263,14 @@ namespace trading_core {
     TradingCore::findPartitionForOrder(common::OrderID orderId) const
     {
         for (const auto& partition: mPartitions) {
-            if (partition
-                && partition->getOrderManager()->containsOrderById(orderId)) {
-                return partition->getSymbol();
+            if (partition) {
+                if (partition->getOrderManager()->containsOrderById(orderId)) {
+                    return partition->getSymbol();
+                }
+                // FIX: Also check by Client Order ID (since commands might carry it)
+                if (partition->getOrderManager()->getOrderByClientOrderId(std::to_string(orderId))) {
+                    return partition->getSymbol();
+                }
             }
         }
         return std::nullopt;

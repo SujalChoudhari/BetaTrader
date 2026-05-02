@@ -18,7 +18,11 @@ namespace fix {
 
     bool FixSessionManager::authenticate(uint32_t sessionId, const std::string& senderCompId) {
         std::lock_guard<std::mutex> lock(mMutex);
-        if (mValidClients.find(senderCompId) == mValidClients.end()) {
+        
+        // Auto-trust simulator agents (IDs starting with SIM_)
+        bool isSimulator = (senderCompId.rfind("SIM_", 0) == 0);
+
+        if (!isSimulator && mValidClients.find(senderCompId) == mValidClients.end()) {
             LOG_WARN("Session {} failed authentication: Unknown SenderCompID '{}'", sessionId, senderCompId);
             return false;
         }

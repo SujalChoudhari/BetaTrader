@@ -102,12 +102,12 @@ namespace trading_core {
 
         mOrderManager.addOrder(cmd.releaseOrder());
         mOrderRepository.saveOrder(*order);
-        mOrderBook.insertOrder(order);
 
-        ExecutionPublisher::publishExecution(*order, "NEW");
-
+        // 1. Match against existing book first
+        bool partiallyMatched = false;
         for (const auto trades = mMatcher.match(order, mOrderBook);
              auto& trade: trades) {
+            partiallyMatched = true;
             mRiskManager.postTradeUpdate(trade);
             auto buyOrderOpt = mOrderManager.getOrderById(trade.getBuyOrderId());
             auto sellOrderOpt = mOrderManager.getOrderById(trade.getSellOrderId());
@@ -118,15 +118,32 @@ namespace trading_core {
             }
         }
 
-        if (order->getRemainingQuantity() == 0
-            || order->getOrderType() == common::OrderType::Market) {
+        // 2. Only insert into book if there's remaining quantity and it's a LIMIT order
+        if (order->getRemainingQuantity() > 0) {
+            if (order->getOrderType() == common::OrderType::Limit) {
+                mOrderBook.insertOrder(order);
+                ExecutionPublisher::publishExecution(*order, partiallyMatched ? "PARTIAL_FILL" : "NEW");
+            } else {
+                // Market order or IOC that wasn't fully filled is cancelled
+                order->setStatus(common::OrderStatus::Cancelled);
+                mOrderRepository.removeOrder(order->getClientOrderId());
+                ExecutionPublisher::publishExecution(*order, "CANCELLED_EXPIRED");
+            }
+        } else {
+            // Fully filled
             mOrderRepository.removeOrder(order->getClientOrderId());
+            ExecutionPublisher::publishExecution(*order, "FILLED");
         }
     }
 
     void WorkerThread::processCancelOrder(const CancelOrder& cmd) const
     {
-        const auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
+        // Try looking up by Exchange ID first, then by Client ID
+        auto orderOpt = mOrderManager.getOrderById(cmd.getOrderId());
+        if (!orderOpt) {
+            orderOpt = mOrderManager.getOrderByClientOrderId(std::to_string(cmd.getOrderId()));
+        }
+
         if (!orderOpt) {
             ExecutionPublisher::publishRejection(
                     cmd.getOrderId(), cmd.getClientId(), common::Instrument::EURUSD, common::OrderSide::Buy, "Order not found");
@@ -134,10 +151,10 @@ namespace trading_core {
         }
         const auto order = *orderOpt;
 
-        if (mOrderBook.cancelOrder(cmd.getOrderId())) {
+        if (mOrderBook.cancelOrder(order->getClientOrderId())) {
             ExecutionPublisher::publishExecution(*order, "CANCELED");
-            mOrderRepository.removeOrder(cmd.getOrderId());
-            mOrderManager.removeOrderById(cmd.getOrderId());
+            mOrderRepository.removeOrder(order->getClientOrderId());
+            mOrderManager.removeOrderById(order->getId());
         }
         else {
             ExecutionPublisher::publishRejection(cmd.getOrderId(),
