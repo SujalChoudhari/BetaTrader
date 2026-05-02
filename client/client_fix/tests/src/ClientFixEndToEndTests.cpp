@@ -68,8 +68,6 @@ protected:
         
         if (clientThread.joinable()) clientThread.join();
         if (serverThread.joinable()) serverThread.join();
-        
-        spdlog::shutdown();
     }
 
     std::unique_ptr<MockTradingCore> mockCore;

@@ -78,15 +78,62 @@ TEST_F(SeqNumStoreTests, ResetClearsSequence) {
 }
 
 TEST_F(SeqNumStoreTests, CorruptionRecoverable) {
-    // Write garbage to the sequence file manually
     std::filesystem::create_directories("test_seq_store");
     std::ofstream ofs("test_seq_store/UNIT_TEST.seq");
     ofs << "GARBAGE DATA\n";
     ofs.close();
 
-    // Store should gracefully recover and set to 1, 1
     fix_client::SeqNumStore store("UNIT_TEST", "test_seq_store");
     EXPECT_EQ(store.getNextTargetSeqNum(), 1);
     EXPECT_EQ(store.getNextSenderSeqNum(), 1);
+}
+
+TEST_F(SeqNumStoreTests, EmptyFileRecoverable) {
+    std::filesystem::create_directories("test_seq_store");
+    std::ofstream ofs("test_seq_store/UNIT_TEST.seq");
+    ofs.close();
+
+    fix_client::SeqNumStore store("UNIT_TEST", "test_seq_store");
+    EXPECT_EQ(store.getNextTargetSeqNum(), 1);
+    EXPECT_EQ(store.getNextSenderSeqNum(), 1);
+}
+
+TEST_F(SeqNumStoreTests, ConcurrentAccess) {
+    fix_client::SeqNumStore store("CONC_TEST", "test_seq_store");
+    
+    std::vector<std::thread> threads;
+    for (int i = 0; i < 10; ++i) {
+        threads.emplace_back([&store, i]() {
+            for (int j = 0; j < 100; ++j) {
+                store.setSeqNums(i * 100 + j, i * 100 + j);
+                store.getNextSenderSeqNum();
+                store.getNextTargetSeqNum();
+            }
+        });
+    }
+    
+    for (auto& t : threads) t.join();
+    // No crash means success for this stress test
+}
+
+TEST_F(SeqNumStoreTests, HandleReadErrorGracefully) {
+    // This is hard to simulate without filesystem hooks, 
+    // but we can test the logic path for non-openable files
+    std::filesystem::create_directories("test_seq_store");
+    std::string path = "test_seq_store/READ_ONLY.seq";
+    std::ofstream ofs(path);
+    ofs << "10 20\n";
+    ofs.close();
+    
+    // Set to read-only
+    std::filesystem::permissions(path, std::filesystem::perms::owner_read);
+    
+    // On some systems, even the owner can't write now.
+    // If we can't open for writing, it should log error but not crash.
+    fix_client::SeqNumStore store("READ_ONLY", "test_seq_store");
+    store.setSeqNums(30, 40); 
+    
+    // Restore permissions so TearDown can delete it
+    std::filesystem::permissions(path, std::filesystem::perms::owner_all);
 }
 
