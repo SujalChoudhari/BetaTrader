@@ -43,6 +43,7 @@ target_link_libraries(client_ui_lib
     common
     glfw
     client_fix_lib
+    client_orderbook_lib
 )
 
 # Setup OpenGL
