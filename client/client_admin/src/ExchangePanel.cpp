@@ -35,8 +35,11 @@ void ExchangePanel::render() {
         }
     } else {
         ImGui::TextColored(ImVec4(1, 0, 0, 1), "STOPPED");
-        ImGui::InputInt("Agents", &mNumAgents);
-        if (ImGui::Button("Start Simulator")) {
+        ImGui::Text("Agents Count:");
+        ImGui::SameLine();
+        ImGui::SliderInt("##agents_slider", &mNumAgents, 50, 10000);
+        
+        if (ImGui::Button("Start Simulator", ImVec2(-1, 0))) {
             mManager.startSimulator("./client_simulator", mNumAgents);
         }
     }

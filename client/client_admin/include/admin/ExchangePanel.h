@@ -16,7 +16,7 @@ public:
 
 private:
     ExchangeManager& mManager;
-    int mNumAgents = 10000;
+    int mNumAgents = 50;
 };
 
 } // namespace admin

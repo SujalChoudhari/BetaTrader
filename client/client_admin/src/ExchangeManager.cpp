@@ -58,6 +58,18 @@ std::string findBinary(const std::string& name) {
 bool ExchangeManager::startExchange(const std::string& binaryPath) {
     if (mExchangeRunning) return true;
 
+    // --- CLEANUP ---
+    std::cout << "[Admin] Resetting environment (cleaning DBs and seq numbers)..." << std::endl;
+    namespace fs = std::filesystem;
+    try {
+        if (fs::exists("exchange.db")) fs::remove("exchange.db");
+        if (fs::exists("seq_store")) fs::remove_all("seq_store");
+        fs::create_directory("seq_store");
+    } catch (const std::exception& e) {
+        std::cerr << "[Admin] Cleanup warning: " << e.what() << std::endl;
+    }
+    // ---------------
+
     std::string actualPath = findBinary("exchange_app");
     std::cout << "[Admin] Resolved Exchange Path: " << actualPath << std::endl;
 
