@@ -4,6 +4,10 @@
 #include "fix_client/ConnectionPanel.h"
 #include "admin/ExchangeManager.h"
 #include "admin/ExchangePanel.h"
+#include "client_ui/TradeTicketPanel.h"
+#include "client_ui/PriceLadderPanel.h"
+#include "client_ui/OrderBlotterPanel.h"
+#include "client_orderbook/OrderBookManager.h"
 #include <asio.hpp>
 
 #include <thread>
@@ -24,6 +28,11 @@ public:
      * @brief Entry point that runs the application until closure.
      */
     int run();
+    void onFixMessage(const fix_client::ParsedFixMessage& msg);
+
+    // Testing Helpers
+    client_orderbook::OrderBookManager& getOrderBookManager() { return mOrderBookMgr; }
+    client_ui::TradeTicketPanel& getTradeTicketPanel() { return mTradeTicketPanel; }
 
 private:
     client_ui::UIManager mUI;
@@ -31,6 +40,10 @@ private:
     
     admin::ExchangeManager mExchMgr;
     admin::ExchangePanel mExchPanel;
+    client_ui::TradeTicketPanel mTradeTicketPanel;
+    client_ui::OrderBlotterPanel mOrderBlotter;
+    client_orderbook::OrderBookManager mOrderBookMgr;
+    client_ui::PriceLadderPanel mPriceLadder;
     
     asio::io_context mIoCtx;
 
@@ -38,6 +51,10 @@ private:
     std::thread mNetworkThread;
 
     std::shared_ptr<fix_client::FixClientSession> mFixSession;
+    fix_client::FixClientSession* mLastSessionPtr = nullptr;
+    fix_client::FixClientState mLastSessionState = fix_client::FixClientState::Disconnected;
+
+    friend class AppLogicTests;
 };
 
 } // namespace client_app
