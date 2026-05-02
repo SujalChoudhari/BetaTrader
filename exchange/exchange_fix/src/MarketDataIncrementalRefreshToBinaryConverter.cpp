@@ -67,7 +67,7 @@ std::string MarketDataIncrementalRefreshToBinaryConverter::convert(const MarketD
     LOG_INFO("Calculated BodyLength(9): {} (Header: {} + Body: {})", bodyLength, headerString.length(), bodyString.length());
 
     std::stringstream finalMessageStream;
-    finalMessageStream << static_cast<int>(fix::Tag::BeginString) << "=" << "FIXT.1.1" << fix::SOH;
+    finalMessageStream << static_cast<int>(fix::Tag::BeginString) << "=" << fix::FIX_BEGIN_STRING << fix::SOH;
     finalMessageStream << static_cast<int>(fix::Tag::BodyLength) << "=" << bodyLength << fix::SOH;
     finalMessageStream << headerString << bodyString;
     

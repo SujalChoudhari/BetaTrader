@@ -92,11 +92,18 @@ namespace fix_client {
         void sendAuthRequest(const std::string& username, const std::string& password);
         
         void sendNewOrder(const std::string& symbol, char side, double price, int qty, char type = '2', char tif = '0');
+        void sendOrderCancelRequest(const std::string& symbol, char side, uint64_t origClOrdID, int qty);
         void sendMarketDataRequest(const std::string& symbol, char subscriptionRequestType = '1');
 
         // --- Configuration & Callbacks ---
 
+        /**
+         * @brief Callback type for raw FIX messages (string).
+         */
+        using RawMessageCallback = std::function<void(const std::string&, bool isInbound)>;
+
         void setMessageCallback(MessageCallback cb) { mMessageCb = std::move(cb); }
+        void setRawMessageCallback(RawMessageCallback cb) { mRawMessageCb = std::move(cb); }
         void setStateChangeCallback(StateChangeCallback cb) { mStateChangeCb = std::move(cb); }
         void setHeartbeatInterval(int seconds) { mHeartbeatInterval = seconds; }
 
@@ -142,6 +149,7 @@ namespace fix_client {
 
         // Callbacks
         MessageCallback mMessageCb;
+        RawMessageCallback mRawMessageCb;
         StateChangeCallback mStateChangeCb;
 
         friend class FixClientSessionTests;

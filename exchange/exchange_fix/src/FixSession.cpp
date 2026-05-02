@@ -339,7 +339,7 @@ namespace fix {
                             orderRequest->clientOrderId, coreOrderId,
                             orderRequest->symbol, std::to_string(mSessionId),
                             orderRequest->senderCompID, orderRequest->side,
-                            common::OrderType::Limit, common::TimeInForce::DAY,
+                            orderRequest->orderType, common::TimeInForce::DAY,
                             orderRequest->quantity, orderRequest->price,
                             std::chrono::system_clock::now());
 

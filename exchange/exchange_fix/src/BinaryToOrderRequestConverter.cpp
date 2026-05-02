@@ -46,13 +46,19 @@ namespace fix {
 
             const auto tagMap = splitToMap(messageStringView, fix::SOH);
 
+            auto getTagSafe = [&](fix::Tag tag, const std::string& defaultValue = "") -> std::string {
+                auto it = tagMap.find(static_cast<int>(tag));
+                return (it != tagMap.end()) ? std::string(it->second) : defaultValue;
+            };
+
             OrderRequest request = {
                 std::string(tagMap.at(static_cast<int>(fix::Tag::SenderCompID))),
                 std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID)))),
                 common::from_string(tagMap.at(static_cast<int>(fix::Tag::Symbol))),
                 charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side)).front()),
+                charToOrderType(getTagSafe(fix::Tag::OrdType, "2").front()), // Default to Limit (2)
                 std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrderQty)))),
-                std::stod(std::string(tagMap.at(static_cast<int>(fix::Tag::Price))))
+                std::stod(getTagSafe(fix::Tag::Price, "0.0"))
             };
             return request;
         } catch (const std::exception& e) {

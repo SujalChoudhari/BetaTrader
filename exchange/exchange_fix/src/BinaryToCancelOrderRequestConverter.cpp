@@ -20,9 +20,18 @@ std::optional<CancelOrderRequest> BinaryToCancelOrderRequestConverter::convert(c
     try {
         const auto tagMap = splitToMap(fixMessage, fix::SOH);
 
+        uint64_t clOrdID = std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID))));
+        
+        uint64_t orderID = 0;
+        if (tagMap.count(static_cast<int>(fix::Tag::OrderID))) {
+            orderID = std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrderID))));
+        } else if (tagMap.count(static_cast<int>(fix::Tag::OrigClOrdID))) {
+            orderID = std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrigClOrdID))));
+        }
+
         CancelOrderRequest request = {
-            std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID)))),
-            std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrderID)))),
+            clOrdID,
+            orderID,
             common::from_string(tagMap.at(static_cast<int>(fix::Tag::Symbol))),
             charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side)).front()),
             fix::parseTimestamp(std::string(tagMap.at(static_cast<int>(fix::Tag::TransactTime))))

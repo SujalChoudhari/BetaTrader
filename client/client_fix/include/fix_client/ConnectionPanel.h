@@ -24,6 +24,13 @@ public:
      */
     void render(std::shared_ptr<FixClientSession>& session, asio::io_context& ioContext);
 
+    /**
+     * @brief Adds a message to the FIX log panel.
+     * @param direction "IN" or "OUT".
+     * @param msg The raw FIX message string.
+     */
+    void addLog(const std::string& direction, const std::string& msg);
+
 private:
     char mHost[128] = "127.0.0.1";
     int mPort = 8088;
@@ -39,8 +46,6 @@ private:
     };
     std::vector<LogEntry> mLogs;
     bool mAutoScroll = true;
-
-    void addLog(const std::string& direction, const std::string& msg);
 };
 
 } // namespace fix_client

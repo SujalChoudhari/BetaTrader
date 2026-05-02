@@ -28,9 +28,10 @@ namespace fix {
             const ClientOrderID& clientOrderId,
             const Symbol& symbol,
             common::OrderSide side,
+            common::OrderType orderType,
             fix::Quantity quantity,
             fix::Price price
-        ) : senderCompID(senderCompID), clientOrderId(clientOrderId), symbol(symbol), side(side), quantity(quantity), price(price) {}
+        ) : senderCompID(senderCompID), clientOrderId(clientOrderId), symbol(symbol), side(side), orderType(orderType), quantity(quantity), price(price) {}
 
         /** @brief The sender's component ID (SenderCompID, FIX Tag 49). */
         std::string senderCompID;
@@ -40,6 +41,8 @@ namespace fix {
         Symbol symbol;
         /** @brief Side of the order (Side, FIX Tag 54). */
         common::OrderSide side;
+        /** @brief The type of the order (OrdType, FIX Tag 40). */
+        common::OrderType orderType;
         /** @brief Quantity of the order (OrderQty, FIX Tag 38). */
         fix::Quantity quantity;
         /** @brief Price of the order (Price, FIX Tag 44). */

@@ -46,6 +46,7 @@ short initiateSystem(short port)
             if (auto authRepo = tradingCore.getAuthRepository()) {
                 authRepo->insertNewClient("CLIENT1", true);
                 authRepo->insertNewClient("CLIENT_1", true);
+                authRepo->insertNewClient("SIMULATOR_1", true);
             }
         }
 

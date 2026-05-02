@@ -130,6 +130,11 @@ namespace fix_client {
             LOG_WARN("Attempted to write to a closed socket.");
             return;
         }
+
+        if (mRawMessageCb) {
+            mRawMessageCb(*message, false);
+        }
+
         auto self(shared_from_this());
         asio::async_write(mSocket, asio::buffer(*message),
             [this, self, message](const std::error_code& ec, std::size_t) {
@@ -177,6 +182,10 @@ namespace fix_client {
     }
 
     void FixClientSession::handleProtocolMessage(const std::string& msgStr) {
+        if (mRawMessageCb) {
+            mRawMessageCb(msgStr, true);
+        }
+
         // Extract basic routing fields
         auto map = fix::splitToMap(msgStr, fix::SOH);
         
@@ -376,6 +385,24 @@ namespace fix_client {
 
         sendMessage("V", body.str());
         LOG_INFO("Sent MarketDataRequest (35=V) for {} Type={}", symbol, subscriptionRequestType);
+    }
+
+    void FixClientSession::sendOrderCancelRequest(const std::string& symbol, char side, uint64_t origClOrdID, int qty) {
+        if (mState != FixClientState::Active) return;
+
+        auto now = std::chrono::system_clock::now();
+        auto clOrdId = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
+        
+        std::ostringstream body;
+        body << "11=" << clOrdId << "\x01"
+             << "41=" << origClOrdID << "\x01"
+             << "55=" << symbol << "\x01"
+             << "54=" << side << "\x01"
+             << "38=" << qty << "\x01"
+             << "60=" << fix::OutboundMessageBuilder::generateTimestamp();
+
+        sendMessage("F", body.str());
+        LOG_INFO("Sent OrderCancelRequest (35=F) for {} Side={} OrigClOrdID={}", symbol, side, origClOrdID);
     }
 
 } // namespace fix_client
