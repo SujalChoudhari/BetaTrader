@@ -1,8 +1,5 @@
 #include "client_ui/ConnectionPanel.h"
 #include <imgui.h>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
 
 namespace client_ui {
 
@@ -37,6 +34,7 @@ void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& sess
         if (ImGui::Button("Connect", ImVec2(-1, 0))) {
             // Always create a fresh session; old sockets can't be reused
             session = std::make_shared<fix_client::FixClientSession>(ioContext, mSenderCompId, mTargetCompId);
+            configureSession(session);
             session->connect(mHost, static_cast<short>(mPort));
         }
 
@@ -152,7 +150,7 @@ void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& sess
 
     // --- Message Log Window ---
     ImGui::Begin("FIX Message Log");
-    if (ImGui::Button("Clear Logs")) mLogs.clear();
+    if (ImGui::Button("Clear Logs")) mEventLog.clear();
     ImGui::SameLine();
     ImGui::Checkbox("Auto-scroll", &mAutoScroll);
     ImGui::Separator();
@@ -160,11 +158,19 @@ void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& sess
     const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
     ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-    for (const auto& log : mLogs) {
-        ImVec4 color = (log.direction == "IN") ? ImVec4(0.4f, 0.8f, 1.0f, 1.0f) : ImVec4(0.4f, 1.0f, 0.4f, 1.0f);
+    for (const auto& log : mEventLog.snapshot()) {
+        ImVec4 color = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
+        if (log.type == fix_client::FixClientEventType::ExecutionReport) {
+            color = ImVec4(0.4f, 1.0f, 0.4f, 1.0f);
+        } else if (log.type == fix_client::FixClientEventType::Reject
+                   || log.type == fix_client::FixClientEventType::TransportError) {
+            color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
+        } else if (log.type == fix_client::FixClientEventType::MarketData) {
+            color = ImVec4(0.4f, 0.8f, 1.0f, 1.0f);
+        }
         ImGui::TextDisabled("[%s]", log.timestamp.c_str());
         ImGui::SameLine();
-        ImGui::TextColored(color, "%s", log.direction.c_str());
+        ImGui::TextColored(color, "%s", clientEventTypeName(log.type));
         ImGui::SameLine();
         ImGui::TextWrapped("%s", log.message.c_str());
     }
@@ -176,14 +182,27 @@ void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& sess
     ImGui::End();
 }
 
-void ConnectionPanel::addLog(const std::string& direction, const std::string& msg) {
-    auto now = std::chrono::system_clock::now();
-    auto in_time_t = std::chrono::system_clock::to_time_t(now);
-    std::stringstream ss;
-    ss << std::put_time(std::localtime(&in_time_t), "%H:%M:%S");
-    
-    mLogs.push_back({ss.str(), direction, msg});
-    if (mLogs.size() > 500) mLogs.erase(mLogs.begin());
+void ConnectionPanel::configureSession(const std::shared_ptr<fix_client::FixClientSession>& session) {
+    session->setEventCallback([this](const fix_client::FixClientEvent& event) {
+        mEventLog.append(event);
+    });
+    session->setStateChangeCallback([this](fix_client::FixClientState state) {
+        recordState(state);
+    });
+}
+
+void ConnectionPanel::recordState(fix_client::FixClientState state) {
+    const char* stateName = "UNKNOWN";
+    switch (state) {
+        case fix_client::FixClientState::Disconnected: stateName = "DISCONNECTED"; break;
+        case fix_client::FixClientState::Connecting: stateName = "CONNECTING"; break;
+        case fix_client::FixClientState::Connected: stateName = "CONNECTED"; break;
+        case fix_client::FixClientState::LogonSent: stateName = "LOGON SENT"; break;
+        case fix_client::FixClientState::Active: stateName = "ACTIVE"; break;
+        case fix_client::FixClientState::LoggingOut: stateName = "LOGGING OUT"; break;
+    }
+    mEventLog.append({fix_client::FixClientEventType::Session,
+                      std::string("Connection state: ") + stateName});
 }
 
 } // namespace client_ui
