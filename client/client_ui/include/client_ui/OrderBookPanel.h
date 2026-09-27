@@ -1,6 +1,7 @@
 #pragma once
 
 #include "orderbook/OrderBook.h"
+#include "client_ui/MarketDataState.h"
 #include <memory>
 
 namespace client_ui {
@@ -14,7 +15,7 @@ namespace client_ui {
         OrderBookPanel();
         ~OrderBookPanel();
 
-        void render(const orderbook::OrderBook* book);
+        void render(const orderbook::OrderBook* book, const MarketDataState& marketData);
 
     private:
         int mMaxDepth = 10;

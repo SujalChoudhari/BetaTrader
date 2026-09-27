@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fix_client/FixClientSession.h"
+#include "client_ui/MarketDataState.h"
 #include <asio.hpp>
 #include <memory>
 #include <vector>
@@ -25,7 +26,9 @@ public:
      * @param session Shared pointer to the FIX session.
      * @param ioContext Reference to the ASIO io_context (for starting connections).
      */
-    void render(std::shared_ptr<fix_client::FixClientSession>& session, asio::io_context& ioContext);
+    void render(std::shared_ptr<fix_client::FixClientSession>& session,
+                asio::io_context& ioContext,
+                MarketDataState& marketData);
 
 private:
     char mHost[128] = "127.0.0.1";

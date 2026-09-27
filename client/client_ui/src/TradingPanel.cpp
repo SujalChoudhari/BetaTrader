@@ -8,9 +8,10 @@ namespace client_ui {
 
     bool TradingPanel::trySubmitOrder(
             const std::shared_ptr<fix_client::FixClientSession>& session,
+            const MarketDataState& marketData,
             char side, char orderType, char timeInForce)
     {
-        const OrderTicket ticket{mSymbol,   side,      mPrice,
+        const OrderTicket ticket{marketData.symbol(), side, mPrice,
                                  mQuantity, orderType, timeInForce};
         if (const auto validationError = validateOrderTicket(ticket)) {
             mValidationMessage = *validationError;
@@ -31,11 +32,12 @@ namespace client_ui {
     }
 
     void
-    TradingPanel::render(std::shared_ptr<fix_client::FixClientSession>& session)
+    TradingPanel::render(std::shared_ptr<fix_client::FixClientSession>& session,
+                         const MarketDataState& marketData)
     {
         ImGui::Begin("Order Entry");
 
-        ImGui::InputText("Symbol", mSymbol, sizeof(mSymbol));
+        ImGui::Text("Selected symbol: %s", marketData.symbol().c_str());
         ImGui::InputDouble("Price", &mPrice, 0.0001, 0.001, "%.4f");
         ImGui::InputInt("Quantity", &mQuantity);
 
@@ -64,11 +66,11 @@ namespace client_ui {
 
         if (ImGui::Button("BUY", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f,
                                         40))) {
-            (void)trySubmitOrder(session, '1', mOrdType, mTif);
+            (void)trySubmitOrder(session, marketData, '1', mOrdType, mTif);
         }
         ImGui::SameLine();
         if (ImGui::Button("SELL", ImVec2(-1, 40))) {
-            (void)trySubmitOrder(session, '2', mOrdType, mTif);
+            (void)trySubmitOrder(session, marketData, '2', mOrdType, mTif);
         }
 
         if (!isActive) {
@@ -81,11 +83,11 @@ namespace client_ui {
         ImGui::Text("Quick Actions");
         if (!isActive) ImGui::BeginDisabled();
         if (ImGui::Button("Market Buy")) {
-            (void)trySubmitOrder(session, '1', '1', '3'); // Market, IOC
+            (void)trySubmitOrder(session, marketData, '1', '1', '3'); // Market, IOC
         }
         ImGui::SameLine();
         if (ImGui::Button("Market Sell")) {
-            (void)trySubmitOrder(session, '2', '1', '3'); // Market, IOC
+            (void)trySubmitOrder(session, marketData, '2', '1', '3'); // Market, IOC
         }
         if (!isActive) ImGui::EndDisabled();
 

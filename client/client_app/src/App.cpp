@@ -59,12 +59,19 @@ int App::run() {
         }
 
         // Render Panels
-        mConnPanel.render(mFixSession, mIoCtx);
+        mConnPanel.render(mFixSession, mIoCtx, mMarketData);
+
+        const auto selectedSymbol = mMarketData.symbol();
+        if (selectedSymbol != mOrderBookSymbol) {
+            mOrderBook = std::make_unique<orderbook::OrderBook>(selectedSymbol);
+            mOrderBookSymbol = selectedSymbol;
+        }
+
         mExchPanel.render();
-        mTradingPanel.render(mFixSession);
-        mChartPanel.render();
+        mTradingPanel.render(mFixSession, mMarketData);
+        mChartPanel.render(mMarketData);
         mSimPanel.render(mSimulator.get());
-        mBookPanel.render(mOrderBook.get());
+        mBookPanel.render(mOrderBook.get(), mMarketData);
 
         // Handle session-based message routing
         static std::shared_ptr<fix_client::FixClientSession> lastSession = nullptr;
@@ -73,9 +80,13 @@ int App::run() {
             if (mFixSession) {
                 mFixSession->setMessageCallback([this](const fix_client::ParsedFixMessage& msg) {
                     if (std::holds_alternative<fix::MarketDataSnapshotFullRefresh>(msg)) {
-                        mOrderBook->handleSnapshot(std::get<fix::MarketDataSnapshotFullRefresh>(msg));
+                        const auto& snapshot = std::get<fix::MarketDataSnapshotFullRefresh>(msg);
+                        if (common::to_string(snapshot.symbol) != mMarketData.symbol()) return;
+                        mOrderBook->handleSnapshot(snapshot);
                     } else if (std::holds_alternative<fix::MarketDataIncrementalRefresh>(msg)) {
-                        mOrderBook->handleIncremental(std::get<fix::MarketDataIncrementalRefresh>(msg));
+                        const auto& refresh = std::get<fix::MarketDataIncrementalRefresh>(msg);
+                        if (common::to_string(refresh.symbol) != mMarketData.symbol()) return;
+                        mOrderBook->handleIncremental(refresh);
                     }
                 });
             }
@@ -95,7 +106,7 @@ void App::initLogic(trading_core::TradingCore& core) {
     mSimulator = std::make_unique<simulator::StochasticSimulator>(core);
 
     mAggregator->setCandleCallback([this](int interval, const ohlc::Candle& candle) {
-        mChartPanel.onCandleUpdate(interval, candle);
+        mChartPanel.onCandleUpdate(interval, candle, mMarketData);
     });
 
     // Hook aggregator to TradingCore trade events using General subscriber

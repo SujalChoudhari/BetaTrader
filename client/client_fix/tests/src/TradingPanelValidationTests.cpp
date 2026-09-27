@@ -1,3 +1,4 @@
+#include "client_ui/MarketDataState.h"
 #include "client_ui/OrderTicket.h"
 #include "client_ui/TradingPanel.h"
 #include <gtest/gtest.h>
@@ -47,11 +48,41 @@ namespace client_ui {
              RejectsMissingSessionWithoutDereference)
         {
             TradingPanel panel;
+            MarketDataState state;
             std::shared_ptr<fix_client::FixClientSession> session;
 
-            EXPECT_FALSE(panel.trySubmitOrder(session, '1', '2', '0'));
+            EXPECT_FALSE(panel.trySubmitOrder(session, state, '1', '2', '0'));
             EXPECT_EQ(panel.validationMessage(),
                       "Session not active. Cannot trade.");
+        }
+
+        TEST(MarketDataStateTests, RequiresAuthenticatedSessionAndSharesSymbol)
+        {
+            MarketDataState state;
+
+            EXPECT_EQ(state.symbol(), "EURUSD");
+            EXPECT_FALSE(state.canSubscribe(fix_client::FixClientState::Connected));
+            EXPECT_TRUE(state.canSubscribe(fix_client::FixClientState::Active));
+
+            state.markSubscribed();
+            EXPECT_EQ(state.status(), MarketDataSubscriptionStatus::Subscribed);
+
+            ASSERT_TRUE(state.selectSymbol("USDJPY"));
+            EXPECT_EQ(state.symbol(), "USDJPY");
+            EXPECT_EQ(state.status(), MarketDataSubscriptionStatus::Ready);
+        }
+
+        TEST(MarketDataStateTests, RejectsInvalidSymbolsAndClearsOnDisconnect)
+        {
+            MarketDataState state;
+            state.markSubscribed();
+
+            EXPECT_FALSE(state.selectSymbol("NOTREAL"));
+            EXPECT_EQ(state.symbol(), "EURUSD");
+            EXPECT_EQ(state.status(), MarketDataSubscriptionStatus::Subscribed);
+
+            state.markDisconnected();
+            EXPECT_EQ(state.status(), MarketDataSubscriptionStatus::Disconnected);
         }
 
     } // namespace
