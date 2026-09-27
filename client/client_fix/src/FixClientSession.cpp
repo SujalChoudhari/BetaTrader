@@ -4,7 +4,50 @@
 #include "common_fix/Protocol.h"
 #include "logging/Logger.h"
 
+#include <cctype>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
+#include <utility>
+
+namespace {
+
+std::string boundedText(std::string value) {
+    constexpr std::size_t maxLength = 160;
+    if (value.size() > maxLength) value.resize(maxLength);
+    return value;
+}
+
+std::string safeEventText(std::string value) {
+    std::string lowerValue = value;
+    for (char& character : lowerValue) {
+        character = static_cast<char>(std::tolower(static_cast<unsigned char>(character)));
+    }
+    if (lowerValue.find("password") != std::string::npos
+        || lowerValue.find("secret") != std::string::npos
+        || lowerValue.find("token") != std::string::npos
+        || lowerValue.find("api_key") != std::string::npos) {
+        return "[redacted sensitive detail]";
+    }
+    return boundedText(std::move(value));
+}
+
+std::string fieldValue(const auto& fields, int tag) {
+    const auto it = fields.find(tag);
+    return it == fields.end() ? std::string{} : std::string(it->second);
+}
+
+std::string executionSummary(const fix::ExecutionReport& report) {
+    std::ostringstream result;
+    result << "Order " << report.getClientOrderId()
+           << " " << common::to_string(report.getStatus())
+           << " " << common::to_string(report.getSymbol())
+           << " cumulative=" << report.getCumulativeQuantity()
+           << " leaves=" << report.getLeavesQuantity();
+    return result.str();
+}
+
+} // namespace
 
 namespace fix_client {
 
@@ -43,11 +86,15 @@ namespace fix_client {
                                 doRead();
                             } else {
                                 LOG_ERROR("FixClientSession failed to connect: {}", ec.message());
+                                emitEvent(FixClientEventType::TransportError,
+                                          "Connect failed: " + ec.message());
                                 changeState(FixClientState::Disconnected);
                             }
                         });
                 } else {
                     LOG_ERROR("FixClientSession resolve failed: {}", ec.message());
+                    emitEvent(FixClientEventType::TransportError,
+                              "Resolve failed: " + ec.message());
                     changeState(FixClientState::Disconnected);
                 }
             });
@@ -96,6 +143,7 @@ namespace fix_client {
         mSeqStore.setSeqNums(mSeqStore.getNextTargetSeqNum(), outSeq + 1);
         doWrite(std::make_shared<std::string>(logonMsg));
         changeState(FixClientState::LogonSent);
+        emitEvent(FixClientEventType::Session, "Logon sent");
         LOG_INFO("Sent Logon (35=A) to {}", mTargetCompId);
     }
 
@@ -107,6 +155,7 @@ namespace fix_client {
             
             doWrite(std::make_shared<std::string>(logoutMsg));
             changeState(FixClientState::LoggingOut);
+            emitEvent(FixClientEventType::Session, "Logout sent");
             LOG_INFO("Sent Logout (35=5) to server: {}", reason);
         }
     }
@@ -132,6 +181,8 @@ namespace fix_client {
                     LOG_TRACE("Sent raw size {}: {}", message->length(), message->substr(0, 50));
                 } else {
                     LOG_ERROR("FixClientSession Write error: {}", ec.message());
+                    emitEvent(FixClientEventType::TransportError,
+                              "Write failed: " + ec.message());
                     disconnect();
                 }
             });
@@ -164,6 +215,8 @@ namespace fix_client {
                     doRead();
                 } else {
                     LOG_WARN("FixClientSession Read error: {}", ec.message());
+                    emitEvent(FixClientEventType::TransportError,
+                              "Read failed: " + ec.message());
                     disconnect();
                 }
             });
@@ -219,13 +272,35 @@ namespace fix_client {
             case '5': // Logout
                 handleLogoutResponse(msgStr);
                 break;
+            case '3': // Session-level Reject
+            case 'j': { // Business Message Reject
+                const auto fields = fix::splitToMap(msgStr, fix::SOH);
+                const std::string reason = fieldValue(fields, 58);
+                emitEvent(FixClientEventType::Reject,
+                          reason.empty() ? "FIX reject received"
+                                         : "FIX reject: " + safeEventText(reason));
+                break;
+            }
             default: {
                 // Application-level message (ExecutionReport, MarketData, etc)
                 ParsedFixMessage parsed = FixMessageParser::parse(msgStr);
                 if (!std::holds_alternative<std::monostate>(parsed)) {
+                    if (const auto* report = std::get_if<fix::ExecutionReport>(&parsed)) {
+                        emitEvent(FixClientEventType::ExecutionReport, executionSummary(*report));
+                    } else if (const auto* snapshot = std::get_if<fix::MarketDataSnapshotFullRefresh>(&parsed)) {
+                        std::ostringstream summary;
+                        summary << "Snapshot " << common::to_string(snapshot->symbol)
+                                << " entries=" << snapshot->entries.size();
+                        emitEvent(FixClientEventType::MarketData, summary.str());
+                    } else if (const auto* refresh = std::get_if<fix::MarketDataIncrementalRefresh>(&parsed)) {
+                        std::ostringstream summary;
+                        summary << "Incremental " << common::to_string(refresh->symbol)
+                                << " entries=" << refresh->entries.size();
+                        emitEvent(FixClientEventType::MarketData, summary.str());
+                    }
                     if (mMessageCb) mMessageCb(parsed);
                 } else {
-                    LOG_WARN("Received unparseable or irrelevant application message: {}", msgStr.substr(0, 50));
+                    LOG_WARN("Received unparseable or irrelevant application message (35={}).", msgType);
                 }
                 break;
             }
@@ -235,11 +310,13 @@ namespace fix_client {
     void FixClientSession::handleLogonResponse(const std::string& msgStr, uint32_t inSeq) {
         LOG_INFO("Logon Acknowledged by server. Session is active.");
         changeState(FixClientState::Active);
+        emitEvent(FixClientEventType::Session, "Logon accepted; session active");
         startHeartbeatTimer();
     }
 
     void FixClientSession::handleLogoutResponse(const std::string& msgStr) {
         LOG_INFO("Logout confirmed by server.");
+        emitEvent(FixClientEventType::Session, "Logout acknowledged");
         disconnect(); // Force TCP down cleanly
     }
 
@@ -299,6 +376,10 @@ namespace fix_client {
         if (mStateChangeCb) {
             mStateChangeCb(newState);
         }
+    }
+
+    void FixClientSession::emitEvent(FixClientEventType type, std::string message) {
+        if (mEventCb) mEventCb({type, std::move(message)});
     }
 
     void FixClientSession::startHeartbeatTimer() {

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "fix_client/FixClientSession.h"
+#include "client_ui/ClientEventLog.h"
 #include "client_ui/MarketDataState.h"
 #include <asio.hpp>
 #include <memory>
-#include <vector>
 #include <string>
 
 namespace client_ui {
@@ -38,15 +38,11 @@ private:
     int mHeartbeatInterval = 30;
     bool mForceReset = false;
 
-    struct LogEntry {
-        std::string timestamp;
-        std::string direction; // "IN" or "OUT"
-        std::string message;
-    };
-    std::vector<LogEntry> mLogs;
+    ClientEventLog mEventLog;
     bool mAutoScroll = true;
 
-    void addLog(const std::string& direction, const std::string& msg);
+    void configureSession(const std::shared_ptr<fix_client::FixClientSession>& session);
+    void recordState(fix_client::FixClientState state);
 };
 
 } // namespace client_ui
