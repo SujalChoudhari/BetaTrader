@@ -4,6 +4,7 @@
 #include "client_ui/MarketDataState.h"
 #include <algorithm>
 #include <cstdint>
+#include <functional>
 #include <memory>
 
 namespace client_ui {
@@ -26,13 +27,17 @@ namespace client_ui {
      */
     class OrderBookPanel {
     public:
+        using DepthBarRenderer = std::function<void(float)>;
+
         OrderBookPanel();
+        explicit OrderBookPanel(DepthBarRenderer depthBarRenderer);
         ~OrderBookPanel();
 
         void render(const orderbook::OrderBook* book, const MarketDataState& marketData);
 
     private:
         int mMaxDepth = 10;
+        DepthBarRenderer mDepthBarRenderer;
     };
 
 } // namespace client_ui
