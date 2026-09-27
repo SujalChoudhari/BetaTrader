@@ -8,10 +8,12 @@ add_executable(client_fix_tests
     src/FixMessageParserTests.cpp
     src/AuthManagerTests.cpp
     src/FixClientSessionTests.cpp
+    src/TradingPanelValidationTests.cpp
 )
 
 target_include_directories(client_fix_tests PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
+    ${CMAKE_SOURCE_DIR}/client/client_ui/include
 )
 
 target_link_libraries(client_fix_tests
@@ -20,6 +22,7 @@ target_link_libraries(client_fix_tests
         gmock
         gtest_main
         client_fix_lib
+        client_ui_lib
         fix_lib           # To stand up the server
         exchange_app_lib  # Server depends on app lib
         common
