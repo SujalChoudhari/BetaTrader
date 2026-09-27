@@ -1,7 +1,10 @@
 #include "client_ui/MarketDataState.h"
+#include "client_ui/OrderBookPanel.h"
 #include "client_ui/OrderTicket.h"
 #include "client_ui/TradingPanel.h"
+#include <imgui.h>
 #include <gtest/gtest.h>
+#include <vector>
 
 namespace client_ui {
     namespace {
@@ -83,6 +86,53 @@ namespace client_ui {
 
             state.markDisconnected();
             EXPECT_EQ(state.status(), MarketDataSubscriptionStatus::Disconnected);
+        }
+
+        TEST(OrderBookDepthScaleTests, NormalizesAgainstVisibleMaximum)
+        {
+            EXPECT_FLOAT_EQ(depthFraction(0, 100), 0.0F);
+            EXPECT_FLOAT_EQ(depthFraction(50, 100), 0.5F);
+            EXPECT_FLOAT_EQ(depthFraction(100, 100), 1.0F);
+        }
+
+        TEST(OrderBookDepthScaleTests, HandlesEmptyAndVeryLargeQuantities)
+        {
+            EXPECT_FLOAT_EQ(depthFraction(1, 0), 0.0F);
+            EXPECT_FLOAT_EQ(depthFraction(UINT64_MAX, UINT64_MAX), 1.0F);
+            EXPECT_FLOAT_EQ(depthFraction(UINT64_MAX, 1), 1.0F);
+        }
+
+        TEST(OrderBookDepthScaleTests, RenderUsesLiveDepthFractions)
+        {
+            ImGui::CreateContext();
+            ImGui::GetIO().DisplaySize = ImVec2(800.0F, 600.0F);
+            unsigned char* pixels = nullptr;
+            int width = 0;
+            int height = 0;
+            ImGui::GetIO().Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
+            ImGui::NewFrame();
+
+            std::vector<float> renderedFractions;
+            OrderBookPanel panel([&renderedFractions](float fraction) {
+                renderedFractions.push_back(fraction);
+            });
+            orderbook::OrderBook book{"EURUSD"};
+            fix::MarketDataSnapshotFullRefresh snapshot;
+            snapshot.entries.push_back(
+                {fix::MDEntryType::Bid, 1.0840, 25});
+            snapshot.entries.push_back(
+                {fix::MDEntryType::Offer, 1.0860, 100});
+            book.handleSnapshot(snapshot);
+
+            MarketDataState state;
+            panel.render(&book, state);
+
+            ImGui::EndFrame();
+            ImGui::DestroyContext();
+
+            ASSERT_EQ(renderedFractions.size(), 2U);
+            EXPECT_FLOAT_EQ(renderedFractions[0], 1.0F);
+            EXPECT_FLOAT_EQ(renderedFractions[1], 0.25F);
         }
 
     } // namespace

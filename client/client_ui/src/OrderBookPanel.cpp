@@ -1,9 +1,16 @@
 #include "client_ui/OrderBookPanel.h"
 #include <imgui.h>
+#include <utility>
 
 namespace client_ui {
 
-    OrderBookPanel::OrderBookPanel() {}
+    OrderBookPanel::OrderBookPanel()
+        : mDepthBarRenderer([](float fraction) {
+              ImGui::ProgressBar(fraction, ImVec2(-1, 0), "");
+          }) {}
+
+    OrderBookPanel::OrderBookPanel(DepthBarRenderer depthBarRenderer)
+        : mDepthBarRenderer(std::move(depthBarRenderer)) {}
 
     OrderBookPanel::~OrderBookPanel() {}
 
@@ -20,6 +27,14 @@ namespace client_ui {
         }
 
         auto ss = book->getUISnapshot(mMaxDepth);
+
+        std::uint64_t maximumQuantity = 0;
+        for (const auto& level : ss.asks) {
+            maximumQuantity = std::max(maximumQuantity, level.qty);
+        }
+        for (const auto& level : ss.bids) {
+            maximumQuantity = std::max(maximumQuantity, level.qty);
+        }
 
         ImGui::Text("Spread: %.4f | Mid: %.4f", ss.spread, ss.midPrice);
         ImGui::Separator();
@@ -40,8 +55,7 @@ namespace client_ui {
                 ImGui::TextColored(ImVec4(1, 0.4f, 0.4f, 1), "%.4f", ss.asks[i].price);
                 
                 ImGui::TableSetColumnIndex(2);
-                // Simple visualizer for depth
-                ImGui::ProgressBar(0.2f, ImVec2(-1, 0), "");
+                mDepthBarRenderer(depthFraction(ss.asks[i].qty, maximumQuantity));
             }
 
             // SPREAD ROW
@@ -59,7 +73,7 @@ namespace client_ui {
                 ImGui::TextColored(ImVec4(0.4f, 1, 0.4f, 1), "%.4f", ss.bids[i].price);
                 
                 ImGui::TableSetColumnIndex(2);
-                ImGui::ProgressBar(0.2f, ImVec2(-1, 0), "");
+                mDepthBarRenderer(depthFraction(ss.bids[i].qty, maximumQuantity));
             }
 
             ImGui::EndTable();
