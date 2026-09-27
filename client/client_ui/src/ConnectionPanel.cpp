@@ -10,7 +10,9 @@ ConnectionPanel::ConnectionPanel() {}
 
 ConnectionPanel::~ConnectionPanel() {}
 
-void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& session, asio::io_context& ioContext) {
+void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& session,
+                              asio::io_context& ioContext,
+                              MarketDataState& marketData) {
     ImGui::Begin("FIX Connection Control");
 
     // --- Connection Settings ---
@@ -67,6 +69,64 @@ void ConnectionPanel::render(std::shared_ptr<fix_client::FixClientSession>& sess
             session->disconnect();
         }
     }
+
+    const auto sessionState = session ? session->getState() : fix_client::FixClientState::Disconnected;
+    if (sessionState == fix_client::FixClientState::Disconnected
+        || sessionState == fix_client::FixClientState::Connecting) {
+        marketData.markDisconnected();
+    } else {
+        marketData.markSessionReady();
+    }
+
+    ImGui::Separator();
+    ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.0f, 1.0f), "Market Data");
+
+    const std::string currentSymbol = marketData.symbol();
+    int selectedSymbolIndex = 0;
+    try {
+        selectedSymbolIndex = static_cast<int>(common::from_string(currentSymbol));
+    } catch (const std::invalid_argument&) {
+        selectedSymbolIndex = 0;
+    }
+
+    const char* symbolNames[common::symbol_names.size()];
+    for (size_t i = 0; i < common::symbol_names.size(); ++i) {
+        symbolNames[i] = common::symbol_names[i].data();
+    }
+    if (ImGui::Combo("Symbol", &selectedSymbolIndex, symbolNames,
+                     static_cast<int>(common::symbol_names.size()))) {
+        if (marketData.status() == MarketDataSubscriptionStatus::Subscribed
+            && session && sessionState == fix_client::FixClientState::Active) {
+            session->sendMarketDataRequest(currentSymbol, '2');
+        }
+        marketData.selectSymbol(symbolNames[selectedSymbolIndex]);
+    }
+
+    const auto marketDataStatus = marketData.status();
+    if (marketDataStatus == MarketDataSubscriptionStatus::Subscribed) {
+        if (ImGui::Button("Unsubscribe", ImVec2(-1, 0))) {
+            if (session && sessionState == fix_client::FixClientState::Active) {
+                session->sendMarketDataRequest(marketData.symbol(), '2');
+            }
+            marketData.markSessionReady();
+        }
+    } else {
+        const bool canSubscribe = session && marketData.canSubscribe(sessionState);
+        if (!canSubscribe) ImGui::BeginDisabled();
+        if (ImGui::Button("Subscribe", ImVec2(-1, 0))) {
+            session->sendMarketDataRequest(marketData.symbol(), '1');
+            marketData.markSubscribed();
+        }
+        if (!canSubscribe) ImGui::EndDisabled();
+    }
+
+    const auto finalMarketDataStatus = marketData.status();
+    const char* marketDataStatusText = finalMarketDataStatus == MarketDataSubscriptionStatus::Subscribed
+                                            ? "SUBSCRIBED"
+                                        : finalMarketDataStatus == MarketDataSubscriptionStatus::Ready
+                                            ? "READY"
+                                            : "DISCONNECTED";
+    ImGui::Text("Market data: %s", marketDataStatusText);
 
     ImGui::Separator();
 

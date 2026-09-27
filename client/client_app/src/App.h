@@ -8,6 +8,7 @@
 #include "client_ui/ChartPanel.h"
 #include "client_ui/SimulatorPanel.h"
 #include "client_ui/OrderBookPanel.h"
+#include "client_ui/MarketDataState.h"
 #include "orderbook/OrderBook.h"
 #include "ohlc/CandleAggregator.h"
 #include "simulator/StochasticSimulator.h"
@@ -45,6 +46,8 @@ private:
     admin::ExchangePanel mExchPanel;
 
     std::unique_ptr<orderbook::OrderBook> mOrderBook;
+    std::string mOrderBookSymbol = "EURUSD";
+    client_ui::MarketDataState mMarketData;
     std::unique_ptr<ohlc::CandleAggregator> mAggregator;
     std::unique_ptr<simulator::StochasticSimulator> mSimulator;
     std::unique_ptr<data::MarketHistoryRepository> mHistoryRepo;

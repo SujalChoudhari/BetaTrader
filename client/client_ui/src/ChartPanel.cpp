@@ -11,8 +11,10 @@ namespace client_ui {
 
     ChartPanel::ChartPanel() {}
 
-    void ChartPanel::onCandleUpdate(int interval, const ohlc::Candle& candle) {
-        if (interval != mInterval || candle.symbol != mSymbol) return;
+    void ChartPanel::onCandleUpdate(int interval,
+                                     const ohlc::Candle& candle,
+                                     const MarketDataState& marketData) {
+        if (interval != mInterval || candle.symbol != marketData.symbol()) return;
 
         std::lock_guard<std::mutex> lock(mMutex);
         
@@ -25,25 +27,17 @@ namespace client_ui {
         }
     }
 
-    void ChartPanel::render() {
+    void ChartPanel::render(const MarketDataState& marketData) {
         ImGui::Begin("Market Chart");
-        
-        ImGui::SetNextItemWidth(100);
-        
-        static int selectedSymbolIdx = 0;
-        const char* symbolNames[common::symbol_names.size()];
-        for(size_t i = 0; i < common::symbol_names.size(); ++i) {
-            symbolNames[i] = common::symbol_names[i].data();
-        }
-        
-        if (ImGui::Combo("Symbol", &selectedSymbolIdx, symbolNames, common::symbol_names.size())) {
-            strncpy(mSymbol, symbolNames[selectedSymbolIdx], sizeof(mSymbol) - 1);
-            mSymbol[sizeof(mSymbol) - 1] = '\0';
-            // In a real app, trigger a fetch of historical data here
+
+        const auto selectedSymbol = marketData.symbol();
+        if (selectedSymbol != mDisplayedSymbol) {
             std::lock_guard<std::mutex> lock(mMutex);
             mCandles.clear();
+            mDisplayedSymbol = selectedSymbol;
         }
-        
+        ImGui::Text("Symbol: %s", selectedSymbol.c_str());
+
         ImGui::SameLine();
         ImGui::SetNextItemWidth(80);
         if (ImGui::Combo("Period", &mInterval, "1m\0 5m\0\0")) {

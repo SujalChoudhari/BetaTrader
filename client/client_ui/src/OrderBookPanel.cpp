@@ -7,8 +7,11 @@ namespace client_ui {
 
     OrderBookPanel::~OrderBookPanel() {}
 
-    void OrderBookPanel::render(const orderbook::OrderBook* book) {
+    void OrderBookPanel::render(const orderbook::OrderBook* book,
+                                const MarketDataState& marketData) {
         ImGui::Begin("Order Book (L2)");
+
+        ImGui::Text("Selected symbol: %s", marketData.symbol().c_str());
 
         if (!book) {
             ImGui::Text("Enter a symbol and start the data aggregator to view depth.");
