@@ -1,4 +1,5 @@
 #include "client_ui/MarketDataState.h"
+#include "client_ui/OrderBookPanel.h"
 #include "client_ui/OrderTicket.h"
 #include "client_ui/TradingPanel.h"
 #include <gtest/gtest.h>
@@ -83,6 +84,20 @@ namespace client_ui {
 
             state.markDisconnected();
             EXPECT_EQ(state.status(), MarketDataSubscriptionStatus::Disconnected);
+        }
+
+        TEST(OrderBookDepthScaleTests, NormalizesAgainstVisibleMaximum)
+        {
+            EXPECT_FLOAT_EQ(depthFraction(0, 100), 0.0F);
+            EXPECT_FLOAT_EQ(depthFraction(50, 100), 0.5F);
+            EXPECT_FLOAT_EQ(depthFraction(100, 100), 1.0F);
+        }
+
+        TEST(OrderBookDepthScaleTests, HandlesEmptyAndVeryLargeQuantities)
+        {
+            EXPECT_FLOAT_EQ(depthFraction(1, 0), 0.0F);
+            EXPECT_FLOAT_EQ(depthFraction(UINT64_MAX, UINT64_MAX), 1.0F);
+            EXPECT_FLOAT_EQ(depthFraction(UINT64_MAX, 1), 1.0F);
         }
 
     } // namespace
