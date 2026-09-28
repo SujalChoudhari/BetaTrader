@@ -40,8 +40,11 @@ namespace client_ui {
 
         ImGui::SameLine();
         ImGui::SetNextItemWidth(80);
-        if (ImGui::Combo("Period", &mInterval, "1m\0 5m\0\0")) {
-            // In a real app, clear and reload from DB here
+        int selectedPeriod = mInterval == 5 ? 1 : 0;
+        if (ImGui::Combo("Period", &selectedPeriod, "1m\0 5m\0\0")) {
+            mInterval = selectedPeriod == 0 ? 1 : 5;
+            std::lock_guard<std::mutex> lock(mMutex);
+            mCandles.clear();
         }
 
         drawCandleChart();
@@ -87,6 +90,11 @@ namespace client_ui {
         if (ImPlot::BeginPlot("##OHLC", ImVec2(-1, -1), ImPlotFlags_None)) {
             ImPlot::SetupAxes("Time", "Price", ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_RangeFit);
             ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Time);
+            const double intervalSeconds = static_cast<double>(mInterval * 60);
+            ImPlot::SetupAxisLimits(ImAxis_X1,
+                                    static_cast<double>(mCandles.front().timestamp) - intervalSeconds * 0.5,
+                                    static_cast<double>(mCandles.back().timestamp) + intervalSeconds * 0.5,
+                                    ImGuiCond_Always);
             ImPlot::SetupAxisLimits(ImAxis_Y1, mCandles.back().low - 0.01, mCandles.back().high + 0.01, ImGuiCond_Once);
 
             size_t count = mCandles.size();

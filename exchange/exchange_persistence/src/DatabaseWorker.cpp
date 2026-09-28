@@ -1,19 +1,20 @@
 #include "data/DatabaseWorker.h"
 #include "common_data/DataRunBookDefinations.h"
 #include "logging/Runbook.h"
+#include <chrono>
 #include <future>
 
 namespace data {
 
     DatabaseWorker::DatabaseWorker(std::string dbPath)
-        : mDbPath(std::move(dbPath)), mTasks(1024)
+        : mDbPath(std::move(dbPath))
     {
         mWorker = std::jthread(
                 [this](std::stop_token st) { this->workerLoop(st); });
     }
 
     // Protected constructor for mocking - does not start a thread
-    DatabaseWorker::DatabaseWorker(): mTasks(1024) {}
+    DatabaseWorker::DatabaseWorker() = default;
 
     DatabaseWorker::~DatabaseWorker()
     {
@@ -25,11 +26,16 @@ namespace data {
 
     void DatabaseWorker::enqueue(std::function<void(SQLite::Database&)> task)
     {
-        mTasks.push(std::move(task));
+        {
+            std::lock_guard<std::mutex> lock(mTasksMutex);
+            mTasks.push_back(std::move(task));
+        }
+        mTasksCondition.notify_one();
     }
 
     size_t DatabaseWorker::getQueueSize() const
     {
+        std::lock_guard<std::mutex> lock(mTasksMutex);
         return mTasks.size();
     }
 
@@ -57,14 +63,17 @@ namespace data {
         db.setBusyTimeout(5000);
 
         while (!stopToken.stop_requested()) {
-            std::function<void(SQLite::Database&)>* task = mTasks.front();
-            if (task) {
-                (*task)(db);
-                mTasks.pop();
+            std::function<void(SQLite::Database&)> task;
+            {
+                std::unique_lock<std::mutex> lock(mTasksMutex);
+                mTasksCondition.wait_for(lock, std::chrono::milliseconds(10), [&] {
+                    return !mTasks.empty() || stopToken.stop_requested();
+                });
+                if (mTasks.empty()) continue;
+                task = std::move(mTasks.front());
+                mTasks.pop_front();
             }
-            else {
-                std::this_thread::yield();
-            }
+            task(db);
         }
     }
 

@@ -21,7 +21,6 @@ namespace ohlc {
             // Finalize old candle if it exists
             if (agg.active) {
                 mRepo.addCandle(interval, agg.current);
-                if (mCallback) mCallback(interval, agg.current);
             }
 
             // Initialize new candle
@@ -40,6 +39,11 @@ namespace ohlc {
             agg.current.close = price;
             agg.current.volume += qty;
         }
+
+        // Publish the active candle as soon as it exists and whenever it
+        // changes. Waiting for the bucket to close leaves a fresh chart empty
+        // for the entire first interval.
+        if (mCallback) mCallback(interval, agg.current);
     }
 
 } // namespace ohlc

@@ -83,6 +83,7 @@ add_subdirectory(client/client_app)
 
 add_subdirectory(client/client_fix/tests)
 add_subdirectory(client/client_blotter/tests)
+add_subdirectory(client/client_ohlc/tests)
 add_subdirectory(exchange)
 
 add_subdirectory(exchange/exchange_state/tests)
