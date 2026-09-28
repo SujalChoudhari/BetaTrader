@@ -60,3 +60,25 @@ TEST_F(CandleAggregatorTest, PublishesActiveCandleImmediatelyAndOnUpdates) {
     EXPECT_DOUBLE_EQ(published.back().close, 1.1010);
     EXPECT_EQ(published.back().volume, 15U);
 }
+
+TEST_F(CandleAggregatorTest, SeedsDeterministicHistoricalCandlesBeforeLiveBucket) {
+    ohlc::CandleAggregator aggregator(*repository);
+    std::vector<data::Candle> published;
+    aggregator.setCandleCallback([&published](int interval, const data::Candle& candle) {
+        if (interval == 1) published.push_back(candle);
+    });
+
+    constexpr int64_t nowNs = 1'700'000'125LL * 1'000'000'000LL;
+    aggregator.seedHistoricalData("EURUSD", 1, 6, nowNs, 1.1000, 42U);
+
+    ASSERT_EQ(published.size(), 6U);
+    for (size_t i = 1; i < published.size(); ++i) {
+        EXPECT_EQ(published[i].timestamp - published[i - 1].timestamp, 60);
+    }
+    EXPECT_LT(published.back().timestamp, nowNs / 1'000'000'000LL);
+    for (const auto& candle : published) {
+        EXPECT_GE(candle.high, std::max(candle.open, candle.close));
+        EXPECT_LE(candle.low, std::min(candle.open, candle.close));
+        EXPECT_GT(candle.volume, 0U);
+    }
+}
