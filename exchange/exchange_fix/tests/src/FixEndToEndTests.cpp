@@ -271,21 +271,57 @@ TEST(FixEndToEndTests, NegativeScenarios) {
         socket.connect(asio::ip::tcp::endpoint(asio::ip::make_address("127.0.0.1"), port));
         std::string malformed = "NOT_A_FIX_MESSAGE\x01" "10=000\x01";
         asio::write(socket, asio::buffer(malformed));
+
+        char data[2048];
+        std::error_code ec;
+        const size_t len = socket.read_some(asio::buffer(data), ec);
+        ASSERT_FALSE(ec) << "Expected a session-level Reject for malformed framing";
+        const std::string response(data, len);
+        EXPECT_NE(response.find("35=3"), std::string::npos);
+        EXPECT_NE(response.find("45=0"), std::string::npos);
+        EXPECT_NE(response.find("58=FIX frame"), std::string::npos);
     }
 
-    // Scenario 4: Partial Message
+    // Scenario 4: Business Message Reject
+    server.getManager().loadConfig({"CLIENT_A"});
+    {
+        asio::ip::tcp::socket socket(io);
+        socket.connect(asio::ip::tcp::endpoint(asio::ip::make_address("127.0.0.1"), port));
+        asio::write(socket, asio::buffer(OutboundMessageBuilder::buildLogon(
+                "CLIENT_A", "BETA_EXCHANGE", 1, 30)));
+        char data[2048];
+        std::error_code ec;
+        ASSERT_GT(socket.read_some(asio::buffer(data), ec), 0);
+        ASSERT_FALSE(ec);
+
+        const auto invalidOrder = OutboundMessageBuilder::buildMessage(
+                "CLIENT_A", "BETA_EXCHANGE", 2, "D", "11=12345\x01");
+        asio::write(socket, asio::buffer(invalidOrder));
+        const size_t len = socket.read_some(asio::buffer(data), ec);
+        ASSERT_FALSE(ec) << "Expected a business-message Reject for invalid order";
+        const std::string response(data, len);
+        EXPECT_NE(response.find("35=j"), std::string::npos);
+        EXPECT_NE(response.find("45=2"), std::string::npos);
+        EXPECT_NE(response.find("372=D"), std::string::npos);
+        EXPECT_NE(response.find("379=5"), std::string::npos);
+        EXPECT_NE(response.find("58=Invalid NewOrderSingle"), std::string::npos);
+    }
+
+    // Scenario 5: Partial Message
     // Re-load config because the AuthRepository async callback may have overwritten
     // our initial loadConfig, removing CLIENT_A from the valid clients list.
     server.getManager().loadConfig({"CLIENT_A"});
     {
         asio::ip::tcp::socket socket(io);
         socket.connect(asio::ip::tcp::endpoint(asio::ip::make_address("127.0.0.1"), port));
-        std::string partial = "8=FIX.4.4\x01" "9=50\x01" "35=A\x01";
-        asio::write(socket, asio::buffer(partial));
+        const auto logon = OutboundMessageBuilder::buildLogon(
+                "CLIENT_A", "BETA_EXCHANGE", 1, 30);
+        const auto split = logon.find("49=");
+        ASSERT_NE(split, std::string::npos);
+        asio::write(socket, asio::buffer(logon.substr(0, split)));
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        std::string rest = "49=CLIENT_A\x01" "56=BETA_EXCHANGE\x01" "34=10\x01" "52=20231027-10:00:00\x01" "98=0\x01" "108=30\x01" "10=123\x01";
-        asio::write(socket, asio::buffer(rest));
-        
+        asio::write(socket, asio::buffer(logon.substr(split)));
+
         char data[1024];
         size_t len = socket.read_some(asio::buffer(data));
         std::string response(data, len);
