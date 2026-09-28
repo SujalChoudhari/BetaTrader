@@ -28,6 +28,16 @@ namespace fix_client {
         std::string message;
     };
 
+    struct NewOrderIntent {
+        std::string clientOrderId;
+        std::string symbol;
+        char side;
+        double price;
+        int quantity;
+        char orderType;
+        char timeInForce;
+    };
+
     /**
      * @enum SessionState
      * @brief The state machine status for the FIX client connection.
@@ -58,6 +68,8 @@ namespace fix_client {
         using StateChangeCallback = std::function<void(FixClientState)>;
 
         using EventCallback = std::function<void(const FixClientEvent&)>;
+
+        using OrderIntentCallback = std::function<void(const NewOrderIntent&)>;
 
         /**
          * @brief Constructs a new FIX Client Session.
@@ -114,6 +126,7 @@ namespace fix_client {
         void setMessageCallback(MessageCallback cb) { mMessageCb = std::move(cb); }
         void setStateChangeCallback(StateChangeCallback cb) { mStateChangeCb = std::move(cb); }
         void setEventCallback(EventCallback cb) { mEventCb = std::move(cb); }
+        void setOrderIntentCallback(OrderIntentCallback cb) { mOrderIntentCb = std::move(cb); }
         void setHeartbeatInterval(int seconds) { mHeartbeatInterval = seconds; }
 
         FixClientState getState() const { return mState; }
@@ -161,6 +174,7 @@ namespace fix_client {
         MessageCallback mMessageCb;
         StateChangeCallback mStateChangeCb;
         EventCallback mEventCb;
+        OrderIntentCallback mOrderIntentCb;
 
         friend class FixClientSessionTests;
     };

@@ -24,6 +24,7 @@ set(IMPLOT_SOURCES
 # client_ui Source Files
 set(UI_SOURCES
     src/ChartPanel.cpp
+    src/BlotterPanel.cpp
     src/ConnectionPanel.cpp
     src/OrderBookPanel.cpp
     src/SimulatorPanel.cpp
@@ -49,6 +50,7 @@ target_include_directories(client_ui_lib PUBLIC
 target_link_libraries(client_ui_lib
     PUBLIC
     common
+    client_blotter_lib
     glfw
     client_fix_lib
     client_ohlc_lib

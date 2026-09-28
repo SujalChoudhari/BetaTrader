@@ -406,6 +406,11 @@ namespace fix_client {
     }
 
     void FixClientSession::sendNewOrder(const std::string& symbol, char side, double price, int qty, char type, char tif) {
+        if (mState != FixClientState::Active) {
+            LOG_WARN("Attempted to send a new order while the session is not Active.");
+            return;
+        }
+
         std::ostringstream body;
         auto now = std::chrono::system_clock::now();
         auto clOrdId = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()).count();
@@ -426,6 +431,9 @@ namespace fix_client {
         }
 
         sendMessage("D", body.str());
+        if (mOrderIntentCb) {
+            mOrderIntentCb({std::to_string(clOrdId), symbol, side, price, qty, type, tif});
+        }
         LOG_INFO("Sent NewOrderSingle (35=D) for {} Side={} Qty={} Price={}", symbol, side, qty, price);
     }
 
