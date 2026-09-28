@@ -5,42 +5,36 @@ namespace trading_core {
 
     constexpr double MAX_PRICE_DEVIATION = 0.10; // 10% deviation
 
-    // Helper function to check for self-match
+    // Check every price level that the incoming order could cross, not only the
+    // best level. The risk gate runs before matching, so rejecting the incoming
+    // order here prevents the matcher from reaching a same-owner order deeper
+    // in the book.
     template<typename TMap>
     bool checkForSelfMatch(const common::Order& order, const TMap* oppositeMap)
     {
-        if (!oppositeMap->empty()) {
-            const auto& bestPriceLevel = oppositeMap->begin()->second;
-            if (!bestPriceLevel.empty()) {
-                const auto& bestOrder = bestPriceLevel.front();
-                if (bestOrder->getSenderCompID() == order.getSenderCompID()) { // Use SenderCompID for check
-                    if (order.getOrderType() == common::OrderType::Market) {
-                        LOG_ERROR("ETRADE12",
-                                  "Pre-check failed for order ID {}: "
-                                  "Self-match detected with market order.",
-                                  order.getClientOrderId());
-                        return true; // Self-match detected
-                    }
-                    else if (order.getSide() == common::OrderSide::Buy
-                             && order.getPrice() >= bestOrder->getPrice()) {
-                        LOG_ERROR("ETRADE12",
-                                  "Pre-check failed for order ID {}: "
-                                  "Self-match detected with limit order.",
-                                  order.getClientOrderId());
-                        return true; // Self-match detected
-                    }
-                    else if (order.getSide() == common::OrderSide::Sell
-                             && order.getPrice() <= bestOrder->getPrice()) {
-                        LOG_ERROR("ETRADE12",
-                                  "Pre-check failed for order ID {}: "
-                                  "Self-match detected with limit order.",
-                                  order.getClientOrderId());
-                        return true; // Self-match detected
-                    }
+        for (const auto& [price, priceLevel]: *oppositeMap) {
+            if (order.getOrderType() == common::OrderType::Limit) {
+                const bool crosses = order.getSide() == common::OrderSide::Buy
+                                             ? order.getPrice() >= price
+                                             : order.getPrice() <= price;
+                if (!crosses) { break; }
+            }
+
+            for (const auto* restingOrder: priceLevel) {
+                if (restingOrder->getSenderCompID()
+                    == order.getSenderCompID()) {
+                    LOG_ERROR("ETRADE12",
+                              "Pre-check failed for order ID {}: "
+                              "Self-match detected with {} order.",
+                              order.getClientOrderId(),
+                              order.getOrderType() == common::OrderType::Market
+                                      ? "market"
+                                      : "limit");
+                    return true;
                 }
             }
         }
-        return false; // No self-match
+        return false; // No self-match at any crossing price level
     }
 
     RiskManager::RiskManager(data::TradeRepository* tradeRepository)

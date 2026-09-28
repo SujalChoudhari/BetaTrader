@@ -115,6 +115,85 @@ TEST_F(RiskManagerTest, SelfMatchMarketRejection)
     ASSERT_FALSE(riskManager->preCheck(incomingMarketBuy, *orderBook));
 }
 
+TEST_F(RiskManagerTest, SelfMatchRejectionScansEveryCrossingPriceLevel)
+{
+    common::Order bestOtherOwner(1, 1, common::Instrument::EURUSD, "client2",
+                                 "client2", common::OrderSide::Sell,
+                                 common::OrderType::Limit,
+                                 common::TimeInForce::DAY, 100, 100.0, {});
+    common::Order deeperSelfOwner(2, 2, common::Instrument::EURUSD, "client1",
+                                  "client1", common::OrderSide::Sell,
+                                  common::OrderType::Limit,
+                                  common::TimeInForce::DAY, 100, 101.0, {});
+    orderBook->insertOrder(&bestOtherOwner);
+    orderBook->insertOrder(&deeperSelfOwner);
+
+    common::Order incomingBuy(3, 3, common::Instrument::EURUSD, "client1",
+                              "client1", common::OrderSide::Buy,
+                              common::OrderType::Limit,
+                              common::TimeInForce::DAY, 100, 102.0, {});
+
+    ASSERT_FALSE(riskManager->preCheck(incomingBuy, *orderBook));
+}
+
+TEST_F(RiskManagerTest, SelfMatchRejectionScansDeeperLevelsForSellOrders)
+{
+    common::Order bestOtherOwner(1, 1, common::Instrument::EURUSD, "client2",
+                                 "client2", common::OrderSide::Buy,
+                                 common::OrderType::Limit,
+                                 common::TimeInForce::DAY, 100, 102.0, {});
+    common::Order deeperSelfOwner(2, 2, common::Instrument::EURUSD, "client1",
+                                  "client1", common::OrderSide::Buy,
+                                  common::OrderType::Limit,
+                                  common::TimeInForce::DAY, 100, 101.0, {});
+    orderBook->insertOrder(&bestOtherOwner);
+    orderBook->insertOrder(&deeperSelfOwner);
+
+    common::Order incomingSell(3, 3, common::Instrument::EURUSD, "client1",
+                               "client1", common::OrderSide::Sell,
+                               common::OrderType::Limit,
+                               common::TimeInForce::DAY, 100, 100.0, {});
+
+    ASSERT_FALSE(riskManager->preCheck(incomingSell, *orderBook));
+}
+
+TEST_F(RiskManagerTest, SelfMatchMarketRejectionScansAllPriceLevels)
+{
+    common::Order bestOtherOwner(1, 1, common::Instrument::EURUSD, "client2",
+                                 "client2", common::OrderSide::Sell,
+                                 common::OrderType::Limit,
+                                 common::TimeInForce::DAY, 100, 100.0, {});
+    common::Order deeperSelfOwner(2, 2, common::Instrument::EURUSD, "client1",
+                                  "client1", common::OrderSide::Sell,
+                                  common::OrderType::Limit,
+                                  common::TimeInForce::DAY, 100, 101.0, {});
+    orderBook->insertOrder(&bestOtherOwner);
+    orderBook->insertOrder(&deeperSelfOwner);
+
+    common::Order incomingMarketBuy(3, 3, common::Instrument::EURUSD, "client1",
+                                    "client1", common::OrderSide::Buy,
+                                    common::OrderType::Market,
+                                    common::TimeInForce::DAY, 100, 0.0, {});
+
+    ASSERT_FALSE(riskManager->preCheck(incomingMarketBuy, *orderBook));
+}
+
+TEST_F(RiskManagerTest, SelfMatchOutsideLimitPriceDoesNotReject)
+{
+    common::Order restingSelfOwner(1, 1, common::Instrument::EURUSD, "client1",
+                                   "client1", common::OrderSide::Sell,
+                                   common::OrderType::Limit,
+                                   common::TimeInForce::DAY, 100, 110.0, {});
+    orderBook->insertOrder(&restingSelfOwner);
+
+    common::Order incomingBuy(2, 2, common::Instrument::EURUSD, "client1",
+                              "client1", common::OrderSide::Buy,
+                              common::OrderType::Limit,
+                              common::TimeInForce::DAY, 100, 100.0, {});
+
+    ASSERT_TRUE(riskManager->preCheck(incomingBuy, *orderBook));
+}
+
 // --- postTradeUpdate Tests (unchanged) ---
 
 TEST_F(RiskManagerTest, PostTradeUpdateCallsRepository)
