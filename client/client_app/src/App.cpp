@@ -332,6 +332,29 @@ void App::initLogic(trading_core::TradingCore& core) {
         mChartPanel.onCandleUpdate(interval, candle, mMarketData);
     });
 
+    const auto selectedSymbol = mMarketData.symbol();
+    double startingPrice = 1.1085;
+    try {
+        switch (common::from_string(selectedSymbol)) {
+            case common::Instrument::EURUSD: startingPrice = 1.1085; break;
+            case common::Instrument::USDJPY: startingPrice = 154.20; break;
+            case common::Instrument::GBPUSD: startingPrice = 1.2450; break;
+            case common::Instrument::USDCAD: startingPrice = 1.3720; break;
+            case common::Instrument::USDINR: startingPrice = 83.30; break;
+            case common::Instrument::EURINR: startingPrice = 90.20; break;
+            case common::Instrument::GBPINR: startingPrice = 104.50; break;
+            case common::Instrument::AUDUSD: startingPrice = 0.6450; break;
+            case common::Instrument::USDMXN: startingPrice = 16.50; break;
+            case common::Instrument::COUNT: break;
+        }
+    } catch (const std::invalid_argument&) {
+        LOG_WARN("Using default chart seed price for unknown symbol {}", selectedSymbol);
+    }
+    const auto nowNs = std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
+    mAggregator->seedHistoricalData(selectedSymbol, 1, 60, nowNs, startingPrice, 0xB37A01U);
+    mAggregator->seedHistoricalData(selectedSymbol, 5, 36, nowNs, startingPrice, 0xB37A05U);
+
     // Hook aggregator to TradingCore trade events using General subscriber
     core.getMarketDataPublisher().addGeneralIncrementalSubscriber([this](const fix::MarketDataIncrementalRefresh& refresh) {
         if (!mAggregator) return;

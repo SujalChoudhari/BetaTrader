@@ -3,6 +3,7 @@
 #include "ohlc/CandleAggregator.h"
 #include "client_ui/MarketDataState.h"
 #include <string>
+#include <map>
 #include <vector>
 #include <mutex>
 
@@ -28,8 +29,8 @@ namespace client_ui {
         int mInterval = 1;
         
         mutable std::mutex mMutex;
-        // Current candles being displayed
-        std::vector<ohlc::Candle> mCandles;
+        // Cached history for each supported interval, including live updates.
+        std::map<int, std::vector<ohlc::Candle>> mCandlesByInterval;
         std::string mDisplayedSymbol = "EURUSD";
 
         void drawCandleChart();

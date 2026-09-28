@@ -14,16 +14,17 @@ namespace client_ui {
     void ChartPanel::onCandleUpdate(int interval,
                                      const ohlc::Candle& candle,
                                      const MarketDataState& marketData) {
-        if (interval != mInterval || candle.symbol != marketData.symbol()) return;
+        if (candle.symbol != marketData.symbol()) return;
 
         std::lock_guard<std::mutex> lock(mMutex);
+        auto& candles = mCandlesByInterval[interval];
         
         // Check if we just update the last one or add new
-        if (!mCandles.empty() && mCandles.back().timestamp == candle.timestamp) {
-            mCandles.back() = candle;
+        if (!candles.empty() && candles.back().timestamp == candle.timestamp) {
+            candles.back() = candle;
         } else {
-            mCandles.push_back(candle);
-            if (mCandles.size() > 500) mCandles.erase(mCandles.begin());
+            candles.push_back(candle);
+            if (candles.size() > 500) candles.erase(candles.begin());
         }
     }
 
@@ -33,7 +34,7 @@ namespace client_ui {
         const auto selectedSymbol = marketData.symbol();
         if (selectedSymbol != mDisplayedSymbol) {
             std::lock_guard<std::mutex> lock(mMutex);
-            mCandles.clear();
+            mCandlesByInterval.clear();
             mDisplayedSymbol = selectedSymbol;
         }
         ImGui::Text("Symbol: %s", selectedSymbol.c_str());
@@ -43,8 +44,6 @@ namespace client_ui {
         int selectedPeriod = mInterval == 5 ? 1 : 0;
         if (ImGui::Combo("Period", &selectedPeriod, "1m\0 5m\0\0")) {
             mInterval = selectedPeriod == 0 ? 1 : 5;
-            std::lock_guard<std::mutex> lock(mMutex);
-            mCandles.clear();
         }
 
         drawCandleChart();
@@ -81,31 +80,33 @@ namespace client_ui {
 
     void ChartPanel::drawCandleChart() {
         std::lock_guard<std::mutex> lock(mMutex);
-        
-        if (mCandles.empty()) {
+
+        const auto intervalIt = mCandlesByInterval.find(mInterval);
+        if (intervalIt == mCandlesByInterval.end() || intervalIt->second.empty()) {
             ImGui::Text("No data for chart.");
             return;
         }
+        const auto& candles = intervalIt->second;
 
         if (ImPlot::BeginPlot("##OHLC", ImVec2(-1, -1), ImPlotFlags_None)) {
             ImPlot::SetupAxes("Time", "Price", ImPlotAxisFlags_None, ImPlotAxisFlags_AutoFit | ImPlotAxisFlags_RangeFit);
             ImPlot::SetupAxisScale(ImAxis_X1, ImPlotScale_Time);
             const double intervalSeconds = static_cast<double>(mInterval * 60);
             ImPlot::SetupAxisLimits(ImAxis_X1,
-                                    static_cast<double>(mCandles.front().timestamp) - intervalSeconds * 0.5,
-                                    static_cast<double>(mCandles.back().timestamp) + intervalSeconds * 0.5,
+                                    static_cast<double>(candles.front().timestamp) - intervalSeconds * 0.5,
+                                    static_cast<double>(candles.back().timestamp) + intervalSeconds * 0.5,
                                     ImGuiCond_Always);
-            ImPlot::SetupAxisLimits(ImAxis_Y1, mCandles.back().low - 0.01, mCandles.back().high + 0.01, ImGuiCond_Once);
+            ImPlot::SetupAxisLimits(ImAxis_Y1, candles.back().low - 0.01, candles.back().high + 0.01, ImGuiCond_Once);
 
-            size_t count = mCandles.size();
+            size_t count = candles.size();
             std::vector<double> xs(count), opens(count), highs(count), lows(count), closes(count);
 
             for (size_t i = 0; i < count; ++i) {
-                xs[i] = (double)mCandles[i].timestamp;
-                opens[i] = mCandles[i].open;
-                highs[i] = mCandles[i].high;
-                lows[i] = mCandles[i].low;
-                closes[i] = mCandles[i].close;
+                xs[i] = (double)candles[i].timestamp;
+                opens[i] = candles[i].open;
+                highs[i] = candles[i].high;
+                lows[i] = candles[i].low;
+                closes[i] = candles[i].close;
             }
 
             PlotCandlestick("##Data", xs.data(), opens.data(), closes.data(), lows.data(), highs.data(), (int)count, 0.45f);

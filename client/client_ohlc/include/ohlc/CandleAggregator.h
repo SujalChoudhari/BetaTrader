@@ -25,6 +25,14 @@ namespace ohlc {
         // Process a new trade update
         void onTrade(const std::string& symbol, double price, uint64_t qty, int64_t timestampNs);
 
+        // Emit deterministic local-demo history immediately before the live bucket.
+        void seedHistoricalData(const std::string& symbol,
+                                int interval,
+                                size_t candleCount,
+                                int64_t nowNs,
+                                double startingPrice,
+                                uint32_t seed);
+
         void setCandleCallback(CandleCallback cb) { mCallback = std::move(cb); }
 
     private:
