@@ -93,3 +93,26 @@ classDiagram
 -   **Two-Thread Model**: The main thread runs the ImGui render loop; a dedicated background thread runs `io_context::run()` for all async networking.
 -   **Work Guard**: `asio::make_work_guard` keeps the network thread alive even when no async operations are pending.
 -   **Shutdown Order**: Stop work guard → stop io_context → join network thread → destroy UI context.
+
+## Verification Runbook
+
+Run these commands from a fresh checkout using the repository-supported default preset:
+
+```bash
+cmake --preset default
+cmake --build build -j2
+ctest --test-dir build --output-on-failure
+ctest --test-dir build -R '^ClientWorkingClientSmoke$' --output-on-failure
+```
+
+`ClientWorkingClientSmoke` starts an embedded loopback exchange, connects the
+client FIX session, logs on, subscribes to EURUSD market data, routes a
+snapshot and incremental update into the order book, submits an order, checks
+open-order and execution-history state, then logs out and verifies the
+session returns to `Disconnected`. It never connects to an external exchange
+or places a live order.
+
+For the GUI terminal, run `./build/client/client_app/client_app` in an
+environment with a working GLFW/OpenGL display. If no display is available,
+use the loopback smoke command above; do not treat process startup alone as a
+working-client verification.

@@ -4,10 +4,13 @@
 #include "common_fix/Protocol.h"
 #include "logging/Logger.h"
 
+#include <algorithm>
+#include <array>
 #include <cctype>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <string_view>
 #include <utility>
 
 namespace {
@@ -196,7 +199,19 @@ namespace fix_client {
                     mReadBuffer.append(mReadChunk.begin(), mReadChunk.begin() + length);
 
                     size_t pos = 0;
-                    while ((pos = mReadBuffer.find(std::string("8=FIX.4.4\x01" "9="))) != std::string::npos) {
+                    const auto findMessageStart = [this] {
+                        constexpr std::array<std::string_view, 2> beginStrings = {
+                                "8=FIX.4.4\x01" "9=", "8=FIXT.1.1\x01" "9="};
+                        size_t firstStart = std::string::npos;
+                        for (const auto beginString : beginStrings) {
+                            const auto candidate = mReadBuffer.find(beginString);
+                            if (candidate != std::string::npos) {
+                                firstStart = std::min(firstStart, candidate);
+                            }
+                        }
+                        return firstStart;
+                    };
+                    while ((pos = findMessageStart()) != std::string::npos) {
                         size_t checksumEnd = mReadBuffer.find("10=", pos);
                         if (checksumEnd != std::string::npos) {
                             size_t endOfMessage = mReadBuffer.find(fix::SOH, checksumEnd);

@@ -36,6 +36,15 @@ public:
      */
     int run();
 
+    /**
+     * @brief Runs the local, non-GUI working-client verification flow.
+     *
+     * This is intentionally limited to a loopback exchange and is used by the
+     * repository's acceptance test and runbook. It never connects to an
+     * external exchange.
+     */
+    int runSmoke();
+
 private:
     client_ui::UIManager mUI;
     client_ui::ConnectionPanel mConnPanel;
