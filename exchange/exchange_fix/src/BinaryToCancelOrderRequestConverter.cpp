@@ -20,13 +20,22 @@ std::optional<CancelOrderRequest> BinaryToCancelOrderRequestConverter::convert(c
     try {
         const auto tagMap = splitToMap(fixMessage, fix::SOH);
 
-        CancelOrderRequest request = {
-            std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID)))),
-            std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrderID)))),
-            common::from_string(tagMap.at(static_cast<int>(fix::Tag::Symbol))),
-            charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side)).front()),
-            fix::parseTimestamp(std::string(tagMap.at(static_cast<int>(fix::Tag::TransactTime))))
-        };
+        CancelOrderRequest request
+                = {std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID))),
+                   tagMap.contains(static_cast<int>(fix::Tag::OrigClOrdID))
+                           ? std::string(tagMap.at(
+                                     static_cast<int>(fix::Tag::OrigClOrdID)))
+                           : std::string{},
+                   tagMap.contains(static_cast<int>(fix::Tag::OrderID))
+                           ? std::stoull(std::string(tagMap.at(
+                                     static_cast<int>(fix::Tag::OrderID))))
+                           : 0,
+                   common::from_string(
+                           tagMap.at(static_cast<int>(fix::Tag::Symbol))),
+                   charToOrderSide(
+                           tagMap.at(static_cast<int>(fix::Tag::Side)).front()),
+                   fix::parseTimestamp(std::string(tagMap.at(
+                           static_cast<int>(fix::Tag::TransactTime))))};
 
         LOG_INFO("BinaryToCancelOrderRequestConverter::convert - Parsed CancelOrderRequest. ClOrdID: {}, OrderID: {}", request.clOrdID, request.orderID);
         return request;

@@ -149,7 +149,8 @@ public:
     getOrderByClientOrderId(const std::string& clOrdId) const override
     {
         for (auto it = orders.begin(); it != orders.end(); ++it) {
-            if (it->second != nullptr && std::to_string(it->second->getClientOrderId()) == clOrdId) {
+            if (it->second != nullptr
+                && it->second->getClientOrderId() == clOrdId) {
                 return it->second;
             }
         }

@@ -126,26 +126,17 @@ namespace trading_core {
     void ExecutionPublisher::publishRejection(const common::OrderID& orderId, const common::ClientID& clientId, const common::Symbol& symbol, const common::OrderSide& side, const std::string_view& reason)
     {
         LOG_INFO("REJECT | ClOrdID={} | Client={} | Reason={}", orderId, clientId, reason);
-        
+
         fix::ExecutionReport report(
-            static_cast<fix::CompID>(1),
-            static_cast<fix::CompID>(stoul_safe_ep(std::string(clientId))),
-            0,
-            orderId,
-            static_cast<fix::ClientOrderID>(orderId), // Fallback to orderId as clientOrderId if unknown
-            "exec_reject_" + std::to_string(orderId),
-            common::OrderStatus::Rejected,
-            std::string(reason),
-            symbol,
-            side,
-            0,
-            0,
-            0,
-            0,
-            0,
-            std::chrono::system_clock::now()
-        );
-        
+                static_cast<fix::CompID>(1),
+                static_cast<fix::CompID>(stoul_safe_ep(std::string(clientId))),
+                0, orderId,
+                std::to_string(orderId), // Fallback to the core client
+                                         // ID if it is not known
+                "exec_reject_" + std::to_string(orderId),
+                common::OrderStatus::Rejected, std::string(reason), symbol,
+                side, 0, 0, 0, 0, 0, std::chrono::system_clock::now());
+
         ExecutionReportCallback cb;
         {
             std::lock_guard<std::mutex> lock(s_mutex);

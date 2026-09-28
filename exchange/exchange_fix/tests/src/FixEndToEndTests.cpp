@@ -161,9 +161,10 @@ TEST(FixEndToEndTests, FullLogonAndOrderFlow) {
 
     // 7. Simulate ExecutionReport (Ack)
     fix::ExecutionReport report(
-        static_cast<fix::CompID>(2), static_cast<fix::CompID>(1), 1, 999, 12345, "EXEC1", common::OrderStatus::New, "Ack",
-        common::Instrument::EURUSD, common::OrderSide::Buy, 100, 0, 100, 0, 0, std::chrono::system_clock::now()
-    );
+            static_cast<fix::CompID>(2), static_cast<fix::CompID>(1), 1, 999,
+            "12345", "EXEC1", common::OrderStatus::New, "Ack",
+            common::Instrument::EURUSD, common::OrderSide::Buy, 100, 0, 100, 0,
+            0, std::chrono::system_clock::now());
     server.onExecutionReport(report);
     std::string execReportMsg = readWithTimeout(clientSocket);
     ASSERT_FALSE(execReportMsg.empty()) << "Timed out waiting for ExecutionReport";

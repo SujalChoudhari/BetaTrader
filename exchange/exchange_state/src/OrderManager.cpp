@@ -33,9 +33,10 @@ namespace trading_core {
     OrderManager::getOrderByClientOrderId(const std::string& clOrdId) const
     {
         auto it = std::find_if(mOrderMap.begin(), mOrderMap.end(),
-            [&clOrdId](const auto& pair) {
-                return std::to_string(pair.second->getClientOrderId()) == clOrdId;
-            });
+                               [&clOrdId](const auto& pair) {
+                                   return pair.second->getClientOrderId()
+                                          == clOrdId;
+                               });
 
         if (it != mOrderMap.end()) {
             return it->second.get();

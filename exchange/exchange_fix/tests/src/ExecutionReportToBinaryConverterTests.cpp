@@ -25,26 +25,23 @@ TEST(ExecutionReportToBinaryConverterTests, BasicConversion)
             static_cast<fix::CompID>(456), // targetCompId
             static_cast<fix::SequenceNumber>(1), // msgSeqNum
             static_cast<fix::ExchangeOrderID>(999), // exchangeOrderId
-            static_cast<fix::ClientOrderID>(789), // clientOrderId
+            "client-order-abc", // clientOrderId
             "EXEC1", // executionId
-            common::OrderStatus::New,
-            "New order",
-            common::Instrument::EURUSD,
+            common::OrderStatus::New, "New order", common::Instrument::EURUSD,
             common::OrderSide::Buy,
             static_cast<fix::Quantity>(1000), // orderQty
             static_cast<fix::Quantity>(0), // cumQty
             static_cast<fix::Quantity>(1000), // leavesQty
             static_cast<fix::Price>(0.0), // lastPrice
             static_cast<fix::Quantity>(0), // lastQty
-            std::chrono::system_clock::now()
-    );
+            std::chrono::system_clock::now());
 
     std::string message = fix::ExecutionReportToBinaryConverter::convert(report, 1); // Changed to std::string
 
     // Basic assertions
     ASSERT_NE(message.find("35=8"), std::string::npos); // MsgType = ExecutionReport
     ASSERT_EQ(get_tag_value(message, 37), "999"); // OrderID
-    ASSERT_EQ(get_tag_value(message, 11), "789"); // ClOrdID
+    ASSERT_EQ(get_tag_value(message, 11), "client-order-abc"); // ClOrdID
     ASSERT_EQ(get_tag_value(message, 39), "0"); // OrdStatus = New
     ASSERT_EQ(get_tag_value(message, 55), "EURUSD"); // Symbol
     ASSERT_EQ(get_tag_value(message, 54), "1"); // Side = Buy
@@ -62,7 +59,10 @@ TEST(ExecutionReportToBinaryConverterTests, AllStatuses)
     std::string expected[] = {"1", "2", "4", "8"};
 
     for (int i = 0; i < 4; ++i) {
-        fix::ExecutionReport report(1, 2, 3, 4, 5, "E", statuses[i], "", common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0, 0, std::chrono::system_clock::now());
+        fix::ExecutionReport report(1, 2, 3, 4, "5", "E", statuses[i], "",
+                                    common::Instrument::USDINR,
+                                    common::OrderSide::Sell, 100, 0, 100, 0, 0,
+                                    std::chrono::system_clock::now());
         std::string msg = fix::ExecutionReportToBinaryConverter::convert(report, 1);
         EXPECT_EQ(get_tag_value(msg, 39), expected[i]);
     }
@@ -70,20 +70,29 @@ TEST(ExecutionReportToBinaryConverterTests, AllStatuses)
 
 TEST(ExecutionReportToBinaryConverterTests, EmptyText)
 {
-    fix::ExecutionReport report(1, 2, 3, 4, 5, "E", common::OrderStatus::New, "", common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0, 0, std::chrono::system_clock::now());
+    fix::ExecutionReport report(1, 2, 3, 4, "5", "E", common::OrderStatus::New,
+                                "", common::Instrument::USDINR,
+                                common::OrderSide::Sell, 100, 0, 100, 0, 0,
+                                std::chrono::system_clock::now());
     std::string msg = fix::ExecutionReportToBinaryConverter::convert(report, 1);
     EXPECT_EQ(get_tag_value(msg, 58), ""); // Tag 58 (Text) should be missing
 }
 
 TEST(ExecutionReportToBinaryConverterTests, InvalidStatusThrows)
 {
-    fix::ExecutionReport report(1, 2, 3, 4, 5, "E", static_cast<common::OrderStatus>(99), "", common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0, 0, std::chrono::system_clock::now());
+    fix::ExecutionReport report(
+            1, 2, 3, 4, "5", "E", static_cast<common::OrderStatus>(99), "",
+            common::Instrument::USDINR, common::OrderSide::Sell, 100, 0, 100, 0,
+            0, std::chrono::system_clock::now());
     EXPECT_THROW(fix::ExecutionReportToBinaryConverter::convert(report, 1), std::invalid_argument);
 }
 
 TEST(ExecutionReportToBinaryConverterTests, InvalidSideThrows)
 {
-    fix::ExecutionReport report(1, 2, 3, 4, 5, "E", common::OrderStatus::New, "", common::Instrument::USDINR, static_cast<common::OrderSide>(99), 100, 0, 100, 0, 0, std::chrono::system_clock::now());
+    fix::ExecutionReport report(1, 2, 3, 4, "5", "E", common::OrderStatus::New,
+                                "", common::Instrument::USDINR,
+                                static_cast<common::OrderSide>(99), 100, 0, 100,
+                                0, 0, std::chrono::system_clock::now());
     EXPECT_THROW(fix::ExecutionReportToBinaryConverter::convert(report, 1), std::invalid_argument);
 }
 

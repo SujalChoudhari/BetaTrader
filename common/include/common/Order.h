@@ -32,17 +32,29 @@ namespace common {
          * @param price The price of the order.
          * @param ts The timestamp of when the order was created.
          */
-        Order(const OrderID clientOrderId, const OrderID coreOrderId, const Symbol symbol, ClientID client,
+        Order(const ClientOrderID& clientOrderId, const OrderID coreOrderId,
+              const Symbol symbol, ClientID client,
               std::string senderCompID, // New parameter
               const OrderSide side, const OrderType type,
               const TimeInForce timeInForce, const Quantity quantity,
               const Price price, const Timestamp ts)
-            : mClientOrderId(clientOrderId), mCoreOrderId(coreOrderId), mSymbol(symbol), mClientId(std::move(client)),
+            : mClientOrderId(clientOrderId), mCoreOrderId(coreOrderId),
+              mSymbol(symbol), mClientId(std::move(client)),
               mSenderCompID(std::move(senderCompID)), // Initialize new member
               mOrderSide(side), mOrderType(type), mTimeInForce(timeInForce),
               mOriginalQuantity(quantity), mRemainingQuantity(quantity),
               mPrice(price), mTimestamp(ts),
               mOrderStatus(common::OrderStatus::New)
+        {}
+
+        Order(const OrderID clientOrderId, const OrderID coreOrderId,
+              const Symbol symbol, ClientID client, std::string senderCompID,
+              const OrderSide side, const OrderType type,
+              const TimeInForce timeInForce, const Quantity quantity,
+              const Price price, const Timestamp ts)
+            : Order(std::to_string(clientOrderId), coreOrderId, symbol,
+                    std::move(client), std::move(senderCompID), side, type,
+                    timeInForce, quantity, price, ts)
         {}
 
     public:
@@ -52,7 +64,7 @@ namespace common {
             return mCoreOrderId;
         }
         /** @brief Gets the order's client-provided identifier. */
-        [[nodiscard]] const OrderID& getClientOrderId() const
+        [[nodiscard]] const ClientOrderID& getClientOrderId() const
         {
             return mClientOrderId;
         }
@@ -89,7 +101,11 @@ namespace common {
         }
 
         /** @brief Sets the order's client-provided identifier. */
-        void setClientOrderId(const OrderID id) { mClientOrderId = id; }
+        void setClientOrderId(const ClientOrderID& id) { mClientOrderId = id; }
+        void setClientOrderId(const OrderID id)
+        {
+            mClientOrderId = std::to_string(id);
+        }
         /** @brief Sets the order's core-provided identifier. */
         void setCoreOrderId(const OrderID id) { mCoreOrderId = id; }
         /** @brief Sets the remaining quantity of the order. */
@@ -112,7 +128,7 @@ namespace common {
         void setTimestamp(const Timestamp ts) { mTimestamp = ts; }
 
     private:
-        OrderID mClientOrderId; ///< Unique identifier for the order given by client
+        ClientOrderID mClientOrderId; ///< FIX ClientOrderID given by the client
         OrderID mCoreOrderId;   ///< Unique identifier for the order given by core
         Symbol mSymbol;         ///< Financial instrument symbol.
         ClientID mClientId;     ///< Identifier of the client placing the order (session ID).

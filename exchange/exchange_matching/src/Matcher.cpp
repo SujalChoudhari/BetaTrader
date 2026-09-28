@@ -71,12 +71,12 @@ namespace trading_core {
 
                 common::OrderID buyId
                         = (incomingOrder->getSide() == common::OrderSide::Buy)
-                                  ? incomingOrder->getClientOrderId()
+                                  ? incomingOrder->getId()
                                   : restingOrder->getId();
                 common::OrderID sellId
                         = (incomingOrder->getSide() == common::OrderSide::Buy)
                                   ? restingOrder->getId()
-                                  : incomingOrder->getClientOrderId();
+                                  : incomingOrder->getId();
 
                 common::TradeID newId = mTradeIdGenerator->nextId();
                 trades.emplace_back(newId, incomingOrder->getSymbol(), buyId,

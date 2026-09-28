@@ -34,7 +34,7 @@ namespace data {
                 SQLite::Statement query(db,
                                         data::query::insertIntoOrderTableQuery);
                 query.bind(1, static_cast<int64_t>(order.getId()));
-                query.bind(2, static_cast<int64_t>(order.getClientOrderId()));
+                query.bind(2, order.getClientOrderId());
                 query.bind(3, order.getClientId());
                 query.bind(4, order.getSenderCompID());
                 query.bind(5, common::to_string(order.getSymbol()));
@@ -77,9 +77,8 @@ namespace data {
                     const common::OrderID coreOrderId
                             = static_cast<common::OrderID>(
                                     query.getColumn(0).getInt64());
-                    const common::OrderID clientOrderId
-                            = static_cast<common::OrderID>(
-                                    query.getColumn(1).getInt64());
+                    const common::ClientOrderID clientOrderId
+                            = query.getColumn(1).getText();
                     const common::ClientID clientId
                             = query.getColumn(2).getText();
                     const std::string senderCompID

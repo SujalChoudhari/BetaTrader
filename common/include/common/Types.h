@@ -132,6 +132,8 @@ namespace common {
     using Quantity = uint64_t;
     /** @brief A type alias for unique order identifiers. */
     using OrderID = uint64_t;
+    /** @brief A client-assigned order identifier carried through FIX. */
+    using ClientOrderID = std::string;
     /** @brief A type alias for unique trade identifiers. */
     using TradeID = uint64_t;
     /** @brief A type alias for financial instrument symbols. */

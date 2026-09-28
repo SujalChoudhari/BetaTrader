@@ -414,13 +414,20 @@ namespace fix {
                      mSessionId, cancelRequest->clOrdID, cancelRequest->orderID,
                      common::to_string(cancelRequest->symbol));
 
-            common::OrderID orderIdToCancel = (cancelRequest->orderID != 0)
-                                                      ? cancelRequest->orderID
-                                                      : cancelRequest->clOrdID;
+            common::OrderID orderIdToCancel = cancelRequest->orderID;
+            if (orderIdToCancel == 0) {
+                const auto originalClientOrderId
+                        = !cancelRequest->origClOrdID.empty()
+                                  ? cancelRequest->origClOrdID
+                                  : cancelRequest->clOrdID;
+                const auto order = mTradingCore.getOrderByClientOrderId(
+                        originalClientOrderId);
+                if (order) { orderIdToCancel = order->getId(); }
+            }
 
             if (orderIdToCancel == 0) {
                 LOG_WARN("CancelOrderRequest from Session {} has no valid "
-                         "OrderID or ClOrdID.",
+                         "OrderID or client order ID.",
                          mSessionId);
                 return;
             }
@@ -448,10 +455,12 @@ namespace fix {
                      common::to_string(modifyRequest->symbol),
                      modifyRequest->orderQty, modifyRequest->price);
 
-            common::OrderID orderIdToModify
-                    = (modifyRequest->origClOrdID != 0)
-                              ? modifyRequest->origClOrdID
-                              : modifyRequest->orderID;
+            common::OrderID orderIdToModify = modifyRequest->orderID;
+            if (orderIdToModify == 0 && !modifyRequest->origClOrdID.empty()) {
+                const auto order = mTradingCore.getOrderByClientOrderId(
+                        modifyRequest->origClOrdID);
+                if (order) { orderIdToModify = order->getId(); }
+            }
 
             if (orderIdToModify == 0) {
                 LOG_WARN("ModifyOrderRequest from Session {} has no valid "

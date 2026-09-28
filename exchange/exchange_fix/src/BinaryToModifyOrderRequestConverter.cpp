@@ -21,12 +21,13 @@ namespace fix {
             const auto tagMap = splitToMap(fixMessage, fix::SOH);
 
             ModifyOrderRequest request = {
-                    std::stoull(std::string(
-                            tagMap.at(static_cast<int>(fix::Tag::ClOrdID)))),
-                    std::stoull(std::string(tagMap.at(
-                            static_cast<int>(fix::Tag::OrigClOrdID)))),
-                    std::stoull(std::string(
-                            tagMap.at(static_cast<int>(fix::Tag::OrderID)))),
+                    std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID))),
+                    std::string(
+                            tagMap.at(static_cast<int>(fix::Tag::OrigClOrdID))),
+                    tagMap.contains(static_cast<int>(fix::Tag::OrderID))
+                            ? std::stoull(std::string(tagMap.at(
+                                      static_cast<int>(fix::Tag::OrderID))))
+                            : 0,
                     common::from_string(
                             tagMap.at(static_cast<int>(fix::Tag::Symbol))),
                     charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side))
@@ -38,9 +39,8 @@ namespace fix {
                                     .front()),
                     std::stod(std::string(
                             tagMap.at(static_cast<int>(fix::Tag::Price)))),
-                    fix::parseTimestamp(std::string(
-                            tagMap.at(static_cast<int>(fix::Tag::TransactTime))))
-            };
+                    fix::parseTimestamp(std::string(tagMap.at(
+                            static_cast<int>(fix::Tag::TransactTime))))};
 
             LOG_INFO("BinaryToModifyOrderRequestConverter::convert - Parsed "
                      "ModifyOrderRequest. ClOrdID: {}, OrigClOrdID: {}",

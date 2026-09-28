@@ -16,8 +16,8 @@ namespace fix {
     using CompID = uint32_t;
     /** @brief Type alias for a message sequence number. */
     using SequenceNumber = uint64_t;
-    /** @brief Type alias for a client-assigned order ID. */
-    using ClientOrderID = uint64_t;
+    /** @brief Type alias for a client-assigned FIX order ID. */
+    using ClientOrderID = std::string;
     /** @brief Type alias for an exchange-assigned order ID. */
     using ExchangeOrderID = uint64_t;
     /** @brief Type alias for a price field, inheriting from the common Price

@@ -7,11 +7,13 @@
 #include <sstream>
 
 namespace {
-    std::string createFixMessageString() // Changed return type to std::string
+    std::string createFixMessageString(const std::string& clientOrderId
+                                       = "12345")
     {
         constexpr char SOH = fix::SOH;
         std::stringstream bodySs;
-        bodySs << static_cast<int>(fix::Tag::ClOrdID) << "=12345" << SOH;
+        bodySs << static_cast<int>(fix::Tag::ClOrdID) << "=" << clientOrderId
+               << SOH;
         bodySs << static_cast<int>(fix::Tag::Symbol) << "=EURUSD" << SOH;
         bodySs << static_cast<int>(fix::Tag::Side) << "=" << fix::ORDER_SIDE_BUY
                << SOH;
@@ -62,11 +64,19 @@ TEST(BinaryToOrderRequestConverterTests, BasicConversion)
     const fix::OrderRequest& orderRequest = orderRequestOpt.value(); // Get the underlying value
 
     ASSERT_EQ(orderRequest.senderCompID, "CLIENT_A");
-    ASSERT_EQ(orderRequest.clientOrderId, 12345);
+    ASSERT_EQ(orderRequest.clientOrderId, "12345");
     ASSERT_EQ(orderRequest.symbol, common::Instrument::EURUSD);
     ASSERT_EQ(orderRequest.side, common::OrderSide::Buy);
     ASSERT_EQ(orderRequest.quantity, 1000);
     ASSERT_DOUBLE_EQ(orderRequest.price, 1.2345);
+}
+
+TEST(BinaryToOrderRequestConverterTests, AcceptsNonNumericClientOrderId)
+{
+    const auto result = fix::BinaryToOrderRequestConverter::convert(
+            createFixMessageString("client-order-abc"));
+
+    ASSERT_TRUE(result.has_value());
 }
 
 TEST(BinaryToOrderRequestConverterTests, MissingChecksum)

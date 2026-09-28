@@ -92,8 +92,8 @@ namespace fix_client {
             uint64_t exchangeOrderId = std::stoull(getStr(fix::Tag::OrderID));
             
             std::string clOrdIdStr = getStr(fix::Tag::ClOrdID);
-            uint64_t clientOrderId = clOrdIdStr.empty() ? 0 : std::stoull(clOrdIdStr);
-            
+            const fix::ClientOrderID clientOrderId = clOrdIdStr;
+
             std::string execId = getStr(fix::Tag::ExecID);
             
             char ordStatusChar = getStr(fix::Tag::OrdStatus)[0];
