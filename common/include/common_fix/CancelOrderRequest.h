@@ -23,6 +23,9 @@ namespace fix {
         /** @brief Client-assigned Order ID (ClOrdID, FIX Tag 11).
          *         Unique identifier for the cancel request. */
         fix::ClientOrderID clOrdID;
+        /** @brief Original client order ID (OrigClOrdID, FIX Tag 41).
+         *         The client order being canceled. */
+        fix::ClientOrderID origClOrdID;
         /** @brief Original Order ID (OrderID, FIX Tag 37).
          *         The ID of the order to be canceled. */
         fix::ExchangeOrderID orderID;

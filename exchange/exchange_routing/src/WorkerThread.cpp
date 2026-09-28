@@ -93,7 +93,8 @@ namespace trading_core {
     void WorkerThread::processNewOrder(NewOrder& cmd) const
     {
         const auto order = cmd.getOrder();
-
+        const auto orderId = order->getId();
+        const auto orderType = order->getOrderType();
         if (!mRiskManager.preCheck(*order, mOrderBook)) {
             ExecutionPublisher::publishRejection(
                     order->getId(), order->getClientId(), order->getSymbol(), order->getSide(), "Risk check failed");
@@ -115,12 +116,24 @@ namespace trading_core {
                 mOrderRepository.updateOrder(**buyOrderOpt);
                 mOrderRepository.updateOrder(**sellOrderOpt);
                 ExecutionPublisher::publishTrade(trade, **buyOrderOpt, **sellOrderOpt);
+
+                if ((*buyOrderOpt)->getRemainingQuantity() == 0) {
+                    const auto filledOrderId = (*buyOrderOpt)->getId();
+                    mOrderRepository.removeOrder(filledOrderId);
+                    mOrderManager.removeOrderById(filledOrderId);
+                }
+                if ((*sellOrderOpt)->getRemainingQuantity() == 0) {
+                    const auto filledOrderId = (*sellOrderOpt)->getId();
+                    mOrderRepository.removeOrder(filledOrderId);
+                    mOrderManager.removeOrderById(filledOrderId);
+                }
             }
         }
 
-        if (order->getRemainingQuantity() == 0
-            || order->getOrderType() == common::OrderType::Market) {
-            mOrderRepository.removeOrder(order->getClientOrderId());
+        if (orderType == common::OrderType::Market
+            && mOrderManager.containsOrderById(orderId)) {
+            mOrderRepository.removeOrder(orderId);
+            mOrderManager.removeOrderById(orderId);
         }
     }
 
@@ -157,12 +170,14 @@ namespace trading_core {
             return;
         }
         const auto order = *orderOpt;
+        const auto orderId = order->getId();
 
         mOrderBook.cancelOrder(cmd.getOrderId());
         mOrderRepository.removeOrder(cmd.getOrderId());
 
         order->setPrice(cmd.getNewPrice());
         order->setOriginalQuantity(cmd.getNewQuantity());
+        order->setStatus(common::OrderStatus::New);
 
         mOrderRepository.saveOrder(*order);
         mOrderBook.insertOrder(order);
@@ -177,11 +192,24 @@ namespace trading_core {
                 mOrderRepository.updateOrder(**buyOrderOpt);
                 mOrderRepository.updateOrder(**sellOrderOpt);
                 ExecutionPublisher::publishTrade(trade, **buyOrderOpt, **sellOrderOpt);
+
+                if ((*buyOrderOpt)->getRemainingQuantity() == 0) {
+                    const auto filledOrderId = (*buyOrderOpt)->getId();
+                    mOrderRepository.removeOrder(filledOrderId);
+                    mOrderManager.removeOrderById(filledOrderId);
+                }
+                if ((*sellOrderOpt)->getRemainingQuantity() == 0) {
+                    const auto filledOrderId = (*sellOrderOpt)->getId();
+                    mOrderRepository.removeOrder(filledOrderId);
+                    mOrderManager.removeOrderById(filledOrderId);
+                }
             }
         }
 
-        if (order->getRemainingQuantity() == 0) {
-            mOrderRepository.removeOrder(order->getClientOrderId());
+        if (mOrderManager.containsOrderById(orderId)
+            && order->getRemainingQuantity() == 0) {
+            mOrderRepository.removeOrder(orderId);
+            mOrderManager.removeOrderById(orderId);
         }
     }
 } // namespace trading_core

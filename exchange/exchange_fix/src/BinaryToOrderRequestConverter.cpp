@@ -47,13 +47,17 @@ namespace fix {
             const auto tagMap = splitToMap(messageStringView, fix::SOH);
 
             OrderRequest request = {
-                std::string(tagMap.at(static_cast<int>(fix::Tag::SenderCompID))),
-                std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID)))),
-                common::from_string(tagMap.at(static_cast<int>(fix::Tag::Symbol))),
-                charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side)).front()),
-                std::stoull(std::string(tagMap.at(static_cast<int>(fix::Tag::OrderQty)))),
-                std::stod(std::string(tagMap.at(static_cast<int>(fix::Tag::Price))))
-            };
+                    std::string(tagMap.at(
+                            static_cast<int>(fix::Tag::SenderCompID))),
+                    std::string(tagMap.at(static_cast<int>(fix::Tag::ClOrdID))),
+                    common::from_string(
+                            tagMap.at(static_cast<int>(fix::Tag::Symbol))),
+                    charToOrderSide(tagMap.at(static_cast<int>(fix::Tag::Side))
+                                            .front()),
+                    std::stoull(std::string(
+                            tagMap.at(static_cast<int>(fix::Tag::OrderQty)))),
+                    std::stod(std::string(
+                            tagMap.at(static_cast<int>(fix::Tag::Price))))};
             return request;
         } catch (const std::exception& e) {
             LOG_ERROR("BinaryToOrderRequestConverter::convert - Parsing failed for message '{}': {}", fixMessage, e.what());

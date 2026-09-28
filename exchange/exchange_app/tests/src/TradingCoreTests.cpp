@@ -214,6 +214,79 @@ TEST_F(TradingCoreTest, PublishMethodsCoverage) {
     core.stop();
 }
 
+TEST_F(TradingCoreTest, ModifyResetsRemainingQuantityAndStatus)
+{
+    TradingCore core(dbWorker.get(), true);
+    core.start();
+
+    auto restingOrder = std::make_unique<common::Order>(
+            "resting-order", 301, common::Instrument::EURUSD, "1", "RESTING",
+            common::OrderSide::Sell, common::OrderType::Limit,
+            common::TimeInForce::DAY, 40, 1.25,
+            std::chrono::system_clock::now());
+    core.submitCommand(std::make_unique<NewOrder>(
+            "1", restingOrder->getTimestamp(), std::move(restingOrder)));
+    core.waitAllQueuesIdle();
+
+    auto partiallyFilledOrder = std::make_unique<common::Order>(
+            "client-order-abc", 302, common::Instrument::EURUSD, "1",
+            "INCOMING", common::OrderSide::Buy, common::OrderType::Limit,
+            common::TimeInForce::DAY, 100, 1.25,
+            std::chrono::system_clock::now());
+    core.submitCommand(std::make_unique<NewOrder>(
+            "1", partiallyFilledOrder->getTimestamp(),
+            std::move(partiallyFilledOrder)));
+    core.waitAllQueuesIdle();
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+    auto beforeModify = core.getOrder(302);
+    ASSERT_TRUE(beforeModify.has_value());
+    EXPECT_EQ(beforeModify->getRemainingQuantity(), 60);
+    EXPECT_EQ(beforeModify->getStatus(), common::OrderStatus::PartiallyFilled);
+
+    core.submitCommand(std::make_unique<ModifyOrder>(
+            "1", std::chrono::system_clock::now(), 302, 1.25, 20));
+    core.waitAllQueuesIdle();
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+    auto afterModify = core.getOrder(302);
+    ASSERT_TRUE(afterModify.has_value());
+    EXPECT_EQ(afterModify->getRemainingQuantity(), 20);
+    EXPECT_EQ(afterModify->getStatus(), common::OrderStatus::New);
+
+    core.stop();
+}
+
+TEST_F(TradingCoreTest, FullyFilledOrdersLeaveOpenOrderState)
+{
+    TradingCore core(dbWorker.get(), true);
+    core.start();
+
+    auto restingOrder = std::make_unique<common::Order>(
+            "resting-order", 101, common::Instrument::EURUSD, "1", "CLIENT_A",
+            common::OrderSide::Sell, common::OrderType::Limit,
+            common::TimeInForce::DAY, 100, 1.25,
+            std::chrono::system_clock::now());
+    core.submitCommand(std::make_unique<NewOrder>(
+            "1", restingOrder->getTimestamp(), std::move(restingOrder)));
+    core.waitAllQueuesIdle();
+
+    auto incomingOrder = std::make_unique<common::Order>(
+            "incoming-order", 102, common::Instrument::EURUSD, "1", "CLIENT_B",
+            common::OrderSide::Buy, common::OrderType::Limit,
+            common::TimeInForce::DAY, 100, 1.25,
+            std::chrono::system_clock::now());
+    core.submitCommand(std::make_unique<NewOrder>(
+            "1", incomingOrder->getTimestamp(), std::move(incomingOrder)));
+    core.waitAllQueuesIdle();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    EXPECT_FALSE(core.getOrder(101).has_value());
+    EXPECT_FALSE(core.getOrder(102).has_value());
+
+    core.stop();
+}
+
 #ifndef NDEBUG
 TEST_F(TradingCoreTest, SetPartitionCoverage) {
     TradingCore core(dbWorker.get(), false);

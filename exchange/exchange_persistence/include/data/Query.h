@@ -31,7 +31,7 @@ namespace data::query {
     constexpr auto createOrderTableQuery
             = "CREATE TABLE IF NOT EXISTS orders (core_order_id INTEGER "
               "PRIMARY "
-              "KEY, client_order_id INTEGER, client_id TEXT, sender_comp_id "
+              "KEY, client_order_id TEXT, client_id TEXT, sender_comp_id "
               "TEXT, symbol TEXT, side TEXT, type TEXT, "
               "time_in_force TEXT, price REAL, original_quantity INTEGER, "
               "remaining_quantity INTEGER, status TEXT, timestamp INTEGER);";

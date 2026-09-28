@@ -54,8 +54,8 @@ TEST(CommonTests, OrderObject) {
     Timestamp now = std::chrono::system_clock::now();
     Order order(1, 100, Instrument::EURUSD, "client1", "bob", OrderSide::Buy, 
                 OrderType::Limit, TimeInForce::DAY, 1000, 1.2345, now);
-                
-    EXPECT_EQ(order.getClientOrderId(), 1);
+
+    EXPECT_EQ(order.getClientOrderId(), "1");
     EXPECT_EQ(order.getId(), 100);
     EXPECT_EQ(order.getSymbol(), Instrument::EURUSD);
     EXPECT_EQ(order.getClientId(), "client1");
@@ -78,8 +78,8 @@ TEST(CommonTests, OrderObject) {
     EXPECT_EQ(order.getPrice(), 1.2346);
     
     order.setClientOrderId(2);
-    EXPECT_EQ(order.getClientOrderId(), 2);
-    
+    EXPECT_EQ(order.getClientOrderId(), "2");
+
     order.setCoreOrderId(200);
     EXPECT_EQ(order.getId(), 200);
     
@@ -107,15 +107,15 @@ TEST(CommonTests, TradeObject) {
 
 TEST(CommonTests, ExecutionReportObject) {
     Timestamp now = std::chrono::system_clock::now();
-    fix::ExecutionReport report(49, 56, 1, 37, 11, "exec1", OrderStatus::New, 
-                                "text", Instrument::EURUSD, OrderSide::Buy, 
-                                100, 0, 100, 0.0, 0, now);
-                                
+    fix::ExecutionReport report(49, 56, 1, 37, "11", "exec1", OrderStatus::New,
+                                "text", Instrument::EURUSD, OrderSide::Buy, 100,
+                                0, 100, 0.0, 0, now);
+
     EXPECT_EQ(report.getSenderCompId(), 49);
     EXPECT_EQ(report.getTargetCompId(), 56);
     EXPECT_EQ(report.getMessageSequenceNumber(), 1);
     EXPECT_EQ(report.getExchangeOrderId(), 37);
-    EXPECT_EQ(report.getClientOrderId(), 11);
+    EXPECT_EQ(report.getClientOrderId(), "11");
     EXPECT_EQ(report.getExecutionId(), "exec1");
     EXPECT_EQ(report.getStatus(), OrderStatus::New);
     EXPECT_EQ(report.getText(), "text");

@@ -43,7 +43,7 @@ namespace trading_core {
             auto& orders = bidIt->second;
             auto orderIt
                     = std::ranges::find_if(orders, [&](const common::Order* o) {
-                          return o->getClientOrderId() == orderId;
+                          return o->getId() == orderId;
                       });
             if (orderIt != orders.end()) {
                 cancelledOrder = *orderIt;
@@ -64,7 +64,7 @@ namespace trading_core {
                 auto& orders = askIt->second;
                 auto orderIt = std::ranges::find_if(
                         orders, [&](const common::Order* o) {
-                            return o->getClientOrderId() == orderId;
+                            return o->getId() == orderId;
                         });
                 if (orderIt != orders.end()) {
                     cancelledOrder = *orderIt;

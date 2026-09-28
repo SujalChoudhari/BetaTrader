@@ -36,12 +36,42 @@ TEST_F(FixMessageParserTests, ParseExecutionReport) {
     
     if (auto* report = std::get_if<fix::ExecutionReport>(&parsed)) {
         EXPECT_EQ(report->getExchangeOrderId(), 100);
-        EXPECT_EQ(report->getClientOrderId(), 200);
+        EXPECT_EQ(report->getClientOrderId(), "200");
         EXPECT_EQ(report->getStatus(), common::OrderStatus::New);
         EXPECT_EQ(report->getOrderQuantity(), 1000);
         EXPECT_EQ(report->getSymbol(), common::Instrument::EURUSD);
         EXPECT_EQ(report->getSide(), common::OrderSide::Buy);
     }
+}
+
+TEST_F(FixMessageParserTests, ParseExecutionReportWithNonNumericClientOrderId)
+{
+    const std::string msg = addChecksum("8=FIX.4.4\x01"
+                                        "9=142\x01"
+                                        "35=8\x01"
+                                        "49=BETA_EXCHANGE\x01"
+                                        "56=CLIENT_1\x01"
+                                        "34=2\x01"
+                                        "52=20251030-10:00:00.000\x01"
+                                        "37=100\x01"
+                                        "11=client-order-abc\x01"
+                                        "17=EXEC1\x01"
+                                        "39=0\x01"
+                                        "55=EURUSD\x01"
+                                        "54=1\x01"
+                                        "38=1000\x01"
+                                        "14=0\x01"
+                                        "151=1000\x01"
+                                        "31=0\x01"
+                                        "32=0\x01"
+                                        "60=20251030-10:00:00.000\x01"
+                                        "10=000\x01");
+
+    const auto parsed = fix_client::FixMessageParser::parse(msg);
+    ASSERT_TRUE(std::holds_alternative<fix::ExecutionReport>(parsed));
+    const auto* report = std::get_if<fix::ExecutionReport>(&parsed);
+    ASSERT_NE(report, nullptr);
+    EXPECT_EQ(report->getClientOrderId(), "client-order-abc");
 }
 
 TEST_F(FixMessageParserTests, ParseExecutionReportMissingMandatoryTags) {
