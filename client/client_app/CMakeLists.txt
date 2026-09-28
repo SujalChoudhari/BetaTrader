@@ -24,3 +24,6 @@ target_link_libraries(client_app
 # Required for thread support
 find_package(Threads REQUIRED)
 target_link_libraries(client_app PRIVATE Threads::Threads)
+
+add_test(NAME ClientWorkingClientSmoke COMMAND client_app --smoke)
+set_tests_properties(ClientWorkingClientSmoke PROPERTIES TIMEOUT 15)
