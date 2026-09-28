@@ -1,6 +1,6 @@
 # BetaTrader documentation
 
-<div class="bt-hero"><span class="bt-eyebrow">NATIVE C++ / FX / FIX / IMGUI</span><span class="bt-hero-title">Build, inspect, and run the complete trading system</span><span class="bt-hero-description">BetaTrader is a self-contained FX trading platform: a partitioned matching engine, an embedded exchange, a FIX gateway, a native trader terminal, and a deterministic market-data simulator.</span><span class="bt-chips"><span class="bt-chip">C++23</span><span class="bt-chip">ASIO</span><span class="bt-chip">FIX 4.x</span><span class="bt-chip">SQLite</span><span class="bt-chip">Dear ImGui</span></span></div>
+BetaTrader is a self-contained FX trading platform: a partitioned matching engine, an embedded exchange, a FIX gateway, a native trader terminal, and a deterministic market-data simulator.
 
 ## Start here
 

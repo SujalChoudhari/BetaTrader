@@ -67,7 +67,8 @@ python3 ../../tools/coverage_reporter.py
 ### Generated API Documentation
 
 The API and architecture site is generated from the tracked `Doxyfile`,
-`docs/doxygen-mainpage.md`, module Markdown files, and custom stylesheets.
+`docs/doxygen-mainpage.md`, module Markdown files, and the existing Doxygen
+header/footer assets.
 Generated HTML is intentionally ignored from Git:
 
 ```bash
