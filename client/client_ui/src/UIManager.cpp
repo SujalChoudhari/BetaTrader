@@ -2,6 +2,7 @@
 #include "client_ui/Theme.h"
 
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <implot.h>
@@ -11,6 +12,43 @@
 #include "logging/Logger.h"
 
 namespace client_ui {
+
+namespace {
+
+void buildDefaultDockLayout(ImGuiID dockspaceId, const ImVec2& size) {
+    ImGui::DockBuilderRemoveNode(dockspaceId);
+    ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
+    ImGui::DockBuilderSetNodeSize(dockspaceId, size);
+
+    ImGuiID center = dockspaceId;
+    ImGuiID right = 0;
+    ImGuiID bottom = 0;
+    ImGuiID bottomRight = 0;
+    ImGuiID bottomOps = 0;
+    ImGuiID bottomBlotter = 0;
+    ImGuiID rightLower = 0;
+    ImGuiID rightControls = 0;
+
+    ImGui::DockBuilderSplitNode(center, ImGuiDir_Right, 0.30f, &right, &center);
+    ImGui::DockBuilderSplitNode(center, ImGuiDir_Down, 0.32f, &bottom, &center);
+    ImGui::DockBuilderSplitNode(bottom, ImGuiDir_Right, 0.42f, &bottomRight, &bottom);
+    ImGui::DockBuilderSplitNode(bottomRight, ImGuiDir_Down, 0.52f, &bottomOps, &bottomBlotter);
+    ImGui::DockBuilderSplitNode(right, ImGuiDir_Down, 0.55f, &rightLower, &right);
+    ImGui::DockBuilderSplitNode(rightLower, ImGuiDir_Down, 0.52f, &rightControls, &rightLower);
+
+    ImGui::DockBuilderDockWindow("Market Chart", center);
+    ImGui::DockBuilderDockWindow("Order Book (L2)", right);
+    ImGui::DockBuilderDockWindow("Order Entry", rightLower);
+    ImGui::DockBuilderDockWindow("FIX Connection Control", rightControls);
+    ImGui::DockBuilderDockWindow("FIX Message Log", bottom);
+    ImGui::DockBuilderDockWindow("Simulator Dashboard", bottomOps);
+    ImGui::DockBuilderDockWindow("Exchange Management Console", bottomOps);
+    ImGui::DockBuilderDockWindow("Open Orders", bottomBlotter);
+    ImGui::DockBuilderDockWindow("Execution History", bottomBlotter);
+    ImGui::DockBuilderFinish(dockspaceId);
+}
+
+} // namespace
 
 static void glfw_error_callback(int error, const char* description) {
     LOG_ERROR("GLFW Error {}: {}", error, description);
@@ -141,6 +179,9 @@ void UIManager::renderDockspace() {
     ImGuiIO& io = ImGui::GetIO();
     if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) {
         ImGuiID dockspace_id = ImGui::GetID("MainDockSpace");
+        if (ImGui::DockBuilderGetNode(dockspace_id) == nullptr) {
+            buildDefaultDockLayout(dockspace_id, viewport->WorkSize);
+        }
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
     }
 

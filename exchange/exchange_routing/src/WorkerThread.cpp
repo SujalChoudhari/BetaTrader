@@ -103,7 +103,6 @@ namespace trading_core {
 
         mOrderManager.addOrder(cmd.releaseOrder());
         mOrderRepository.saveOrder(*order);
-        mOrderBook.insertOrder(order);
 
         ExecutionPublisher::publishExecution(*order, "NEW");
 
@@ -128,6 +127,16 @@ namespace trading_core {
                     mOrderManager.removeOrderById(filledOrderId);
                 }
             }
+        }
+
+        // Match against resting liquidity before publishing the incoming order
+        // into the book. A fully filled order must never leave a raw pointer in
+        // the book after OrderManager removes its owning unique_ptr. Market
+        // orders are IOC-style and are never eligible to rest.
+        if (orderType == common::OrderType::Limit
+            && mOrderManager.containsOrderById(orderId)
+            && order->getRemainingQuantity() > 0) {
+            mOrderBook.insertOrder(order);
         }
 
         if (orderType == common::OrderType::Market
@@ -180,7 +189,6 @@ namespace trading_core {
         order->setStatus(common::OrderStatus::New);
 
         mOrderRepository.saveOrder(*order);
-        mOrderBook.insertOrder(order);
 
         ExecutionPublisher::publishExecution(*order, "REPLACED");
 
@@ -204,6 +212,11 @@ namespace trading_core {
                     mOrderManager.removeOrderById(filledOrderId);
                 }
             }
+        }
+
+        if (mOrderManager.containsOrderById(orderId)
+            && order->getRemainingQuantity() > 0) {
+            mOrderBook.insertOrder(order);
         }
 
         if (mOrderManager.containsOrderById(orderId)
