@@ -64,6 +64,21 @@ cd build/coverage && make coverage
 python3 ../../tools/coverage_reporter.py
 ```
 
+### Generated API Documentation
+
+The API and architecture site is generated from the tracked `Doxyfile`,
+`docs/doxygen-mainpage.md`, module Markdown files, and custom stylesheets.
+Generated HTML is intentionally ignored from Git:
+
+```bash
+sudo apt-get install doxygen graphviz   # Ubuntu/Debian, if not installed
+doxygen Doxyfile
+xdg-open docs/html/index.html              # or use a local file browser
+```
+
+The generated landing page contains the repository map, local-demo data-flow
+diagram, native-terminal runbook, and links into the module documentation.
+
 ## How to Explore the Code
 
 1.  **Build and run the unit tests** as described above.

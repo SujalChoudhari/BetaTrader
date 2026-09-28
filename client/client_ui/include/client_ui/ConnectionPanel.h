@@ -25,6 +25,7 @@ public:
      * @brief Renders the connection panel UI.
      * @param session Shared pointer to the FIX session.
      * @param ioContext Reference to the ASIO io_context (for starting connections).
+     * @param marketData Shared market-data/session state used by subscription controls.
      */
     void render(std::shared_ptr<fix_client::FixClientSession>& session,
                 asio::io_context& ioContext,

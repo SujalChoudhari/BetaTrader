@@ -1,0 +1,161 @@
+/* BetaTrader presentation layer for generated Doxygen pages. */
+
+:root {
+    --bt-accent: #45e0b2;
+    --bt-accent-strong: #17b890;
+    --bt-ink: #14202b;
+    --bt-muted: #5f7382;
+    --bt-panel: #f7fafc;
+    --bt-panel-border: #dbe6ec;
+    --bt-shadow: 0 14px 38px rgba(20, 32, 43, 0.10);
+}
+
+#titlearea {
+    background: linear-gradient(120deg, #0d1d2a 0%, #163b4d 58%, #126b68 100%);
+    border-bottom: 0;
+    box-shadow: 0 8px 24px rgba(13, 29, 42, 0.22);
+}
+
+#projectname,
+#projectbrief {
+    color: #f4fbff;
+}
+
+#projectname {
+    font-size: 1.55rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+#projectbrief {
+    color: #b7eee0;
+    font-size: 0.92rem;
+    max-width: 56rem;
+}
+
+#doc-content {
+    max-width: 1180px;
+}
+
+.bt-hero {
+    background: linear-gradient(135deg, #102634 0%, #164452 64%, #147b72 100%);
+    border: 1px solid rgba(69, 224, 178, 0.30);
+    border-radius: 18px;
+    box-shadow: var(--bt-shadow);
+    color: #eefcff;
+    margin: 0 0 2.2rem;
+    padding: 2.3rem 2.6rem;
+}
+
+.bt-hero-title {
+    color: #ffffff;
+    display: block;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 750;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    margin: 0.45rem 0 0.9rem;
+    max-width: 42rem;
+}
+
+.bt-hero-description {
+    color: #d9f8f0;
+    display: block;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin: 0;
+    max-width: 58rem;
+}
+
+.bt-eyebrow {
+    color: #70f2ca;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.bt-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1.4rem;
+}
+
+.bt-chip {
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(157, 255, 231, 0.35);
+    border-radius: 999px;
+    color: #dcfff7;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.38rem 0.78rem;
+}
+
+#doc-content table {
+    border: 1px solid var(--bt-panel-border);
+    border-collapse: separate;
+    border-radius: 12px;
+    border-spacing: 0;
+    box-shadow: 0 5px 18px rgba(20, 32, 43, 0.05);
+    overflow: hidden;
+}
+
+#doc-content table th {
+    background: #123442;
+    color: #f4fffc;
+}
+
+#doc-content table tr:nth-child(even) td {
+    background: var(--bt-panel);
+}
+
+#doc-content table td,
+#doc-content table th {
+    border-right: 1px solid var(--bt-panel-border);
+    border-bottom: 1px solid var(--bt-panel-border);
+    padding: 0.72rem 0.85rem;
+}
+
+#doc-content table tr:last-child td {
+    border-bottom: 0;
+}
+
+#doc-content table td:last-child,
+#doc-content table th:last-child {
+    border-right: 0;
+}
+
+#doc-content h2 {
+    border-left: 4px solid var(--bt-accent-strong);
+    padding-left: 0.75rem;
+}
+
+#doc-content pre.fragment,
+#doc-content div.fragment {
+    border-left: 3px solid var(--bt-accent-strong);
+    border-radius: 0 10px 10px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.light-mode) {
+        --bt-panel: #16242d;
+        --bt-panel-border: #30434e;
+        --bt-muted: #a8bac4;
+        --bt-shadow: 0 14px 38px rgba(0, 0, 0, 0.24);
+    }
+
+    html:not(.light-mode) #doc-content table th {
+        background: #1d625f;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .bt-hero {
+        border-radius: 12px;
+        padding: 1.45rem;
+    }
+
+    .bt-hero h1 {
+        font-size: 1.9rem;
+    }
+}
