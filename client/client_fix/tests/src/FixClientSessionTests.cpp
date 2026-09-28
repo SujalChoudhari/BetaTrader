@@ -154,10 +154,34 @@ TEST_F(FixClientSessionTests, SequenceResetHandle) {
     EXPECT_EQ(session->mSeqStore.getNextTargetSeqNum(), 100);
 }
 
+TEST_F(FixClientSessionTests, EmitsOutboundOrderIntentForBlotterTracking) {
+    std::vector<NewOrderIntent> intents;
+    session->setOrderIntentCallback([&intents](const NewOrderIntent& intent) {
+        intents.push_back(intent);
+    });
+    session->changeState(FixClientState::Active);
+
+    session->sendNewOrder("EURUSD", '1', 1.2345, 100, '2', '0');
+
+    ASSERT_EQ(intents.size(), 1U);
+    EXPECT_FALSE(intents.front().clientOrderId.empty());
+    EXPECT_EQ(intents.front().symbol, "EURUSD");
+    EXPECT_EQ(intents.front().side, '1');
+    EXPECT_EQ(intents.front().orderType, '2');
+    EXPECT_EQ(intents.front().quantity, 100);
+    EXPECT_EQ(intents.front().price, 1.2345);
+}
+
 TEST_F(FixClientSessionTests, EmitsStructuredSessionRejectExecutionAndMarketDataEvents) {
     std::vector<FixClientEvent> events;
+    std::size_t parsedExecutionReports = 0;
     session->setEventCallback([&events](const FixClientEvent& event) {
         events.push_back(event);
+    });
+    session->setMessageCallback([&parsedExecutionReports](const ParsedFixMessage& message) {
+        if (std::holds_alternative<fix::ExecutionReport>(message)) {
+            ++parsedExecutionReports;
+        }
     });
 
     session->changeState(FixClientState::LogonSent);
@@ -188,6 +212,7 @@ TEST_F(FixClientSessionTests, EmitsStructuredSessionRejectExecutionAndMarketData
     }
     EXPECT_EQ(events[7].type, FixClientEventType::MarketData);
     EXPECT_NE(events[7].message.find("EURUSD"), std::string::npos);
+    EXPECT_EQ(parsedExecutionReports, 5U);
     for (const auto& event : events) {
         EXPECT_EQ(event.message.find("password"), std::string::npos);
         EXPECT_EQ(event.message.find("35=", 0), std::string::npos);

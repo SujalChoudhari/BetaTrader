@@ -72,14 +72,32 @@ int App::run() {
         mChartPanel.render(mMarketData);
         mSimPanel.render(mSimulator.get());
         mBookPanel.render(mOrderBook.get(), mMarketData);
+        mBlotterPanel.render(mBlotter);
 
         // Handle session-based message routing
         static std::shared_ptr<fix_client::FixClientSession> lastSession = nullptr;
         if (mFixSession != lastSession) {
             lastSession = mFixSession;
             if (mFixSession) {
+                mFixSession->setOrderIntentCallback([this](const fix_client::NewOrderIntent& intent) {
+                    try {
+                        const auto symbol = common::from_string(intent.symbol);
+                        const auto side = intent.side == '1' ? common::OrderSide::Buy
+                                                            : common::OrderSide::Sell;
+                        const auto orderType = intent.orderType == '1'
+                                                       ? common::OrderType::Market
+                                                       : common::OrderType::Limit;
+                        mBlotter.recordOrderIntent({intent.clientOrderId, symbol, side,
+                                                    orderType, intent.price,
+                                                    static_cast<common::Quantity>(intent.quantity)});
+                    } catch (const std::invalid_argument&) {
+                        LOG_WARN("Ignoring order intent with unknown symbol: {}", intent.symbol);
+                    }
+                });
                 mFixSession->setMessageCallback([this](const fix_client::ParsedFixMessage& msg) {
-                    if (std::holds_alternative<fix::MarketDataSnapshotFullRefresh>(msg)) {
+                    if (const auto* report = std::get_if<fix::ExecutionReport>(&msg)) {
+                        mBlotter.processExecution(*report);
+                    } else if (std::holds_alternative<fix::MarketDataSnapshotFullRefresh>(msg)) {
                         const auto& snapshot = std::get<fix::MarketDataSnapshotFullRefresh>(msg);
                         if (common::to_string(snapshot.symbol) != mMarketData.symbol()) return;
                         mOrderBook->handleSnapshot(snapshot);
