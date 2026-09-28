@@ -39,7 +39,7 @@ namespace fix_client {
     };
 
     /**
-     * @enum SessionState
+     * @enum FixClientState
      * @brief The state machine status for the FIX client connection.
      */
     enum class FixClientState {
@@ -76,6 +76,7 @@ namespace fix_client {
          * @param ioContext The ASIO event loop to run on.
          * @param senderCompId This client's identification string (e.g. "MahaSahayak").
          * @param targetCompId The exchange's identification string (e.g. "BETA_EXCHANGE").
+         * @param seqStoreDir Directory used to persist FIX sequence numbers.
          */
         FixClientSession(asio::io_context& ioContext, 
                          const std::string& senderCompId,

@@ -27,6 +27,7 @@ public:
      * valid FIX message string, including header, body, and trailer.
      *
      * @param refresh The `MarketDataIncrementalRefresh` object to serialize.
+     * @param msgSeqNum Outbound FIX message sequence number.
      * @return A string containing the complete, valid FIX message.
      */
     static std::string convert(const MarketDataIncrementalRefresh& refresh, uint32_t msgSeqNum);

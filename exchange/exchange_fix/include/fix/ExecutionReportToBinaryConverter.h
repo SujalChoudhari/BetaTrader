@@ -17,6 +17,7 @@ namespace fix {
         /**
          * @brief Converts an `ExecutionReport` object into a raw FIX message.
          * @param executionReport The report object to serialize.
+         * @param msgSeqNum Outbound FIX message sequence number.
          * @return A string containing the complete, valid FIX message.
          */
         static std::string convert(const ExecutionReport& executionReport, uint32_t msgSeqNum); 
