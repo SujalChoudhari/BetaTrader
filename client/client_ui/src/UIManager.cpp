@@ -23,11 +23,16 @@ void buildDefaultDockLayout(ImGuiID dockspaceId, const ImVec2& size) {
     ImGuiID center = dockspaceId;
     ImGuiID right = 0;
     ImGuiID bottom = 0;
+    ImGuiID bottomRight = 0;
+    ImGuiID bottomOps = 0;
+    ImGuiID bottomBlotter = 0;
     ImGuiID rightLower = 0;
     ImGuiID rightControls = 0;
 
     ImGui::DockBuilderSplitNode(center, ImGuiDir_Right, 0.30f, &right, &center);
     ImGui::DockBuilderSplitNode(center, ImGuiDir_Down, 0.32f, &bottom, &center);
+    ImGui::DockBuilderSplitNode(bottom, ImGuiDir_Right, 0.42f, &bottomRight, &bottom);
+    ImGui::DockBuilderSplitNode(bottomRight, ImGuiDir_Down, 0.52f, &bottomOps, &bottomBlotter);
     ImGui::DockBuilderSplitNode(right, ImGuiDir_Down, 0.55f, &rightLower, &right);
     ImGui::DockBuilderSplitNode(rightLower, ImGuiDir_Down, 0.52f, &rightControls, &rightLower);
 
@@ -36,8 +41,10 @@ void buildDefaultDockLayout(ImGuiID dockspaceId, const ImVec2& size) {
     ImGui::DockBuilderDockWindow("Order Entry", rightLower);
     ImGui::DockBuilderDockWindow("FIX Connection Control", rightControls);
     ImGui::DockBuilderDockWindow("FIX Message Log", bottom);
-    ImGui::DockBuilderDockWindow("Simulator Dashboard", bottom);
-    ImGui::DockBuilderDockWindow("Exchange Management Console", bottom);
+    ImGui::DockBuilderDockWindow("Simulator Dashboard", bottomOps);
+    ImGui::DockBuilderDockWindow("Exchange Management Console", bottomOps);
+    ImGui::DockBuilderDockWindow("Open Orders", bottomBlotter);
+    ImGui::DockBuilderDockWindow("Execution History", bottomBlotter);
     ImGui::DockBuilderFinish(dockspaceId);
 }
 

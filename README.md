@@ -88,6 +88,17 @@ BetaTrader is divided into several high-level components. Each component contain
 
 ### Client Application
 *   [Client Overview](./client/README.md): Trader terminal and simulator details.
+*   [Client UI visual guide](./docs/client-ui/README.md): Verified default cockpit, every panel, and order-book-focused layouts.
+
+#### Client terminal screenshots
+
+![Default BetaTrader cockpit](./docs/client-ui/screenshots/cockpit-default.png)
+
+The default cockpit keeps the chart central, the order-book workflow on the right, and FIX/blotter/operations panels in dedicated bottom dock groups. The complete panel gallery and alternate order-book layouts are available in the [client UI visual guide](./docs/client-ui/README.md).
+
+![Panel gallery](./docs/client-ui/screenshots/panel-gallery.png)
+
+![Order-book layout gallery](./docs/client-ui/screenshots/book-layout-gallery.png)
 
 ## Forex Trading Domain Concepts
 
@@ -108,14 +119,14 @@ To experiment with trading logic, you can:
 
 This project is a continuous engineering exercise. With the solid foundation of a functional matching core, asynchronous persistence, and a robust FIX gateway now established, here are the most logical next steps for future expansion:
 
-### 1. Build a FIX Client App / Simulator (In Progress)
-Develop a standalone client application (`client`) that provides a high-performance Trader UI (using ImGui) and a headless Load Simulator. The **Dear ImGui client application** (`client_app`) with embedded local exchange control (`client_admin`) and FIX session management (`ConnectionPanel`) is now functional. Remaining work includes the orderbook visualization, trade blotter, portfolio tracker, and the headless load simulator.
+### 1. Client Terminal & Simulator (Implemented)
+The Dear ImGui client application (`client_app`) now provides a deterministic multi-panel trading cockpit with an embedded local exchange, FIX connection/session management, L2 order-book visualization, guarded order entry, charting, open-orders and execution-history blotters, exchange administration, and a stochastic simulator. See the [client UI visual guide](./docs/client-ui/README.md) for the verified layouts and screenshots.
 
 ### 2. A REST / WebSocket API Gateway
 While FIX is ideal for high-performance institutional trading, REST and WebSockets are the standard for retail platforms and web UIs. Building a secondary HTTP/WS gateway alongside the `FixServer` that translates JSON requests into `trading_core::Command` objects would instantly open the door to building a frontend interface (like React).
 
-### 3. Market Data Simulator (Feed Handler)
-An exchange is more dynamic with an active order book. Building a background service or a mock liquidity provider that connects to the engine and continuously publishes random or historically-replayed limit orders and market data updates would populate the books and simulate a live market environment.
+### 3. Historical Replay and Market-Data Workflows
+The embedded simulator provides local order flow for development. A future replay/feed-handler service could add deterministic historical sessions and richer market-data scenarios for the chart and order book.
 
 ### 4. Advanced Risk Management Implementation
 Currently, the `RiskManager` is a foundation awaiting extension. Implementing real pre-trade risk checks such as tracking a client's net open positions, calculating available margin, or implementing "fat finger" checks (e.g., rejecting orders drastically away from the last traded price) would significantly mature the system.
