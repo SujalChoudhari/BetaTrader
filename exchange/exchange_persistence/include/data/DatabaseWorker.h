@@ -8,9 +8,11 @@
  */
 
 #pragma once
-#include "rigtorp/SPSCQueue.h"
 #include <SQLiteCpp/SQLiteCpp.h>
+#include <condition_variable>
+#include <deque>
 #include <functional>
+#include <mutex>
 #include <string>
 #include <thread>
 
@@ -38,6 +40,8 @@ namespace data {
 
         std::string mDbPath;
         std::jthread mWorker;
-        rigtorp::SPSCQueue<std::function<void(SQLite::Database&)>> mTasks;
+        mutable std::mutex mTasksMutex;
+        std::condition_variable mTasksCondition;
+        std::deque<std::function<void(SQLite::Database&)>> mTasks;
     };
 } // namespace data

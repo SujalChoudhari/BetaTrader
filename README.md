@@ -92,9 +92,9 @@ BetaTrader is divided into several high-level components. Each component contain
 
 #### Client terminal screenshots
 
-![Default BetaTrader cockpit](./docs/client-ui/screenshots/cockpit-default.png)
+![Live-data BetaTrader cockpit](./docs/client-ui/screenshots/cockpit-default.png)
 
-The default cockpit keeps the chart central, the order-book workflow on the right, and FIX/blotter/operations panels in dedicated bottom dock groups. The complete panel gallery and alternate order-book layouts are available in the [client UI visual guide](./docs/client-ui/README.md).
+The default cockpit keeps the chart central, the order-book workflow on the right, and FIX/blotter/operations panels in dedicated bottom dock groups. This primary frame is data-backed: it contains multiple EURUSD candles, live L2 depth, active FIX market-data events, and a running local simulator. The complete panel gallery and alternate order-book layouts are available in the [client UI visual guide](./docs/client-ui/README.md).
 
 ![Panel gallery](./docs/client-ui/screenshots/panel-gallery.png)
 
