@@ -72,8 +72,7 @@ HTML_FOOTER            = docs/footer.html
 HTML_EXTRA_STYLESHEET  = docs/stylesheet.css \
                             docs/awesome.css \
                             docs/sidebar.css \
-                            docs/sidebar-only-drkmode.css \
-                            docs/betatrader.css
+                            docs/sidebar-only-drkmode.css
 HTML_EXTRA_FILES       =
 
 
