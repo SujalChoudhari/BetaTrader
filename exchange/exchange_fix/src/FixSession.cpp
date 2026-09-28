@@ -6,7 +6,9 @@
 #include "fix/BinaryToModifyOrderRequestConverter.h"
 #include "fix/BinaryToOrderRequestConverter.h"
 #include "fix/ExecutionReportToBinaryConverter.h"
+#include "fix/FixMessageFramer.h"
 #include "common_fix/FixRunbookDefinations.h"
+#include "common_fix/FixUtils.h"
 #include "fix/FixServer.h"
 #include "fix/MarketDataIncrementalRefreshToBinaryConverter.h"
 #include "fix/MarketDataSnapshotFullRefreshToBinaryConverter.h"
@@ -17,6 +19,7 @@
 #include <exchange_routing/NewOrder.h>
 #include <exchange_state/OrderIDGenerator.h>
 #include <iostream>
+#include <sstream>
 #include <string_view>
 
 namespace fix {
@@ -85,17 +88,36 @@ namespace fix {
 
     void FixSession::sendReject(const Reject& reject)
     {
-        LOG_WARN("Placeholder: Would send session-level Reject to Session {}: "
-                 "{}",
-                 mSessionId, reject.text);
+        const auto* state = mServer.getManager().getSessionState(mSessionId);
+        const std::string targetCompId = state ? state->senderCompId : "";
+        std::ostringstream body;
+        body << "45=" << reject.refSeqNum << SOH
+             << "58=" << reject.text << SOH;
+        auto message = std::make_shared<std::string>(
+                OutboundMessageBuilder::buildMessage(
+                        "BETA_EXCHANGE", targetCompId,
+                        mServer.getManager().useNextOutboundSequence(mSessionId),
+                        std::string(1, MSG_TYPE_REJECT), body.str()));
+        doWrite(message);
     }
 
     void FixSession::sendBusinessMessageReject(
             const BusinessMessageReject& bizReject)
     {
-        LOG_WARN("Placeholder: Would send business-level Reject to Session {}: "
-                 "{}",
-                 mSessionId, bizReject.text);
+        const auto* state = mServer.getManager().getSessionState(mSessionId);
+        const std::string targetCompId = state ? state->senderCompId : "";
+        std::ostringstream body;
+        body << "45=" << bizReject.refSeqNum << SOH
+             << "372=" << bizReject.refMsgType << SOH
+             << "379=" << bizReject.businessRejectReason << SOH
+             << "58=" << bizReject.text << SOH;
+        auto message = std::make_shared<std::string>(
+                OutboundMessageBuilder::buildMessage(
+                        "BETA_EXCHANGE", targetCompId,
+                        mServer.getManager().useNextOutboundSequence(mSessionId),
+                        std::string(1, MSG_TYPE_BUSINESS_MESSAGE_REJECT),
+                        body.str()));
+        doWrite(message);
     }
 
     uint32_t FixSession::getSessionID() const
@@ -134,35 +156,36 @@ namespace fix {
             if (!ec) {
                 mReadBuffer.append(mData.begin(), mData.begin() + length);
 
-                size_t pos = 0;
-                while ((pos
-                        = mReadBuffer.find(std::string(1, SOH) + "10=", pos))
-                       != std::string::npos) {
-                    size_t endOfMessage = mReadBuffer.find(SOH, pos + 4);
-                    if (endOfMessage != std::string::npos) {
-                        endOfMessage++;
+                while (!mReadBuffer.empty()) {
+                    const auto frame = extractNextFrame(mReadBuffer);
+                    if (frame.status == FrameStatus::NeedMoreData) break;
 
-                        std::string fullFixMessage
-                                = mReadBuffer.substr(0, endOfMessage);
-
-                        size_t msgTypeStart = fullFixMessage.find("35=");
-                        if (msgTypeStart != std::string::npos
-                            && msgTypeStart + 4 < fullFixMessage.length()) {
-                            char msgType = fullFixMessage[msgTypeStart + 3];
-                            handleFixMessage(fullFixMessage, msgType);
+                    if (frame.status == FrameStatus::Malformed) {
+                        LOG_WARN("Rejecting malformed FIX frame for Session {}: {}",
+                                 mSessionId, frame.error);
+                        sendReject(Reject{0, frame.error});
+                        const auto nextBegin = mReadBuffer.find("8=FIX.", 1);
+                        if (nextBegin == std::string::npos) {
+                            mReadBuffer.clear();
                         }
                         else {
-                            LOG_WARN("Could not extract MsgType from FIX "
-                                     "message: {}",
-                                     fullFixMessage.substr(0, 50));
+                            mReadBuffer.erase(0, nextBegin);
                         }
+                        continue;
+                    }
 
-                        mReadBuffer.erase(0, endOfMessage);
-                        pos = 0;
+                    const std::string fullFixMessage = frame.frame;
+                    const auto fields = splitToMap(fullFixMessage, SOH);
+                    const auto msgType = fields.find(35);
+                    if (msgType != fields.end() && !msgType->second.empty()) {
+                        handleFixMessage(fullFixMessage, msgType->second.front());
                     }
                     else {
-                        break;
+                        LOG_WARN("Could not extract MsgType from FIX message");
+                        sendReject(Reject{0, "Missing MsgType (Tag 35)"});
                     }
+
+                    mReadBuffer.erase(0, frame.consumed);
                 }
                 doRead();
             }
@@ -353,6 +376,9 @@ namespace fix {
                 else {
                     LOG_WARN("Failed to parse NewOrderSingle from Session {}.",
                              mSessionId);
+                    sendBusinessMessageReject(
+                            BusinessMessageReject{msgSeqNum, msgType, 5,
+                                                  "Invalid NewOrderSingle"});
                 }
             } break;
             case MSG_TYPE_ORDER_CANCEL_REQUEST:
