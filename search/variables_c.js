@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['open_0',['open',['../structdata_1_1Candle.html#a064d385e3c7a003b2a083252ea9ac181',1,'data::Candle']]],
+  ['order_5fside_5fbuy_1',['ORDER_SIDE_BUY',['../namespacefix.html#aad04dbb4dbb896e674073026bcceb427',1,'fix']]],
+  ['order_5fside_5fnames_2',['order_side_names',['../namespacecommon.html#ae58491c8cfdbaf2fa5e94787365ca8f1',1,'common']]],
+  ['order_5fside_5fsell_3',['ORDER_SIDE_SELL',['../namespacefix.html#a09facbeb4ad06b088763136fad877d0c',1,'fix']]],
+  ['order_5fstatus_5fcanceled_4',['ORDER_STATUS_CANCELED',['../namespacefix.html#a2ab2774020c6bbdd1f3e48d836f938d1',1,'fix']]],
+  ['order_5fstatus_5ffilled_5',['ORDER_STATUS_FILLED',['../namespacefix.html#a7f79d109863b939a250e73aa6a3b76b4',1,'fix']]],
+  ['order_5fstatus_5fnames_6',['order_status_names',['../namespacecommon.html#a231833f19fd3a816aa89b21f0e033279',1,'common']]],
+  ['order_5fstatus_5fnew_7',['ORDER_STATUS_NEW',['../namespacefix.html#af02bebd230832573db534cedc82fe687',1,'fix']]],
+  ['order_5fstatus_5fpartially_5ffilled_8',['ORDER_STATUS_PARTIALLY_FILLED',['../namespacefix.html#a4da6dbd3c85bb2bf81a95decf977df58',1,'fix']]],
+  ['order_5fstatus_5frejected_9',['ORDER_STATUS_REJECTED',['../namespacefix.html#a7b70dc6f67769ff9f1812c62cac978b3',1,'fix']]],
+  ['order_5ftype_5flimit_10',['ORDER_TYPE_LIMIT',['../namespacefix.html#a7ef9d9be8d4f02a066edda713534f6f4',1,'fix']]],
+  ['order_5ftype_5fmarket_11',['ORDER_TYPE_MARKET',['../namespacefix.html#adf3175e7670dcd748c44168860ea452d',1,'fix']]],
+  ['order_5ftype_5fnames_12',['order_type_names',['../namespacecommon.html#afe7bf17bba7e8ee35ed228d567b32daf',1,'common']]],
+  ['orderid_13',['orderid',['../structfix_1_1CancelOrderRequest.html#ac0debbf9f26363492cdbea02dc3d56ed',1,'fix::CancelOrderRequest::orderID'],['../structfix_1_1ModifyOrderRequest.html#a74cd23d300ea9ca60be88275fda3ec03',1,'fix::ModifyOrderRequest::orderID']]],
+  ['orderqty_14',['orderQty',['../structfix_1_1ModifyOrderRequest.html#a27bf1c5806cc505d6d1d1c6c337831fd',1,'fix::ModifyOrderRequest']]],
+  ['ordertype_15',['ordertype',['../structclient__ui_1_1OrderTicket.html#ae389e3da589a78c204e10ea04ca2a5a2',1,'client_ui::OrderTicket::orderType'],['../structfix__client_1_1NewOrderIntent.html#a919083c16b04c333fa8c72aa324583f8',1,'fix_client::NewOrderIntent::orderType'],['../structclient__blotter_1_1OrderRow.html#a882054a0d44205b1b430634d64e86f5c',1,'client_blotter::OrderRow::orderType'],['../structclient__blotter_1_1OrderIntent.html#ab879a823cff9fff109c35dd78fcf675a',1,'client_blotter::OrderIntent::orderType']]],
+  ['ordertypeknown_16',['orderTypeKnown',['../structclient__blotter_1_1OrderRow.html#a44d8fad6bc240d53728b5e589ee0ece3',1,'client_blotter::OrderRow']]],
+  ['ordtype_17',['ordType',['../structfix_1_1ModifyOrderRequest.html#a282591b2a0f84913077bf40817e67406',1,'fix::ModifyOrderRequest']]],
+  ['origclordid_18',['origclordid',['../structfix_1_1ModifyOrderRequest.html#a643b866131ffc91fca21a3a335c35c35',1,'fix::ModifyOrderRequest::origClOrdID'],['../structfix_1_1CancelOrderRequest.html#a6179545aecd64497396e457039cce4d6',1,'fix::CancelOrderRequest::origClOrdID']]],
+  ['originalquantity_19',['originalquantity',['../structclient__blotter_1_1OrderRow.html#af33b1e8f95f5c3998072648c32757e5d',1,'client_blotter::OrderRow::originalQuantity'],['../structclient__blotter_1_1OrderIntent.html#ad541d3c33d32336fe4a8b9197e5135c0',1,'client_blotter::OrderIntent::originalQuantity']]],
+  ['outseqnum_20',['outSeqNum',['../structfix_1_1SessionState.html#a743a3ab7f6606b4d846c4c3291161a8c',1,'fix::SessionState']]]
+];

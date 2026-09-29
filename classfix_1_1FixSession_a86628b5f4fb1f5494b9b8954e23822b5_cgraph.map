@@ -1,0 +1,21 @@
+<map id="fix::FixSession::handleCancelOrderRequest" name="fix::FixSession::handleCancelOrderRequest">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,182,216,222"/>
+<area shape="rect" id="Node000002" href="$classfix_1_1BinaryToCancelOrderRequestConverter.html#a2579d62ca0160e34aa31e8a9c76703bb" title="Converts a raw FIX message string into a CancelOrderRequest object." alt="" coords="264,86,460,126"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,179,263,136,284,128,286,133,265,140,158,184"/>
+<area shape="rect" id="Node000007" href="$classtrading__core_1_1TradingCore.html#a6a538e36945cd59da5439f2fb6c26f73" title=" " alt="" coords="267,150,457,190"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="216,186,253,181,254,186,216,191"/>
+<area shape="rect" id="Node000008" href="$classtrading__core_1_1TradingCore.html#aaad204809584253d84be7e52f09e8d9d" title=" " alt="" coords="268,214,456,254"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="216,213,255,218,254,223,216,218"/>
+<area shape="rect" id="Node000010" href="$namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="290,279,434,304"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="156,220,265,263,294,273,293,278,263,269,154,225"/>
+<area shape="rect" id="Node000003" href="$namespacefix.html#ad8a258a1bda5edecc3a0483327b9c94d" title="Converts a character representation of an order side to the common::OrderSide enum." alt="" coords="526,5,678,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="403,84,507,39,532,32,533,37,509,45,405,88"/>
+<area shape="rect" id="Node000004" href="$namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="521,55,683,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="460,88,509,80,510,85,461,93"/>
+<area shape="rect" id="Node000005" href="$namespacefix.html#ae10f9de43f35a89bd9187a1c002a9522" title="Parses a FIX TransactTime (Tag 60) string into a common::Timestamp. Expected format: YYYYMMDD&#45;HH:MM:S..." alt="" coords="524,104,680,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="460,108,510,110,510,115,460,113"/>
+<area shape="rect" id="Node000006" href="$namespacefix.html#aae7edb455423c4dcbe4022769f5130c3" title="Splits a FIX message string view into a map of tags to values." alt="" coords="544,153,660,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="444,124,538,147,537,153,442,129"/>
+<area shape="rect" id="Node000009" href="$classtrading__core_1_1TradingCore.html#a5887c7fb0e1130b7ccbd18c4e8c0c0bf" title=" " alt="" coords="508,214,696,254"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="456,231,494,231,494,237,456,237"/>
+</map>

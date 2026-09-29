@@ -1,0 +1,9 @@
+<map id="client_ui::BlotterPanel::render" name="client_ui::BlotterPanel::render">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,169,109"/>
+<area shape="rect" id="Node000002" href="$classclient__blotter_1_1BlotterModel.html#ab9f7736871c36589a47b32e3db13b508" title=" " alt="" coords="217,5,417,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,67,231,46,233,52,161,72"/>
+<area shape="rect" id="Node000003" href="$classclient__blotter_1_1BlotterModel.html#a14523ef1f373779cb2b72f9f72c90946" title=" " alt="" coords="217,69,417,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,87,204,87,204,92,169,92"/>
+<area shape="rect" id="Node000004" href="$namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="245,134,389,159"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="169,107,253,128,252,133,168,112"/>
+</map>

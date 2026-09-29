@@ -1,0 +1,31 @@
+<map id="BinaryToCancelOrderRequestConverter.h" name="BinaryToCancelOrderRequestConverter.h">
+<area shape="rect" id="Node000001" title="Declares the BinaryToCancelOrderRequestConverter class for converting FIX messages to CancelOrderRequ..." alt="" coords="327,5,538,45"/>
+<area shape="rect" id="Node000002" href="$CancelOrderRequest_8h.html" title="Defines the structure for a FIX Order Cancel Request." alt="" coords="142,93,393,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="394,48,305,90,303,85,392,43"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="354,313,413,339"/>
+<area shape="poly" id="edge17_Node000001_Node000009" title=" " alt="" coords="434,46,424,141,403,266,394,301,389,299,398,265,418,140,428,45"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="470,93,545,119"/>
+<area shape="poly" id="edge16_Node000001_Node000012" title=" " alt="" coords="453,44,489,81,485,85,449,47"/>
+<area shape="rect" id="Node000003" href="$common_2Types_8h.html" title=" " alt="" coords="200,240,332,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="238,121,206,140,191,153,180,168,177,186,187,203,204,219,226,232,223,236,201,223,183,207,172,187,176,166,187,149,203,135,235,116"/>
+<area shape="poly" id="edge15_Node000002_Node000009" title=" " alt="" coords="297,116,330,136,346,149,359,165,375,199,384,236,388,299,382,300,378,236,370,201,354,168,342,153,327,140,294,121"/>
+<area shape="rect" id="Node000010" href="$common__fix_2Types_8h.html" title="Defines type aliases for FIX protocol fields." alt="" coords="190,167,345,192"/>
+<area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="270,119,270,153,265,153,265,119"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="49,167,115,192"/>
+<area shape="poly" id="edge14_Node000002_Node000011" title=" " alt="" coords="239,121,126,164,124,159,237,116"/>
+<area shape="rect" id="Node000004" href="$Instrument_8h.html" title=" " alt="" coords="123,313,228,339"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="253,267,203,307,199,302,250,263"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="238,387,294,412"/>
+<area shape="poly" id="edge8_Node000003_Node000005" title=" " alt="" coords="269,266,269,373,263,373,263,266"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="318,387,385,412"/>
+<area shape="poly" id="edge9_Node000003_Node000006" title=" " alt="" coords="275,264,340,373,335,376,271,267"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,387,92,412"/>
+<area shape="poly" id="edge10_Node000003_Node000007" title=" " alt="" coords="216,268,163,286,112,315,83,345,63,376,59,373,79,341,108,311,161,281,214,263"/>
+<area shape="poly" id="edge11_Node000003_Node000009" title=" " alt="" coords="286,263,354,304,351,308,283,268"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="192,337,242,376,239,380,188,341"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="205,336,311,379,309,384,203,341"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="156,341,83,382,80,377,154,336"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="116,387,213,412"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="176,339,171,374,166,373,171,339"/>
+<area shape="poly" id="edge13_Node000010_Node000003" title=" " alt="" coords="270,192,269,227,264,226,264,192"/>
+</map>

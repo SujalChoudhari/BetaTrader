@@ -1,0 +1,5 @@
+<map id="trading_core::OrderIDGenerator" name="trading_core::OrderIDGenerator">
+<area shape="rect" id="Node000001" title="A thread&#45;safe, database&#45;aware generator for unique order IDs." alt="" coords="5,353,224,459"/>
+<area shape="rect" id="Node000002" href="$classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="35,5,194,291"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,291,117,337,112,337,112,291"/>
+</map>

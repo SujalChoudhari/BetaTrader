@@ -1,0 +1,12 @@
+<map id="client_ui::MarketDataState::status" name="client_ui::MarketDataState::status">
+<area shape="rect" id="Node000001" title=" " alt="" coords="592,35,787,75"/>
+<area shape="rect" id="Node000002" href="$classclient__ui_1_1ConnectionPanel.html#a687d184385b550fe70af201533befbb2" title="Renders the connection panel UI." alt="" coords="351,5,544,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="578,44,544,40,544,34,579,39"/>
+<area shape="rect" id="Node000005" href="$classclient__app_1_1App.html#abfaf8ffb58df80b45706b60b6ea7bff3" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="108,66,303,91"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="578,63,303,77,303,71,578,57"/>
+<area shape="rect" id="Node000003" href="$classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="130,15,281,41"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="337,29,281,30,281,25,337,24"/>
+<area shape="rect" id="Node000004" href="$client_2client__app_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,42,60,67"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="117,44,61,53,60,48,116,39"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="100,67,60,61,61,56,101,61"/>
+</map>

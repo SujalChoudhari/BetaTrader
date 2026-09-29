@@ -1,0 +1,14 @@
+<map id="admin::ExchangeManager::getServer" name="admin::ExchangeManager::getServer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="768,35,959,75"/>
+<area shape="rect" id="Node000002" href="$classadmin_1_1ExchangePanel.html#ab53f4aba7c54b755ab49a34c7b19646e" title=" " alt="" coords="549,5,720,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="754,43,720,39,720,34,754,38"/>
+<area shape="rect" id="Node000006" href="$classclient__app_1_1App.html#abfaf8ffb58df80b45706b60b6ea7bff3" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="307,70,501,95"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="755,64,502,79,501,74,754,59"/>
+<area shape="rect" id="Node000003" href="$classadmin_1_1ExchangePanel.html#abca1f835c62546e4c2d218d985ca6a51" title="Renders the exchange control dashboard." alt="" coords="319,5,489,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="536,28,489,28,489,23,536,23"/>
+<area shape="rect" id="Node000004" href="$classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="108,15,259,41"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="305,29,259,30,259,24,305,24"/>
+<area shape="rect" id="Node000005" href="$client_2client__app_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,42,60,67"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="99,46,61,53,60,47,98,40"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="293,77,60,59,60,54,293,72"/>
+</map>

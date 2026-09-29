@@ -1,0 +1,26 @@
+<map id="logging::Logger::logMutex" name="logging::Logger::logMutex">
+<area shape="rect" id="Node000001" title=" " alt="" coords="609,104,800,129"/>
+<area shape="rect" id="Node000002" href="$classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="381,79,531,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="596,108,531,102,532,96,596,103"/>
+<area shape="rect" id="Node000009" href="$classlogging_1_1Logger.html#a0d1e9ca7c0d43772a9fbe531533b14ed" title=" " alt="" coords="379,128,533,153"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="596,130,533,136,533,131,595,125"/>
+<area shape="rect" id="Node000010" href="$classlogging_1_1Logger.html#a2428819c7e9c9478147173619d5a81a0" title=" " alt="" coords="351,177,561,203"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="657,136,562,167,514,180,513,175,561,162,655,131"/>
+<area shape="rect" id="Node000011" href="$classlogging_1_1Logger.html#a9749e79759e151a05063689c595ded4c" title=" " alt="" coords="359,29,553,55"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="658,102,561,69,517,57,519,52,562,63,659,97"/>
+<area shape="rect" id="Node000003" href="$exchange_2exchange__fix_2src_2Main_8cpp.html#ae6acac0df1d5f6c48b70e408d63916c0" title=" " alt="" coords="147,5,264,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,78,350,68,325,56,302,44,263,33,265,28,304,40,328,52,352,64,380,73"/>
+<area shape="rect" id="Node000005" href="$exchange_2exchange__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="178,55,233,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="367,85,233,73,233,67,367,80"/>
+<area shape="rect" id="Node000006" href="$classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="130,104,281,129"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="367,103,281,112,281,106,367,98"/>
+<area shape="rect" id="Node000008" href="$classclient__app_1_1App.html#abfaf8ffb58df80b45706b60b6ea7bff3" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="108,153,303,179"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="376,110,352,118,328,130,304,143,265,156,263,151,302,138,325,126,350,113,374,105"/>
+<area shape="rect" id="Node000004" href="$exchange_2exchange__fix_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,21,60,21,60,15,133,15"/>
+<area shape="rect" id="Node000007" href="$client_2client__app_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,128,60,153"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="117,132,61,140,60,134,116,126"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="105,154,60,147,60,142,105,149"/>
+<area shape="poly" id="edge12_Node000011_Node000003" title=" " alt="" coords="345,34,264,26,264,21,345,29"/>
+<area shape="poly" id="edge13_Node000011_Node000005" title=" " alt="" coords="345,56,233,67,233,62,345,51"/>
+</map>

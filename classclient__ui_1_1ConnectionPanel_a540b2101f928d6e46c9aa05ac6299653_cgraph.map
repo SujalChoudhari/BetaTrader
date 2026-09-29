@@ -1,0 +1,7 @@
+<map id="client_ui::ConnectionPanel::recordState" name="client_ui::ConnectionPanel::recordState">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,199,45"/>
+<area shape="rect" id="Node000002" href="$classclient__ui_1_1ClientEventLog.html#a3bafc17ae2f852f1cf2f6f1d709ad340" title=" " alt="" coords="247,5,429,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,23,233,23,233,28,199,28"/>
+<area shape="rect" id="Node000003" href="$classclient__ui_1_1ClientEventLog.html#a3aa816619ae9855c3bf2d1f67f2eed22" title=" " alt="" coords="477,5,660,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,23,464,23,464,28,429,28"/>
+</map>

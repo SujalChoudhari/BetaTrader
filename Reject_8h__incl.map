@@ -1,0 +1,23 @@
+<map id="Reject.h" name="Reject.h">
+<area shape="rect" id="Node000001" title="Defines the structure for a FIX Session&#45;Level Reject message." alt="" coords="263,5,337,31"/>
+<area shape="rect" id="Node000002" href="$common__fix_2Types_8h.html" title="Defines type aliases for FIX protocol fields." alt="" coords="165,79,320,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="293,33,263,70,259,66,288,29"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="329,225,388,251"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="310,30,335,78,352,150,360,211,354,212,347,151,329,80,305,32"/>
+<area shape="rect" id="Node000003" href="$common_2Types_8h.html" title=" " alt="" coords="175,152,307,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="245,104,244,139,239,138,240,104"/>
+<area shape="rect" id="Node000004" href="$Instrument_8h.html" title=" " alt="" coords="98,225,203,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="228,179,178,219,175,214,225,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,299,61,324"/>
+<area shape="poly" id="edge8_Node000003_Node000005" title=" " alt="" coords="188,180,136,198,110,211,87,227,62,256,45,287,41,284,58,253,84,223,108,207,134,193,186,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="208,299,275,324"/>
+<area shape="poly" id="edge9_Node000003_Node000006" title=" " alt="" coords="244,178,244,285,239,285,239,178"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="299,299,386,324"/>
+<area shape="poly" id="edge10_Node000003_Node000007" title=" " alt="" coords="252,176,329,286,325,289,247,179"/>
+<area shape="poly" id="edge11_Node000003_Node000009" title=" " alt="" coords="262,175,329,216,326,220,259,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="133,253,66,294,63,289,130,248"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="167,249,217,288,214,292,164,253"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="182,248,299,291,297,296,181,253"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="86,299,183,324"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="151,252,143,286,138,285,145,250"/>
+</map>

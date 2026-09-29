@@ -1,0 +1,12 @@
+<map id="client_ui::TradingPanel::render" name="client_ui::TradingPanel::render">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,172,75"/>
+<area shape="rect" id="Node000002" href="$classclient__ui_1_1MarketDataState.html#aa97f8972cdd68789c32b6e43c1ceb187" title=" " alt="" coords="435,5,629,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,47,421,30,421,35,173,52"/>
+<area shape="rect" id="Node000003" href="$classclient__ui_1_1TradingPanel.html#ac4b21fd18c0614ba13963c115a5b486d" title=" " alt="" coords="220,63,387,103"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,63,206,67,206,73,172,68"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="383,60,438,46,439,51,384,65"/>
+<area shape="rect" id="Node000004" href="$namespaceclient__ui.html#a267d349ea03b56b75c462638cd8fbc44" title=" " alt="" coords="445,69,619,109"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="387,82,431,84,431,89,387,88"/>
+<area shape="rect" id="Node000005" href="$namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="677,77,840,102"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="620,87,664,87,664,92,620,92"/>
+</map>

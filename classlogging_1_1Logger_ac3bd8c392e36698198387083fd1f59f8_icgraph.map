@@ -1,0 +1,18 @@
+<map id="logging::Logger::GenerateTimestampedFilename" name="logging::Logger::GenerateTimestampedFilename">
+<area shape="rect" id="Node000001" title="Generates a timestamped filename." alt="" coords="549,73,740,113"/>
+<area shape="rect" id="Node000002" href="$classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="351,80,501,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="536,95,502,95,502,90,536,90"/>
+<area shape="rect" id="Node000003" href="$exchange_2exchange__fix_2src_2Main_8cpp.html#ae6acac0df1d5f6c48b70e408d63916c0" title=" " alt="" coords="147,5,264,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="384,77,302,45,263,33,264,28,304,39,386,72"/>
+<area shape="rect" id="Node000005" href="$exchange_2exchange__app_2src_2Main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="178,55,233,80"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="336,85,232,73,233,68,337,80"/>
+<area shape="rect" id="Node000006" href="$classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="130,104,281,129"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="337,105,281,111,280,106,337,100"/>
+<area shape="rect" id="Node000008" href="$classclient__app_1_1App.html#abfaf8ffb58df80b45706b60b6ea7bff3" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="108,153,303,179"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="383,113,304,143,260,156,259,151,302,138,381,108"/>
+<area shape="rect" id="Node000004" href="$exchange_2exchange__fix_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,21,60,21,60,15,133,15"/>
+<area shape="rect" id="Node000007" href="$client_2client__app_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,128,60,153"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="117,132,61,140,60,134,116,126"/>
+<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="105,154,60,147,60,142,105,149"/>
+</map>

@@ -1,0 +1,22 @@
+<map id="FixMessageFramer.cpp" name="FixMessageFramer.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="396,5,567,31"/>
+<area shape="rect" id="Node000002" href="$FixMessageFramer_8h.html" title=" " alt="" coords="5,79,181,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="419,33,170,79,169,74,419,28"/>
+<area shape="rect" id="Node000006" href="$Protocol_8h.html" title="Defines constants and enumerations for the FIX protocol." alt="" coords="205,79,376,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="452,33,336,76,334,71,450,28"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="401,79,466,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="476,33,451,69,446,66,471,30"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="490,79,571,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="492,29,517,66,513,69,487,33"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="596,79,655,104"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="506,28,591,70,588,75,503,33"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="679,79,739,104"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="519,28,667,74,665,79,517,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="14,152,85,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="88,106,66,142,61,139,84,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="109,152,168,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="103,103,126,139,122,142,99,106"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="217,152,314,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="122,102,226,144,224,149,120,106"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="289,105,276,140,271,138,284,103"/>
+</map>

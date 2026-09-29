@@ -1,0 +1,15 @@
+<map id="fix::FixSessionManager::getSessionState" name="fix::FixSessionManager::getSessionState">
+<area shape="rect" id="Node000001" title=" " alt="" coords="929,35,1101,75"/>
+<area shape="rect" id="Node000002" href="$classfix_1_1FixSession.html#ab72f2109ec95e37af58350387b3a0a97" title=" " alt="" coords="669,5,881,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="915,45,881,41,882,36,916,40"/>
+<area shape="rect" id="Node000006" href="$classfix_1_1FixSession.html#aa758bda90082e3059d65968a204e954d" title=" " alt="" coords="427,70,621,95"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="916,63,622,80,621,74,915,58"/>
+<area shape="rect" id="Node000003" href="$classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="431,5,617,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="656,28,618,28,618,23,656,23"/>
+<area shape="rect" id="Node000004" href="$classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="207,42,379,67"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="417,42,379,46,379,41,417,36"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="330,32,320,24,293,21,270,23,258,27,256,33,262,40,258,44,251,34,255,24,269,18,293,15,322,19,334,28"/>
+<area shape="rect" id="Node000005" href="$classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="5,42,159,67"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="193,57,159,57,159,52,193,52"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="413,72,379,68,379,62,413,67"/>
+</map>

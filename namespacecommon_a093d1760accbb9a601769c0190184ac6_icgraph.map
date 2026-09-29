@@ -1,0 +1,69 @@
+<map id="common::from_string" name="common::from_string">
+<area shape="rect" id="Node000001" title="Converts a string to its corresponding Instrument enum." alt="" coords="1276,426,1439,451"/>
+<area shape="rect" id="Node000002" href="$classfix_1_1BinaryToCancelOrderRequestConverter.html#a2579d62ca0160e34aa31e8a9c76703bb" title="Converts a raw FIX message string into a CancelOrderRequest object." alt="" coords="1015,131,1211,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1348,413,1334,364,1310,302,1275,239,1252,210,1226,185,1208,173,1211,169,1230,181,1256,206,1279,236,1315,300,1339,362,1353,412"/>
+<area shape="rect" id="Node000007" href="$classfix_1_1BinaryToMarketDataRequestConverter.html#ab0ea3f594af37f5ffc60a3ed6787e7f8" title="Converts a raw FIX message string into a MarketDataRequest object." alt="" coords="997,195,1228,235"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="1344,414,1326,377,1301,332,1267,287,1226,249,1206,237,1209,232,1230,245,1271,284,1305,329,1331,375,1348,412"/>
+<area shape="rect" id="Node000009" href="$classfix_1_1BinaryToModifyOrderRequestConverter.html#a5f69adce40f15fe94b173ff47b900b95" title="Converts a raw FIX message string into a ModifyOrderRequest object." alt="" coords="1015,8,1211,48"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="1352,413,1343,346,1322,256,1306,207,1285,159,1259,114,1226,74,1210,61,1192,50,1194,46,1213,56,1230,70,1263,111,1290,157,1311,205,1328,254,1348,345,1357,412"/>
+<area shape="rect" id="Node000011" href="$classfix_1_1BinaryToOrderRequestConverter.html#ae46537742b9c67bb5200ad44ec35c7d8" title="Converts a raw FIX message string into an OrderRequest object." alt="" coords="748,69,939,109"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="1352,413,1343,350,1323,270,1307,228,1286,187,1259,151,1226,121,1194,101,1159,86,1122,76,1084,70,1008,68,939,73,939,68,1008,62,1084,65,1123,71,1160,81,1196,96,1230,117,1263,148,1291,185,1312,225,1328,268,1349,349,1357,412"/>
+<area shape="rect" id="Node000012" href="$classclient__app_1_1App.html#a08481caa40e27c8624449565db6b8e38" title=" " alt="" coords="499,694,684,719"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="1353,466,1340,514,1317,574,1300,604,1280,633,1257,659,1229,681,1186,699,1128,711,1058,719,981,723,822,723,684,716,684,711,822,717,981,718,1058,714,1127,706,1185,694,1227,676,1253,656,1276,630,1296,602,1312,572,1335,512,1348,464"/>
+<area shape="rect" id="Node000013" href="$classclient__app_1_1App.html#ab7ec225e9e5ca5ccc407b8beb076d702" title="Entry point that runs the application until closure." alt="" coords="272,694,423,719"/>
+<area shape="poly" id="edge31_Node000001_Node000013" title=" " alt="" coords="1356,465,1346,522,1325,595,1308,632,1287,668,1261,700,1229,726,1200,741,1165,753,1079,768,979,772,870,770,657,752,493,735,407,722,408,717,494,729,658,747,871,764,978,767,1078,762,1163,748,1198,737,1227,722,1257,696,1283,665,1303,630,1320,593,1341,521,1351,464"/>
+<area shape="rect" id="Node000015" href="$classdata_1_1OrderRepository.html#a4498a03c727fa16f796a3fa4aae5858d" title=" " alt="" coords="1017,387,1209,427"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="1262,429,1208,422,1209,417,1263,424"/>
+<area shape="rect" id="Node000016" href="$classfix__client_1_1FixMessageParser.html#ae2affd5c2d5f2acb4d1433b88a01fac7" title=" " alt="" coords="1009,451,1216,491"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="1262,454,1216,460,1216,455,1262,448"/>
+<area shape="rect" id="Node000021" href="$classfix__client_1_1FixMessageParser.html#a8716cf8f3be42111677b8fe39bab6d19" title=" " alt="" coords="1003,259,1223,299"/>
+<area shape="poly" id="edge25_Node000001_Node000021" title=" " alt="" coords="1337,417,1291,364,1260,337,1227,313,1202,301,1204,296,1229,308,1264,332,1294,361,1341,414"/>
+<area shape="rect" id="Node000022" href="$classfix__client_1_1FixMessageParser.html#a27888361484774e20b31bfa33e61b89e" title=" " alt="" coords="1009,323,1216,363"/>
+<area shape="poly" id="edge27_Node000001_Node000022" title=" " alt="" coords="1320,422,1227,377,1192,365,1194,360,1229,372,1323,417"/>
+<area shape="rect" id="Node000023" href="$classclient__ui_1_1ConnectionPanel.html#a687d184385b550fe70af201533befbb2" title="Renders the connection panel UI." alt="" coords="747,629,940,669"/>
+<area shape="poly" id="edge29_Node000001_Node000023" title=" " alt="" coords="1350,465,1334,505,1309,551,1274,597,1253,617,1229,633,1195,649,1158,661,1082,674,1007,676,940,670,940,665,1007,670,1082,669,1157,656,1193,644,1227,628,1250,613,1270,593,1304,548,1329,502,1345,463"/>
+<area shape="rect" id="Node000024" href="$classclient__app_1_1App.html#abfaf8ffb58df80b45706b60b6ea7bff3" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="250,769,445,794"/>
+<area shape="poly" id="edge32_Node000001_Node000024" title=" " alt="" coords="1358,465,1351,531,1332,618,1316,663,1294,706,1265,745,1230,777,1176,809,1120,834,1061,853,1000,866,938,874,876,878,752,874,636,859,532,838,446,816,384,797,386,792,447,811,533,833,637,854,753,869,875,873,938,869,999,861,1059,848,1118,829,1174,804,1226,773,1261,741,1289,703,1311,661,1327,616,1346,530,1353,465"/>
+<area shape="rect" id="Node000025" href="$classclient__ui_1_1MarketDataState.html#a9dfd16a076139db6689942c3ee2867d6" title=" " alt="" coords="1015,579,1210,619"/>
+<area shape="poly" id="edge34_Node000001_Node000025" title=" " alt="" coords="1341,464,1294,517,1264,545,1229,569,1204,581,1202,576,1227,564,1260,541,1291,513,1337,460"/>
+<area shape="rect" id="Node000026" href="$namespaceclient__ui.html#a267d349ea03b56b75c462638cd8fbc44" title=" " alt="" coords="1025,515,1200,555"/>
+<area shape="poly" id="edge36_Node000001_Node000026" title=" " alt="" coords="1323,461,1229,505,1194,517,1192,512,1227,500,1320,456"/>
+<area shape="rect" id="Node000003" href="$classfix_1_1FixSession.html#a86628b5f4fb1f5494b9b8954e23822b5" title=" " alt="" coords="738,133,949,173"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1001,154,949,155,949,150,1001,149"/>
+<area shape="rect" id="Node000004" href="$classfix_1_1FixSession.html#ad183dc46a95a5ccfe1f9c2952fcaa69d" title=" " alt="" coords="498,101,685,141"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="724,141,685,136,685,131,724,136"/>
+<area shape="rect" id="Node000005" href="$classfix_1_1FixSession.html#a8eb2b1d697fb7d226fb4ca0cdf6cfb12" title=" " alt="" coords="261,109,433,134"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="484,124,433,124,433,119,484,119"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="391,99,388,95,380,91,347,87,321,89,307,94,305,100,312,107,308,110,299,100,304,90,320,84,347,82,382,86,391,91,395,96"/>
+<area shape="rect" id="Node000006" href="$classfix_1_1FixSession.html#a145d3b950d7bd38aed6c893d69d50783" title=" " alt="" coords="27,109,180,134"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="247,124,180,124,180,119,247,119"/>
+<area shape="rect" id="Node000008" href="$classfix_1_1FixSession.html#ac457b1d016a6c70c8380cce072510970" title=" " alt="" coords="737,197,949,237"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="984,219,949,219,949,214,984,213"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="759,196,736,188,633,144,636,139,738,183,760,191"/>
+<area shape="rect" id="Node000010" href="$classfix_1_1FixSession.html#ad3b562443287f3b43cfa5093708d7da5" title=" " alt="" coords="738,5,949,45"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1001,30,949,29,949,24,1001,24"/>
+<area shape="poly" id="edge12_Node000010_Node000004" title=" " alt="" coords="760,52,738,60,636,104,633,99,736,55,759,47"/>
+<area shape="poly" id="edge14_Node000011_Node000004" title=" " alt="" coords="734,106,685,112,685,107,734,101"/>
+<area shape="poly" id="edge16_Node000012_Node000013" title=" " alt="" coords="485,709,423,709,423,704,485,704"/>
+<area shape="rect" id="Node000014" href="$client_2client__app_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="76,731,131,757"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="258,723,131,743,130,737,257,718"/>
+<area shape="rect" id="Node000017" href="$classfix__client_1_1FixMessageParser.html#ab70d5ef8d9b11e50c66ff6ce0b963e65" title="Parses a raw FIX message string." alt="" coords="740,323,947,363"/>
+<area shape="poly" id="edge20_Node000016_Node000017" title=" " alt="" coords="1015,449,996,441,926,403,870,365,873,361,929,399,998,436,1017,444"/>
+<area shape="rect" id="Node000018" href="$classfix__client_1_1FixClientSession.html#aff9311a491062e2555b636a8886e8813" title=" " alt="" coords="493,323,689,363"/>
+<area shape="poly" id="edge21_Node000017_Node000018" title=" " alt="" coords="726,345,689,345,689,340,726,340"/>
+<area shape="rect" id="Node000019" href="$classfix__client_1_1FixClientSession.html#a8ee829a7f39b1843f979fcc8bae84f5d" title=" " alt="" coords="249,323,445,363"/>
+<area shape="poly" id="edge22_Node000018_Node000019" title=" " alt="" coords="480,345,445,345,445,340,480,340"/>
+<area shape="poly" id="edge24_Node000019_Node000019" title=" " alt="" coords="389,311,374,304,347,301,324,303,310,308,305,314,307,322,302,323,299,313,307,304,323,298,347,296,376,299,391,306"/>
+<area shape="rect" id="Node000020" href="$classfix__client_1_1FixClientSession.html#adb46956504055b3372af9950d87629a3" title="Connects to the remote FIX server asynchronously." alt="" coords="5,323,201,363"/>
+<area shape="poly" id="edge23_Node000019_Node000020" title=" " alt="" coords="236,345,201,345,201,340,236,340"/>
+<area shape="poly" id="edge26_Node000021_Node000017" title=" " alt="" coords="1015,305,929,325,927,320,1014,299"/>
+<area shape="poly" id="edge28_Node000022_Node000017" title=" " alt="" coords="995,345,947,345,947,340,995,340"/>
+<area shape="poly" id="edge30_Node000023_Node000013" title=" " alt="" coords="733,660,494,685,420,697,419,691,493,680,733,655"/>
+<area shape="poly" id="edge33_Node000024_Node000014" title=" " alt="" coords="250,769,130,751,131,745,251,764"/>
+<area shape="poly" id="edge35_Node000025_Node000023" title=" " alt="" coords="1002,622,941,634,940,629,1001,617"/>
+<area shape="rect" id="Node000027" href="$classclient__ui_1_1TradingPanel.html#ac4b21fd18c0614ba13963c115a5b486d" title=" " alt="" coords="760,540,927,580"/>
+<area shape="poly" id="edge37_Node000026_Node000027" title=" " alt="" coords="1012,547,927,555,927,550,1011,541"/>
+<area shape="rect" id="Node000028" href="$classclient__ui_1_1TradingPanel.html#a9019424d10d9ee3135c4212734113e96" title=" " alt="" coords="508,557,675,597"/>
+<area shape="poly" id="edge38_Node000027_Node000028" title=" " alt="" coords="746,569,675,574,675,569,746,564"/>
+<area shape="poly" id="edge39_Node000028_Node000013" title=" " alt="" coords="541,607,374,696,372,691,539,602"/>
+</map>

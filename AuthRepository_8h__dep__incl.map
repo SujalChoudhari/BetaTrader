@@ -1,0 +1,51 @@
+<map id="AuthRepository.h" name="AuthRepository.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="279,5,411,31"/>
+<area shape="rect" id="Node000002" href="$AuthRepository_8cpp.html" title=" " alt="" coords="196,79,343,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="325,42,284,80,280,76,321,38"/>
+<area shape="rect" id="Node000003" href="$TradingCore_8h.html" title="Top&#45;level entry point for the trading core service." alt="" coords="367,79,478,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="370,38,412,76,408,80,366,42"/>
+<area shape="rect" id="Node000004" href="$ExchangeManager_8h.html" title=" " alt="" coords="34,299,187,324"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="386,112,309,154,254,194,201,235,125,300,122,296,198,231,250,189,307,150,383,108"/>
+<area shape="rect" id="Node000011" href="$FixServer_8h.html" title=" " alt="" coords="290,225,385,251"/>
+<area shape="poly" id="edge11_Node000003_Node000011" title=" " alt="" coords="397,115,378,133,362,153,347,192,341,225,336,224,342,190,358,151,374,129,393,111"/>
+<area shape="rect" id="Node000014" href="$exchange_2exchange__fix_2src_2Main_8cpp.html" title=" " alt="" coords="211,299,293,324"/>
+<area shape="poly" id="edge21_Node000003_Node000014" title=" " alt="" coords="394,114,334,160,304,192,280,227,264,265,256,299,251,298,259,264,275,224,300,188,331,156,390,110"/>
+<area shape="rect" id="Node000015" href="$FixSession_8h.html" title=" " alt="" coords="371,152,474,177"/>
+<area shape="poly" id="edge16_Node000003_Node000015" title=" " alt="" coords="425,118,425,152,420,152,420,118"/>
+<area shape="rect" id="Node000016" href="$exchange_2exchange__app_2src_2Main_8cpp.html" title=" " alt="" coords="498,152,579,177"/>
+<area shape="poly" id="edge20_Node000003_Node000016" title=" " alt="" coords="454,109,521,149,518,154,451,113"/>
+<area shape="rect" id="Node000017" href="$StochasticSimulator_8h.html" title=" " alt="" coords="595,299,757,324"/>
+<area shape="poly" id="edge22_Node000003_Node000017" title=" " alt="" coords="492,102,545,120,570,133,594,150,626,187,650,229,666,269,676,298,671,299,661,270,645,231,622,190,590,154,568,138,542,125,490,107"/>
+<area shape="rect" id="Node000021" href="$TradingCore_8cpp.html" title=" " alt="" coords="655,152,782,177"/>
+<area shape="poly" id="edge28_Node000003_Node000021" title=" " alt="" coords="484,105,671,149,670,154,483,110"/>
+<area shape="rect" id="Node000005" href="$App_8h.html" title=" " alt="" coords="359,445,417,471"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="200,324,288,343,325,356,351,370,366,387,377,408,389,444,383,446,372,410,362,390,348,374,323,361,287,349,198,329"/>
+<area shape="rect" id="Node000008" href="$ExchangeManager_8cpp.html" title=" " alt="" coords="169,372,337,397"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="147,328,231,369,229,374,144,332"/>
+<area shape="rect" id="Node000009" href="$ExchangePanel_8h.html" title=" " alt="" coords="13,372,145,397"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="102,338,86,373,81,371,97,336"/>
+<area shape="rect" id="Node000006" href="$App_8cpp.html" title=" " alt="" coords="299,519,373,544"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="374,483,347,520,342,517,369,480"/>
+<area shape="rect" id="Node000007" href="$client_2client__app_2src_2Main_8cpp.html" title=" " alt="" coords="398,519,479,544"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="407,481,433,517,428,520,402,484"/>
+<area shape="poly" id="edge9_Node000009_Node000005" title=" " alt="" coords="142,398,359,447,358,453,141,403"/>
+<area shape="rect" id="Node000010" href="$ExchangePanel_8cpp.html" title=" " alt="" coords="5,445,152,471"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="81,411,81,445,76,445,76,411"/>
+<area shape="poly" id="edge12_Node000011_Node000004" title=" " alt="" coords="289,257,148,301,147,296,287,252"/>
+<area shape="rect" id="Node000012" href="$FixServer_8cpp.html" title=" " alt="" coords="317,299,427,324"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="351,262,369,297,364,300,347,264"/>
+<area shape="rect" id="Node000013" href="$FixSession_8cpp.html" title=" " alt="" coords="451,299,570,324"/>
+<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="379,253,483,296,481,301,377,258"/>
+<area shape="poly" id="edge15_Node000011_Node000014" title=" " alt="" coords="315,261,268,300,264,296,312,257"/>
+<area shape="poly" id="edge18_Node000015_Node000011" title=" " alt="" coords="400,188,353,227,350,223,397,184"/>
+<area shape="poly" id="edge17_Node000015_Node000012" title=" " alt="" coords="419,192,400,252,380,299,375,297,395,250,413,190"/>
+<area shape="poly" id="edge19_Node000015_Node000013" title=" " alt="" coords="439,188,506,297,501,300,435,191"/>
+<area shape="poly" id="edge23_Node000017_Node000005" title=" " alt="" coords="603,329,516,350,479,362,453,374,434,391,418,410,396,446,391,443,414,407,430,387,451,370,477,357,515,345,601,324"/>
+<area shape="rect" id="Node000018" href="$SimulatorPanel_8h.html" title=" " alt="" coords="463,372,595,397"/>
+<area shape="poly" id="edge24_Node000017_Node000018" title=" " alt="" coords="642,332,554,374,552,369,639,327"/>
+<area shape="rect" id="Node000020" href="$StochasticSimulator_8cpp.html" title=" " alt="" coords="620,372,799,397"/>
+<area shape="poly" id="edge27_Node000017_Node000020" title=" " alt="" coords="690,335,706,371,702,373,685,338"/>
+<area shape="poly" id="edge25_Node000018_Node000005" title=" " alt="" coords="496,406,412,447,410,443,493,401"/>
+<area shape="rect" id="Node000019" href="$SimulatorPanel_8cpp.html" title=" " alt="" coords="456,445,603,471"/>
+<area shape="poly" id="edge26_Node000018_Node000019" title=" " alt="" coords="532,411,532,445,527,445,527,411"/>
+</map>

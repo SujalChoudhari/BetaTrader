@@ -1,0 +1,5 @@
+<map id="data::AuthRepository" name="data::AuthRepository">
+<area shape="rect" id="Node000001" title="Persists and retrieves FIX Client authentication lists." alt="" coords="9,353,160,519"/>
+<area shape="rect" id="Node000002" href="$classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="5,5,164,291"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,291,87,337,82,337,82,291"/>
+</map>

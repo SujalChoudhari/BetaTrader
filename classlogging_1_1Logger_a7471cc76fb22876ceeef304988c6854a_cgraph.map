@@ -1,0 +1,7 @@
+<map id="logging::Logger::Init" name="logging::Logger::Init">
+<area shape="rect" id="Node000001" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="5,42,156,67"/>
+<area shape="rect" id="Node000002" href="$classlogging_1_1Logger.html#ac3bd8c392e36698198387083fd1f59f8" title="Generates a timestamped filename." alt="" coords="204,5,395,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,42,190,37,191,43,157,47"/>
+<area shape="rect" id="Node000003" href="$classlogging_1_1Logger.html#a1ddec17467f7d66ab36c5a4f40aac941" title=" " alt="" coords="204,70,395,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,62,191,66,190,71,156,67"/>
+</map>

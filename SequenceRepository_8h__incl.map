@@ -1,0 +1,24 @@
+<map id="SequenceRepository.h" name="SequenceRepository.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="673,5,838,31"/>
+<area shape="rect" id="Node000002" href="$DatabaseWorker_8h.html" title="Asynchronous database worker abstraction." alt="" coords="461,79,634,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="723,33,595,77,593,72,721,28"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="742,152,801,177"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="754,31,748,64,749,104,761,139,756,141,743,104,743,64,749,30"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="758,79,825,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="764,30,782,65,777,68,759,32"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="849,79,904,104"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="776,28,847,69,844,74,773,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,177,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="474,107,179,153,178,147,474,101"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="201,152,344,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="504,107,331,151,330,146,503,101"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="368,152,431,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="525,106,437,148,435,144,522,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="455,152,541,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="541,106,516,142,512,139,537,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="566,152,630,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="558,103,584,139,580,142,554,106"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="584,101,730,147,728,153,583,107"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="654,152,718,177"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="571,102,652,143,650,148,568,106"/>
+</map>

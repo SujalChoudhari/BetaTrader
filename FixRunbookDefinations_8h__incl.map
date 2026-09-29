@@ -1,0 +1,37 @@
+<map id="FixRunbookDefinations.h" name="FixRunbookDefinations.h">
+<area shape="rect" id="Node000001" title="Runbook error definitions for the FIX server module." alt="" coords="841,5,1025,31"/>
+<area shape="rect" id="Node000002" href="$Runbook_8h.html" title=" " alt="" coords="861,79,1004,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="935,31,935,65,930,65,930,31"/>
+<area shape="rect" id="Node000003" href="$Logger_8h.html" title=" " alt="" coords="715,152,844,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="909,106,818,149,816,144,907,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="5,233,129,258"/>
+<area shape="poly" id="edge15_Node000002_Node000007" title=" " alt="" coords="862,105,548,153,346,188,141,228,123,232,122,227,140,223,345,183,547,148,861,100"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1254,233,1313,258"/>
+<area shape="poly" id="edge17_Node000002_Node000013" title=" " alt="" coords="925,106,906,141,903,159,909,176,934,192,971,203,1016,209,1066,212,1166,214,1209,217,1243,223,1249,225,1248,230,1241,228,1209,222,1166,220,1066,217,1016,215,970,208,932,197,905,179,898,160,901,139,921,103"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="919,152,1050,177"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="943,103,970,139,966,142,939,106"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="1075,152,1161,177"/>
+<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="963,102,1076,145,1074,149,961,107"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="1185,152,1283,177"/>
+<area shape="poly" id="edge18_Node000002_Node000017" title=" " alt="" coords="982,101,1173,146,1172,151,980,107"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="153,233,272,258"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="715,174,521,193,402,208,284,228,266,232,264,227,283,223,401,203,520,187,714,168"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="296,225,455,265"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="718,180,469,228,468,222,717,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="479,225,627,265"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="747,180,621,223,619,218,746,175"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="715,171,462,188,302,205,141,228,121,232,120,227,140,223,301,199,462,183,714,166"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="651,233,718,258"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="767,180,711,226,708,222,764,175"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="742,233,817,258"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="782,178,782,219,777,219,777,178"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="841,233,905,258"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="795,175,850,222,847,226,791,180"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="929,233,1043,258"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="810,175,944,225,942,230,808,180"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1067,233,1142,258"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="845,174,945,195,1056,223,1065,226,1063,231,1055,228,944,200,844,180"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="845,172,864,175,971,185,1055,190,1138,199,1243,223,1249,225,1248,230,1241,228,1137,204,1054,195,970,190,863,180,844,177"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="1167,233,1229,258"/>
+<area shape="poly" id="edge13_Node000003_Node000014" title=" " alt="" coords="845,173,1026,200,1155,223,1162,225,1161,230,1153,228,1025,205,844,178"/>
+</map>

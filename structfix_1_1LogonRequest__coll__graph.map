@@ -1,0 +1,3 @@
+<map id="fix::LogonRequest" name="fix::LogonRequest">
+<area shape="rect" id="Node000001" title="Represents a parsed FIX Logon (35=A) message." alt="" coords="5,5,136,111"/>
+</map>

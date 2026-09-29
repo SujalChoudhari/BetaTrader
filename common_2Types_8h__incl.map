@@ -1,0 +1,18 @@
+<map id="Types.h" name="Types.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="174,5,245,31"/>
+<area shape="rect" id="Node000002" href="$Instrument_8h.html" title=" " alt="" coords="157,79,262,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,31,212,65,207,65,207,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,61,177"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="194,33,130,81,57,145,53,141,126,77,191,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="85,152,152,177"/>
+<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="195,33,170,53,148,80,134,110,126,139,120,138,129,108,143,77,166,49,191,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="298,152,385,177"/>
+<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="225,29,277,77,327,139,323,143,273,80,222,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="337,79,396,104"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="236,28,330,71,328,75,234,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="182,106,75,149,73,144,180,102"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="196,106,146,145,143,141,193,102"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="232,102,309,143,307,148,229,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="177,152,274,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="215,104,222,138,217,139,209,105"/>
+</map>

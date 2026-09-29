@@ -1,0 +1,28 @@
+<map id="SessionState.h" name="SessionState.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="723,5,841,31"/>
+<area shape="rect" id="Node000002" href="$SequenceRepository_8h.html" title=" " alt="" coords="547,79,745,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="761,33,681,75,679,70,759,28"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="742,225,801,251"/>
+<area shape="poly" id="edge14_Node000001_Node000009" title=" " alt="" coords="791,29,805,56,819,93,826,135,825,157,821,178,810,199,796,217,792,214,805,196,815,176,820,156,821,136,813,95,800,58,786,32"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="739,152,806,177"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="784,31,777,138,772,138,779,31"/>
+<area shape="rect" id="Node000003" href="$DatabaseWorker_8h.html" title="Asynchronous database worker abstraction." alt="" coords="411,152,585,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="623,106,536,148,533,144,621,102"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="645,105,641,139,642,158,650,176,661,187,681,198,730,220,728,224,679,203,658,191,645,179,637,159,635,139,640,104"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="668,102,741,143,739,147,665,106"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="660,152,715,177"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="655,103,676,139,671,141,651,106"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,177,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="433,180,171,226,170,220,432,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="201,225,344,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="463,180,323,224,321,219,461,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="368,225,431,251"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="484,180,428,219,425,215,481,175"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="455,225,541,251"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="501,178,501,212,495,212,495,178"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="566,225,630,251"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="516,175,572,215,569,219,513,180"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="544,175,730,223,728,228,543,180"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="654,225,718,251"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="529,175,643,218,642,223,527,180"/>
+</map>

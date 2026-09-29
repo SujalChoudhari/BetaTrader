@@ -1,0 +1,84 @@
+<map id="client_app::App::runSmoke" name="client_app::App::runSmoke">
+<area shape="rect" id="Node000001" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="5,694,200,719"/>
+<area shape="rect" id="Node000002" href="$classclient__blotter_1_1BlotterModel.html#ab9f7736871c36589a47b32e3db13b508" title=" " alt="" coords="248,5,448,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,693,115,573,143,381,162,280,186,186,214,109,229,79,246,56,249,52,253,56,250,59,234,81,219,111,191,188,168,281,148,382,121,574,108,694"/>
+<area shape="rect" id="Node000003" href="$classclient__ui_1_1ClientEventLog.html#a3bafc17ae2f852f1cf2f6f1d709ad340" title=" " alt="" coords="257,69,439,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="103,693,117,583,147,411,167,320,190,236,216,167,231,140,246,120,250,116,254,119,250,123,235,143,221,169,195,238,172,321,152,412,123,584,108,694"/>
+<area shape="rect" id="Node000005" href="$namespacecommon.html#a093d1760accbb9a601769c0190184ac6" title="Converts a string to its corresponding Instrument enum." alt="" coords="267,134,429,159"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="103,693,118,591,148,433,168,350,191,274,217,211,231,187,246,169,253,163,256,167,250,173,236,190,222,213,196,275,173,351,153,434,124,592,108,694"/>
+<area shape="rect" id="Node000006" href="$classfix_1_1FixServer.html#af04076dbe25abd232d2049c58c46800d" title=" " alt="" coords="251,183,445,209"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="101,694,103,613,108,553,119,486,137,414,162,343,198,277,221,247,246,219,253,214,256,218,250,223,225,250,203,280,167,346,142,416,124,487,114,554,108,613,106,694"/>
+<area shape="rect" id="Node000007" href="$classadmin_1_1ExchangeManager.html#ad8096d3ad838725a57272e65296e4572" title=" " alt="" coords="253,233,443,273"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="102,694,108,623,128,513,147,452,172,391,204,334,246,283,251,279,254,283,250,287,209,337,176,394,152,454,134,514,113,624,107,694"/>
+<area shape="rect" id="Node000008" href="$classfix_1_1FixServer.html#ab52438e1b0be50d3966bd5d510c38810" title=" " alt="" coords="251,298,445,323"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="102,693,110,629,133,532,151,479,176,426,207,377,246,334,254,328,257,332,250,338,211,380,180,429,156,481,138,534,116,630,108,694"/>
+<area shape="rect" id="Node000009" href="$classorderbook_1_1OrderBook.html#af1b8e7d06e54ad19500a746742e0b75a" title=" " alt="" coords="265,348,431,388"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="104,693,116,639,142,560,161,516,184,473,213,433,246,398,252,393,255,398,250,402,217,437,189,476,166,519,147,562,121,640,109,694"/>
+<area shape="rect" id="Node000010" href="$classorderbook_1_1OrderBook.html#a4e4efeff64fe52f206c187ea97b94f85" title=" " alt="" coords="265,412,431,452"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="105,693,121,649,150,587,191,520,217,489,246,462,254,457,257,461,250,466,221,493,196,523,155,590,126,651,110,695"/>
+<area shape="rect" id="Node000012" href="$classorderbook_1_1OrderBook.html#a1e70d6ffb760f989d6642add4ab5dd05" title=" " alt="" coords="265,476,431,516"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="109,692,128,659,159,614,199,567,246,526,256,520,259,524,250,530,203,571,163,618,133,662,113,695"/>
+<area shape="rect" id="Node000013" href="$classclient__blotter_1_1BlotterModel.html#a14523ef1f373779cb2b72f9f72c90946" title=" " alt="" coords="248,540,448,580"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="115,692,169,643,207,615,247,590,260,583,263,588,249,594,210,619,173,647,119,696"/>
+<area shape="rect" id="Node000014" href="$classlogging_1_1Logger.html#a7471cc76fb22876ceeef304988c6854a" title="Initializes the spdlog and sets up the sources and sinks NOTE: Use Shutdown to clean up and dump all ..." alt="" coords="273,605,423,630"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="128,691,182,666,247,640,277,631,278,636,249,645,184,671,131,696"/>
+<area shape="rect" id="Node000017" href="$classfix_1_1FixSessionManager.html#ac8c17271a6a9d64f088d5c6046aaad8e" title=" " alt="" coords="262,655,434,695"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="200,691,248,685,249,690,201,697"/>
+<area shape="rect" id="Node000018" href="$classclient__ui_1_1MarketDataState.html#af26e375b5491735dee379758c76989b8" title=" " alt="" coords="251,719,445,759"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="201,717,238,722,237,727,200,722"/>
+<area shape="rect" id="Node000019" href="$classclient__ui_1_1MarketDataState.html#a818b64cc56ad6ff56da0c672866c8486" title=" " alt="" coords="251,783,445,823"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="132,717,249,768,270,776,268,781,247,773,130,722"/>
+<area shape="rect" id="Node000020" href="$classfix_1_1FixServer.html#a5ee22930c0c8a422986d51155236c2c1" title=" " alt="" coords="257,847,439,887"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="117,718,171,773,208,804,249,832,262,839,259,844,247,837,205,809,167,776,113,721"/>
+<area shape="rect" id="Node000021" href="$classfix_1_1FixServer.html#a3bd8867bc640cc7d7618f3d1511c21df" title=" " alt="" coords="255,911,441,951"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="112,718,131,754,161,802,201,853,250,897,258,902,255,907,246,901,197,856,157,805,127,756,108,721"/>
+<area shape="rect" id="Node000022" href="$classclient__blotter_1_1BlotterModel.html#a74cf1c303d0e4adc60093662e62a2d2f" title=" " alt="" coords="248,975,448,1015"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="110,719,125,764,153,830,194,900,220,932,250,961,256,965,253,970,246,965,216,936,190,903,148,832,120,766,105,720"/>
+<area shape="rect" id="Node000035" href="$classclient__blotter_1_1BlotterModel.html#aa563f119ff0a6219b02ebc6102a7b85c" title=" " alt="" coords="248,1039,448,1079"/>
+<area shape="poly" id="edge34_Node000001_Node000035" title=" " alt="" coords="109,719,120,775,146,857,164,902,188,947,216,988,250,1025,255,1029,252,1033,246,1029,212,992,183,950,159,905,140,859,115,776,103,720"/>
+<area shape="rect" id="Node000036" href="$classclient__ui_1_1ClientEventLog.html#a310f7a61303b44ca5bcc657abd28b990" title=" " alt="" coords="257,1103,439,1143"/>
+<area shape="poly" id="edge35_Node000001_Node000036" title=" " alt="" coords="108,719,116,784,138,883,156,938,180,993,211,1044,250,1089,254,1093,251,1097,246,1093,207,1047,176,995,151,940,133,885,110,785,102,720"/>
+<area shape="rect" id="Node000037" href="$classadmin_1_1ExchangeManager.html#aad10f2b0566d387c379408ec9f934fce" title="Starts the exchange services." alt="" coords="253,1167,443,1207"/>
+<area shape="poly" id="edge36_Node000001_Node000037" title=" " alt="" coords="107,719,112,794,119,848,131,910,148,975,173,1039,207,1100,250,1153,254,1157,251,1161,246,1156,202,1103,169,1041,143,976,125,911,113,849,106,794,101,720"/>
+<area shape="rect" id="Node000038" href="$classadmin_1_1ExchangeManager.html#aa6e1020f6a55c5f397def3e31dc49f46" title="Stops all exchange services." alt="" coords="496,1391,687,1431"/>
+<area shape="poly" id="edge39_Node000001_Node000038" title=" " alt="" coords="109,719,125,817,155,968,175,1047,198,1119,223,1178,250,1217,274,1234,298,1243,322,1245,346,1243,397,1243,423,1250,450,1267,462,1281,470,1295,475,1323,480,1350,487,1364,498,1377,503,1381,500,1385,494,1381,482,1367,475,1352,470,1324,465,1297,458,1284,446,1271,421,1255,396,1248,346,1248,322,1250,297,1248,271,1239,246,1221,218,1180,193,1121,170,1048,150,969,119,818,103,720"/>
+<area shape="rect" id="Node000039" href="$classclient__ui_1_1MarketDataState.html#a936226a3d0a2cc375dd3bb5224bd6b47" title=" " alt="" coords="251,1281,445,1321"/>
+<area shape="poly" id="edge38_Node000001_Node000039" title=" " alt="" coords="108,719,124,824,155,987,175,1072,198,1151,223,1217,250,1261,263,1272,259,1276,246,1264,218,1219,193,1153,170,1074,150,988,119,825,103,720"/>
+<area shape="rect" id="Node000040" href="$classclient__ui_1_1MarketDataState.html#aa97f8972cdd68789c32b6e43c1ceb187" title=" " alt="" coords="251,1345,445,1385"/>
+<area shape="poly" id="edge40_Node000001_Node000040" title=" " alt="" coords="108,719,121,836,149,1021,169,1118,192,1208,220,1282,234,1310,250,1332,253,1335,249,1338,246,1335,230,1313,215,1284,187,1209,164,1119,144,1022,116,837,103,720"/>
+<area shape="rect" id="Node000041" href="$namespacecommon.html#a8992c28c2ba9141c06811743396e7533" title="Converts an Instrument enum to its string representation." alt="" coords="276,1410,420,1435"/>
+<area shape="poly" id="edge41_Node000001_Node000041" title=" " alt="" coords="108,719,119,846,144,1051,163,1159,187,1259,216,1341,232,1372,250,1395,265,1407,262,1411,246,1399,228,1375,211,1343,182,1261,158,1160,139,1052,113,847,102,720"/>
+<area shape="rect" id="Node000004" href="$classclient__ui_1_1ClientEventLog.html#a3aa816619ae9855c3bf2d1f67f2eed22" title=" " alt="" coords="500,69,683,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="440,87,486,87,486,92,440,92"/>
+<area shape="rect" id="Node000011" href="$classorderbook_1_1OrderBook.html#aa65a7c21139875bb560cc89b2b5aa01b" title=" " alt="" coords="509,412,674,452"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="431,429,495,429,495,435,431,435"/>
+<area shape="rect" id="Node000015" href="$classlogging_1_1Logger.html#ac3bd8c392e36698198387083fd1f59f8" title="Generates a timestamped filename." alt="" coords="496,508,687,548"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="411,602,447,590,471,574,495,558,510,551,513,555,497,562,474,579,449,594,413,607"/>
+<area shape="rect" id="Node000016" href="$classlogging_1_1Logger.html#a1ddec17467f7d66ab36c5a4f40aac941" title=" " alt="" coords="496,573,687,598"/>
+<area shape="poly" id="edge15_Node000014_Node000016" title=" " alt="" coords="423,605,482,597,482,602,424,610"/>
+<area shape="rect" id="Node000023" href="$classfix_1_1ExecutionReport.html#ab36b7aff6b79278eb97d47242fefab8d" title="Gets the client&#45;assigned order ID (Tag 11)." alt="" coords="515,623,667,663"/>
+<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="433,972,446,961,468,925,477,890,476,855,470,819,464,784,462,747,471,710,494,673,502,665,506,669,498,676,476,712,468,748,469,783,475,818,481,854,482,890,473,927,450,964,436,976"/>
+<area shape="rect" id="Node000024" href="$classfix_1_1ExecutionReport.html#a55b126a6cc96a9cb7b8fbc11abdc69bd" title="Gets the exchange&#45;assigned order ID (Tag 37)." alt="" coords="510,687,673,727"/>
+<area shape="poly" id="edge23_Node000022_Node000024" title=" " alt="" coords="432,972,446,961,464,933,472,906,473,879,470,851,466,823,467,795,475,766,494,737,498,733,502,737,498,740,480,768,472,796,472,823,475,851,478,879,477,907,469,936,450,964,436,977"/>
+<area shape="rect" id="Node000025" href="$classfix_1_1ExecutionReport.html#a6502eb3a2ea918a5c3693e8c77b6d239" title="Gets the execution ID (Tag 17)." alt="" coords="515,751,667,791"/>
+<area shape="poly" id="edge24_Node000022_Node000025" title=" " alt="" coords="431,973,446,961,461,941,468,922,469,883,471,842,479,821,494,801,502,794,506,798,498,804,484,824,477,843,475,883,473,923,465,944,450,965,434,977"/>
+<area shape="rect" id="Node000026" href="$classfix_1_1ExecutionReport.html#a34466222a2382616f4f256fedeb062d2" title="Gets the price of the last fill (Tag 31)." alt="" coords="515,815,667,855"/>
+<area shape="poly" id="edge25_Node000022_Node000026" title=" " alt="" coords="429,972,446,961,463,938,470,914,476,889,494,865,502,859,505,863,498,869,481,892,475,915,468,940,450,965,432,977"/>
+<area shape="rect" id="Node000027" href="$classfix_1_1ExecutionReport.html#a9d7df97689b876f51019870c1ce86a12" title="Gets the quantity of the last fill (Tag 32)." alt="" coords="515,879,667,919"/>
+<area shape="poly" id="edge26_Node000022_Node000027" title=" " alt="" coords="418,972,447,960,471,945,495,928,510,921,513,926,497,933,474,949,449,965,420,977"/>
+<area shape="rect" id="Node000028" href="$classfix_1_1ExecutionReport.html#a0869b8641f20f34b23797ddfff3a8de5" title="Gets the remaining quantity (Tag 151)." alt="" coords="515,943,668,983"/>
+<area shape="poly" id="edge27_Node000022_Node000028" title=" " alt="" coords="448,979,501,972,501,977,449,984"/>
+<area shape="rect" id="Node000029" href="$classfix_1_1ExecutionReport.html#ada5e9ed13135f76d28826f9a9e92b44f" title="Gets the total order quantity (Tag 38)." alt="" coords="515,1007,667,1047"/>
+<area shape="poly" id="edge28_Node000022_Node000029" title=" " alt="" coords="449,1005,502,1012,501,1018,448,1010"/>
+<area shape="rect" id="Node000030" href="$classfix_1_1ExecutionReport.html#a7451c43f432ab590ff853e449e3b42b8" title="Gets the side of the order (Buy/Sell) (Tag 54)." alt="" coords="515,1071,667,1111"/>
+<area shape="poly" id="edge29_Node000022_Node000030" title=" " alt="" coords="420,1012,449,1024,474,1040,497,1056,513,1063,510,1068,495,1061,471,1045,447,1029,418,1017"/>
+<area shape="rect" id="Node000031" href="$classfix_1_1ExecutionReport.html#aad3bdca7f6ba3f2db0088e8792d597a0" title="Gets the order status (Tag 39)." alt="" coords="515,1135,667,1175"/>
+<area shape="poly" id="edge30_Node000022_Node000031" title=" " alt="" coords="432,1013,450,1025,468,1049,475,1074,481,1098,498,1121,505,1126,502,1130,494,1125,476,1100,470,1075,463,1052,446,1029,429,1017"/>
+<area shape="rect" id="Node000032" href="$classfix_1_1ExecutionReport.html#ac2ca63eb8dad40a6aef6524cab692317" title="Gets the financial instrument symbol (Tag 55)." alt="" coords="515,1199,667,1239"/>
+<area shape="poly" id="edge31_Node000022_Node000032" title=" " alt="" coords="434,1013,450,1025,465,1045,473,1066,475,1106,477,1146,484,1165,498,1185,506,1192,502,1196,494,1188,479,1168,471,1147,469,1107,468,1067,461,1048,446,1029,431,1017"/>
+<area shape="rect" id="Node000033" href="$classfix_1_1ExecutionReport.html#a193b57c88fef1428773b72a1976adb34" title="Gets the text message (Tag 58)." alt="" coords="515,1263,667,1303"/>
+<area shape="poly" id="edge32_Node000022_Node000033" title=" " alt="" coords="436,1013,450,1025,469,1054,477,1082,478,1111,475,1139,472,1166,472,1194,480,1221,498,1249,506,1256,502,1260,494,1252,475,1223,467,1195,466,1166,470,1138,473,1111,472,1083,464,1056,446,1028,432,1017"/>
+<area shape="rect" id="Node000034" href="$classfix_1_1ExecutionReport.html#ae1f35e602a7e6c27f4da4d5293404153" title="Gets the time of the transaction (Tag 60)." alt="" coords="512,1327,671,1367"/>
+<area shape="poly" id="edge33_Node000022_Node000034" title=" " alt="" coords="436,1013,450,1025,473,1062,482,1099,481,1135,475,1171,469,1206,468,1242,476,1277,498,1313,503,1318,499,1322,494,1316,471,1279,462,1242,464,1206,470,1170,476,1135,477,1099,468,1064,446,1028,433,1017"/>
+<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="425,1205,450,1223,464,1244,472,1264,474,1302,477,1340,484,1358,498,1377,502,1380,498,1384,494,1380,479,1361,472,1341,469,1303,466,1265,460,1246,446,1227,421,1209"/>
+</map>

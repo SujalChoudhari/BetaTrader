@@ -1,0 +1,10 @@
+<map id="client_ui::ConnectionPanel::configureSession" name="client_ui::ConnectionPanel::configureSession">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,199,45"/>
+<area shape="rect" id="Node000002" href="$classclient__ui_1_1ClientEventLog.html#a3bafc17ae2f852f1cf2f6f1d709ad340" title=" " alt="" coords="488,5,671,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,20,247,19,440,19,474,19,474,25,440,24,247,24,199,25"/>
+<area shape="rect" id="Node000004" href="$classclient__ui_1_1ConnectionPanel.html#a540b2101f928d6e46c9aa05ac6299653" title=" " alt="" coords="247,33,440,73"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="199,34,233,38,233,43,198,39"/>
+<area shape="rect" id="Node000003" href="$classclient__ui_1_1ClientEventLog.html#a3aa816619ae9855c3bf2d1f67f2eed22" title=" " alt="" coords="719,5,901,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="671,23,705,23,705,28,671,28"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="440,39,474,35,475,40,441,45"/>
+</map>

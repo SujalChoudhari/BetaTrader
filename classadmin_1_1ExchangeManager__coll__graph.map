@@ -1,0 +1,3 @@
+<map id="admin::ExchangeManager" name="admin::ExchangeManager">
+<area shape="rect" id="Node000001" title="Manages the lifecycle of a local Exchange instance (TradingCore + FixServer)." alt="" coords="5,5,188,271"/>
+</map>

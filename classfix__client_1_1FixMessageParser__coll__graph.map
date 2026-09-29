@@ -1,0 +1,3 @@
+<map id="fix_client::FixMessageParser" name="fix_client::FixMessageParser">
+<area shape="rect" id="Node000001" title="Parses raw FIX messages received from the server into strongly&#45;typed structures." alt="" coords="5,5,235,131"/>
+</map>

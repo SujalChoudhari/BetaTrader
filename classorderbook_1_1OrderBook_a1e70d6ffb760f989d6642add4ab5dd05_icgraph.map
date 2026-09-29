@@ -1,0 +1,7 @@
+<map id="orderbook::OrderBook::handleSnapshot" name="orderbook::OrderBook::handleSnapshot">
+<area shape="rect" id="Node000001" title=" " alt="" coords="351,5,516,45"/>
+<area shape="rect" id="Node000002" href="$classclient__app_1_1App.html#abfaf8ffb58df80b45706b60b6ea7bff3" title="Runs the local, non&#45;GUI working&#45;client verification flow." alt="" coords="108,13,303,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="337,28,303,28,303,23,337,23"/>
+<area shape="rect" id="Node000003" href="$client_2client__app_2src_2Main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627" title=" " alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>

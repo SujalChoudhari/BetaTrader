@@ -1,0 +1,7 @@
+<map id="fix::FixSessionManager" name="fix::FixSessionManager">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,581,236,907"/>
+<area shape="rect" id="Node000002" href="$classdata_1_1SequenceRepository.html" title="Repository for managing sequence numbers." alt="" coords="18,353,223,519"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,519,123,565,118,565,118,519"/>
+<area shape="rect" id="Node000003" href="$classdata_1_1DatabaseWorker.html" title="Executes database tasks asynchronously." alt="" coords="41,5,200,291"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,291,123,337,118,337,118,291"/>
+</map>
