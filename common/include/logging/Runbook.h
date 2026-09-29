@@ -1,10 +1,10 @@
 #pragma once
 
+#include "logging/Logger.h"
 #include "spdlog/fmt/fmt.h"
 #include "spdlog/spdlog.h" // needed for get_default()
 #include <stdexcept>
 #include <string>
-#include "logging/Logger.h"
 #include <string_view>
 
 namespace runbook {
@@ -67,23 +67,21 @@ namespace runbook {
 /** * @brief Logs an error message with a runbook code. */
 #define LOG_ERROR(code, ...)                                                   \
     do {                                                                       \
-        if (spdlog::default_logger()->should_log(spdlog::level::err)) {        \
-            spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__};          \
-            std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__);    \
-            spdlog::default_logger()->log(loc, spdlog::level::err,             \
-                                          spdlog::string_view_t(msg));         \
-        }                                                                      \
+        std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__);        \
+        logging::Logger::LogMessage(                                           \
+                spdlog::level::err,                                            \
+                spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__},          \
+                spdlog::string_view_t(msg));                                   \
     }                                                                          \
     while (0)
 
 /** * @brief Logs a critical message with a runbook code. */
 #define LOG_CRITICAL(code, ...)                                                \
     do {                                                                       \
-        if (spdlog::default_logger()->should_log(spdlog::level::critical)) {   \
-            spdlog::source_loc loc{__FILE__, __LINE__, __FUNCTION__};          \
-            std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__);    \
-            spdlog::default_logger()->log(loc, spdlog::level::critical,        \
-                                          spdlog::string_view_t(msg));         \
-        }                                                                      \
+        std::string msg = runbook::FormatRunbookLog(code, __VA_ARGS__);        \
+        logging::Logger::LogMessage(                                           \
+                spdlog::level::critical,                                       \
+                spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__},          \
+                spdlog::string_view_t(msg));                                   \
     }                                                                          \
     while (0)
