@@ -64,6 +64,51 @@ cd build/coverage && make coverage
 python3 ../../tools/coverage_reporter.py
 ```
 
+### Measured In-Process Benchmark (2026-09-29)
+
+The following is a dated, synthetic measurement of the in-process
+`TradingCore` matching path. The benchmark receipt targeted `origin/main` at
+commit `9ae29db5462c55d56115d40e866d6ca6a0e0db03`.
+
+The workload used four fresh 1,000,000-order runs with paired opposite IOC
+orders across all nine instruments, unique sender IDs, and logging I/O
+disabled. `completed_orders_per_second` counts 1,000,000 `NEW` execution
+reports after queue drain and worker shutdown. This is an in-process matching-
+core measurement, not a FIX/TCP/network measurement or a production-server
+capacity claim.
+
+| Completed-order throughput | Orders/s |
+| :--- | ---: |
+| Run 1 | 67,781 |
+| Run 2 | 69,455 |
+| Run 3 | 76,356 |
+| Run 4 | 73,657 |
+| Mean | 71,812 |
+| Median | 71,556 |
+| Best observed | 76,356 |
+
+Additional measured results:
+
+- Matched trades: 500,000 per run; mean 35,906 trades/s.
+- Execution-report latency p50: 2.53–2.89 ms across runs; median 2.76 ms.
+- Execution-report latency p95: 14.4–151.8 ms across runs; median 43.0 ms.
+- Execution-report latency p99: 30.6–194.2 ms across runs; median 58.3 ms.
+- Peak RSS: 564.3–572.4 MiB; mean 568.9 MiB.
+- Process CPU time: 25.9–28.8 s per 1M-order run.
+- Enqueue/submission rate: 347k–547k orders/s; this is not completed throughput.
+
+The host safety envelope was 2 logical CPUs, 7.8 GiB RAM, and no swap.
+Benchmark processes ran at nice level 10 with a 4 GiB virtual-memory limit, a
+3 GiB RSS watchdog, a 30 s CPU limit, and a 45 s wall timeout; no guard
+tripped. Therefore, 50k orders/s is below this measured in-process result,
+but this does not establish 50k FIX/network requests/s or production capacity.
+The latency tail and host limits above are evidence, not a guaranteed capacity
+or SLA.
+
+The checked-in stress driver was not the harness used for these figures. Its
+independently discovered logger-lifetime issue was tracked in [#27](https://github.com/SujalChoudhari/BetaTrader/issues/27);
+these figures do not claim that the existing stress driver is fixed.
+
 ### Generated API Documentation
 
 The API and architecture site is generated from the tracked `Doxyfile`,
