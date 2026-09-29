@@ -1,6 +1,7 @@
 add_executable(exchange_app_tests
     src/TradingCoreTests.cpp
     src/TradingSystemTests.cpp
+    src/TradingCoreLifecycleTests.cpp
 )
 target_link_libraries(exchange_app_tests
     PRIVATE

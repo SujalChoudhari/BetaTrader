@@ -10,6 +10,8 @@
 #include "spdlog/spdlog.h"
 #include <chrono>
 #include <iomanip>
+#include <mutex>
+#include <shared_mutex>
 #include <sstream>
 #include <string>
 #include <vector> // Include for std::vector
@@ -55,6 +57,28 @@ namespace logging {
         }
 
     public:
+        template<typename... Args>
+        static void Log(spdlog::level::level_enum level,
+                        const spdlog::source_loc location,
+                        spdlog::format_string_t<Args...> format, Args&&... args)
+        {
+            std::shared_lock<std::shared_mutex> lock(logMutex());
+            if (auto logger = spdlog::default_logger()) {
+                logger->log(location, level, format,
+                            std::forward<Args>(args)...);
+            }
+        }
+
+        static void LogMessage(spdlog::level::level_enum level,
+                               const spdlog::source_loc location,
+                               const spdlog::string_view_t message)
+        {
+            std::shared_lock<std::shared_mutex> lock(logMutex());
+            if (auto logger = spdlog::default_logger()) {
+                logger->log(location, level, message);
+            }
+        }
+
         /**
          * @brief Initializes the spdlog and sets up the sources and sinks
          * NOTE: Use Shutdown to clean up and dump all queue.
@@ -80,14 +104,11 @@ namespace logging {
              size_t maxFileSize = 1024 * 1024 * 300, size_t maxFiles = 5,
              spdlog::sink_ptr customSink = nullptr)
         {
-            if (spdlog::get(loggerName)) {
-                return;
-            }
+            std::unique_lock<std::shared_mutex> lock(logMutex());
+            if (spdlog::get(loggerName)) { return; }
 
-            static bool threadPoolInitialized = false;
-            if (!threadPoolInitialized) {
+            if (!spdlog::thread_pool()) {
                 spdlog::init_thread_pool(queueSize, numThreads);
-                threadPoolInitialized = true;
             }
             std::vector<spdlog::sink_ptr> sinks;
 
@@ -108,9 +129,7 @@ namespace logging {
                 sinks.push_back(fileSink);
             }
 
-            if (customSink) {
-                sinks.push_back(customSink);
-            }
+            if (customSink) { sinks.push_back(customSink); }
 
             if (sinks.empty()) {
                 throw std::runtime_error(
@@ -137,13 +156,42 @@ namespace logging {
         /**
          * Clean up the logging threads and dump up the remaining logs in queue
          */
-        static void Shutdown() { spdlog::shutdown(); }
+        static void Shutdown()
+        {
+            std::unique_lock<std::shared_mutex> lock(logMutex());
+            spdlog::shutdown();
+        }
+
+    private:
+        static std::shared_mutex& logMutex()
+        {
+            static std::shared_mutex mutex;
+            return mutex;
+        }
     };
 } // namespace logging
 
-#define LOG_TRACE(...)    SPDLOG_TRACE(__VA_ARGS__)
-#define LOG_DEBUG(...)    SPDLOG_DEBUG(__VA_ARGS__)
-#define LOG_INFO(...)     SPDLOG_INFO(__VA_ARGS__)
-#define LOG_WARN(...)     SPDLOG_WARN(__VA_ARGS__)
-#define LOG_ERROR(...)    SPDLOG_ERROR(__VA_ARGS__)
-#define LOG_CRITICAL(...) SPDLOG_CRITICAL(__VA_ARGS__)
+#define LOG_TRACE(...)                                                         \
+    logging::Logger::Log(spdlog::level::trace,                                 \
+                         spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__}, \
+                         __VA_ARGS__)
+#define LOG_DEBUG(...)                                                         \
+    logging::Logger::Log(spdlog::level::debug,                                 \
+                         spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__}, \
+                         __VA_ARGS__)
+#define LOG_INFO(...)                                                          \
+    logging::Logger::Log(spdlog::level::info,                                  \
+                         spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__}, \
+                         __VA_ARGS__)
+#define LOG_WARN(...)                                                          \
+    logging::Logger::Log(spdlog::level::warn,                                  \
+                         spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__}, \
+                         __VA_ARGS__)
+#define LOG_ERROR(...)                                                         \
+    logging::Logger::Log(spdlog::level::err,                                   \
+                         spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__}, \
+                         __VA_ARGS__)
+#define LOG_CRITICAL(...)                                                      \
+    logging::Logger::Log(spdlog::level::critical,                              \
+                         spdlog::source_loc{__FILE__, __LINE__, __FUNCTION__}, \
+                         __VA_ARGS__)
